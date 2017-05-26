@@ -1,12 +1,10 @@
 package com.homechart.app.home.activity;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.text.TextUtils;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -16,7 +14,7 @@ import com.homechart.app.home.fragment.HomeCenterFragment;
 import com.homechart.app.home.fragment.HomeDesignerFragment;
 import com.homechart.app.home.fragment.HomePicFragment;
 
-public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener{
+public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener{
 
     private RadioButton radio_btn_center;
     private RadioGroup mRadioGroup;
@@ -31,7 +29,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.activity_main;
+        return R.layout.activity_home;
     }
 
     @Override
