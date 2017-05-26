@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.homechart.app.utils.imageloader.ImageUtils;
 
 /**
  * Created by gumenghao on 17/5/17.
@@ -19,6 +20,11 @@ public class MyApplication extends Application {
         super.onCreate();
         myApplication = this;
         queue = Volley.newRequestQueue(this);
+        initImageLoader();
+    }
+
+    private void initImageLoader() {
+        ImageUtils.initImageLoader(this);
     }
 
 

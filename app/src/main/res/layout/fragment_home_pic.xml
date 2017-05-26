@@ -12,4 +12,5 @@
         android:textColor="@color/red"
         android:text="第一个Fragment" />
 
+
 </RelativeLayout>

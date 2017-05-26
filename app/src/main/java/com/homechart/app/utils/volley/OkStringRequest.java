@@ -1,4 +1,4 @@
-package com.homechart.app.volley;
+package com.homechart.app.utils.volley;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
