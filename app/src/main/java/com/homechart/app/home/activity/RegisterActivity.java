@@ -145,7 +145,7 @@ public class RegisterActivity extends BaseActivity
                         != PackageManager.PERMISSION_GRANTED) {
                     new AlertView(UIUtils.getString(R.string.addpromiss),
                             null, UIUtils.getString(R.string.setpromiss), new String[]{UIUtils.getString(R.string.okpromiss)},
-                            null, this, AlertView.Style.ActionSheet, new OnItemClickListener() {
+                            null, this, AlertView.Style.Alert, new OnItemClickListener() {
                         @Override
                         public void onItemClick(Object object, int position) {
                             if (position == -1) {
