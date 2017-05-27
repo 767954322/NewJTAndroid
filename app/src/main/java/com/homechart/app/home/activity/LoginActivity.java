@@ -145,22 +145,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
                 break;
             case 2:
-                if (ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-                        || ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                    new AlertView(UIUtils.getString(R.string.addpromiss),
-                            null, UIUtils.getString(R.string.setpromiss), new String[]{UIUtils.getString(R.string.okpromiss)},
-                            null, this, AlertView.Style.ActionSheet, new OnItemClickListener() {
-                        @Override
-                        public void onItemClick(Object object, int position) {
-                            if (position == -1) {
-                                    Uri packageURI = Uri.parse("package:" + LoginActivity.this.getPackageName());
-                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, packageURI);
-                                startActivity(intent);
-                            }
-                        }
-                    }).show();
+                //TODO  最后的权限回调
                 }
         }
-    }
 
 }

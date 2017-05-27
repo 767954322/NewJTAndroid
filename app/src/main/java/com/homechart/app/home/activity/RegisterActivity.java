@@ -1,7 +1,14 @@
 package com.homechart.app.home.activity;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
@@ -11,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.homechart.app.R;
@@ -21,6 +29,8 @@ import com.homechart.app.utils.CustomProgress;
 import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.UIUtils;
+import com.homechart.app.utils.alertview.AlertView;
+import com.homechart.app.utils.alertview.OnItemClickListener;
 import com.homechart.app.utils.geetest.GeetestTest;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
@@ -130,11 +140,28 @@ public class RegisterActivity extends BaseActivity
                 }
                 break;
             case R.id.tv_get_yanzhengma:
-                CustomProgress.show(RegisterActivity.this, "加载中...", false, null);
-                getJYNeedParams();
+                //判断权限是否添加
+                if (ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.READ_PHONE_STATE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    new AlertView(UIUtils.getString(R.string.addpromiss),
+                            null, UIUtils.getString(R.string.setpromiss), new String[]{UIUtils.getString(R.string.okpromiss)},
+                            null, this, AlertView.Style.ActionSheet, new OnItemClickListener() {
+                        @Override
+                        public void onItemClick(Object object, int position) {
+                            if (position == -1) {
+                                Uri packageURI = Uri.parse("package:" + RegisterActivity.this.getPackageName());
+                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, packageURI);
+                                startActivity(intent);
+                            }
+                        }
+                    }).show();
+
+                } else {
+                    CustomProgress.show(RegisterActivity.this, "加载中...", false, null);
+                    getJYNeedParams();
+                }
                 break;
         }
-
     }
 
     private void getJYNeedParams() {
