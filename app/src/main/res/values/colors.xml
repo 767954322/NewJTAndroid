@@ -41,6 +41,7 @@
     <color name="bg_f1">#F1F1F1</color>
     <color name="bg_f2">#F2F2F2</color>
     <color name="bg_f3">#F3F3F3</color>
+    <color name="bg_f8">#F8F8F8</color>
     <color name="bg_f9">#F9F9F9</color>
     <color name="bg_ff">#FFFFFF</color>
     <color name="bg_0000">#00000000</color>
@@ -62,8 +63,11 @@
     <color name="bg_8f8f8f">#8f8f8f</color>
     <color name="bg_f2f2f2">#f2f2f2</color>
     <color name="bg_ededed">#ededed</color>
-    <color name="bg_e464646">#464646</color>
-    <color name="bg_eb2b2b2">#b2b2b2</color>
+    <color name="bg_464646">#464646</color>
+    <color name="bg_b2b2b2">#b2b2b2</color>
+    <color name="bg_d7d7db">#d7d7db</color>
+    <color name="bg_007aff">#007aff</color>
+    <color name="bg_ff3b30">#ff3b30</color>
 
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
@@ -80,5 +84,6 @@
     <color name="case_text_tital_detail">#8f8f8f</color>
     <color name="case_text_tital_name">#262626</color>
     <color name="navbar_bottom_border_color">#d4d4d4</color>
+    <color name="bgColor_overlay">#60000000</color>
 
 </resources>

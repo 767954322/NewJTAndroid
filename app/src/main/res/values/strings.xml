@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">家图</string>
+
+    <!--UIUtils-->
+    <string name="tip">提示</string>
+    <string name="sure">确定</string>
+
+
+    <!-- RegisterActivity -->
+    <string name="phonenum_error">请填写正确的手机号码</string>
+    <!-- LoginActivity -->
+    <string name="addpromiss">需开启权限后才能正常使用</string>
+    <string name="okpromiss">知道了</string>
+    <string name="setpromiss">去设置</string>
 </resources>

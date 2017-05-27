@@ -1,8 +1,14 @@
 package com.homechart.app.home.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -17,21 +23,30 @@ import android.widget.TextView;
 
 import com.homechart.app.MyApplication;
 import com.homechart.app.R;
+import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
+import com.homechart.app.utils.UIUtils;
+import com.homechart.app.utils.alertview.AlertView;
+import com.homechart.app.utils.alertview.OnItemClickListener;
 
 /**
  * Created by gumenghao on 17/5/26.
  */
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
+
     private ImageButton nav_left_imageButton;
-    private TextView tv_tital_comment;
-    private Button btn_send_demand;
-    private TextView tv_gorget_pass;
     private ImageView iv_show_pass;
-    private boolean isChecked = true;
+    private Button btn_send_demand;
+
+    private TextView tv_tital_comment;
+    private TextView registerPersion;
+    private TextView tv_gorget_pass;
+
     private EditText loginPase;
     private EditText loginName;
+
+    private boolean isChecked = true;
 
     @Override
     protected int getLayoutResId() {
@@ -42,13 +57,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     protected void initView() {
 
         nav_left_imageButton = (ImageButton) findViewById(R.id.nav_left_imageButton);
-
         tv_tital_comment = (TextView) findViewById(R.id.tv_tital_comment);
         tv_gorget_pass = (TextView) findViewById(R.id.tv_gorget_pass);
         btn_send_demand = (Button) findViewById(R.id.btn_send_demand);
         loginPase = (EditText) findViewById(R.id.et_login_password);
         loginName = (EditText) findViewById(R.id.et_login_name);
         iv_show_pass = (ImageView) findViewById(R.id.iv_show_pass);
+        registerPersion = (TextView) findViewById(R.id.tv_goto_register);
 
     }
 
@@ -58,15 +73,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         btn_send_demand.setOnClickListener(this);
         tv_gorget_pass.setOnClickListener(this);
         iv_show_pass.setOnClickListener(this);
+        registerPersion.setOnClickListener(this);
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
-        nav_left_imageButton.setVisibility(View.GONE);
         tv_tital_comment.setText("登录");
+        nav_left_imageButton.setVisibility(View.GONE);
         changeEditTextHint("邮箱/手机/昵称", loginName, 14);
         changeEditTextHint("请输入密码", loginPase, 14);
+        //设置权限
+        PublicUtils.verifyStoragePermissions(LoginActivity.this);
 
     }
 
@@ -98,6 +115,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     isChecked = true;
                 }
                 break;
+            case R.id.tv_goto_register:
+                Intent intent_register = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivityForResult(intent_register, 0);
+                break;
         }
     }
 
@@ -111,6 +132,35 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         ss.setSpan(ass, 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         // 设置hint
         editText.setHint(new SpannedString(ss)); // 一定要进行转换,否则属性会消失
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //判断请求码
+        switch (requestCode) {
+            case 1:
+                if (ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(LoginActivity.this, new String[]{Manifest.permission.READ_PHONE_STATE}, 2);
+                }
+                break;
+            case 2:
+                if (ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                        || ContextCompat.checkSelfPermission(LoginActivity.this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                    new AlertView(UIUtils.getString(R.string.addpromiss),
+                            null, UIUtils.getString(R.string.setpromiss), new String[]{UIUtils.getString(R.string.okpromiss)},
+                            null, this, AlertView.Style.ActionSheet, new OnItemClickListener() {
+                        @Override
+                        public void onItemClick(Object object, int position) {
+                            if (position == -1) {
+                                    Uri packageURI = Uri.parse("package:" + LoginActivity.this.getPackageName());
+                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, packageURI);
+                                startActivity(intent);
+                            }
+                        }
+                    }).show();
+                }
+        }
     }
 
 }
