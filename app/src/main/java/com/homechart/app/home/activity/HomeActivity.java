@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -14,7 +15,11 @@ import com.homechart.app.home.fragment.HomeCenterFragment;
 import com.homechart.app.home.fragment.HomeDesignerFragment;
 import com.homechart.app.home.fragment.HomePicFragment;
 
-public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener{
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
 
     private RadioButton radio_btn_center;
     private RadioGroup mRadioGroup;

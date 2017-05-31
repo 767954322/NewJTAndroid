@@ -21,32 +21,30 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by GPD on 2017/3/1.
  */
 
 public class PublicUtils {
+
     /**
-     * 获取版本号
-     *
-     * @return
+     * @return 获取公共参数的map
      */
-    public static String getVersionName(Context context) {
-        // 获取packagemanager的实例
-        PackageManager packageManager = context.getPackageManager();
-        // getPackageName()是你当前类的包名，0代表是获取版本信息
-        try {
-            PackageInfo packInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
-            String version = packInfo.versionName;
-            return version;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return "";
+    public static Map<String, String> getPublicMap(Context context) {
+        Map<String, String> map = new HashMap<>();
+        map.put(ClassConstant.PublicKey.UUID, getPhoneImail(context));
+        map.put(ClassConstant.PublicKey.T, getCurrentTime(context) + "");
+        map.put(ClassConstant.PublicKey.APP_KEY, "app_android");
+        return map;
     }
 
     /**
@@ -63,47 +61,45 @@ public class PublicUtils {
         return phone_id;
     }
 
-    public static String getPesudoUniqueID() {
-        String m_szDevIDShort = "35" + //we make this look like a valid IMEI
-                Build.BOARD.length() % 10 +
-                Build.BRAND.length() % 10 +
-                Build.CPU_ABI.length() % 10 +
-                Build.DEVICE.length() % 10 +
-                Build.DISPLAY.length() % 10 +
-                Build.HOST.length() % 10 +
-                Build.ID.length() % 10 +
-                Build.MANUFACTURER.length() % 10 +
-                Build.MODEL.length() % 10 +
-                Build.PRODUCT.length() % 10 +
-                Build.TAGS.length() % 10 +
-                Build.TYPE.length() % 10 +
-                Build.USER.length() % 10; //13 digits
-        return m_szDevIDShort;
+    /**
+     * @return 获取当前时间戳
+     */
+    private static Long getCurrentTime(Context context) {
+        Long currentdate = new Date().getTime();
+
+        return currentdate;
     }
 
     /**
-     * @return 获取公共的JSONObject
+     * @return 获取公共参数的map
      */
-    public static JSONObject getPublicObject(Context context) {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put(COMMENT_PARAMS_V, getVersionName(context));
-            jsonObject.put(COMMENT_PARAMS_VID, getPhoneImail(context));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return jsonObject;
-    }
-
-    public static Map<String, String> getPublicMap(Context context) {
+    public static Map<String, String> getPublicHeader(Context context) {
         Map<String, String> map = new HashMap<>();
-        map.put(COMMENT_PARAMS_V, getVersionName(context));
-        map.put(COMMENT_PARAMS_VID, getPhoneImail(context));
+        map.put(ClassConstant.PublicHeader.APP_VERSION, PublicUtils.getVersionName(context));
+        map.put(ClassConstant.PublicHeader.APP_PLATFORM, "android");
+        //TODO 登陆的话添加，未登录不用添加，会话token，登录接口返回的auth_token的值
+//        map.put(ClassConstant.PublicHeader.APP_AUTH_TOKEN, "");
         return map;
     }
 
-    public static final String COMMENT_PARAMS_V = "v";
-    public static final String COMMENT_PARAMS_VID = "vid";
+    /**
+     * @return 获取签名字符串signStr
+     */
+    public static String getSinaString(Map<String, String> map) {
+
+        List<String> list = new ArrayList<>();
+        StringBuffer stringBuffer = new StringBuffer();
+        for (String key : map.keySet()) {
+            list.add(key);
+            System.out.println("key= "+ key + " and value= " + map.get(key));
+        }
+        Collections.sort(list);
+
+        for (int i = 0 ;i<list.size() ;i++){
+            stringBuffer.append(list.get(i)+map.get(list.get(i)));
+        }
+        return stringBuffer.toString();
+    }
 
     // 网络状态
     public static boolean isNetworkConnected(Context context) {
@@ -133,5 +129,44 @@ public class PublicUtils {
                     REQUEST_EXTERNAL_STORAGE);
         }
     }
+
+    /**
+     * 获取版本号
+     *
+     * @return
+     */
+    public static String getVersionName(Context context) {
+        // 获取packagemanager的实例
+        PackageManager packageManager = context.getPackageManager();
+        // getPackageName()是你当前类的包名，0代表是获取版本信息
+        try {
+            PackageInfo packInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+            String version = packInfo.versionName;
+            return version;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+
+    public static String getPesudoUniqueID() {
+        String m_szDevIDShort = "35" + //we make this look like a valid IMEI
+                Build.BOARD.length() % 10 +
+                Build.BRAND.length() % 10 +
+                Build.CPU_ABI.length() % 10 +
+                Build.DEVICE.length() % 10 +
+                Build.DISPLAY.length() % 10 +
+                Build.HOST.length() % 10 +
+                Build.ID.length() % 10 +
+                Build.MANUFACTURER.length() % 10 +
+                Build.MODEL.length() % 10 +
+                Build.PRODUCT.length() % 10 +
+                Build.TAGS.length() % 10 +
+                Build.TYPE.length() % 10 +
+                Build.USER.length() % 10; //13 digits
+        return m_szDevIDShort;
+    }
+
 
 }

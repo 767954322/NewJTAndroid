@@ -1,6 +1,8 @@
 package com.homechart.app.utils;
 
 
+import com.homechart.app.commont.KeyConstans;
+
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -54,7 +56,7 @@ public class Md5Util {
                 }
             }
 
-            return getMD5(strBuf.toString() + "e6fd0592c&j2p*&y?@+i#=%m203029ce");
+            return getMD5(strBuf.toString() + KeyConstans.MD5_KEY);
         } catch (NoSuchAlgorithmException e) {
             return "";
         } catch (UnsupportedEncodingException e) {

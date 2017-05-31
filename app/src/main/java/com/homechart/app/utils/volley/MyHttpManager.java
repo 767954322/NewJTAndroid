@@ -56,7 +56,7 @@ public class MyHttpManager {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
                 String tabMd5String = Md5Util.getMD5twoTimes("jiami" + KeyConstans.ENCRYPTION_KEY);
-                map.put(ClassConstant.HomePic.SIGN, "jiami" + "," + tabMd5String);
+                map.put(ClassConstant.PublicKey.SIGN, "jiami" + "," + tabMd5String);
                 return map;
             }
 
@@ -91,7 +91,7 @@ public class MyHttpManager {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
                 String tabMd5String = Md5Util.getMD5twoTimes("jiami" + KeyConstans.ENCRYPTION_KEY);
-                map.put(ClassConstant.HomePic.SIGN, "jiami" + "," + tabMd5String);
+                map.put(ClassConstant.PublicKey.SIGN, "jiami" + "," + tabMd5String);
                 map.put(ClassConstant.DesinerRegister.MOBILE, phoneNum);
                 map.put(ClassConstant.DesinerRegister.TYPE, "signup");
                 return map;
@@ -135,7 +135,7 @@ public class MyHttpManager {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
                 String tabMd5String = Md5Util.getMD5twoTimes("jiami" + KeyConstans.ENCRYPTION_KEY);
-                map.put(ClassConstant.HomePic.SIGN, "jiami" + "," + tabMd5String);
+                map.put(ClassConstant.PublicKey.SIGN, "jiami" + "," + tabMd5String);
                 map.put(ClassConstant.DesinerRegister.MOBILE, phone);
                 map.put(ClassConstant.DesinerRegister.TYPE, "signup");
                 map.put(ClassConstant.DesinerRegister.CHALLENGE, challenge);
@@ -162,6 +162,36 @@ public class MyHttpManager {
                 } catch (UnsupportedEncodingException e) {
                     return Response.error(new ParseError(e));
                 }
+            }
+        };
+        queue.add(okStringRequest);
+    }
+
+
+    /**
+     * 用户登录
+     * Collections.sort(list);升序排列
+     *
+     * @param username
+     * @param password
+     * @param callback
+     */
+    public void userLogin(final String username, final String password, OkStringRequest.OKResponseCallback callback) {
+        OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.USER_LOGIN, callback) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
+                map.put(ClassConstant.LoginConstant.USERNAME, username);
+                map.put(ClassConstant.LoginConstant.PASSWORD, password);
+
+                String signString = PublicUtils.getSinaString(map);
+                String tabMd5String = Md5Util.getMD5twoTimes(signString);
+                map.put(ClassConstant.PublicKey.SIGN, tabMd5String);
+                return map;
+            }
+
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return PublicUtils.getPublicHeader(MyApplication.getInstance());
             }
         };
         queue.add(okStringRequest);

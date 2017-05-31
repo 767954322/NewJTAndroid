@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -14,6 +13,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.SpannedString;
 import android.text.style.AbsoluteSizeSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,13 +21,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.homechart.app.MyApplication;
+import com.android.volley.VolleyError;
 import com.homechart.app.R;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
-import com.homechart.app.utils.UIUtils;
-import com.homechart.app.utils.alertview.AlertView;
-import com.homechart.app.utils.alertview.OnItemClickListener;
+import com.homechart.app.utils.volley.MyHttpManager;
+import com.homechart.app.utils.volley.OkStringRequest;
 
 /**
  * Created by gumenghao on 17/5/26.
@@ -91,9 +90,24 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_send_demand:
-                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                startActivity(intent);
-                LoginActivity.this.finish();
+
+                OkStringRequest.OKResponseCallback callback = new OkStringRequest.OKResponseCallback() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                        Log.d("test", "失败：" + error.getMessage().toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("test", "成功" + response);
+                        //                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        //                startActivity(intent);
+                        //                LoginActivity.this.finish();
+                    }
+                };
+                MyHttpManager.getInstance().userLogin(loginName.getText().toString(), loginPase.getText().toString(), callback);
+
                 break;
             case R.id.tv_gorget_pass:
                 Intent intent1 = new Intent();
@@ -146,7 +160,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 break;
             case 2:
                 //TODO  最后的权限回调
-                }
         }
+    }
 
 }

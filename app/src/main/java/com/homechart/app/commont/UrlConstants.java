@@ -29,4 +29,7 @@ public class UrlConstants {
     public static final String PUT_ISSUE = "http://sjj.idcool.com.cn/feed/addFeed";
     public static final String CHAT_LIST = "http://sjj.idcool.com.cn/im/userContactList";
 
+    //新接口
+    public static final String USER_LOGIN = "https://api.idcool.com.cn/user/account/login";
+
 }
