@@ -4,13 +4,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
+    <Button
+        android:id="@+id/bt_change_frag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:textSize="@dimen/font_20"
-        android:textColor="@color/red"
-        android:text="第一个Fragment" />
+        android:layout_marginLeft="@dimen/font_25"
+        android:text="切换" />
+
+    <RelativeLayout
+        android:id="@+id/pic_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bt_change_frag"
+        android:layout_weight="1"
+        android:orientation="vertical" />
 
 
 </RelativeLayout>
