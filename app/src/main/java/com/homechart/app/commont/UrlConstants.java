@@ -17,7 +17,6 @@ public class UrlConstants {
     public static final String DETAILS_CENTER_PIC = "http://sjj.idcool.com.cn/album/getAlbumList";
     public static final String DETAILS_CITYS = "http://sjj.idcool.com.cn/filter";
     public static final String DETAILS_LISTS = "http://sjj.idcool.com.cn/profession/slist";
-    public static final String JIYAN_GETPARAM = "http://sjj.idcool.com.cn/account/getCheckCaptcha";
     public static final String JIYAN_PHONE_SENDNUM = "http://sjj.idcool.com.cn/account/checkLimit";
     public static final String JIYAN_SEND_MESSAGE = "http://sjj.idcool.com.cn/account/sendCode";
     public static final String REGISTER_PERSION = "http://sjj.idcool.com.cn/account/register";
@@ -31,5 +30,6 @@ public class UrlConstants {
 
     //新接口
     public static final String USER_LOGIN = "https://api.idcool.com.cn/user/account/login";
+    public static final String JIYAN_GETPARAM = "https://api.idcool.com.cn/security/verification/gt";
 
 }

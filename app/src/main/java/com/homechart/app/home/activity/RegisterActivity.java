@@ -175,7 +175,7 @@ public class RegisterActivity extends BaseActivity
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 CustomProgress.cancelDialog();
-                ToastUtils.showCenter(RegisterActivity.this, "信息加载失败，请重新加载");
+                ToastUtils.showCenter(RegisterActivity.this, "信息加载失败，请重新加载"+volleyError.getMessage());
             }
 
             @Override

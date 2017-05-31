@@ -44,39 +44,7 @@ public class MyHttpManager {
         return mpServerHttpManager;
     }
 
-    /**
-     * 从服务器获取极验证需要的三个参数
-     *
-     * @param callback
-     */
-    public void getParamsFromMyServiceJY(OkStringRequest.OKResponseCallback callback) {
-        OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.JIYAN_GETPARAM, callback) {
 
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
-                String tabMd5String = Md5Util.getMD5twoTimes("jiami" + KeyConstans.ENCRYPTION_KEY);
-                map.put(ClassConstant.PublicKey.SIGN, "jiami" + "," + tabMd5String);
-                return map;
-            }
-
-            @Override
-            protected Response<String> parseNetworkResponse(
-                    NetworkResponse response) {
-                try {
-                    Map<String, String> responseHeaders = response.headers;
-                    String rawCookies = responseHeaders.get("Set-Cookie");
-                    cookieManager = new CookieManager();
-                    cookieManager.getCookieStore().add(null, HttpCookie.parse(rawCookies).get(0));
-                    String dataString = new String(response.data, "UTF-8");
-                    return Response.success(dataString, HttpHeaderParser.parseCacheHeaders(response));
-                } catch (UnsupportedEncodingException e) {
-                    return Response.error(new ParseError(e));
-                }
-            }
-        };
-        queue.add(okStringRequest);
-    }
 
     /**
      * 级验滑动后，先检验是否可以发送短信
@@ -197,5 +165,44 @@ public class MyHttpManager {
         queue.add(okStringRequest);
     }
 
+    /**
+     * 从服务器获取极验证需要的三个参数
+     *
+     * @param callback
+     */
+    public void getParamsFromMyServiceJY(OkStringRequest.OKResponseCallback callback) {
+        OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.JIYAN_GETPARAM, callback) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
+                String signString = PublicUtils.getSinaString(map);
+                String tabMd5String = Md5Util.getMD5twoTimes(signString);
+                map.put(ClassConstant.PublicKey.SIGN, tabMd5String);
+                return map;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return PublicUtils.getPublicHeader(MyApplication.getInstance());
+            }
+
+            @Override
+            protected Response<String> parseNetworkResponse(
+                    NetworkResponse response) {
+                try {
+                    Map<String, String> responseHeaders = response.headers;
+                    String rawCookies = responseHeaders.get("Set-Cookie");
+                    cookieManager = new CookieManager();
+                    cookieManager.getCookieStore().add(null, HttpCookie.parse(rawCookies).get(0));
+                    String dataString = new String(response.data, "UTF-8");
+                    return Response.success(dataString, HttpHeaderParser.parseCacheHeaders(response));
+                } catch (UnsupportedEncodingException e) {
+                    return Response.error(new ParseError(e));
+                }
+            }
+        };
+        queue.add(okStringRequest);
+    }
 
 }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -22,11 +23,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.homechart.app.MyApplication;
 import com.homechart.app.R;
+import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
+import com.homechart.app.utils.Md5Util;
+import com.homechart.app.utils.UIUtils;
+import com.homechart.app.utils.alertview.AlertView;
+import com.homechart.app.utils.alertview.OnItemClickListener;
 import com.homechart.app.utils.volley.MyHttpManager;
+import com.homechart.app.utils.volley.MyHttpManager1;
+import com.homechart.app.utils.volley.OkJsonRequest;
 import com.homechart.app.utils.volley.OkStringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by gumenghao on 17/5/26.
