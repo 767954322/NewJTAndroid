@@ -16,7 +16,7 @@ public class HomePicFragment extends BaseFragment implements View.OnClickListene
 
     private FragmentManager fragmentManager;
     private Button bt_change_frag;
-    private HomePicListFragment mHomePicListFragment;
+    private HomePicReflushListFragment mHomePicReflushListFragment;
     private Fragment mTagFragment;
     private FragmentTransaction transaction;
     private HomePicWaterFallFragment mHomePicWaterFallFragment;
@@ -47,12 +47,12 @@ public class HomePicFragment extends BaseFragment implements View.OnClickListene
     protected void initData(Bundle savedInstanceState) {
 
         if (rootView.findViewById(R.id.pic_content) != null) {
-            if (null == mHomePicListFragment) {
-                mHomePicListFragment = new HomePicListFragment(fragmentManager);
+            if (null == mHomePicReflushListFragment) {
+                mHomePicReflushListFragment = new HomePicReflushListFragment(fragmentManager);
             }
-            mTagFragment = mHomePicListFragment;
+            mTagFragment = mHomePicReflushListFragment;
             transaction = fragmentManager.beginTransaction();
-            transaction.add(R.id.pic_content, mHomePicListFragment).commit();
+            transaction.add(R.id.pic_content, mHomePicReflushListFragment).commit();
         }
 
     }
@@ -65,12 +65,12 @@ public class HomePicFragment extends BaseFragment implements View.OnClickListene
                 if (null == mHomePicWaterFallFragment) {
                     mHomePicWaterFallFragment = new HomePicWaterFallFragment(fragmentManager);
                 }
-                if (mTagFragment == mHomePicListFragment) {
+                if (mTagFragment == mHomePicReflushListFragment) {
                     mTagFragment = mHomePicWaterFallFragment;
                     replaceFragment(mHomePicWaterFallFragment);
                 } else if (mTagFragment == mHomePicWaterFallFragment) {
-                    mTagFragment = mHomePicListFragment;
-                    replaceFragment(mHomePicListFragment);
+                    mTagFragment = mHomePicReflushListFragment;
+                    replaceFragment(mHomePicReflushListFragment);
                 }
                 break;
         }

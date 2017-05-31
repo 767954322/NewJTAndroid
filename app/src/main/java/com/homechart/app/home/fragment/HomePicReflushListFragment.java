@@ -8,11 +8,11 @@ import com.homechart.app.R;
 import com.homechart.app.home.base.BaseFragment;
 
 @SuppressLint("ValidFragment")
-public class HomePicListFragment extends BaseFragment {
+public class HomePicReflushListFragment extends BaseFragment {
 
     private FragmentManager fragmentManager;
 
-    public HomePicListFragment(FragmentManager fragmentManager) {
+    public HomePicReflushListFragment(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
     }
 
