@@ -11,6 +11,7 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import com.homechart.app.home.base.BaseFragment;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
@@ -62,7 +63,6 @@ public class HomePicReflushListFragment
     @Override
     protected void initData(Bundle savedInstanceState) {
         buildData();
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
         buildRecyclerView();
     }
 
@@ -102,6 +102,8 @@ public class HomePicReflushListFragment
             }
         };
 
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
+//        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
         mRecyclerView.setItemAnimator(new LandingAnimator());
 
         ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(mAdapter);
