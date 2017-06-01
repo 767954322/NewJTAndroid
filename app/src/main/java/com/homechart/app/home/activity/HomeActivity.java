@@ -18,7 +18,9 @@ import com.homechart.app.home.fragment.HomePicFragment;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
+/**
+ * Created by allen on 2017/6/1.
+ */
 public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
 
     private RadioButton radio_btn_center;

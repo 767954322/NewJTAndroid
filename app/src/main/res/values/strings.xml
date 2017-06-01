@@ -15,4 +15,7 @@
     <string name="login_tital">登录</string>
     <string name="login_name_hint">邮箱/手机/昵称</string>
     <string name="login_pass_hint">请输入密码</string>
+    <!-- UMAuthListener -->
+    <string name="um_auth_error">授权失败，请重新尝试</string>
+    <string name="um_auth_cancel">授权取消</string>
 </resources>

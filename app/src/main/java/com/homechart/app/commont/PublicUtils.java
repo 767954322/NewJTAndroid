@@ -13,36 +13,29 @@ import android.telephony.TelephonyManager;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.SpannedString;
-import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
-import android.util.DisplayMetrics;
-import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 
-import com.nostra13.universalimageloader.core.ImageLoader;
+import com.homechart.app.R;
+import com.homechart.app.utils.CustomProgress;
+import com.homechart.app.utils.ToastUtils;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
- * Created by GPD on 2017/3/1.
+ * Created by allen on 2017/6/1.
  */
 
 public class PublicUtils {
+    //1................................................................................................
 
     /**
      * 获取公共参数的map
@@ -57,7 +50,7 @@ public class PublicUtils {
         map.put(ClassConstant.PublicKey.APP_KEY, "app_android");
         return map;
     }
-    //................................................................................................
+    //2................................................................................................
 
     /**
      * 获取公共header的map
@@ -73,7 +66,7 @@ public class PublicUtils {
 //        map.put(ClassConstant.PublicHeader.APP_AUTH_TOKEN, "");
         return map;
     }
-    //................................................................................................
+    //3................................................................................................
 
     /**
      * @param context
@@ -106,7 +99,7 @@ public class PublicUtils {
                 Build.USER.length() % 10; //13 digits
         return m_szDevIDShort;
     }
-    //................................................................................................
+    //4................................................................................................
 
     /**
      * 获取当前时间戳
@@ -119,7 +112,7 @@ public class PublicUtils {
 
         return currentdate;
     }
-    //................................................................................................
+    //5................................................................................................
 
     /**
      * 获取加密参数key按照首字母的降序排序规则拼接的string
@@ -142,7 +135,7 @@ public class PublicUtils {
         }
         return stringBuffer.toString();
     }
-    //................................................................................................
+    //6................................................................................................
 
     /**
      * 判断网络状态
@@ -162,7 +155,7 @@ public class PublicUtils {
         }
         return false;
     }
-    //................................................................................................
+    //7................................................................................................
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -182,7 +175,7 @@ public class PublicUtils {
                     REQUEST_EXTERNAL_STORAGE);
         }
     }
-    //................................................................................................
+    //8................................................................................................
 
     /**
      * 获取版本号
@@ -203,7 +196,67 @@ public class PublicUtils {
         }
         return "";
     }
-    //................................................................................................
+    //9................................................................................................
+
+    //友盟成功的回调接口
+    public interface ILoginUmeng {
+        void loginUmengBack(String openid, String token, String plat, String name, String iconurl);
+    }
+
+    //友盟登陆的回调
+    public static class UmAuthListener implements UMAuthListener {
+
+        Activity mActivity;
+        ILoginUmeng mILoginUmeng;
+
+        public UmAuthListener(Activity activity, ILoginUmeng iLoginUmeng) {
+            this.mActivity = activity;
+            this.mILoginUmeng = iLoginUmeng;
+        }
+
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {//授权开始的回调
+            CustomProgress.show(mActivity, "授权中...", false, null);
+        }
+
+        @Override
+        public void onComplete(SHARE_MEDIA platform, int i, Map<String, String> data) {
+            String openid = data.get("uid");
+            String token = data.get("access_token");
+            String name = data.get("name");
+            String iconurl = data.get("iconurl");
+            String plat = "";
+            switch (platform.toString()) {
+                case "SINA":
+                    plat = "weibo";
+                    break;
+                case "QQ":
+                    plat = "qq";
+                    break;
+                case "WEIXIN":
+                    plat = "weixin";
+                    break;
+            }
+            PublicUtils.clearUMengOauth(mActivity);
+            mILoginUmeng.loginUmengBack(openid, token, plat, name, iconurl);
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA share_media, int i, Throwable throwable) {
+            CustomProgress.cancelDialog();
+            ToastUtils.showCenter(mActivity, mActivity.getString(R.string.um_auth_error));
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA share_media, int i) {
+
+            CustomProgress.cancelDialog();
+            ToastUtils.showCenter(mActivity, mActivity.getString(R.string.um_auth_cancel));
+        }
+    }
+
+
+    //10................................................................................................
 
     /**
      * 清除友盟授权
@@ -234,10 +287,11 @@ public class PublicUtils {
         public void onCancel(SHARE_MEDIA platform, int action) {
         }
     };
-    //................................................................................................
+    //11................................................................................................
 
     /**
      * 改变EditText的hint大小
+     *
      * @param hint
      * @param editText
      * @param textSize

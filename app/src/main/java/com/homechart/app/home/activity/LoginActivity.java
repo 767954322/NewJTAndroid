@@ -9,10 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.InputType;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.SpannedString;
-import android.text.style.AbsoluteSizeSpan;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,23 +19,26 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.homechart.app.R;
+import com.homechart.app.commont.KeyConstans;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.utils.CustomProgress;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
-import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import java.util.Map;
 
 /**
- * Created by gumenghao on 17/5/26.
+ * Created by allen on 2017/6/1.
  */
+public class LoginActivity extends BaseActivity
+        implements View.OnClickListener,
+        PublicUtils.ILoginUmeng {
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener {
+
 
     @Override
     protected int getLayoutResId() {
@@ -84,6 +83,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         PublicUtils.verifyStoragePermissions(LoginActivity.this);
         PublicUtils.changeEditTextHint(getString(R.string.login_name_hint), mETLoginName, 14);
         PublicUtils.changeEditTextHint(getString(R.string.login_pass_hint), mETLoginPass, 14);
+        umAuthListener = new PublicUtils.UmAuthListener(LoginActivity.this, this);
         mTVTital.setText(R.string.login_tital);
         mBTBack.setVisibility(View.GONE);
 
@@ -91,6 +91,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
+
         switch (v.getId()) {
             case R.id.tv_login_qq:
 
@@ -108,53 +109,101 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                 break;
 
-
             case R.id.btn_send_demand:
 
-                OkStringRequest.OKResponseCallback callback = new OkStringRequest.OKResponseCallback() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                        Log.d("test", "失败：" + error.getMessage().toString());
-                    }
-
-                    @Override
-                    public void onResponse(String response) {
-                        Log.d("test", "成功" + response);
-                        //                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                        //                startActivity(intent);
-                        //                LoginActivity.this.finish();
-                    }
-                };
-                MyHttpManager.getInstance().userLogin(mETLoginName.getText().toString(), mETLoginPass.getText().toString(), callback);
+                clickLoginUser();
 
                 break;
             case R.id.tv_gorget_pass:
-                Intent intent1 = new Intent();
-                intent1.setAction("android.intent.action.VIEW");
-                Uri content_url = Uri.parse("http://m.idcool.com.cn/account/findpassword?from=client&version=Android");
-                intent1.setData(content_url);
-                startActivity(intent1);
+
+                clickGorgetPass();
+
                 break;
             case R.id.iv_show_pass:
-                if (isChecked) {
-                    //选择状态 显示明文--设置为可见的密码
-                    mETLoginPass.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                    mIVIfShowPass.setImageResource(R.drawable.zhengyan);
-                    isChecked = false;
-                } else {
-                    //默认状态显示密码--设置文本 要一起写才能起作用 InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD
-                    mETLoginPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    mIVIfShowPass.setImageResource(R.drawable.biyan);
-                    isChecked = true;
-                }
+
+                clickChangePassStatus();
+
                 break;
             case R.id.tv_goto_register:
-                Intent intent_register = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivityForResult(intent_register, 0);
+
+                startActivityForResult(new Intent(LoginActivity.this, RegisterActivity.class), 0);
+
                 break;
         }
     }
+
+    //用户账号密码登陆
+    private void clickLoginUser() {
+
+        OkStringRequest.OKResponseCallback callback = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("test", "失败：" + error.getMessage().toString());
+            }
+
+            @Override
+            public void onResponse(String response) {
+                Log.d("test", "成功" + response);
+                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                startActivity(intent);
+                LoginActivity.this.finish();
+            }
+        };
+        MyHttpManager.getInstance().userLogin(mETLoginName.getText().toString(), mETLoginPass.getText().toString(), callback);
+
+    }
+
+    //密码显示隐藏状态改变
+    private void clickChangePassStatus() {
+
+        if (isChecked) {
+            //选择状态 显示明文--设置为可见的密码
+            mETLoginPass.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            mIVIfShowPass.setImageResource(R.drawable.zhengyan);
+            isChecked = false;
+        } else {
+            //默认状态显示密码--设置文本 要一起写才能起作用 InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD
+            mETLoginPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            mIVIfShowPass.setImageResource(R.drawable.biyan);
+            isChecked = true;
+        }
+
+    }
+
+    //点击忘记密码
+    private void clickGorgetPass() {
+
+        Intent intent1 = new Intent();
+        intent1.setAction(KeyConstans.GORGETPASS_ACTION);
+        Uri content_url = Uri.parse(KeyConstans.GORGETPASS_URL);
+        intent1.setData(content_url);
+        startActivity(intent1);
+
+    }
+
+
+    /**
+     * 友盟登陆的回调
+     *
+     * @param openid
+     * @param token
+     * @param plat
+     * @param name
+     * @param iconurl
+     */
+    @Override
+    public void loginUmengBack(String openid, String token, String plat, String name, String iconurl) {
+        CustomProgress.cancelDialog();
+        ToastUtils.showCenter(LoginActivity.this, "第三方信息获取成功：" + openid + token + plat + name + iconurl);
+    }
+
+    /**
+     * 权限的回调
+     *
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -166,50 +215,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 }
                 break;
             case 2:
-                //TODO  最后的权限回调
+                //TODO 最后的权限回调
         }
     }
-
-    private UMAuthListener umAuthListener = new UMAuthListener() {
-        @Override
-        public void onStart(SHARE_MEDIA platform) {
-            //授权开始的回调
-        }
-
-        @Override
-        public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-            String openid = data.get("uid");
-            String token = data.get("access_token");
-            String name = data.get("name");
-            String iconurl = data.get("iconurl");
-            String plat = "";
-            switch (platform.toString()) {
-                case "SINA":
-                    plat = "weibo";
-                    break;
-                case "QQ":
-                    plat = "qq";
-                    break;
-                case "WEIXIN":
-                    plat = "weixin";
-                    break;
-            }
-            PublicUtils.clearUMengOauth(LoginActivity.this);
-            ToastUtils.showCenter(LoginActivity.this, "第三方信息获取成功：" + openid + token + plat + name + iconurl);
-        }
-
-        @Override
-        public void onError(SHARE_MEDIA platform, int action, Throwable t) {
-            CustomProgress.cancelDialog();
-            ToastUtils.showCenter(LoginActivity.this, "授权失败，请重新尝试");
-        }
-
-        @Override
-        public void onCancel(SHARE_MEDIA platform, int action) {
-            CustomProgress.cancelDialog();
-            ToastUtils.showCenter(LoginActivity.this, "授权取消");
-        }
-    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -232,5 +240,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private ImageButton mBTBack;
 
     private boolean isChecked = true;
+    private PublicUtils.UmAuthListener umAuthListener;
+
 
 }

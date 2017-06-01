@@ -19,7 +19,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
-import com.homechart.app.MyApplication;
 import com.homechart.app.R;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
@@ -34,24 +33,22 @@ import com.homechart.app.utils.alertview.OnItemClickListener;
 import com.homechart.app.utils.geetest.GeetestTest;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
-import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Map;
-
 import static com.homechart.app.R.id.tv_tital_comment;
 
 /**
- * Created by gumenghao on 17/5/27.
+ * Created by allen on 2017/6/1.
  */
 
 public class RegisterActivity extends BaseActivity
         implements View.OnClickListener,
-        GeetestTest.CallBack {
+        GeetestTest.CallBack,
+        PublicUtils.ILoginUmeng {
 
     private RelativeLayout rl_jumpto_mast;
     private ImageButton back;
@@ -67,6 +64,7 @@ public class RegisterActivity extends BaseActivity
     private EditText etNikeName;
     private EditText etPassWord;
     private boolean isChecked = true;
+    private PublicUtils.UmAuthListener umAuthListener;
 
     CountDownTimer timer = new CountDownTimer(60000, 1000) {
 
@@ -81,6 +79,7 @@ public class RegisterActivity extends BaseActivity
             tv_get_yanzhengma.setText("获取验证码");
         }
     };
+
 
     @Override
     protected int getLayoutResId() {
@@ -124,6 +123,7 @@ public class RegisterActivity extends BaseActivity
     @Override
     protected void initData(Bundle savedInstanceState) {
         tital.setText("注册");
+        umAuthListener =  new PublicUtils.UmAuthListener(RegisterActivity.this, this);
     }
 
     @Override
@@ -286,51 +286,26 @@ public class RegisterActivity extends BaseActivity
         MyHttpManager.getInstance().sendMessageByJY(phone, challenge, validate, seccode, "Cookie_register", callBack);
     }
 
-
-    private UMAuthListener umAuthListener = new UMAuthListener() {
-        @Override
-        public void onStart(SHARE_MEDIA platform) {
-            //授权开始的回调
-        }
-
-        @Override
-        public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-            String openid = data.get("uid");
-            String token = data.get("access_token");
-            String name = data.get("name");
-            String iconurl = data.get("iconurl");
-            String plat = "";
-            switch (platform.toString()) {
-                case "SINA":
-                    plat = "weibo";
-                    break;
-                case "QQ":
-                    plat = "qq";
-                    break;
-                case "WEIXIN":
-                    plat = "weixin";
-                    break;
-            }
-            PublicUtils.clearUMengOauth(RegisterActivity.this);
-            ToastUtils.showCenter(RegisterActivity.this, "第三方信息获取成功：" + openid + token + plat + name + iconurl);
-        }
-
-        @Override
-        public void onError(SHARE_MEDIA platform, int action, Throwable t) {
-            CustomProgress.cancelDialog();
-            ToastUtils.showCenter(RegisterActivity.this, "授权失败，请重新尝试");
-        }
-
-        @Override
-        public void onCancel(SHARE_MEDIA platform, int action) {
-            CustomProgress.cancelDialog();
-            ToastUtils.showCenter(RegisterActivity.this, "授权取消");
-        }
-    };
+    /**
+     * 友盟登陆的回调
+     *
+     * @param openid
+     * @param token
+     * @param plat
+     * @param name
+     * @param iconurl
+     */
+    @Override
+    public void loginUmengBack(String openid, String token, String plat, String name, String iconurl) {
+        CustomProgress.cancelDialog();
+        ToastUtils.showCenter(RegisterActivity.this, "第三方信息获取成功：" + openid + token + plat + name + iconurl);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
+
+
 }

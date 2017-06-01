@@ -3,7 +3,7 @@ package com.homechart.app.commont;
 /**
  * @author allen .
  * @version v1.0 .
- * @date 2017-2-24.
+ * @date 2017/6/1.
  * @file UrlConstants.java .
  * @brief url地址整合 .
  */
