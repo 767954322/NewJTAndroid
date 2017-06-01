@@ -1,5 +1,7 @@
 package com.homechart.app.commont;
 
+import com.umeng.socialize.bean.SHARE_MEDIA;
+
 /**
  * @author allen .
  * @version v1.0 .
@@ -37,5 +39,11 @@ public class ClassConstant {
 
     }
 
+    public static class UMengPlatform {
+        public static final SHARE_MEDIA platform_qq = SHARE_MEDIA.QQ;
+        public static final SHARE_MEDIA platform_weixin = SHARE_MEDIA.WEIXIN;
+        public static final SHARE_MEDIA platform_sina = SHARE_MEDIA.SINA;
+        public static final SHARE_MEDIA platform_qzone = SHARE_MEDIA.QZONE;
+    }
 
 }

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -23,22 +22,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
-import com.homechart.app.MyApplication;
 import com.homechart.app.R;
-import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
-import com.homechart.app.utils.Md5Util;
-import com.homechart.app.utils.UIUtils;
-import com.homechart.app.utils.alertview.AlertView;
-import com.homechart.app.utils.alertview.OnItemClickListener;
+import com.homechart.app.utils.CustomProgress;
+import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
-import com.homechart.app.utils.volley.MyHttpManager1;
-import com.homechart.app.utils.volley.OkJsonRequest;
 import com.homechart.app.utils.volley.OkStringRequest;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.Map;
 
 /**
  * Created by gumenghao on 17/5/26.
@@ -53,11 +48,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private TextView tv_tital_comment;
     private TextView registerPersion;
     private TextView tv_gorget_pass;
+    private TextView loginQQ;
+    private TextView loginWX;
+    private TextView loginSina;
 
     private EditText loginPase;
     private EditText loginName;
 
     private boolean isChecked = true;
+
 
     @Override
     protected int getLayoutResId() {
@@ -75,6 +74,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         loginName = (EditText) findViewById(R.id.et_login_name);
         iv_show_pass = (ImageView) findViewById(R.id.iv_show_pass);
         registerPersion = (TextView) findViewById(R.id.tv_goto_register);
+        loginQQ = (TextView) findViewById(R.id.tv_login_qq);
+        loginWX = (TextView) findViewById(R.id.tv_login_weixin);
+        loginSina = (TextView) findViewById(R.id.tv_login_sina);
 
     }
 
@@ -85,6 +87,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         tv_gorget_pass.setOnClickListener(this);
         iv_show_pass.setOnClickListener(this);
         registerPersion.setOnClickListener(this);
+        loginQQ.setOnClickListener(this);
+        loginWX.setOnClickListener(this);
+        loginSina.setOnClickListener(this);
     }
 
     @Override
@@ -101,6 +106,23 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.tv_login_qq:
+
+                UMShareAPI.get(LoginActivity.this).getPlatformInfo(LoginActivity.this, SHARE_MEDIA.QQ, umAuthListener);
+
+                break;
+            case R.id.tv_login_weixin:
+
+                UMShareAPI.get(LoginActivity.this).getPlatformInfo(LoginActivity.this, SHARE_MEDIA.WEIXIN, umAuthListener);
+
+                break;
+            case R.id.tv_login_sina:
+
+                UMShareAPI.get(LoginActivity.this).getPlatformInfo(LoginActivity.this, SHARE_MEDIA.SINA, umAuthListener);
+
+                break;
+
+
             case R.id.btn_send_demand:
 
                 OkStringRequest.OKResponseCallback callback = new OkStringRequest.OKResponseCallback() {
@@ -173,6 +195,53 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             case 2:
                 //TODO  最后的权限回调
         }
+    }
+
+    private UMAuthListener umAuthListener = new UMAuthListener() {
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+            //授权开始的回调
+        }
+
+        @Override
+        public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+            String openid = data.get("uid");
+            String token = data.get("access_token");
+            String name = data.get("name");
+            String iconurl = data.get("iconurl");
+            String plat = "";
+            switch (platform.toString()) {
+                case "SINA":
+                    plat = "weibo";
+                    break;
+                case "QQ":
+                    plat = "qq";
+                    break;
+                case "WEIXIN":
+                    plat = "weixin";
+                    break;
+            }
+            PublicUtils.clearUMengOauth(LoginActivity.this);
+            ToastUtils.showCenter(LoginActivity.this, "第三方信息获取成功：" + openid + token + plat + name + iconurl);
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+            CustomProgress.cancelDialog();
+            ToastUtils.showCenter(LoginActivity.this, "授权失败，请重新尝试");
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform, int action) {
+            CustomProgress.cancelDialog();
+            ToastUtils.showCenter(LoginActivity.this, "授权取消");
+        }
+    };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
 }

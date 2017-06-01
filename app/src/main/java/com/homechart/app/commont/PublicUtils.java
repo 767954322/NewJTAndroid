@@ -16,6 +16,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -91,12 +94,12 @@ public class PublicUtils {
         StringBuffer stringBuffer = new StringBuffer();
         for (String key : map.keySet()) {
             list.add(key);
-            System.out.println("key= "+ key + " and value= " + map.get(key));
+            System.out.println("key= " + key + " and value= " + map.get(key));
         }
         Collections.sort(list);
 
-        for (int i = 0 ;i<list.size() ;i++){
-            stringBuffer.append(list.get(i)+map.get(list.get(i)));
+        for (int i = 0; i < list.size(); i++) {
+            stringBuffer.append(list.get(i) + map.get(list.get(i)));
         }
         return stringBuffer.toString();
     }
@@ -168,5 +171,29 @@ public class PublicUtils {
         return m_szDevIDShort;
     }
 
+    public static void clearUMengOauth(Activity activity) {
+        UMShareAPI.get(activity).deleteOauth(activity, ClassConstant.UMengPlatform.platform_qq, umAuthListener);
+        UMShareAPI.get(activity).deleteOauth(activity, ClassConstant.UMengPlatform.platform_weixin, umAuthListener);
+        UMShareAPI.get(activity).deleteOauth(activity, ClassConstant.UMengPlatform.platform_sina, umAuthListener);
+    }
+
+    private static UMAuthListener umAuthListener = new UMAuthListener() {
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+            //授权开始的回调
+        }
+
+        @Override
+        public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform, int action) {
+        }
+    };
 
 }

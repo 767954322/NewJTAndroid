@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -18,10 +17,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.homechart.app.MyApplication;
 import com.homechart.app.R;
+import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.register.JiYanBean;
 import com.homechart.app.commont.RegexUtil;
@@ -34,9 +34,14 @@ import com.homechart.app.utils.alertview.OnItemClickListener;
 import com.homechart.app.utils.geetest.GeetestTest;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Map;
 
 import static com.homechart.app.R.id.tv_tital_comment;
 
@@ -126,9 +131,29 @@ public class RegisterActivity extends BaseActivity
 
         switch (v.getId()) {
             case R.id.nav_left_imageButton:
+
                 RegisterActivity.this.finish();
+
                 break;
+
+            case R.id.tv_login_qq:
+
+                UMShareAPI.get(RegisterActivity.this).getPlatformInfo(RegisterActivity.this, SHARE_MEDIA.QQ, umAuthListener);
+
+                break;
+            case R.id.tv_login_weixin:
+
+                UMShareAPI.get(RegisterActivity.this).getPlatformInfo(RegisterActivity.this, SHARE_MEDIA.WEIXIN, umAuthListener);
+
+                break;
+            case R.id.tv_login_sina:
+
+                UMShareAPI.get(RegisterActivity.this).getPlatformInfo(RegisterActivity.this, SHARE_MEDIA.SINA, umAuthListener);
+
+                break;
+
             case R.id.iv_show_pass:
+
                 if (isChecked) {
                     etPassWord.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                     iv_show_pass.setImageResource(R.drawable.zhengyan);
@@ -139,7 +164,9 @@ public class RegisterActivity extends BaseActivity
                     isChecked = true;
                 }
                 break;
+
             case R.id.tv_get_yanzhengma:
+
                 //判断权限是否添加
                 if (ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.READ_PHONE_STATE)
                         != PackageManager.PERMISSION_GRANTED) {
@@ -155,12 +182,13 @@ public class RegisterActivity extends BaseActivity
                             }
                         }
                     }).show();
-
                 } else {
                     CustomProgress.show(RegisterActivity.this, "加载中...", false, null);
                     getJYNeedParams();
                 }
+
                 break;
+
         }
     }
 
@@ -175,7 +203,7 @@ public class RegisterActivity extends BaseActivity
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 CustomProgress.cancelDialog();
-                ToastUtils.showCenter(RegisterActivity.this, "信息加载失败，请重新加载"+volleyError.getMessage());
+                ToastUtils.showCenter(RegisterActivity.this, "信息加载失败，请重新加载" + volleyError.getMessage());
             }
 
             @Override
@@ -258,4 +286,51 @@ public class RegisterActivity extends BaseActivity
         MyHttpManager.getInstance().sendMessageByJY(phone, challenge, validate, seccode, "Cookie_register", callBack);
     }
 
+
+    private UMAuthListener umAuthListener = new UMAuthListener() {
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+            //授权开始的回调
+        }
+
+        @Override
+        public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+            String openid = data.get("uid");
+            String token = data.get("access_token");
+            String name = data.get("name");
+            String iconurl = data.get("iconurl");
+            String plat = "";
+            switch (platform.toString()) {
+                case "SINA":
+                    plat = "weibo";
+                    break;
+                case "QQ":
+                    plat = "qq";
+                    break;
+                case "WEIXIN":
+                    plat = "weixin";
+                    break;
+            }
+            PublicUtils.clearUMengOauth(RegisterActivity.this);
+            ToastUtils.showCenter(RegisterActivity.this, "第三方信息获取成功：" + openid + token + plat + name + iconurl);
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+            CustomProgress.cancelDialog();
+            ToastUtils.showCenter(RegisterActivity.this, "授权失败，请重新尝试");
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform, int action) {
+            CustomProgress.cancelDialog();
+            ToastUtils.showCenter(RegisterActivity.this, "授权取消");
+        }
+    };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+    }
 }
