@@ -37,6 +37,8 @@ public abstract class MultiItemCommonAdapter<T> extends CommonAdapter<T>
         return holder;
     }
 
-
-
+    @Override
+    public void onBindViewHolder(BaseViewHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
+    }
 }
