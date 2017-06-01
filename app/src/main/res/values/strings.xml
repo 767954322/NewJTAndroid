@@ -8,6 +8,9 @@
 
     <!-- RegisterActivity -->
     <string name="phonenum_error">请填写正确的手机号码</string>
+    <string name="yanzhengma_hint">获取验证码</string>
+    <string name="yanzhengma_end">秒</string>
+    <string name="register_tital">注册</string>
     <!-- LoginActivity -->
     <string name="addpromiss">需开启权限后才能正常使用</string>
     <string name="okpromiss">知道了</string>
@@ -18,4 +21,6 @@
     <!-- UMAuthListener -->
     <string name="um_auth_error">授权失败，请重新尝试</string>
     <string name="um_auth_cancel">授权取消</string>
+
+
 </resources>

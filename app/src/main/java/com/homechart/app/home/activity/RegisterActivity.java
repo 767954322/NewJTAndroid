@@ -50,33 +50,18 @@ public class RegisterActivity extends BaseActivity
         GeetestTest.CallBack,
         PublicUtils.ILoginUmeng {
 
-    private RelativeLayout rl_jumpto_mast;
-    private ImageButton back;
-    private TextView tital;
-    private TextView loginQQ;
-    private TextView loginWX;
-    private TextView loginSina;
-    private TextView tv_get_yanzhengma;
-    private ImageView iv_show_pass;
-    private Button registerButton;
-    private EditText etPhone;
-    private EditText etYanZheng;
-    private EditText etNikeName;
-    private EditText etPassWord;
-    private boolean isChecked = true;
-    private PublicUtils.UmAuthListener umAuthListener;
 
     CountDownTimer timer = new CountDownTimer(60000, 1000) {
 
         @Override
         public void onTick(long millisUntilFinished) {
-            tv_get_yanzhengma.setText(millisUntilFinished / 1000 + "秒");
+            mTVSendJiYan.setText(millisUntilFinished / 1000 + UIUtils.getString(R.string.yanzhengma_end));
         }
 
         @Override
         public void onFinish() {
-            tv_get_yanzhengma.setEnabled(true);
-            tv_get_yanzhengma.setText("获取验证码");
+            mTVSendJiYan.setEnabled(true);
+            mTVSendJiYan.setText(R.string.yanzhengma_hint);
         }
     };
 
@@ -89,19 +74,19 @@ public class RegisterActivity extends BaseActivity
     @Override
     protected void initView() {
 
-        rl_jumpto_mast = (RelativeLayout) findViewById(R.id.rl_jumpto_mast);
-        back = (ImageButton) findViewById(R.id.nav_left_imageButton);
-        tital = (TextView) findViewById(tv_tital_comment);
-        loginQQ = (TextView) findViewById(R.id.tv_login_qq);
-        loginWX = (TextView) findViewById(R.id.tv_login_weixin);
-        loginSina = (TextView) findViewById(R.id.tv_login_sina);
-        tv_get_yanzhengma = (TextView) findViewById(R.id.tv_get_yanzhengma);
-        iv_show_pass = (ImageView) findViewById(R.id.iv_show_pass);
-        registerButton = (Button) findViewById(R.id.btn_regiter_demand);
-        etPhone = (EditText) findViewById(R.id.et_regiter_phone);
-        etYanZheng = (EditText) findViewById(R.id.et_regiter_yanzhengma);
-        etNikeName = (EditText) findViewById(R.id.et_regiter_name);
-        etPassWord = (EditText) findViewById(R.id.et_register_password);
+        mRLJumpMast = (RelativeLayout) findViewById(R.id.rl_jumpto_mast);
+        mIBBack = (ImageButton) findViewById(R.id.nav_left_imageButton);
+        mTVTital = (TextView) findViewById(tv_tital_comment);
+        mTVLoginQQ = (TextView) findViewById(R.id.tv_login_qq);
+        mTVLoginSina = (TextView) findViewById(R.id.tv_login_sina);
+        mTVLoginWeiXin = (TextView) findViewById(R.id.tv_login_weixin);
+        mTVSendJiYan = (TextView) findViewById(R.id.tv_get_yanzhengma);
+        mIVIfShowPass = (ImageView) findViewById(R.id.iv_show_pass);
+        mBTRegister = (Button) findViewById(R.id.btn_regiter_demand);
+        mETPhone = (EditText) findViewById(R.id.et_regiter_phone);
+        mETNikeName = (EditText) findViewById(R.id.et_regiter_name);
+        mETPassWord = (EditText) findViewById(R.id.et_register_password);
+        mETYanZheng = (EditText) findViewById(R.id.et_regiter_yanzhengma);
 
     }
 
@@ -109,21 +94,21 @@ public class RegisterActivity extends BaseActivity
     protected void initListener() {
         super.initListener();
 
-        back.setOnClickListener(this);
-        loginQQ.setOnClickListener(this);
-        loginWX.setOnClickListener(this);
-        loginSina.setOnClickListener(this);
-        iv_show_pass.setOnClickListener(this);
-        tv_get_yanzhengma.setOnClickListener(this);
-        registerButton.setOnClickListener(this);
-        rl_jumpto_mast.setOnClickListener(this);
+        mIBBack.setOnClickListener(this);
+        mTVLoginQQ.setOnClickListener(this);
+        mTVLoginWeiXin.setOnClickListener(this);
+        mTVLoginSina.setOnClickListener(this);
+        mIVIfShowPass.setOnClickListener(this);
+        mTVSendJiYan.setOnClickListener(this);
+        mBTRegister.setOnClickListener(this);
+        mRLJumpMast.setOnClickListener(this);
 
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        tital.setText("注册");
-        umAuthListener =  new PublicUtils.UmAuthListener(RegisterActivity.this, this);
+        mTVTital.setText(R.string.register_tital);
+        umAuthListener = new PublicUtils.UmAuthListener(RegisterActivity.this, this);
     }
 
     @Override
@@ -154,46 +139,60 @@ public class RegisterActivity extends BaseActivity
 
             case R.id.iv_show_pass:
 
-                if (isChecked) {
-                    etPassWord.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                    iv_show_pass.setImageResource(R.drawable.zhengyan);
-                    isChecked = false;
-                } else {
-                    etPassWord.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    iv_show_pass.setImageResource(R.drawable.biyan);
-                    isChecked = true;
-                }
+                clickChangePassStatus();
+
                 break;
 
             case R.id.tv_get_yanzhengma:
 
-                //判断权限是否添加
-                if (ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.READ_PHONE_STATE)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    new AlertView(UIUtils.getString(R.string.addpromiss),
-                            null, UIUtils.getString(R.string.setpromiss), new String[]{UIUtils.getString(R.string.okpromiss)},
-                            null, this, AlertView.Style.Alert, new OnItemClickListener() {
-                        @Override
-                        public void onItemClick(Object object, int position) {
-                            if (position == -1) {
-                                Uri packageURI = Uri.parse("package:" + RegisterActivity.this.getPackageName());
-                                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, packageURI);
-                                startActivity(intent);
-                            }
-                        }
-                    }).show();
-                } else {
-                    CustomProgress.show(RegisterActivity.this, "加载中...", false, null);
-                    getJYNeedParams();
-                }
+                clickGetJiYan();
 
                 break;
 
         }
     }
 
+    private void clickGetJiYan() {
+
+        //判断权限是否添加
+        if (ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.READ_PHONE_STATE)
+                != PackageManager.PERMISSION_GRANTED) {
+            new AlertView(UIUtils.getString(R.string.addpromiss),
+                    null, UIUtils.getString(R.string.setpromiss), new String[]{UIUtils.getString(R.string.okpromiss)},
+                    null, this, AlertView.Style.Alert, new OnItemClickListener() {
+                @Override
+                public void onItemClick(Object object, int position) {
+                    if (position == -1) {
+                        Uri packageURI = Uri.parse("package:" + RegisterActivity.this.getPackageName());
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, packageURI);
+                        startActivity(intent);
+                    }
+                }
+            }).show();
+        } else {
+            CustomProgress.show(RegisterActivity.this, "加载中...", false, null);
+            getJYNeedParams();
+        }
+
+    }
+
+    //密码显示隐藏状态改变
+    private void clickChangePassStatus() {
+
+        if (isChecked) {
+            mETPassWord.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            mIVIfShowPass.setImageResource(R.drawable.zhengyan);
+            isChecked = false;
+        } else {
+            mETPassWord.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            mIVIfShowPass.setImageResource(R.drawable.biyan);
+            isChecked = true;
+        }
+
+    }
+
     private void getJYNeedParams() {
-        String phone = etPhone.getText().toString();
+        String phone = mETPhone.getText().toString();
         if (TextUtils.isEmpty(phone) || !phone.matches(RegexUtil.PHONE_REGEX)) {
             CustomProgress.cancelDialog();
             ToastUtils.showCenter(RegisterActivity.this, UIUtils.getString(R.string.phonenum_error));
@@ -227,7 +226,7 @@ public class RegisterActivity extends BaseActivity
     @Override
     public void geetestCallBack(final String challenge, final String validate, final String seccode) {
 
-        String phonenum = etPhone.getText().toString().trim();
+        String phonenum = mETPhone.getText().toString().trim();
         //判断手机号码是否还可以验证
         OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
             @Override
@@ -257,7 +256,7 @@ public class RegisterActivity extends BaseActivity
 
     //发送短信
     private void sendMessage(final String challenge, final String validate, final String seccode) {
-        final String phone = etPhone.getText().toString().trim();
+        final String phone = mETPhone.getText().toString().trim();
         OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
@@ -271,7 +270,7 @@ public class RegisterActivity extends BaseActivity
                     int status = jsonObject.getInt("status");
                     String info = jsonObject.getString("info");
                     if (status == 1) {
-                        tv_get_yanzhengma.setEnabled(false);
+                        mTVSendJiYan.setEnabled(false);
                         timer.start();
                         ToastUtils.showCenter(RegisterActivity.this, "发送成功");
                     } else {
@@ -307,5 +306,23 @@ public class RegisterActivity extends BaseActivity
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 
+
+    private RelativeLayout mRLJumpMast;
+    private ImageView mIVIfShowPass;
+    private ImageButton mIBBack;
+    private Button mBTRegister;
+
+    private TextView mTVTital;
+    private TextView mTVLoginQQ;
+    private TextView mTVLoginSina;
+    private TextView mTVSendJiYan;
+    private TextView mTVLoginWeiXin;
+
+    private EditText mETPhone;
+    private EditText mETYanZheng;
+    private EditText mETNikeName;
+    private EditText mETPassWord;
+    private boolean isChecked = true;
+    private PublicUtils.UmAuthListener umAuthListener;
 
 }

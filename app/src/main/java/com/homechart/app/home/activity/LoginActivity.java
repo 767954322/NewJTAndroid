@@ -56,7 +56,7 @@ public class LoginActivity extends BaseActivity
         mTVLoginQQ = (TextView) findViewById(R.id.tv_login_qq);
         mIVIfShowPass = (ImageView) findViewById(R.id.iv_show_pass);
         mBTSendDemand = (Button) findViewById(R.id.btn_send_demand);
-        mBTBack = (ImageButton) findViewById(R.id.nav_left_imageButton);
+        mIBBack = (ImageButton) findViewById(R.id.nav_left_imageButton);
         mETLoginPass = (EditText) findViewById(R.id.et_login_password);
         mETLoginName = (EditText) findViewById(R.id.et_login_name);
 
@@ -85,7 +85,7 @@ public class LoginActivity extends BaseActivity
         PublicUtils.changeEditTextHint(getString(R.string.login_pass_hint), mETLoginPass, 14);
         umAuthListener = new PublicUtils.UmAuthListener(LoginActivity.this, this);
         mTVTital.setText(R.string.login_tital);
-        mBTBack.setVisibility(View.GONE);
+        mIBBack.setVisibility(View.GONE);
 
     }
 
@@ -237,7 +237,7 @@ public class LoginActivity extends BaseActivity
 
     private ImageView mIVIfShowPass;
     private Button mBTSendDemand;
-    private ImageButton mBTBack;
+    private ImageButton mIBBack;
 
     private boolean isChecked = true;
     private PublicUtils.UmAuthListener umAuthListener;
