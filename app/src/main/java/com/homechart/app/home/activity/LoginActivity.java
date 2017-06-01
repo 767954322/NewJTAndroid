@@ -41,23 +41,6 @@ import java.util.Map;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
-    private ImageButton nav_left_imageButton;
-    private ImageView iv_show_pass;
-    private Button btn_send_demand;
-
-    private TextView tv_tital_comment;
-    private TextView registerPersion;
-    private TextView tv_gorget_pass;
-    private TextView loginQQ;
-    private TextView loginWX;
-    private TextView loginSina;
-
-    private EditText loginPase;
-    private EditText loginName;
-
-    private boolean isChecked = true;
-
-
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_login;
@@ -66,40 +49,43 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     protected void initView() {
 
-        nav_left_imageButton = (ImageButton) findViewById(R.id.nav_left_imageButton);
-        tv_tital_comment = (TextView) findViewById(R.id.tv_tital_comment);
-        tv_gorget_pass = (TextView) findViewById(R.id.tv_gorget_pass);
-        btn_send_demand = (Button) findViewById(R.id.btn_send_demand);
-        loginPase = (EditText) findViewById(R.id.et_login_password);
-        loginName = (EditText) findViewById(R.id.et_login_name);
-        iv_show_pass = (ImageView) findViewById(R.id.iv_show_pass);
-        registerPersion = (TextView) findViewById(R.id.tv_goto_register);
-        loginQQ = (TextView) findViewById(R.id.tv_login_qq);
-        loginWX = (TextView) findViewById(R.id.tv_login_weixin);
-        loginSina = (TextView) findViewById(R.id.tv_login_sina);
+        mTVToRegister = (TextView) findViewById(R.id.tv_goto_register);
+        mTVGorgetPass = (TextView) findViewById(R.id.tv_gorget_pass);
+        mTVTital = (TextView) findViewById(R.id.tv_tital_comment);
+        mTVLoginWeiXin = (TextView) findViewById(R.id.tv_login_weixin);
+        mTVLoginSina = (TextView) findViewById(R.id.tv_login_sina);
+        mTVLoginQQ = (TextView) findViewById(R.id.tv_login_qq);
+        mIVIfShowPass = (ImageView) findViewById(R.id.iv_show_pass);
+        mBTSendDemand = (Button) findViewById(R.id.btn_send_demand);
+        mBTBack = (ImageButton) findViewById(R.id.nav_left_imageButton);
+        mETLoginPass = (EditText) findViewById(R.id.et_login_password);
+        mETLoginName = (EditText) findViewById(R.id.et_login_name);
 
     }
 
     @Override
     protected void initListener() {
         super.initListener();
-        btn_send_demand.setOnClickListener(this);
-        tv_gorget_pass.setOnClickListener(this);
-        iv_show_pass.setOnClickListener(this);
-        registerPersion.setOnClickListener(this);
-        loginQQ.setOnClickListener(this);
-        loginWX.setOnClickListener(this);
-        loginSina.setOnClickListener(this);
+
+        mBTSendDemand.setOnClickListener(this);
+        mTVGorgetPass.setOnClickListener(this);
+        mIVIfShowPass.setOnClickListener(this);
+        mTVToRegister.setOnClickListener(this);
+        mTVLoginQQ.setOnClickListener(this);
+        mTVLoginWeiXin.setOnClickListener(this);
+        mTVLoginSina.setOnClickListener(this);
+
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        tv_tital_comment.setText("登录");
-        nav_left_imageButton.setVisibility(View.GONE);
-        changeEditTextHint("邮箱/手机/昵称", loginName, 14);
-        changeEditTextHint("请输入密码", loginPase, 14);
+
         //设置权限
         PublicUtils.verifyStoragePermissions(LoginActivity.this);
+        PublicUtils.changeEditTextHint(getString(R.string.login_name_hint), mETLoginName, 14);
+        PublicUtils.changeEditTextHint(getString(R.string.login_pass_hint), mETLoginPass, 14);
+        mTVTital.setText(R.string.login_tital);
+        mBTBack.setVisibility(View.GONE);
 
     }
 
@@ -140,7 +126,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         //                LoginActivity.this.finish();
                     }
                 };
-                MyHttpManager.getInstance().userLogin(loginName.getText().toString(), loginPase.getText().toString(), callback);
+                MyHttpManager.getInstance().userLogin(mETLoginName.getText().toString(), mETLoginPass.getText().toString(), callback);
 
                 break;
             case R.id.tv_gorget_pass:
@@ -153,13 +139,13 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             case R.id.iv_show_pass:
                 if (isChecked) {
                     //选择状态 显示明文--设置为可见的密码
-                    loginPase.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
-                    iv_show_pass.setImageResource(R.drawable.zhengyan);
+                    mETLoginPass.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    mIVIfShowPass.setImageResource(R.drawable.zhengyan);
                     isChecked = false;
                 } else {
                     //默认状态显示密码--设置文本 要一起写才能起作用 InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD
-                    loginPase.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                    iv_show_pass.setImageResource(R.drawable.biyan);
+                    mETLoginPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    mIVIfShowPass.setImageResource(R.drawable.biyan);
                     isChecked = true;
                 }
                 break;
@@ -169,19 +155,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 break;
         }
     }
-
-    //改变hint大小
-    private void changeEditTextHint(String hint, EditText editText, int textSize) {
-        // 新建一个可以添加属性的文本对象
-        SpannableString ss = new SpannableString(hint);
-        // 新建一个属性对象,设置文字的大小
-        AbsoluteSizeSpan ass = new AbsoluteSizeSpan(textSize, true);
-        // 附加属性到文本
-        ss.setSpan(ass, 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        // 设置hint
-        editText.setHint(new SpannedString(ss)); // 一定要进行转换,否则属性会消失
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -243,5 +216,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
+
+    private TextView mTVToRegister;
+    private TextView mTVGorgetPass;
+    private TextView mTVLoginWeiXin;
+    private TextView mTVLoginSina;
+    private TextView mTVLoginQQ;
+    private TextView mTVTital;
+
+    private EditText mETLoginPass;
+    private EditText mETLoginName;
+
+    private ImageView mIVIfShowPass;
+    private Button mBTSendDemand;
+    private ImageButton mBTBack;
+
+    private boolean isChecked = true;
 
 }

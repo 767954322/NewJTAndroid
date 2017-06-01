@@ -10,9 +10,14 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.SpannedString;
 import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
 import android.util.DisplayMetrics;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -40,7 +45,10 @@ import java.util.Set;
 public class PublicUtils {
 
     /**
-     * @return 获取公共参数的map
+     * 获取公共参数的map
+     *
+     * @param context
+     * @return
      */
     public static Map<String, String> getPublicMap(Context context) {
         Map<String, String> map = new HashMap<>();
@@ -49,6 +57,23 @@ public class PublicUtils {
         map.put(ClassConstant.PublicKey.APP_KEY, "app_android");
         return map;
     }
+    //................................................................................................
+
+    /**
+     * 获取公共header的map
+     *
+     * @param context
+     * @return
+     */
+    public static Map<String, String> getPublicHeader(Context context) {
+        Map<String, String> map = new HashMap<>();
+        map.put(ClassConstant.PublicHeader.APP_VERSION, PublicUtils.getVersionName(context));
+        map.put(ClassConstant.PublicHeader.APP_PLATFORM, "android");
+        //TODO 登陆的话添加，未登录不用添加，会话token，登录接口返回的auth_token的值
+//        map.put(ClassConstant.PublicHeader.APP_AUTH_TOKEN, "");
+        return map;
+    }
+    //................................................................................................
 
     /**
      * @param context
@@ -63,95 +88,6 @@ public class PublicUtils {
         }
         return phone_id;
     }
-
-    /**
-     * @return 获取当前时间戳
-     */
-    private static Long getCurrentTime(Context context) {
-        Long currentdate = new Date().getTime();
-
-        return currentdate;
-    }
-
-    /**
-     * @return 获取公共参数的map
-     */
-    public static Map<String, String> getPublicHeader(Context context) {
-        Map<String, String> map = new HashMap<>();
-        map.put(ClassConstant.PublicHeader.APP_VERSION, PublicUtils.getVersionName(context));
-        map.put(ClassConstant.PublicHeader.APP_PLATFORM, "android");
-        //TODO 登陆的话添加，未登录不用添加，会话token，登录接口返回的auth_token的值
-//        map.put(ClassConstant.PublicHeader.APP_AUTH_TOKEN, "");
-        return map;
-    }
-
-    /**
-     * @return 获取签名字符串signStr
-     */
-    public static String getSinaString(Map<String, String> map) {
-
-        List<String> list = new ArrayList<>();
-        StringBuffer stringBuffer = new StringBuffer();
-        for (String key : map.keySet()) {
-            list.add(key);
-            System.out.println("key= " + key + " and value= " + map.get(key));
-        }
-        Collections.sort(list);
-
-        for (int i = 0; i < list.size(); i++) {
-            stringBuffer.append(list.get(i) + map.get(list.get(i)));
-        }
-        return stringBuffer.toString();
-    }
-
-    // 网络状态
-    public static boolean isNetworkConnected(Context context) {
-        if (context != null) {
-            ConnectivityManager mConnectivityManager = (ConnectivityManager) context
-                    .getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo mNetworkInfo = mConnectivityManager
-                    .getActiveNetworkInfo();
-            if (mNetworkInfo != null) {
-                return mNetworkInfo.isAvailable();
-            }
-        }
-        return false;
-    }
-
-
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
-    private static String[] PERMISSIONS_STORAGE = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
-    public static void verifyStoragePermissions(Activity activity) {
-        int permission = ActivityCompat.checkSelfPermission(activity,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (permission != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE,
-                    REQUEST_EXTERNAL_STORAGE);
-        }
-    }
-
-    /**
-     * 获取版本号
-     *
-     * @return
-     */
-    public static String getVersionName(Context context) {
-        // 获取packagemanager的实例
-        PackageManager packageManager = context.getPackageManager();
-        // getPackageName()是你当前类的包名，0代表是获取版本信息
-        try {
-            PackageInfo packInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
-            String version = packInfo.versionName;
-            return version;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-
 
     public static String getPesudoUniqueID() {
         String m_szDevIDShort = "35" + //we make this look like a valid IMEI
@@ -170,7 +106,110 @@ public class PublicUtils {
                 Build.USER.length() % 10; //13 digits
         return m_szDevIDShort;
     }
+    //................................................................................................
 
+    /**
+     * 获取当前时间戳
+     *
+     * @param context
+     * @return
+     */
+    private static Long getCurrentTime(Context context) {
+        Long currentdate = new Date().getTime();
+
+        return currentdate;
+    }
+    //................................................................................................
+
+    /**
+     * 获取加密参数key按照首字母的降序排序规则拼接的string
+     *
+     * @param map
+     * @return
+     */
+    public static String getSinaString(Map<String, String> map) {
+
+        List<String> list = new ArrayList<>();
+        StringBuffer stringBuffer = new StringBuffer();
+        for (String key : map.keySet()) {
+            list.add(key);
+            System.out.println("key= " + key + " and value= " + map.get(key));
+        }
+        Collections.sort(list);
+
+        for (int i = 0; i < list.size(); i++) {
+            stringBuffer.append(list.get(i) + map.get(list.get(i)));
+        }
+        return stringBuffer.toString();
+    }
+    //................................................................................................
+
+    /**
+     * 判断网络状态
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isNetworkConnected(Context context) {
+        if (context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mNetworkInfo = mConnectivityManager
+                    .getActiveNetworkInfo();
+            if (mNetworkInfo != null) {
+                return mNetworkInfo.isAvailable();
+            }
+        }
+        return false;
+    }
+    //................................................................................................
+
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+    /**
+     * 添加权限
+     *
+     * @param activity
+     */
+    public static void verifyStoragePermissions(Activity activity) {
+        int permission = ActivityCompat.checkSelfPermission(activity,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE);
+        }
+    }
+    //................................................................................................
+
+    /**
+     * 获取版本号
+     *
+     * @param context
+     * @return
+     */
+    public static String getVersionName(Context context) {
+        // 获取packagemanager的实例
+        PackageManager packageManager = context.getPackageManager();
+        // getPackageName()是你当前类的包名，0代表是获取版本信息
+        try {
+            PackageInfo packInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
+            String version = packInfo.versionName;
+            return version;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+    //................................................................................................
+
+    /**
+     * 清除友盟授权
+     *
+     * @param activity
+     */
     public static void clearUMengOauth(Activity activity) {
         UMShareAPI.get(activity).deleteOauth(activity, ClassConstant.UMengPlatform.platform_qq, umAuthListener);
         UMShareAPI.get(activity).deleteOauth(activity, ClassConstant.UMengPlatform.platform_weixin, umAuthListener);
@@ -195,5 +234,23 @@ public class PublicUtils {
         public void onCancel(SHARE_MEDIA platform, int action) {
         }
     };
+    //................................................................................................
+
+    /**
+     * 改变EditText的hint大小
+     * @param hint
+     * @param editText
+     * @param textSize
+     */
+    public static void changeEditTextHint(String hint, EditText editText, int textSize) {
+        // 新建一个可以添加属性的文本对象
+        SpannableString ss = new SpannableString(hint);
+        // 新建一个属性对象,设置文字的大小
+        AbsoluteSizeSpan ass = new AbsoluteSizeSpan(textSize, true);
+        // 附加属性到文本
+        ss.setSpan(ass, 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        // 设置hint
+        editText.setHint(new SpannedString(ss)); // 一定要进行转换,否则属性会消失
+    }
 
 }
