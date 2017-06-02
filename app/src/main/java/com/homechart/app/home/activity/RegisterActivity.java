@@ -156,6 +156,11 @@ public class RegisterActivity extends BaseActivity
                 clickRegister();
 
                 break;
+            case R.id.rl_jumpto_mast:
+
+                clickJumpMast();
+
+                break;
 
         }
     }
@@ -357,9 +362,14 @@ public class RegisterActivity extends BaseActivity
 
     }
 
-    //组册成功后登陆
+    //注册成功后登陆
     private void loginPersion(String data) {
-        ToastUtils.showCenter(RegisterActivity.this, "组册成功");
+        ToastUtils.showCenter(RegisterActivity.this, "注册成功");
+    }
+
+    private void clickJumpMast() {
+        Intent intent = new Intent(this, UserMastActivity.class);
+        startActivity(intent);
     }
 
     /**
