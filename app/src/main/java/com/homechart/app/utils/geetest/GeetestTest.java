@@ -23,12 +23,14 @@ public class GeetestTest {
             @Override
             public void onCancel(DialogInterface dialog) {
                 //TODO 取消验证
+                CustomProgress.cancelDialog();
                 ToastUtils.showCenter(ctx, "已取消");
             }
         });
         dialog.setGtListener(new GtDialog.GtListener() {
                                  @Override
                                  public void gtResult(boolean success, String result) {
+                                     CustomProgress.cancelDialog();
                                      if (success) {
                                          try {
                                              JSONObject jsonObject = new JSONObject(result);
@@ -44,6 +46,7 @@ public class GeetestTest {
                                  }
                                  @Override
                                  public void gtCallClose() {
+                                     CustomProgress.cancelDialog();
                                      ToastUtils.showCenter(ctx, "已取消");
                                  }
 
@@ -66,6 +69,6 @@ public class GeetestTest {
     }
 
     public interface CallBack {
-        public void geetestCallBack(String challenge, String validate, String seccode);
+        void geetestCallBack(String challenge, String validate, String seccode);
     }
 }

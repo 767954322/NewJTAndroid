@@ -44,98 +44,6 @@ public class MyHttpManager {
         return mpServerHttpManager;
     }
 
-
-
-    /**
-     * 级验滑动后，先检验是否可以发送短信
-     *
-     * @param phoneNum
-     * @param cookieType
-     * @param callback
-     */
-    public void checkPhoneNumStatus(final String phoneNum, final String cookieType, OkStringRequest.OKResponseCallback callback) {
-        OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.JIYAN_PHONE_SENDNUM, callback) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
-                String tabMd5String = Md5Util.getMD5twoTimes("jiami" + KeyConstans.ENCRYPTION_KEY);
-                map.put(ClassConstant.PublicKey.SIGN, "jiami" + "," + tabMd5String);
-                map.put(ClassConstant.DesinerRegister.MOBILE, phoneNum);
-                map.put(ClassConstant.DesinerRegister.TYPE, "signup");
-                return map;
-            }
-
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap localHashMap = new HashMap();
-                if (null != cookieManager && cookieManager.getCookieStore().getCookies().size() > 0) {
-                    localHashMap.put("Cookie", TextUtils.join(";", cookieManager.getCookieStore().getCookies()));
-                }
-                return localHashMap;
-            }
-
-            @Override
-            protected Response<String> parseNetworkResponse(
-                    NetworkResponse response) {
-                try {
-                    String dataString = new String(response.data, "UTF-8");
-                    return Response.success(dataString, HttpHeaderParser.parseCacheHeaders(response));
-                } catch (UnsupportedEncodingException e) {
-                    return Response.error(new ParseError(e));
-                }
-            }
-        };
-        queue.add(okStringRequest);
-    }
-
-    /**
-     * 发送验证码
-     *
-     * @param phone
-     * @param challenge
-     * @param validate
-     * @param seccode
-     * @param cookieType
-     * @param callback
-     */
-    public void sendMessageByJY(final String phone, final String challenge, final String validate, final String seccode, final String cookieType, OkStringRequest.OKResponseCallback callback) {
-        OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.JIYAN_SEND_MESSAGE, callback) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
-                String tabMd5String = Md5Util.getMD5twoTimes("jiami" + KeyConstans.ENCRYPTION_KEY);
-                map.put(ClassConstant.PublicKey.SIGN, "jiami" + "," + tabMd5String);
-                map.put(ClassConstant.DesinerRegister.MOBILE, phone);
-                map.put(ClassConstant.DesinerRegister.TYPE, "signup");
-                map.put(ClassConstant.DesinerRegister.CHALLENGE, challenge);
-                map.put(ClassConstant.DesinerRegister.VALIDATE, validate);
-                map.put(ClassConstant.DesinerRegister.SECCODE, seccode);
-                return map;
-            }
-
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap localHashMap = new HashMap();
-                if (null != cookieManager && cookieManager.getCookieStore().getCookies().size() > 0) {
-                    localHashMap.put("Cookie", TextUtils.join(";", cookieManager.getCookieStore().getCookies()));
-                }
-                return localHashMap;
-            }
-
-            //设置编码格式
-            @Override
-            protected Response<String> parseNetworkResponse(
-                    NetworkResponse response) {
-                try {
-                    String dataString = new String(response.data, "UTF-8");
-                    return Response.success(dataString, HttpHeaderParser.parseCacheHeaders(response));
-                } catch (UnsupportedEncodingException e) {
-                    return Response.error(new ParseError(e));
-                }
-            }
-        };
-        queue.add(okStringRequest);
-    }
-
-
     /**
      * 用户登录
      * Collections.sort(list);升序排列
@@ -166,16 +74,18 @@ public class MyHttpManager {
     }
 
     /**
-     * 从服务器获取极验证需要的三个参数
+     * 判断手机号码是否可以发送短信
      *
+     * @param mobile
      * @param callback
      */
-    public void getParamsFromMyServiceJY(OkStringRequest.OKResponseCallback callback) {
-        OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.JIYAN_GETPARAM, callback) {
+    public void judgeMobile(final String mobile, OkStringRequest.OKResponseCallback callback) {
+        OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.JUDGE_MOBILE, callback) {
 
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
+                map.put(ClassConstant.JiYan.MOBILE, mobile);
                 String signString = PublicUtils.getSinaString(map);
                 String tabMd5String = Md5Util.getMD5twoTimes(signString);
                 map.put(ClassConstant.PublicKey.SIGN, tabMd5String);
@@ -204,5 +114,68 @@ public class MyHttpManager {
         };
         queue.add(okStringRequest);
     }
+
+    /**
+     * 从服务器获取极验证需要的三个参数
+     *
+     * @param callback
+     */
+    public void getParamsFromMyServiceJY(OkStringRequest.OKResponseCallback callback) {
+        OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.JIYAN_GETPARAM, callback) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
+                String signString = PublicUtils.getSinaString(map);
+                String tabMd5String = Md5Util.getMD5twoTimes(signString);
+                map.put(ClassConstant.PublicKey.SIGN, tabMd5String);
+                return map;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return PublicUtils.getPublicHeader(MyApplication.getInstance());
+            }
+        };
+        queue.add(okStringRequest);
+    }
+
+    /**
+     * 发送验证码
+     *
+     * @param type
+     * @param mobile
+     * @param challenge
+     * @param validate
+     * @param seccode
+     * @param callback
+     */
+    public void sendMessageByJY(final String type, final String mobile, final String challenge, final String validate, final String seccode, OkStringRequest.OKResponseCallback callback) {
+        OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.SEND_MOBILE, callback) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
+                map.put(ClassConstant.JiYan.MOBILE, mobile);
+                map.put(ClassConstant.JiYan.TYPE, type);
+                map.put(ClassConstant.JiYan.CHALLENGE, challenge);
+                map.put(ClassConstant.JiYan.VALIDATE, validate);
+                map.put(ClassConstant.JiYan.SECCODE, seccode);
+
+                String signString = PublicUtils.getSinaString(map);
+                String tabMd5String = Md5Util.getMD5twoTimes(signString);
+                map.put(ClassConstant.PublicKey.SIGN, tabMd5String);
+                return map;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return PublicUtils.getPublicHeader(MyApplication.getInstance());
+            }
+
+        };
+        queue.add(okStringRequest);
+    }
+
 
 }

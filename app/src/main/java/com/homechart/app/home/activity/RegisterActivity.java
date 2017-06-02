@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.homechart.app.R;
+import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.register.JiYanBean;
@@ -139,22 +140,23 @@ public class RegisterActivity extends BaseActivity
 
             case R.id.iv_show_pass:
 
+
                 clickChangePassStatus();
 
                 break;
 
             case R.id.tv_get_yanzhengma:
 
-                clickGetJiYan();
+
+                clickSendMessage();
 
                 break;
 
         }
     }
 
-    private void clickGetJiYan() {
-
-        //判断权限是否添加
+    //判断权限是否添加
+    private void clickSendMessage() {
         if (ContextCompat.checkSelfPermission(RegisterActivity.this, Manifest.permission.READ_PHONE_STATE)
                 != PackageManager.PERMISSION_GRANTED) {
             new AlertView(UIUtils.getString(R.string.addpromiss),
@@ -163,17 +165,16 @@ public class RegisterActivity extends BaseActivity
                 @Override
                 public void onItemClick(Object object, int position) {
                     if (position == -1) {
-                        Uri packageURI = Uri.parse("package:" + RegisterActivity.this.getPackageName());
+                        Uri packageURI = Uri.parse(URL_HEADER + RegisterActivity.this.getPackageName());
                         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, packageURI);
                         startActivity(intent);
                     }
                 }
             }).show();
         } else {
-            CustomProgress.show(RegisterActivity.this, "加载中...", false, null);
-            getJYNeedParams();
+            CustomProgress.show(RegisterActivity.this, getString(R.string.jiazaiing), false, null);
+            judgeMobile();
         }
-
     }
 
     //密码显示隐藏状态改变
@@ -191,98 +192,114 @@ public class RegisterActivity extends BaseActivity
 
     }
 
-    private void getJYNeedParams() {
+    //判断手机号码是否合法,合法的话获取
+    private void judgeMobile() {
+
         String phone = mETPhone.getText().toString();
         if (TextUtils.isEmpty(phone) || !phone.matches(RegexUtil.PHONE_REGEX)) {
             CustomProgress.cancelDialog();
             ToastUtils.showCenter(RegisterActivity.this, UIUtils.getString(R.string.phonenum_error));
-            return;
-        }
-        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                CustomProgress.cancelDialog();
-                ToastUtils.showCenter(RegisterActivity.this, "信息加载失败，请重新加载" + volleyError.getMessage());
-            }
-
-            @Override
-            public void onResponse(String s) {
-                JiYanBean bean = GsonUtil.jsonToBean(s, JiYanBean.class);
-                try {
-                    JSONObject parmas = new JSONObject();
-                    parmas.put("gt", bean.getData().getGt());
-                    parmas.put("success", bean.getData().getSuccess());
-                    parmas.put("challenge", bean.getData().getChallenge());
-                    GeetestTest.openGtTest(RegisterActivity.this, parmas, RegisterActivity.this);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+        } else {
+            OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
                     CustomProgress.cancelDialog();
+                    ToastUtils.showCenter(RegisterActivity.this, getString(R.string.error_judgemobile));
                 }
-            }
-        };
-        MyHttpManager.getInstance().getParamsFromMyServiceJY(callBack);
+
+                @Override
+                public void onResponse(String s) {
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                        String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                        if (error_code == 0) {
+                            getGYParams();
+                        } else {
+                            CustomProgress.cancelDialog();
+                            ToastUtils.showCenter(RegisterActivity.this, error_msg);
+                        }
+                    } catch (JSONException e) {
+                        CustomProgress.cancelDialog();
+                        ToastUtils.showCenter(RegisterActivity.this, getString(R.string.error_judgemobile));
+                    }
+                }
+            };
+            MyHttpManager.getInstance().judgeMobile(phone, callBack);
+        }
     }
 
+    //从服务器获取极验证需要的三个参数
+    private void getGYParams() {
+
+        String phone = mETPhone.getText().toString();
+        if (TextUtils.isEmpty(phone) || !phone.matches(RegexUtil.PHONE_REGEX)) {
+            CustomProgress.cancelDialog();
+            ToastUtils.showCenter(RegisterActivity.this, UIUtils.getString(R.string.phonenum_error));
+        } else {
+            OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    CustomProgress.cancelDialog();
+                    ToastUtils.showCenter(RegisterActivity.this, getString(R.string.error_judgemobile));
+                }
+
+                @Override
+                public void onResponse(String s) {
+
+                    try {
+                        JSONObject jsonObject = new JSONObject(s);
+                        int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                        String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                        String data = jsonObject.getString(ClassConstant.Parame.DATA);
+                        if (error_code == 0) {
+                            JSONObject dataObject = new JSONObject(data);
+                            GeetestTest.openGtTest(RegisterActivity.this, dataObject, RegisterActivity.this);
+                        } else {
+                            CustomProgress.cancelDialog();
+                            ToastUtils.showCenter(RegisterActivity.this, error_msg);
+                        }
+                    } catch (JSONException e) {
+                        CustomProgress.cancelDialog();
+                        ToastUtils.showCenter(RegisterActivity.this, getString(R.string.error_judgemobile));
+                    }
+                }
+            };
+            MyHttpManager.getInstance().getParamsFromMyServiceJY(callBack);
+        }
+    }
+
+    //极验滑块后的回调
     @Override
     public void geetestCallBack(final String challenge, final String validate, final String seccode) {
 
-        String phonenum = mETPhone.getText().toString().trim();
-        //判断手机号码是否还可以验证
+        String mobile = mETPhone.getText().toString().trim();
         OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                ToastUtils.showCenter(RegisterActivity.this, "手机号码验证失败，请重新验证");
+                ToastUtils.showCenter(RegisterActivity.this, getString(R.string.error_sendmessage));
             }
 
             @Override
             public void onResponse(String s) {
                 try {
                     JSONObject jsonObject = new JSONObject(s);
-                    int status = jsonObject.getInt("status");
-                    String info = jsonObject.getString("info");
-                    if (status == 1) {
-                        //发送短信
-                        sendMessage(challenge, validate, seccode);
-                    } else {
-                        ToastUtils.showCenter(RegisterActivity.this, info);
-                    }
-                } catch (JSONException e) {
-                    ToastUtils.showCenter(RegisterActivity.this, "手机号码验证失败，请重新验证");
-                }
-            }
-        };
-        MyHttpManager.getInstance().checkPhoneNumStatus(phonenum, "Cookie_register", callBack);
-    }
-
-    //发送短信
-    private void sendMessage(final String challenge, final String validate, final String seccode) {
-        final String phone = mETPhone.getText().toString().trim();
-        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                ToastUtils.showCenter(RegisterActivity.this, "发送失败");
-            }
-
-            @Override
-            public void onResponse(String s) {
-                try {
-                    JSONObject jsonObject = new JSONObject(s);
-                    int status = jsonObject.getInt("status");
-                    String info = jsonObject.getString("info");
-                    if (status == 1) {
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    if (error_code == 0) {
                         mTVSendJiYan.setEnabled(false);
                         timer.start();
-                        ToastUtils.showCenter(RegisterActivity.this, "发送成功");
+                        ToastUtils.showCenter(RegisterActivity.this, getString(R.string.succes_sendmessage));
                     } else {
-                        ToastUtils.showCenter(RegisterActivity.this, info);
+                        ToastUtils.showCenter(RegisterActivity.this, error_msg);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    ToastUtils.showCenter(RegisterActivity.this, "发送失败");
+                    ToastUtils.showCenter(RegisterActivity.this, getString(R.string.error_sendmessage));
                 }
             }
         };
-        MyHttpManager.getInstance().sendMessageByJY(phone, challenge, validate, seccode, "Cookie_register", callBack);
+        MyHttpManager.getInstance().sendMessageByJY(ClassConstant.JiYan.SIGNUP, mobile, challenge, validate, seccode, callBack);
     }
 
     /**
@@ -324,5 +341,6 @@ public class RegisterActivity extends BaseActivity
     private EditText mETPassWord;
     private boolean isChecked = true;
     private PublicUtils.UmAuthListener umAuthListener;
+    private final String URL_HEADER = "package:";
 
 }

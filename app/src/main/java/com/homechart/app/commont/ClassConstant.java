@@ -30,20 +30,33 @@ public class ClassConstant {
         public static final String PASSWORD = "password";//密码
     }
 
-    public static class DesinerRegister {
-        public static final String MOBILE = "mobile";
-        public static final String TYPE = "type";
-        public static final String CHALLENGE = "challenge";
-        public static final String VALIDATE = "validate";
-        public static final String SECCODE = "seccode";
-
-    }
-
     public static class UMengPlatform {
         public static final SHARE_MEDIA platform_qq = SHARE_MEDIA.QQ;
         public static final SHARE_MEDIA platform_weixin = SHARE_MEDIA.WEIXIN;
         public static final SHARE_MEDIA platform_sina = SHARE_MEDIA.SINA;
         public static final SHARE_MEDIA platform_qzone = SHARE_MEDIA.QZONE;
     }
+
+    public static class JiYan {
+        public static final String MOBILE = "mobile";
+        public static final String TYPE = "type";
+        public static final String CHALLENGE = "challenge";
+        public static final String VALIDATE = "validate";
+        public static final String SECCODE = "seccode";
+
+        //几种type
+        public static final String SIGNUP = "signup";
+        public static final String FINDPWD = "findpwd";
+        public static final String BING = "bind";
+
+    }
+
+    public static class Parame {
+        public static final String ERROR_CODE = "error_code";
+        public static final String ERROR_MSG = "error_msg";
+        public static final String DATA = "data";
+
+    }
+
 
 }
