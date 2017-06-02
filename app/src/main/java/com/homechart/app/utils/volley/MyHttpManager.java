@@ -177,5 +177,39 @@ public class MyHttpManager {
         queue.add(okStringRequest);
     }
 
+    /**
+     * 手机号码组册接口
+     *
+     * @param mobile
+     * @param captcha
+     * @param nickname
+     * @param password
+     * @param callback
+     */
+    public void registerByMobile(final String mobile, final String captcha, final String nickname, final String password, OkStringRequest.OKResponseCallback callback) {
+        OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.REGISTER_MOBILE, callback) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
+                map.put(ClassConstant.RegisterMobile.MOBILE, mobile);
+                map.put(ClassConstant.RegisterMobile.CAPTCHA, captcha);
+                map.put(ClassConstant.RegisterMobile.NIKENAME, nickname);
+                map.put(ClassConstant.RegisterMobile.PASSWORD, password);
+
+                String signString = PublicUtils.getSinaString(map);
+                String tabMd5String = Md5Util.getMD5twoTimes(signString);
+                map.put(ClassConstant.PublicKey.SIGN, tabMd5String);
+                return map;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return PublicUtils.getPublicHeader(MyApplication.getInstance());
+            }
+
+        };
+        queue.add(okStringRequest);
+    }
 
 }

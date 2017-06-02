@@ -8,9 +8,13 @@
 
     <!-- RegisterActivity -->
     <string name="phonenum_error">请填写正确的手机号码</string>
+    <string name="yanzhengma_error">验证码输入错误</string>
+    <string name="nikename_error">请输入正确的昵称</string>
+    <string name="password_error">请输入密码</string>
     <string name="yanzhengma_hint">获取验证码</string>
     <string name="yanzhengma_end">秒</string>
     <string name="register_tital">注册</string>
+
     <!-- 极验 -->
     <string name="jiazaiing">加载中...</string>
     <string name="error_judgemobile">手机号码验证失败，请重新验证！</string>
@@ -24,6 +28,7 @@
     <string name="login_tital">登录</string>
     <string name="login_name_hint">邮箱/手机/昵称</string>
     <string name="login_pass_hint">请输入密码</string>
+
     <!-- UMAuthListener -->
     <string name="um_auth_error">授权失败，请重新尝试</string>
     <string name="um_auth_cancel">授权取消</string>

@@ -151,6 +151,11 @@ public class RegisterActivity extends BaseActivity
                 clickSendMessage();
 
                 break;
+            case R.id.btn_regiter_demand:
+
+                clickRegister();
+
+                break;
 
         }
     }
@@ -300,6 +305,61 @@ public class RegisterActivity extends BaseActivity
             }
         };
         MyHttpManager.getInstance().sendMessageByJY(ClassConstant.JiYan.SIGNUP, mobile, challenge, validate, seccode, callBack);
+    }
+
+    //点击组册按钮
+    private void clickRegister() {
+
+        String phone = mETPhone.getText().toString();
+        String yzCode = mETYanZheng.getText().toString();
+        String nikeName = mETNikeName.getText().toString();
+        String passWord = mETPassWord.getText().toString();
+        if (TextUtils.isEmpty(phone) || !phone.matches(RegexUtil.PHONE_REGEX)) {
+            ToastUtils.showCenter(RegisterActivity.this, UIUtils.getString(R.string.phonenum_error));
+            return;
+        }
+        if (TextUtils.isEmpty(yzCode)) {
+            ToastUtils.showCenter(RegisterActivity.this, UIUtils.getString(R.string.yanzhengma_error));
+            return;
+        }
+        if (TextUtils.isEmpty(nikeName) || !nikeName.matches(RegexUtil.ADDRESS_REGEX)) {
+            ToastUtils.showCenter(RegisterActivity.this, UIUtils.getString(R.string.nikename_error));
+            return;
+        }
+        if (TextUtils.isEmpty(passWord)) {
+            ToastUtils.showCenter(RegisterActivity.this, UIUtils.getString(R.string.password_error));
+            return;
+        }
+
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                ToastUtils.showCenter(RegisterActivity.this, "注册失败，请重新注册！");
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        loginPersion(data);
+                    } else {
+                        ToastUtils.showCenter(RegisterActivity.this, error_msg);
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        };
+        MyHttpManager.getInstance().registerByMobile(phone, yzCode, nikeName, passWord, callBack);
+
+    }
+
+    //组册成功后登陆
+    private void loginPersion(String data) {
+        ToastUtils.showCenter(RegisterActivity.this, "组册成功");
     }
 
     /**
