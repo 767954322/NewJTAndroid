@@ -39,7 +39,6 @@ public class LoginActivity extends BaseActivity
         PublicUtils.ILoginUmeng {
 
 
-
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_login;
@@ -138,7 +137,10 @@ public class LoginActivity extends BaseActivity
         OkStringRequest.OKResponseCallback callback = new OkStringRequest.OKResponseCallback() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("test", "失败：" + error.getMessage().toString());
+                try {
+                    Log.d("test", "失败：" + error.getMessage().toString());
+                } catch (Exception e) {
+                }
             }
 
             @Override
