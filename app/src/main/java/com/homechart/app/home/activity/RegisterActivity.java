@@ -23,6 +23,7 @@ import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
+import com.homechart.app.home.bean.login.LoginBean;
 import com.homechart.app.home.bean.register.JiYanBean;
 import com.homechart.app.commont.RegexUtil;
 import com.homechart.app.utils.CustomProgress;
@@ -312,7 +313,7 @@ public class RegisterActivity extends BaseActivity
         MyHttpManager.getInstance().sendMessageByJY(ClassConstant.JiYan.SIGNUP, mobile, challenge, validate, seccode, callBack);
     }
 
-    //点击组册按钮
+    //点击注册按钮
     private void clickRegister() {
 
         String phone = mETPhone.getText().toString();
@@ -327,11 +328,11 @@ public class RegisterActivity extends BaseActivity
             ToastUtils.showCenter(RegisterActivity.this, UIUtils.getString(R.string.yanzhengma_error));
             return;
         }
-        if (TextUtils.isEmpty(nikeName) || !nikeName.matches(RegexUtil.ADDRESS_REGEX)) {
+        if (TextUtils.isEmpty(nikeName) || !nikeName.matches(RegexUtil.ADDRESS_REGEX_NAME)) {
             ToastUtils.showCenter(RegisterActivity.this, UIUtils.getString(R.string.nikename_error));
             return;
         }
-        if (TextUtils.isEmpty(passWord)) {
+        if (TextUtils.isEmpty(passWord) || !passWord.matches(RegexUtil.ADDRESS_REGEX_PASS)) {
             ToastUtils.showCenter(RegisterActivity.this, UIUtils.getString(R.string.password_error));
             return;
         }
@@ -348,9 +349,13 @@ public class RegisterActivity extends BaseActivity
                     JSONObject jsonObject = new JSONObject(s);
                     int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
                     String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
-                    String data = jsonObject.getString(ClassConstant.Parame.DATA);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
                     if (error_code == 0) {
-                        loginPersion(data);
+                        LoginBean loginBean = GsonUtil.jsonToBean(data_msg, LoginBean.class);
+                        PublicUtils.loginSucces(loginBean);
+                        Intent intent_result = getIntent();
+                        setResult(1, intent_result);
+                        RegisterActivity.this.finish();
                     } else {
                         ToastUtils.showCenter(RegisterActivity.this, error_msg);
                     }
@@ -360,11 +365,6 @@ public class RegisterActivity extends BaseActivity
         };
         MyHttpManager.getInstance().registerByMobile(phone, yzCode, nikeName, passWord, callBack);
 
-    }
-
-    //注册成功后登陆
-    private void loginPersion(String data) {
-        ToastUtils.showCenter(RegisterActivity.this, "注册成功");
     }
 
     private void clickJumpMast() {

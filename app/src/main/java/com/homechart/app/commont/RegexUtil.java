@@ -14,7 +14,8 @@ public class RegexUtil {
     /**
      * 小区地址校验：无特殊字符，2-32位
      */
-    public static final String ADDRESS_REGEX = "^[\\u4e00-\\u9fa5_a-zA-Z0-9_]{2,15}$";
+    public static final String ADDRESS_REGEX_NAME = "^[\\u4e00-\\u9fa5_a-zA-Z0-9_]{2,15}$";//账号
+    public static final String ADDRESS_REGEX_PASS = "^[\\u4e00-\\u9fa5_a-zA-Z0-9_]{6,20}$";//密码
     public static final String ADDRESS_ZHONGWEN = "^[\\u4e00-\\u9fa5]{2,32}$";
 
     public static final String ADDRESS_NUM = "^[1-9]+(.[0-9]{2})?$";
