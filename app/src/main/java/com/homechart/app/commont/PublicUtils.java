@@ -14,6 +14,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.SpannedString;
 import android.text.style.AbsoluteSizeSpan;
+import android.util.DisplayMetrics;
 import android.widget.EditText;
 
 import com.homechart.app.R;
@@ -330,6 +331,30 @@ public class PublicUtils {
         SharedPreferencesUtils.writeString(ClassConstant.LoginSucces.MOBILE, loginBean.getUser_info().getMobile());
         SharedPreferencesUtils.writeString(ClassConstant.LoginSucces.PROFESSION, loginBean.getUser_info().getProfession());
 
+    }
+
+    //12................................................................................................
+    /**
+     * 获取屏幕的宽度
+     *
+     * @param context
+     * @return
+     */
+    public static int getScreenWidth(Context context) {
+        DisplayMetrics metrics = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        return metrics.widthPixels;
+    }
+    /**
+     * 获取屏幕的高度
+     *
+     * @param context
+     * @return
+     */
+    public static int getScreenHeight(Context context) {
+        DisplayMetrics metrics = new DisplayMetrics();
+        ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        return metrics.heightPixels;
     }
 
 }
