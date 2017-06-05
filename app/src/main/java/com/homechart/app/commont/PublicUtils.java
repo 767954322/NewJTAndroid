@@ -18,6 +18,7 @@ import android.widget.EditText;
 
 import com.homechart.app.R;
 import com.homechart.app.utils.CustomProgress;
+import com.homechart.app.utils.SharedPreferencesUtils;
 import com.homechart.app.utils.ToastUtils;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
@@ -62,8 +63,10 @@ public class PublicUtils {
         Map<String, String> map = new HashMap<>();
         map.put(ClassConstant.PublicHeader.APP_VERSION, PublicUtils.getVersionName(context));
         map.put(ClassConstant.PublicHeader.APP_PLATFORM, "android");
-        //TODO 登陆的话添加，未登录不用添加，会话token，登录接口返回的auth_token的值
-//        map.put(ClassConstant.PublicHeader.APP_AUTH_TOKEN, "");
+        boolean login_status = SharedPreferencesUtils.readBoolean(ClassConstant.LoginSucces.LOGIN_STATUS);
+        if (login_status) {
+            map.put(ClassConstant.PublicHeader.APP_AUTH_TOKEN, SharedPreferencesUtils.readString(ClassConstant.LoginSucces.AUTH_TOKEN));
+        }
         return map;
     }
     //3................................................................................................

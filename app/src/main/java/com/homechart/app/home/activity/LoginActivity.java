@@ -19,17 +19,23 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.homechart.app.R;
+import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.KeyConstans;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
+import com.homechart.app.home.bean.login.LoginBean;
 import com.homechart.app.utils.CustomProgress;
+import com.homechart.app.utils.GsonUtil;
+import com.homechart.app.utils.SharedPreferencesUtils;
 import com.homechart.app.utils.ToastUtils;
+import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
-import java.util.Map;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by allen on 2017/6/1.
@@ -77,14 +83,20 @@ public class LoginActivity extends BaseActivity
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
         //设置权限
         PublicUtils.verifyStoragePermissions(LoginActivity.this);
-        PublicUtils.changeEditTextHint(getString(R.string.login_name_hint), mETLoginName, 14);
-        PublicUtils.changeEditTextHint(getString(R.string.login_pass_hint), mETLoginPass, 14);
-        umAuthListener = new PublicUtils.UmAuthListener(LoginActivity.this, this);
-        mTVTital.setText(R.string.login_tital);
-        mIBBack.setVisibility(View.GONE);
+        boolean login_status = SharedPreferencesUtils.readBoolean(ClassConstant.LoginSucces.LOGIN_STATUS);
+        if (login_status) {
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            startActivity(intent);
+            LoginActivity.this.finish();
+        } else {
+            PublicUtils.changeEditTextHint(getString(R.string.login_name_hint), mETLoginName, 14);
+            PublicUtils.changeEditTextHint(getString(R.string.login_pass_hint), mETLoginPass, 14);
+            umAuthListener = new PublicUtils.UmAuthListener(LoginActivity.this, this);
+            mTVTital.setText(R.string.login_tital);
+            mIBBack.setVisibility(View.GONE);
+        }
 
     }
 
@@ -137,6 +149,7 @@ public class LoginActivity extends BaseActivity
         OkStringRequest.OKResponseCallback callback = new OkStringRequest.OKResponseCallback() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                ToastUtils.showCenter(LoginActivity.this, UIUtils.getString(R.string.login_error));
                 try {
                     Log.d("test", "失败：" + error.getMessage().toString());
                 } catch (Exception e) {
@@ -145,10 +158,36 @@ public class LoginActivity extends BaseActivity
 
             @Override
             public void onResponse(String response) {
-                Log.d("test", "成功" + response);
-                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                startActivity(intent);
-                LoginActivity.this.finish();
+
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    if (error_code == 0) {
+                        String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                        LoginBean loginBean = GsonUtil.jsonToBean(data_msg, LoginBean.class);
+                        SharedPreferencesUtils.writeBoolean(ClassConstant.LoginSucces.LOGIN_STATUS, true);
+                        SharedPreferencesUtils.writeString(ClassConstant.LoginSucces.AUTH_TOKEN, loginBean.getAuth_token());
+                        SharedPreferencesUtils.writeString(ClassConstant.LoginSucces.USER_ID, loginBean.getUser_info().getUser_id());
+                        SharedPreferencesUtils.writeString(ClassConstant.LoginSucces.NIKE_NAME, loginBean.getUser_info().getNickname());
+                        SharedPreferencesUtils.writeString(ClassConstant.LoginSucces.SLOGAN, loginBean.getUser_info().getSlogan());
+                        SharedPreferencesUtils.writeString(ClassConstant.LoginSucces.BIG, loginBean.getUser_info().getAvatar().getBig());
+                        SharedPreferencesUtils.writeString(ClassConstant.LoginSucces.THUMB, loginBean.getUser_info().getAvatar().getThumb());
+                        SharedPreferencesUtils.writeString(ClassConstant.LoginSucces.EMAIL, loginBean.getUser_info().getEmail());
+                        SharedPreferencesUtils.writeString(ClassConstant.LoginSucces.MOBILE, loginBean.getUser_info().getMobile());
+                        SharedPreferencesUtils.writeString(ClassConstant.LoginSucces.PROFESSION, loginBean.getUser_info().getProfession());
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                        LoginActivity.this.finish();
+                    } else {
+                        ToastUtils.showCenter(LoginActivity.this, error_msg);
+                    }
+                } catch (JSONException e) {
+                    CustomProgress.cancelDialog();
+                    ToastUtils.showCenter(LoginActivity.this, UIUtils.getString(R.string.login_error));
+                }
+
+
             }
         };
         MyHttpManager.getInstance().userLogin(mETLoginName.getText().toString(), mETLoginPass.getText().toString(), callback);

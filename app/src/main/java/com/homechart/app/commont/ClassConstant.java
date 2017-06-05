@@ -50,6 +50,7 @@ public class ClassConstant {
         public static final String BING = "bind";
 
     }
+
     public static class RegisterMobile {
         public static final String MOBILE = "mobile";
         public static final String CAPTCHA = "captcha";
@@ -62,6 +63,20 @@ public class ClassConstant {
         public static final String ERROR_MSG = "error_msg";
         public static final String DATA = "data";
 
+    }
+
+    //登陆成功后
+    public static class LoginSucces {
+        public static final String LOGIN_STATUS = "login_status";
+        public static final String AUTH_TOKEN = "auth_token";
+        public static final String USER_ID = "user_id";
+        public static final String NIKE_NAME = "nickname";
+        public static final String SLOGAN = "slogan";
+        public static final String BIG = "big";
+        public static final String THUMB = "thumb";
+        public static final String EMAIL = "email";
+        public static final String MOBILE = "mobile";
+        public static final String PROFESSION = "profession";
     }
 
 
