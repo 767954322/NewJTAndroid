@@ -205,11 +205,14 @@ public class LoginActivity extends BaseActivity
     //点击忘记密码
     private void clickGorgetPass() {
 
-        Intent intent1 = new Intent();
-        intent1.setAction(KeyConstans.GORGETPASS_ACTION);
-        Uri content_url = Uri.parse(KeyConstans.GORGETPASS_URL);
-        intent1.setData(content_url);
-        startActivity(intent1);
+//        Intent intent1 = new Intent();
+//        intent1.setAction(KeyConstans.GORGETPASS_ACTION);
+//        Uri content_url = Uri.parse(KeyConstans.GORGETPASS_URL);
+//        intent1.setData(content_url);
+//        startActivity(intent1);
+
+        Intent intent = new Intent(LoginActivity.this,ResetPasswordActivity.class);
+        startActivity(intent);
 
     }
 

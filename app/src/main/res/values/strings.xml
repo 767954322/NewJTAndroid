@@ -38,4 +38,6 @@
     <string name="um_login_nikename_error">登陆失败，请重新登陆</string>
     <string name="um_nikename_tital">新账号</string>
 
+    <!-- ResetPasswordActivity -->
+    <string name="reset_pass_tital">重置密码</string>
 </resources>
