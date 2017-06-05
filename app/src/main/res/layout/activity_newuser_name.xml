@@ -24,7 +24,7 @@
             android:src="@drawable/ic_default_head" />
 
 
-        <com.homechart.app.utils.view.ProEditText
+        <com.homechart.app.myview.ProEditText
             android:id="@+id/et_login_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

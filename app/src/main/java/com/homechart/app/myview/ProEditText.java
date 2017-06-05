@@ -1,4 +1,4 @@
-package com.homechart.app.utils.view;
+package com.homechart.app.myview;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -15,9 +15,9 @@ public class ProEditText extends AppCompatEditText {
     /**
      * EditText右侧的图标
      */
-    protected Drawable mRightDrawable;
+    public Drawable mRightDrawable;
 
-    private RightPicOnclickListener rightPicOnclickListener;
+    public RightPicOnclickListener rightPicOnclickListener;
 
     public ProEditText(Context context) {
         super(context);
@@ -34,7 +34,7 @@ public class ProEditText extends AppCompatEditText {
         init(context);
     }
 
-    private void init(final Context context) {
+    public void init(final Context context) {
         mRightDrawable = getCompoundDrawables()[2];
 
         if (mRightDrawable == null) {
