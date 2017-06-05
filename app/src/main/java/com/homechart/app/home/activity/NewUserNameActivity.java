@@ -121,9 +121,11 @@ public class NewUserNameActivity extends BaseActivity
              final String platform,
              final String name) {
 
+        CustomProgress.show(NewUserNameActivity.this, "修改中...", false, null);
         OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                CustomProgress.cancelDialog();
                 ToastUtils.showCenter(NewUserNameActivity.this, UIUtils.getString(R.string.um_login_error));
             }
 
@@ -139,8 +141,10 @@ public class NewUserNameActivity extends BaseActivity
                         PublicUtils.loginSucces(loginBean);
                         Intent intent_result = getIntent();
                         setResult(1, intent_result);
+                        CustomProgress.cancelDialog();
                         NewUserNameActivity.this.finish();
                     } else {
+                        CustomProgress.cancelDialog();
                         if (error_code == 1006) {
                             ToastUtils.showCenter(NewUserNameActivity.this, UIUtils.getString(R.string.um_login_nikename_hased));
                         } else {
