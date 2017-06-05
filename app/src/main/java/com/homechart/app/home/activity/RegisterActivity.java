@@ -382,15 +382,64 @@ public class RegisterActivity extends BaseActivity
      * @param iconurl
      */
     @Override
-    public void loginUmengBack(String openid, String token, String plat, String name, String iconurl) {
-        CustomProgress.cancelDialog();
-        ToastUtils.showCenter(RegisterActivity.this, "第三方信息获取成功：" + openid + token + plat + name + iconurl);
+    public void loginUmengBack(final String openid, final String token, final String plat, final String name, final String iconurl) {
+
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                CustomProgress.cancelDialog();
+                ToastUtils.showCenter(RegisterActivity.this, UIUtils.getString(R.string.um_login_error));
+            }
+
+            @Override
+            public void onResponse(String response) {
+                CustomProgress.cancelDialog();
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    if (error_code == 0) {
+                        String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                        LoginBean loginBean = GsonUtil.jsonToBean(data_msg, LoginBean.class);
+                        PublicUtils.loginSucces(loginBean);
+                        Intent intent_result = getIntent();
+                        setResult(1, intent_result);
+                        RegisterActivity.this.finish();
+                    } else {
+                        if (error_code == 1006) {
+                            Intent intent_change = new Intent(RegisterActivity.this, NewUserNameActivity.class);
+                            intent_change.putExtra(ClassConstant.LoginByYouMeng.OPENID, openid);
+                            intent_change.putExtra(ClassConstant.LoginByYouMeng.TOKEN, token);
+                            intent_change.putExtra(ClassConstant.LoginByYouMeng.PLATFORM, plat);
+                            intent_change.putExtra(ClassConstant.LoginByYouMeng.NIKENAME, name);
+                            intent_change.putExtra(ClassConstant.LoginByYouMeng.ICONURL, iconurl);
+                            startActivityForResult(intent_change, 0);
+                        } else {
+                            ToastUtils.showCenter(RegisterActivity.this, error_msg);
+                        }
+                    }
+                } catch (JSONException e) {
+                    CustomProgress.cancelDialog();
+                    ToastUtils.showCenter(RegisterActivity.this, UIUtils.getString(R.string.um_login_nikename_error));
+                }
+
+            }
+        };
+        MyHttpManager.getInstance().userLoginByYouMeng(plat, token, openid, name, callBack);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
+
+        //注册成功后的跳转
+        if (requestCode == 0 && resultCode == 1) {
+            Intent intent_result = getIntent();
+            setResult(1, intent_result);
+            RegisterActivity.this.finish();
+        }
+
     }
 
 

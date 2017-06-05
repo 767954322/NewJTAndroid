@@ -79,5 +79,13 @@ public class ClassConstant {
         public static final String PROFESSION = "profession";
     }
 
+    //友盟登陆后，调用自己后台接口登陆
+    public static class LoginByYouMeng {
+        public static final String PLATFORM = "platform";
+        public static final String TOKEN = "token";
+        public static final String OPENID = "openid";
+        public static final String NIKENAME = "nickname";
+        public static final String ICONURL = "iconurl";
+    }
 
 }
