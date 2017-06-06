@@ -79,13 +79,14 @@ public class MyHttpManager {
      * @param mobile
      * @param callback
      */
-    public void judgeMobile(final String mobile, OkStringRequest.OKResponseCallback callback) {
+    public void judgeMobile( final String type, final String mobile, OkStringRequest.OKResponseCallback callback) {
         OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.JUDGE_MOBILE, callback) {
 
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
                 map.put(ClassConstant.JiYan.MOBILE, mobile);
+                map.put(ClassConstant.JiYan.TYPE, type);
                 String signString = PublicUtils.getSinaString(map);
                 String tabMd5String = Md5Util.getMD5twoTimes(signString);
                 map.put(ClassConstant.PublicKey.SIGN, tabMd5String);

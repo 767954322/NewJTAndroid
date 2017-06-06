@@ -236,7 +236,7 @@ public class RegisterActivity extends BaseActivity
                     }
                 }
             };
-            MyHttpManager.getInstance().judgeMobile(phone, callBack);
+            MyHttpManager.getInstance().judgeMobile(ClassConstant.JiYan.SIGNUP, phone, callBack);
         }
     }
 

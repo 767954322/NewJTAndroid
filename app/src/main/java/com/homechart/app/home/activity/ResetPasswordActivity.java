@@ -209,7 +209,7 @@ public class ResetPasswordActivity
                     }
                 }
             };
-            MyHttpManager.getInstance().judgeMobile(phone, callBack);
+            MyHttpManager.getInstance().judgeMobile(ClassConstant.JiYan.FINDPWD,phone, callBack);
         }
     }
 

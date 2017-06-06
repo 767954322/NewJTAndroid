@@ -71,6 +71,8 @@ public class ClassConstant {
 
     }
 
+
+
     //登陆成功后
     public static class LoginSucces {
         public static final String LOGIN_STATUS = "login_status";
