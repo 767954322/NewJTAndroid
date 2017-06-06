@@ -6,6 +6,7 @@ import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -32,6 +33,7 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     private Fragment mHomeCenterFragment;
     private FragmentTransaction transaction;
     private Fragment mTagFragment;
+    private ImageView iv_add_icon;
 
 
     @Override
@@ -43,6 +45,7 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     protected void initView() {
         mRadioGroup = (RadioGroup) findViewById(R.id.rg_home_radio_group);
         radio_btn_center = (RadioButton) findViewById(R.id.radio_btn_center);
+        iv_add_icon = (ImageView) findViewById(R.id.iv_add_icon);
     }
 
     @Override
@@ -80,6 +83,7 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 jumpPosition = 0;
                 break;
             case R.id.radio_btn_designer:
+            case R.id.iv_add_icon:
                 if (null == mHomeDesignerFragment) {
                     mHomeDesignerFragment = new HomeDesignerFragment(getSupportFragmentManager());
                 }
