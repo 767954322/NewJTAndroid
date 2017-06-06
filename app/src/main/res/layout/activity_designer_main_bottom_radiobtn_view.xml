@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/size_55"
+    android:layout_height="@dimen/size_49"
     android:background="@android:color/transparent">
 
 
@@ -45,9 +45,10 @@
 
     <ImageView
         android:id="@+id/iv_add_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_width="@dimen/font_34"
+        android:layout_height="@dimen/font_34"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/font_7"
         android:clickable="false"
         android:src="@drawable/fabu" />
 

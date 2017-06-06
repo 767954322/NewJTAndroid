@@ -42,4 +42,9 @@
     <string name="reset_pass_tital">重置密码</string>
     <string name="resetpwd_error">提交失败，请重新提交！</string>
     <string name="resetpwd_succes">重置密码成功</string>
+
+    <!-- HomeCenterFragment -->
+    <string name="frg_center_tital">我的</string>
+    <string name="frag_center_wodeanli">个人资料</string>
+    <string name="frag_center_set">系统设置</string>
 </resources>
