@@ -58,6 +58,12 @@ public class ClassConstant {
         public static final String PASSWORD = "password";
     }
 
+    public static class ResetPassword {
+        public static final String MOBILE = "mobile";
+        public static final String CAPTCHA = "captcha";
+        public static final String PASSWORD = "password";
+    }
+
     public static class Parame {
         public static final String ERROR_CODE = "error_code";
         public static final String ERROR_MSG = "error_msg";

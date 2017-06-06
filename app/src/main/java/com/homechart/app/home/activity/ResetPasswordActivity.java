@@ -21,9 +21,12 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
+import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.commont.RegexUtil;
 import com.homechart.app.home.base.BaseActivity;
+import com.homechart.app.home.bean.login.LoginBean;
 import com.homechart.app.utils.CustomProgress;
+import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.alertview.AlertView;
@@ -127,6 +130,8 @@ public class ResetPasswordActivity
 
                 break;
             case R.id.btn_regiter_demand:
+
+                clickResetPWD();
 
                 break;
 
@@ -279,7 +284,53 @@ public class ResetPasswordActivity
                 }
             }
         };
-        MyHttpManager.getInstance().sendMessageByJY(ClassConstant.JiYan.SIGNUP, mobile, challenge, validate, seccode, callBack);
+        MyHttpManager.getInstance().sendMessageByJY(ClassConstant.JiYan.FINDPWD, mobile, challenge, validate, seccode, callBack);
+    }
+
+
+    //点击修改密码
+    private void clickResetPWD() {
+
+        String phone = mETPhone.getText().toString();
+        String yzCode = mETYanZheng.getText().toString();
+        String passWord = mETPassWord.getText().toString();
+        if (TextUtils.isEmpty(phone) || !phone.matches(RegexUtil.PHONE_REGEX)) {
+            ToastUtils.showCenter(ResetPasswordActivity.this, UIUtils.getString(R.string.phonenum_error));
+            return;
+        }
+        if (TextUtils.isEmpty(yzCode)) {
+            ToastUtils.showCenter(ResetPasswordActivity.this, UIUtils.getString(R.string.yanzhengma_error));
+            return;
+        }
+        if (TextUtils.isEmpty(passWord) || !passWord.matches(RegexUtil.ADDRESS_REGEX_PASS)) {
+            ToastUtils.showCenter(ResetPasswordActivity.this, UIUtils.getString(R.string.password_error));
+            return;
+        }
+
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                ToastUtils.showCenter(ResetPasswordActivity.this, getString(R.string.resetpwd_error));
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        ResetPasswordActivity.this.finish();
+                    } else {
+                        ToastUtils.showCenter(ResetPasswordActivity.this, error_msg);
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        };
+        MyHttpManager.getInstance().resetPassWord(phone, yzCode, passWord, callBack);
+
     }
 
 }

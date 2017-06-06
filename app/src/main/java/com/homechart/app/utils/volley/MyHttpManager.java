@@ -246,4 +246,37 @@ public class MyHttpManager {
         queue.add(okStringRequest);
     }
 
+
+    /**
+     * 重设密码
+     *
+     * @param mobile
+     * @param captcha
+     * @param password
+     * @param callback
+     */
+    public void resetPassWord(final String mobile, final String captcha, final String password, OkStringRequest.OKResponseCallback callback) {
+        OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.RESET_PASSWORD, callback) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
+                map.put(ClassConstant.ResetPassword.MOBILE, mobile);
+                map.put(ClassConstant.ResetPassword.CAPTCHA, captcha);
+                map.put(ClassConstant.ResetPassword.PASSWORD, password);
+
+                String signString = PublicUtils.getSinaString(map);
+                String tabMd5String = Md5Util.getMD5twoTimes(signString);
+                map.put(ClassConstant.PublicKey.SIGN, tabMd5String);
+                return map;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return PublicUtils.getPublicHeader(MyApplication.getInstance());
+            }
+
+        };
+        queue.add(okStringRequest);
+    }
 }
