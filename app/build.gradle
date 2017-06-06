@@ -33,4 +33,5 @@ dependencies {
     compile 'com.google.code.gson:gson:2.8.0'
     compile files('libs/SocialSDK_WeChat_Simplify.jar')
     compile 'com.android.support:recyclerview-v7:25.1.0'
+    compile 'com.android.support:design:25.1.0'
 }

@@ -209,7 +209,7 @@ public class ResetPasswordActivity
                     }
                 }
             };
-            MyHttpManager.getInstance().judgeMobile(ClassConstant.JiYan.FINDPWD,phone, callBack);
+            MyHttpManager.getInstance().judgeMobile(ClassConstant.JiYan.FINDPWD, phone, callBack);
         }
     }
 
@@ -321,6 +321,7 @@ public class ResetPasswordActivity
                     String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
                     String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
                     if (error_code == 0) {
+                        ToastUtils.showCenter(ResetPasswordActivity.this, UIUtils.getString(R.string.resetpwd_succes));
                         ResetPasswordActivity.this.finish();
                     } else {
                         ToastUtils.showCenter(ResetPasswordActivity.this, error_msg);

@@ -41,4 +41,5 @@
     <!-- ResetPasswordActivity -->
     <string name="reset_pass_tital">重置密码</string>
     <string name="resetpwd_error">提交失败，请重新提交！</string>
+    <string name="resetpwd_succes">重置密码成功</string>
 </resources>
