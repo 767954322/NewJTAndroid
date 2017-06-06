@@ -23,9 +23,9 @@ public class ImageUtils {
 
     //加载矩形大图的options
     private static final DisplayImageOptions rectangleoptions = new DisplayImageOptions.Builder()
-            .showImageOnLoading(R.mipmap.ic_launcher)
-            .showImageOnFail(R.mipmap.ic_launcher)
-            .showImageForEmptyUri(R.mipmap.ic_launcher)
+            .showImageOnLoading(R.color.white)
+            .showImageOnFail(R.color.white)
+            .showImageForEmptyUri(R.color.white)
             .cacheInMemory(true)
             .cacheOnDisk(true)
             .bitmapConfig(Bitmap.Config.ALPHA_8)
@@ -38,18 +38,18 @@ public class ImageUtils {
             .cacheInMemory(false)
             .displayer(new RoundedBitmapDisplayer(360))
             .cacheOnDisk(true)
-            .showImageOnFail(R.mipmap.ic_launcher)
-            .showImageOnLoading(R.mipmap.ic_launcher)
-            .showImageForEmptyUri(R.mipmap.ic_launcher)
+            .showImageOnFail(R.color.white)
+            .showImageOnLoading(R.color.white)
+            .showImageForEmptyUri(R.color.white)
             .bitmapConfig(Bitmap.Config.RGB_565)
             .imageScaleType(ImageScaleType.EXACTLY)
             .build();
 
     //demo圆角的options
     private static final DisplayImageOptions filletOptions = new DisplayImageOptions.Builder()
-            .showStubImage(R.mipmap.ic_launcher)
-            .showImageForEmptyUri(R.mipmap.ic_launcher)
-            .showImageOnFail(R.mipmap.ic_launcher)
+            .showStubImage(R.color.white)
+            .showImageForEmptyUri(R.color.white)
+            .showImageOnFail(R.color.white)
             .cacheInMemory(true)
             .cacheOnDisc(true)
             .bitmapConfig(Bitmap.Config.ALPHA_8)   //设置图片的解码类型
@@ -59,9 +59,9 @@ public class ImageUtils {
 
     //某种情况加载的图片北京莫名其妙变成黑色，可以使用这种情况
     private static final DisplayImageOptions blackOptions = new DisplayImageOptions.Builder()
-            .showImageOnLoading(R.mipmap.ic_launcher)
-            .showImageOnFail(R.mipmap.ic_launcher)
-            .showImageForEmptyUri(R.mipmap.ic_launcher)
+            .showImageOnLoading(R.color.white)
+            .showImageOnFail(R.color.white)
+            .showImageForEmptyUri(R.color.white)
             .cacheInMemory(false)
             .cacheOnDisk(true)
             .bitmapConfig(Bitmap.Config.RGB_565)
