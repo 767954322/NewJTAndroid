@@ -1,17 +1,23 @@
 package com.homechart.app.home.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
+import com.homechart.app.home.activity.FenSiListActivity;
+import com.homechart.app.home.activity.GuanZuListActivity;
+import com.homechart.app.home.activity.ShaiJiaListActivity;
+import com.homechart.app.home.activity.ShouCangListActivity;
 import com.homechart.app.home.base.BaseFragment;
 import com.homechart.app.home.bean.userinfo.UserCenterInfoBean;
 import com.homechart.app.myview.RoundImageView;
@@ -26,11 +32,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 @SuppressLint("ValidFragment")
-public class HomeCenterFragment extends BaseFragment {
+public class HomeCenterFragment extends BaseFragment implements View.OnClickListener {
 
     private UserCenterInfoBean userCenterInfoBean;
     private FragmentManager fragmentManager;
     private RoundImageView iv_center_header;
+    private RelativeLayout rl_fensi;
+    private RelativeLayout rl_guanzu;
+    private RelativeLayout rl_shoucang;
+    private RelativeLayout rl_shaijia;
     private TextView tv_center_name;
     private String mUserId;
     private TextView tv_fensi_num;
@@ -50,6 +60,7 @@ public class HomeCenterFragment extends BaseFragment {
         }
     };
 
+
     public HomeCenterFragment(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
     }
@@ -67,8 +78,23 @@ public class HomeCenterFragment extends BaseFragment {
         tv_guanzhu_num = (TextView) rootView.findViewById(R.id.tv_guanzhu_num);
         tv_shoucang_num = (TextView) rootView.findViewById(R.id.tv_shoucang_num);
         tv_shaijia_num = (TextView) rootView.findViewById(R.id.tv_shaijia_num);
+        rl_fensi = (RelativeLayout) rootView.findViewById(R.id.rl_fensi);
+        rl_guanzu = (RelativeLayout) rootView.findViewById(R.id.rl_guanzu);
+        rl_shoucang = (RelativeLayout) rootView.findViewById(R.id.rl_shoucang);
+        rl_shaijia = (RelativeLayout) rootView.findViewById(R.id.rl_shaijia);
         iv_zhuanye_icon = (ImageView) rootView.findViewById(R.id.iv_zhuanye_icon);
         mUserId = SharedPreferencesUtils.readString(ClassConstant.LoginSucces.USER_ID);
+
+    }
+
+    @Override
+    protected void initListener() {
+        super.initListener();
+
+        rl_fensi.setOnClickListener(this);
+        rl_guanzu.setOnClickListener(this);
+        rl_shoucang.setOnClickListener(this);
+        rl_shaijia.setOnClickListener(this);
 
     }
 
@@ -76,6 +102,38 @@ public class HomeCenterFragment extends BaseFragment {
     protected void initData(Bundle savedInstanceState) {
 
         getUserInfo();
+
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.rl_fensi:
+
+                Intent intent_fensi = new Intent(activity, FenSiListActivity.class);
+                startActivity(intent_fensi);
+
+                break;
+            case R.id.rl_guanzu:
+
+                Intent intent_guanzu = new Intent(activity, GuanZuListActivity.class);
+                startActivity(intent_guanzu);
+
+                break;
+            case R.id.rl_shoucang:
+
+                Intent intent_shoucang = new Intent(activity, ShouCangListActivity.class);
+                startActivity(intent_shoucang);
+
+                break;
+            case R.id.rl_shaijia:
+
+                Intent intent_shaijia = new Intent(activity, ShaiJiaListActivity.class);
+                startActivity(intent_shaijia);
+
+                break;
+        }
 
     }
 
@@ -134,4 +192,6 @@ public class HomeCenterFragment extends BaseFragment {
         }
 
     }
+
+
 }
