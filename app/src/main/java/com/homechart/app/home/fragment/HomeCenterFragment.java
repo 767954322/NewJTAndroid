@@ -16,6 +16,9 @@ import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.home.activity.FenSiListActivity;
 import com.homechart.app.home.activity.GuanZuListActivity;
+import com.homechart.app.home.activity.MessagesListActivity;
+import com.homechart.app.home.activity.MyInfoActivity;
+import com.homechart.app.home.activity.SetActivity;
 import com.homechart.app.home.activity.ShaiJiaListActivity;
 import com.homechart.app.home.activity.ShouCangListActivity;
 import com.homechart.app.home.base.BaseFragment;
@@ -41,12 +44,15 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
     private RelativeLayout rl_guanzu;
     private RelativeLayout rl_shoucang;
     private RelativeLayout rl_shaijia;
+    private RelativeLayout rl_wodeanli;
+    private RelativeLayout rl_set;
     private TextView tv_center_name;
     private String mUserId;
     private TextView tv_fensi_num;
     private TextView tv_guanzhu_num;
     private TextView tv_shoucang_num;
     private TextView tv_shaijia_num;
+    private ImageView iv_center_msgicon;
     private ImageView iv_zhuanye_icon;
 
     Handler handler = new Handler() {
@@ -82,6 +88,9 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
         rl_guanzu = (RelativeLayout) rootView.findViewById(R.id.rl_guanzu);
         rl_shoucang = (RelativeLayout) rootView.findViewById(R.id.rl_shoucang);
         rl_shaijia = (RelativeLayout) rootView.findViewById(R.id.rl_shaijia);
+        rl_wodeanli = (RelativeLayout) rootView.findViewById(R.id.rl_wodeanli);
+        rl_set = (RelativeLayout) rootView.findViewById(R.id.rl_set);
+        iv_center_msgicon = (ImageView) rootView.findViewById(R.id.iv_center_msgicon);
         iv_zhuanye_icon = (ImageView) rootView.findViewById(R.id.iv_zhuanye_icon);
         mUserId = SharedPreferencesUtils.readString(ClassConstant.LoginSucces.USER_ID);
 
@@ -95,6 +104,9 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
         rl_guanzu.setOnClickListener(this);
         rl_shoucang.setOnClickListener(this);
         rl_shaijia.setOnClickListener(this);
+        rl_wodeanli.setOnClickListener(this);
+        rl_set.setOnClickListener(this);
+        iv_center_msgicon.setOnClickListener(this);
 
     }
 
@@ -109,6 +121,12 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
     public void onClick(View v) {
 
         switch (v.getId()) {
+            case R.id.iv_center_msgicon:
+
+                Intent intent_messages = new Intent(activity, MessagesListActivity.class);
+                startActivity(intent_messages);
+
+                break;
             case R.id.rl_fensi:
 
                 Intent intent_fensi = new Intent(activity, FenSiListActivity.class);
@@ -131,6 +149,18 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
 
                 Intent intent_shaijia = new Intent(activity, ShaiJiaListActivity.class);
                 startActivity(intent_shaijia);
+
+                break;
+            case R.id.rl_wodeanli:
+
+                Intent intent_wodeanli = new Intent(activity, MyInfoActivity.class);
+                startActivity(intent_wodeanli);
+
+                break;
+            case R.id.rl_set:
+
+                Intent intent_set = new Intent(activity, SetActivity.class);
+                startActivity(intent_set);
 
                 break;
         }

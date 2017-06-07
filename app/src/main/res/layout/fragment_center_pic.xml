@@ -28,6 +28,7 @@
             android:textStyle="bold" />
 
         <ImageView
+            android:id="@+id/iv_center_msgicon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

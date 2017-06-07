@@ -92,6 +92,24 @@
             android:configChanges="keyboardHidden|orientation|locale|layoutDirection"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".home.activity.MessagesListActivity"
+            android:alwaysRetainTaskState="true"
+            android:configChanges="keyboardHidden|orientation|locale|layoutDirection"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".home.activity.MyInfoActivity"
+            android:alwaysRetainTaskState="true"
+            android:configChanges="keyboardHidden|orientation|locale|layoutDirection"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".home.activity.SetActivity"
+            android:alwaysRetainTaskState="true"
+            android:configChanges="keyboardHidden|orientation|locale|layoutDirection"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <!-- 友盟 -->
         <activity
