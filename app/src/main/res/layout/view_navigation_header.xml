@@ -60,4 +60,14 @@
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
         android:background="@color/navbar_bottom_border_color" />
+
+    <TextView
+        android:id="@+id/tv_content_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/font_15"
+        android:textColor="@color/case_text_tital_name"
+        android:textSize="@dimen/font_18" />
 </RelativeLayout>

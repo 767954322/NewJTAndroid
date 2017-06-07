@@ -1,0 +1,43 @@
+{
+  "project_info": {
+    "project_number": "633209957330",
+    "project_id": "androidjiatu"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:633209957330:android:dc00fa86f4ee14d4",
+        "android_client_info": {
+          "package_name": "com.homechart.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "633209957330-4f5kppflt8sth98slqhq6628jl4qhp6t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsfZVy-w0i_SL0dGjXc-YGO0A17Tf8MqY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 2,
+          "analytics_property": {
+            "tracking_id": "UA-96573450-2"
+          }
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

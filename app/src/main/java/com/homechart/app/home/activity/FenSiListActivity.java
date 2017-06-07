@@ -156,6 +156,7 @@ public class FenSiListActivity
         OkStringRequest.OKResponseCallback callback = new OkStringRequest.OKResponseCallback() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                mRecyclerView.setRefreshing(false);//刷新完毕
                 ToastUtils.showCenter(FenSiListActivity.this, UIUtils.getString(R.string.error_fensi));
             }
 

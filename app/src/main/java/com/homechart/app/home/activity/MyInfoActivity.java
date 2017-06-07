@@ -15,6 +15,7 @@ import com.homechart.app.home.base.BaseActivity;
 public class MyInfoActivity extends BaseActivity implements View.OnClickListener {
     private ImageButton mIBBack;
     private TextView mTVTital;
+    private TextView mTVBaoCun;
 
     @Override
     protected int getLayoutResId() {
@@ -25,6 +26,7 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
     protected void initView() {
         mIBBack = (ImageButton) findViewById(R.id.nav_left_imageButton);
         mTVTital = (TextView) findViewById(R.id.tv_tital_comment);
+        mTVBaoCun = (TextView) findViewById(R.id.tv_content_right);
     }
 
     @Override
@@ -32,12 +34,14 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         super.initListener();
 
         mIBBack.setOnClickListener(this);
+        mTVBaoCun.setOnClickListener(this);
 
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        mTVTital.setText("个人资料");
+        mTVTital.setText(R.string.setactivity_tital);
+        mTVBaoCun.setText(R.string.setactivity_baocun);
     }
 
     @Override
@@ -46,6 +50,11 @@ public class MyInfoActivity extends BaseActivity implements View.OnClickListener
         switch (v.getId()) {
             case R.id.nav_left_imageButton:
                 MyInfoActivity.this.finish();
+                break;
+            case R.id.tv_content_right:
+
+
+
                 break;
         }
     }

@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.Tracker;
 import com.homechart.app.utils.imageloader.ImageUtils;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
@@ -17,6 +19,7 @@ public class MyApplication extends Application {
 
     private static MyApplication myApplication;
     public static RequestQueue queue;
+    private Tracker mTracker;
 
     @Override
     public void onCreate() {
@@ -46,6 +49,20 @@ public class MyApplication extends Application {
             myApplication = new MyApplication();
         }
         return myApplication;
+    }
+
+    /**
+     * Gets the default {@link Tracker} for this {@link Application}.
+     *
+     * @return tracker
+     */
+    synchronized public Tracker getDefaultTracker() {
+        if (mTracker == null) {
+            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+            // To enable debug logging use: adb shell setprop log.tag.GAv4 DEBUG
+            mTracker = analytics.newTracker(R.xml.global_tracker);
+        }
+        return mTracker;
     }
 
 }

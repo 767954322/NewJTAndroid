@@ -52,4 +52,6 @@
     <!-- FenSiListActivity -->
     <string name="error_fensi">粉丝数据加载失败，请重新刷新加载</string>
     <string name="fensi_tital">粉丝</string>
+    <string name="setactivity_tital">设置</string>
+    <string name="setactivity_baocun">保存</string>
 </resources>
