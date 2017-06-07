@@ -21,7 +21,9 @@
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
 
     <!-- ga -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Get permission for reliable local dispatching on non-Google Play devices. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".MyApplication"
@@ -159,6 +161,20 @@
             android:name="UMENG_APPKEY"
             android:value="5625abfce0f55a5c17008ac9"></meta-data>
 
+
+        <!-- Register AnalyticsReceiver and AnalyticsService to support background
+         dispatching on non-Google Play devices. -->
+        <receiver
+            android:name="com.google.android.gms.analytics.AnalyticsReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
+            </intent-filter>
+        </receiver>
+        <service
+            android:name="com.google.android.gms.analytics.AnalyticsService"
+            android:enabled="true"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -157,6 +157,7 @@ public class FenSiListActivity
             @Override
             public void onErrorResponse(VolleyError error) {
                 mRecyclerView.setRefreshing(false);//刷新完毕
+                mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
                 ToastUtils.showCenter(FenSiListActivity.this, UIUtils.getString(R.string.error_fensi));
             }
 
