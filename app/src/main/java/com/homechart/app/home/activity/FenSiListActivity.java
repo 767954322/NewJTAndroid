@@ -77,20 +77,21 @@ public class FenSiListActivity
         super.initListener();
 
         mIBBack.setOnClickListener(this);
+        mAdapter.setOnItemClickListener(this);
 
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
 
-        mTVTital.setText("粉丝");
-
+        mTVTital.setText(R.string.fensi_tital);
         mAdapter = new CommonAdapter<UserListBean>(this, R.layout.item_fensi, mListData) {
             @Override
             public void convert(BaseViewHolder holder, int position) {
 
                 holder.setText(R.id.tv_fensi_name, mListData.get(position).getNickname());
-                ImageUtils.displayRoundImage(mListData.get(position).getAvatar().getBig(), (RoundImageView) holder.getView(R.id.iv_fensi_header));
+                ImageUtils.displayRoundImage(mListData.get(position).getAvatar().getBig(),
+                        (RoundImageView) holder.getView(R.id.iv_fensi_header));
                 if (!mListData.get(position).getProfession().equals("0")) {
                     holder.getView(R.id.iv_fensi_zhuanye).setVisibility(View.VISIBLE);
                 } else {
@@ -99,7 +100,6 @@ public class FenSiListActivity
 
             }
         };
-        mAdapter.setOnItemClickListener(this);
         mLoadMoreFooterView = (LoadMoreFooterView) mRecyclerView.getLoadMoreFooterView();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(FenSiListActivity.this));
         mRecyclerView.setItemAnimator(new LandingAnimator());
@@ -123,7 +123,32 @@ public class FenSiListActivity
             case R.id.nav_left_imageButton:
                 FenSiListActivity.this.finish();
                 break;
+
         }
+    }
+
+    //RecyclerView的Item点击事件
+    @Override
+    public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+        ToastUtils.showCenter(FenSiListActivity.this, "查看粉丝个人资料");
+    }
+
+    @Override
+    public void onRefresh() {
+        last_id = "0";
+        mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
+        getListData(REFRESH_STATUS);
+    }
+
+    @Override
+    public void onLoadMore() {
+
+        if (mLoadMoreFooterView.canLoadMore() && mListData.size() > 0) {
+            mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.LOADING);
+            last_id = mListData.get(mListData.size() - 1).getId();
+            getListData(LOADMORE_STATUS);
+        }
+
     }
 
     private void getListData(final String state) {
@@ -162,26 +187,10 @@ public class FenSiListActivity
 
     }
 
-    @Override
-    public void onRefresh() {
-        last_id = "0";
-        mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
-        getListData(REFRESH_STATUS);
-    }
-
-    @Override
-    public void onLoadMore() {
-
-        if (mLoadMoreFooterView.canLoadMore() && mListData.size() > 0) {
-            mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.LOADING);
-            last_id = mListData.get(mListData.size() - 1).getId();
-            getListData(LOADMORE_STATUS);
-        }
-
-    }
-
     private void updateViewFromData(List<UserListBean> listData, String state) {
+
         switch (state) {
+
             case REFRESH_STATUS:
                 mListData.clear();
                 if (null != listData) {
@@ -194,6 +203,7 @@ public class FenSiListActivity
                 mAdapter.notifyDataSetChanged();
                 mRecyclerView.setRefreshing(false);//刷新完毕
                 break;
+
             case LOADMORE_STATUS:
                 if (null != listData) {
                     mListData.addAll(listData);
@@ -211,11 +221,5 @@ public class FenSiListActivity
                 }
                 break;
         }
-    }
-
-    //
-    @Override
-    public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-        ToastUtils.showCenter(FenSiListActivity.this, "查看粉丝个人资料");
     }
 }
