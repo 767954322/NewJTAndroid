@@ -65,7 +65,6 @@
         android:layout_below="@+id/rl_center_header"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/font_15"
-        android:text="想要的生活"
         android:textColor="@color/bg_262626"
         android:textSize="@dimen/size_15"
         android:textStyle="bold" />
@@ -94,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="185"
+                android:text="0"
                 android:textSize="@dimen/size_22"
                 android:textStyle="bold" />
 
@@ -118,7 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="50"
+                android:text="0"
                 android:textSize="@dimen/size_22"
                 android:textStyle="bold" />
 
@@ -142,7 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="342"
+                android:text="0"
                 android:textSize="@dimen/size_22"
                 android:textStyle="bold" />
 
@@ -166,7 +165,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="2"
+                android:text="0"
                 android:textSize="@dimen/size_22"
                 android:textStyle="bold" />
 
