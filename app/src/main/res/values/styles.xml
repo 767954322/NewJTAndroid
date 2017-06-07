@@ -39,4 +39,13 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+
+    <!-- Base application theme. -->
+
+    <style name="AnimBottom" parent="@android:style/Animation">
+        <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
+    </style>
+
+
 </resources>
