@@ -79,7 +79,7 @@ public class MyHttpManager {
      * @param mobile
      * @param callback
      */
-    public void judgeMobile( final String type, final String mobile, OkStringRequest.OKResponseCallback callback) {
+    public void judgeMobile(final String type, final String mobile, OkStringRequest.OKResponseCallback callback) {
         OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.JUDGE_MOBILE, callback) {
 
             @Override
@@ -215,6 +215,7 @@ public class MyHttpManager {
 
     /**
      * 第三方登陆后，调用自己的后台接口
+     *
      * @param platform
      * @param token
      * @param openid
@@ -283,6 +284,7 @@ public class MyHttpManager {
 
     /**
      * 获取用户信息
+     *
      * @param user_id
      * @param callback
      */
@@ -305,6 +307,36 @@ public class MyHttpManager {
                 return PublicUtils.getPublicHeader(MyApplication.getInstance());
             }
 
+        };
+        queue.add(okStringRequest);
+    }
+
+    /**
+     * 获取粉丝列表
+     *
+     * @param user_id
+     * @param last_id
+     * @param n
+     * @param callback
+     */
+    public void getFensiList(final String user_id, final String last_id, final String n, OkStringRequest.OKResponseCallback callback) {
+        OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.FENSI_LIST, callback) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
+                map.put(ClassConstant.FenSiList.USER_ID, user_id);
+                map.put(ClassConstant.FenSiList.LAST_ID, last_id);
+                map.put(ClassConstant.FenSiList.N, n);
+
+                String signString = PublicUtils.getSinaString(map);
+                String tabMd5String = Md5Util.getMD5twoTimes(signString);
+                map.put(ClassConstant.PublicKey.SIGN, tabMd5String);
+                return map;
+            }
+
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return PublicUtils.getPublicHeader(MyApplication.getInstance());
+            }
         };
         queue.add(okStringRequest);
     }

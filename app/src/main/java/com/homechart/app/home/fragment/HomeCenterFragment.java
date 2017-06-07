@@ -106,6 +106,7 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
         rl_shaijia.setOnClickListener(this);
         rl_wodeanli.setOnClickListener(this);
         rl_set.setOnClickListener(this);
+        iv_center_header.setOnClickListener(this);
         iv_center_msgicon.setOnClickListener(this);
 
     }
@@ -151,6 +152,7 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
                 startActivity(intent_shaijia);
 
                 break;
+            case R.id.iv_center_header:
             case R.id.rl_wodeanli:
 
                 Intent intent_wodeanli = new Intent(activity, MyInfoActivity.class);

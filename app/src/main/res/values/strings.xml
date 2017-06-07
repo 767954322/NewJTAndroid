@@ -48,4 +48,7 @@
     <string name="frag_center_wodeanli">个人资料</string>
     <string name="frag_center_set">系统设置</string>
     <string name="userinfo_get_error">用户信息获取失败</string>
+
+    <!-- FenSiListActivity -->
+    <string name="error_fensi">粉丝数据加载失败，请重新刷新加载</string>
 </resources>

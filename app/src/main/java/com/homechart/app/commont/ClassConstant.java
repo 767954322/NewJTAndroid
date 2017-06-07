@@ -72,7 +72,6 @@ public class ClassConstant {
     }
 
 
-
     //登陆成功后
     public static class LoginSucces {
         public static final String LOGIN_STATUS = "login_status";
@@ -94,6 +93,13 @@ public class ClassConstant {
         public static final String OPENID = "openid";
         public static final String NIKENAME = "nickname";
         public static final String ICONURL = "iconurl";
+    }
+
+    //获取粉丝列表
+    public static class FenSiList {
+        public static final String USER_ID = "user_id";
+        public static final String LAST_ID = "last_id";
+        public static final String N = "n";
     }
 
 }
