@@ -1,28 +1,23 @@
 package com.homechart.app.home.fragment;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
-
 
 import com.android.volley.VolleyError;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
-import com.homechart.app.commont.PublicUtils;
-import com.homechart.app.home.activity.RegisterActivity;
 import com.homechart.app.home.base.BaseFragment;
-import com.homechart.app.home.bean.login.LoginBean;
 import com.homechart.app.home.bean.userinfo.UserCenterInfoBean;
 import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.SharedPreferencesUtils;
 import com.homechart.app.utils.ToastUtils;
-import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.imageloader.ImageUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
@@ -42,12 +37,12 @@ public class HomeCenterFragment extends BaseFragment {
     private TextView tv_guanzhu_num;
     private TextView tv_shoucang_num;
     private TextView tv_shaijia_num;
+    private ImageView iv_zhuanye_icon;
 
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-
             String info = (String) msg.obj;
             userCenterInfoBean = GsonUtil.jsonToBean(info, UserCenterInfoBean.class);
             changeUI();
@@ -72,7 +67,9 @@ public class HomeCenterFragment extends BaseFragment {
         tv_guanzhu_num = (TextView) rootView.findViewById(R.id.tv_guanzhu_num);
         tv_shoucang_num = (TextView) rootView.findViewById(R.id.tv_shoucang_num);
         tv_shaijia_num = (TextView) rootView.findViewById(R.id.tv_shaijia_num);
+        iv_zhuanye_icon = (ImageView) rootView.findViewById(R.id.iv_zhuanye_icon);
         mUserId = SharedPreferencesUtils.readString(ClassConstant.LoginSucces.USER_ID);
+
     }
 
     @Override
@@ -124,9 +121,9 @@ public class HomeCenterFragment extends BaseFragment {
             ImageUtils.displayRoundImage(userCenterInfoBean.getUser_info().getAvatar().getBig(), iv_center_header);
 
             if (!userCenterInfoBean.getUser_info().getProfession().trim().equals("0")) {//专业用户
-
+                iv_zhuanye_icon.setVisibility(View.VISIBLE);
             } else {//普通用户
-
+                iv_zhuanye_icon.setVisibility(View.GONE);
             }
         }
         if (null != userCenterInfoBean && null != userCenterInfoBean.getCounter()) {
