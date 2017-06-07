@@ -13,13 +13,14 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 
-    <!-- 友盟 -->
+    <!-- 友盟第三方 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-
+    <!-- 友盟统计 -->
+    <uses-sdk android:minSdkVersion="8"></uses-sdk>
     <!-- ga -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- Get permission for reliable local dispatching on non-Google Play devices. -->
@@ -166,7 +167,9 @@
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5625abfce0f55a5c17008ac9"></meta-data>
-
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${UMENG_CHANNEL_VALUE}" />
 
         <!-- Register AnalyticsReceiver and AnalyticsService to support background
          dispatching on non-Google Play devices. -->

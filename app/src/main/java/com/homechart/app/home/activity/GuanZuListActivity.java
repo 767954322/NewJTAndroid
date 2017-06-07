@@ -10,6 +10,9 @@ import com.google.android.gms.analytics.Tracker;
 import com.homechart.app.MyApplication;
 import com.homechart.app.R;
 import com.homechart.app.home.base.BaseActivity;
+import com.umeng.analytics.MobclickAgent;
+
+import java.util.HashMap;
 
 /**
  * Created by gumenghao on 17/6/7.
@@ -58,9 +61,27 @@ public class GuanZuListActivity extends BaseActivity implements View.OnClickList
                         .setCategory("测试事件类别")   //事件类别
                         .setAction("测试事件操作")      //事件操作
                         .build());
+
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("type", "关注");
+                map.put("even", "返回");
+                MobclickAgent.onEvent(GuanZuListActivity.this, "purchase", map);
                 GuanZuListActivity.this.finish();
                 break;
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        MobclickAgent.onPageStart("关注页");
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("关注页");
+    }
 }

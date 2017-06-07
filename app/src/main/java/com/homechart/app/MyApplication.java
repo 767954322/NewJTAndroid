@@ -7,6 +7,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.homechart.app.utils.imageloader.ImageUtils;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
@@ -28,6 +29,8 @@ public class MyApplication extends Application {
         queue = Volley.newRequestQueue(this);
         initImageLoader();
         initYouMeng();
+        //禁止默认的页面统计方式，这样将不会再自动统计Activity
+        MobclickAgent.openActivityDurationTrack(false);
     }
 
     private void initImageLoader() {
@@ -45,7 +48,7 @@ public class MyApplication extends Application {
     }
 
     public static synchronized MyApplication getInstance() {
-        if(myApplication == null){
+        if (myApplication == null) {
             myApplication = new MyApplication();
         }
         return myApplication;
