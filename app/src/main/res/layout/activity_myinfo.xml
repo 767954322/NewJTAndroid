@@ -82,7 +82,7 @@
 
 
                 <EditText
-                    android:id="@+id/tv_myinfo_nikename"
+                    android:id="@+id/et_myinfo_nikename"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -278,7 +278,7 @@
                     android:textSize="@dimen/size_14" />
 
                 <EditText
-                    android:id="@+id/tv_myinfo_jianjie"
+                    android:id="@+id/et_myinfo_jianjie"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"

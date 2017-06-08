@@ -401,7 +401,7 @@ public class AgePiker implements CanShow, OnWheelChangedListener {
     public void initProvinceNewDatas() {
 
         //TODO  内容
-        mProvinceDatas = new String[]{"1", "2", "3", "4", "5", "6", "7"};
+        mProvinceDatas = new String[]{"我是70后", "我是75后","我是80后", "我是85后", "我是90后", "我是95后", "我是00后"};
 
     }
 

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.IdRes;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -50,7 +52,8 @@ import cn.finalteam.galleryfinal.model.PhotoInfo;
 public class MyInfoActivity
         extends BaseActivity
         implements View.OnClickListener,
-        RadioGroup.OnCheckedChangeListener {
+        RadioGroup.OnCheckedChangeListener,
+        TextWatcher {
 
     private ProvinceBean provinceBean;
     private ImageButton mIBBack;
@@ -62,7 +65,8 @@ public class MyInfoActivity
     private RelativeLayout rl_myinfo_age;
     private RoundImageView iv_myinfo_header;
     private UserCenterInfoBean userCenterInfoBean;
-    private EditText tv_myinfo_nikename;
+    private EditText et_myinfo_nikename;
+    private EditText et_myinfo_jianjie;
     private RadioGroup rg_sex;
     private RadioButton rb_nan;
     private RadioButton rb_nv;
@@ -96,7 +100,8 @@ public class MyInfoActivity
         rl_myinfo_location = (RelativeLayout) findViewById(R.id.rl_myinfo_location);
         rl_myinfo_age = (RelativeLayout) findViewById(R.id.rl_myinfo_age);
         iv_myinfo_header = (RoundImageView) findViewById(R.id.iv_myinfo_header);
-        tv_myinfo_nikename = (EditText) findViewById(R.id.tv_myinfo_nikename);
+        et_myinfo_nikename = (EditText) findViewById(R.id.et_myinfo_nikename);
+        et_myinfo_jianjie = (EditText) findViewById(R.id.et_myinfo_jianjie);
         rg_sex = (RadioGroup) findViewById(R.id.rg_sex);
         rb_nan = (RadioButton) findViewById(R.id.rb_nan);
         rb_nv = (RadioButton) findViewById(R.id.rb_nv);
@@ -112,6 +117,52 @@ public class MyInfoActivity
         rl_myinfo_header.setOnClickListener(this);
         rl_myinfo_age.setOnClickListener(this);
         rg_sex.setOnCheckedChangeListener(this);
+        et_myinfo_nikename.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (s.toString().length() > 15) {
+                    ToastUtils.showCenter(MyInfoActivity.this, "请输入长度2-15个字的昵称");
+                    et_myinfo_nikename.setText(s.toString().substring(0, 15));
+                    et_myinfo_nikename.setSelection(et_myinfo_nikename.getText().length());
+                }
+
+            }
+        });
+        et_myinfo_jianjie.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (s.toString().length() > 15) {
+                    ToastUtils.showCenter(MyInfoActivity.this, "请输入长度15个字以内的介绍");
+                    et_myinfo_jianjie.setText(s.toString().substring(0, 15));
+                    et_myinfo_jianjie.setSelection(et_myinfo_jianjie.getText().length());
+                }
+
+            }
+        });
 
     }
 
@@ -131,7 +182,7 @@ public class MyInfoActivity
     private void changeUI() {
         if (null != userCenterInfoBean && null != userCenterInfoBean.getUser_info()) {
             ImageUtils.displayRoundImage(userCenterInfoBean.getUser_info().getAvatar().getBig(), iv_myinfo_header);
-            tv_myinfo_nikename.setText(userCenterInfoBean.getUser_info().getNickname());
+            et_myinfo_nikename.setText(userCenterInfoBean.getUser_info().getNickname());
             tv_myinfo_location.setText(userCenterInfoBean.getUser_info().getLocation());
         }
     }
@@ -358,5 +409,20 @@ public class MyInfoActivity
             rb_nv.setTextColor(UIUtils.getColor(R.color.bg_262626));
             rb_nan.setTextColor(UIUtils.getColor(R.color.bg_b2b2b2));
         }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
     }
 }
