@@ -18,7 +18,6 @@ import com.homechart.app.timepiker.citypickerview.widget.CityPicker;
 public class ShouCangListActivity extends BaseActivity implements View.OnClickListener {
     private ImageButton mIBBack;
     private TextView mTVTital;
-    private CityPicker cityPicker;
 
     @Override
     protected int getLayoutResId() {
@@ -43,21 +42,6 @@ public class ShouCangListActivity extends BaseActivity implements View.OnClickLi
     protected void initData(Bundle savedInstanceState) {
         mTVTital.setText("收藏");
 
-        cityPicker = new CityPicker.Builder(ShouCangListActivity.this).textSize(20)
-                .titleTextColor("#000000")
-                .backgroundPop(R.color.white)
-                .province("北京市")
-                .city("北京市")
-                .textColor(Color.parseColor("#000000"))
-                .provinceCyclic(true)
-                .cityCyclic(false)
-                .districtCyclic(false)
-                .visibleItemsCount(7)
-                .itemPadding(10)
-                .onlyShowProvinceAndCity(true)
-                .build();
-
-
     }
 
     @Override
@@ -65,21 +49,8 @@ public class ShouCangListActivity extends BaseActivity implements View.OnClickLi
 
         switch (v.getId()) {
             case R.id.nav_left_imageButton:
-                cityPicker.show();
-                cityPicker.setOnCityItemClickListener(new CityPicker.OnCityItemClickListener() {
-                    @Override
-                    public void onSelected(String... citySelected) {
 
-                        Toast.makeText(ShouCangListActivity.this, "选择结果：\n省：" + citySelected[0] + "\n市：" + citySelected[1] + "\n区："
-                                + citySelected[2] + "\n邮编：" + citySelected[3], Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        Toast.makeText(ShouCangListActivity.this, "已取消", Toast.LENGTH_LONG).show();
-                    }
-                });
-//                ShouCangListActivity.this.finish();
+                ShouCangListActivity.this.finish();
                 break;
         }
     }

@@ -221,7 +221,7 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
             tv_fensi_num.setText(userCenterInfoBean.getCounter().getFans_num() + "");
             tv_guanzhu_num.setText(userCenterInfoBean.getCounter().getFollow_num() + "");
             tv_shoucang_num.setText(userCenterInfoBean.getCounter().getCollect_num() + "");
-            tv_shaijia_num.setText(userCenterInfoBean.getCounter().getHome_num() + "");
+            tv_shaijia_num.setText(userCenterInfoBean.getCounter().getSingle_num() + "");
         }
 
     }

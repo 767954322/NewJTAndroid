@@ -11,16 +11,13 @@ public class CounterBean implements Serializable{
     private int fans_num;
     private int follow_num;
     private int collect_num;
-    private int home_num;
+    private int single_num;
 
-    public CounterBean(int fans_num, int follow_num, int collect_num, int home_num) {
+    public CounterBean(int fans_num, int follow_num, int collect_num, int single_num) {
         this.fans_num = fans_num;
         this.follow_num = follow_num;
         this.collect_num = collect_num;
-        this.home_num = home_num;
-    }
-
-    public CounterBean() {
+        this.single_num = single_num;
     }
 
     public int getFans_num() {
@@ -47,14 +44,13 @@ public class CounterBean implements Serializable{
         this.collect_num = collect_num;
     }
 
-    public int getHome_num() {
-        return home_num;
+    public int getSingle_num() {
+        return single_num;
     }
 
-    public void setHome_num(int home_num) {
-        this.home_num = home_num;
+    public void setSingle_num(int single_num) {
+        this.single_num = single_num;
     }
-
 
     @Override
     public String toString() {
@@ -62,7 +58,7 @@ public class CounterBean implements Serializable{
                 "fans_num=" + fans_num +
                 ", follow_num=" + follow_num +
                 ", collect_num=" + collect_num +
-                ", home_num=" + home_num +
+                ", single_num=" + single_num +
                 '}';
     }
 }
