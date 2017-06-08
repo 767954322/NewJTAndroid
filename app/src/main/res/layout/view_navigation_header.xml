@@ -69,5 +69,5 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/font_15"
         android:textColor="@color/case_text_tital_name"
-        android:textSize="@dimen/font_18" />
+        android:textSize="@dimen/font_14" />
 </RelativeLayout>

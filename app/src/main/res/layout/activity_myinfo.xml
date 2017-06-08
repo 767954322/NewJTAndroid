@@ -336,7 +336,7 @@
                     android:layout_marginRight="@dimen/font_15"
                     android:layout_toLeftOf="@+id/iv_myinfo_mobile_icon"
                     android:text="去绑定"
-                    android:textColor="@color/bg_b2b2b2"
+                    android:textColor="@color/bg_e79056"
                     android:textSize="@dimen/size_14" />
 
             </RelativeLayout>
