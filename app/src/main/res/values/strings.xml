@@ -56,6 +56,8 @@
     <string name="setactivity_baocun">保存</string>
 
     <!-- MyInfoActivity -->
-
     <string name="citydata_error">城市信息获取失败</string>
+
+    <!-- ShouCangListActivity -->
+    <string name="error_shoucang">收藏数据加载失败，请重新刷新加载</string>
 </resources>

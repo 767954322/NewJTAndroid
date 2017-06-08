@@ -101,5 +101,11 @@ public class ClassConstant {
         public static final String LAST_ID = "last_id";
         public static final String N = "n";
     }
+    //获取收藏列表
+    public static class ShouCangList {
+        public static final String USER_ID = "user_id";
+        public static final String S = "s";
+        public static final String N = "n";
+    }
 
 }
