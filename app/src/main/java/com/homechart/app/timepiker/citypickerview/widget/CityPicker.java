@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.homechart.app.R;
+import com.homechart.app.home.bean.city.ProvinceBean;
 import com.homechart.app.timepiker.citypickerview.model.CityModel;
 import com.homechart.app.timepiker.citypickerview.model.DistrictModel;
 import com.homechart.app.timepiker.citypickerview.model.ProvinceModel;
@@ -179,17 +180,12 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
     /**
      * 第一次默认的显示省份，一般配合定位，使用
      */
-    private String defaultProvinceName = "江苏";
+    private String defaultProvinceName = "北京市";
 
     /**
      * 第一次默认得显示城市，一般配合定位，使用
      */
-    private String defaultCityName = "常州";
-
-    /**
-     * 第一次默认得显示，一般配合定位，使用
-     */
-    private String defaultDistrict = "新北区";
+    private String defaultCityName = "朝阳区";
 
     /**
      * 两级联动
@@ -206,7 +202,11 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
      */
     private int backgroundPop = 0xa0000000;
 
+    private Builder mBuilder;
+
     private CityPicker(Builder builder) {
+
+        this.mBuilder = builder;
         this.textColor = builder.textColor;
         this.textSize = builder.textSize;
         this.visibleItems = builder.visibleItems;
@@ -220,7 +220,6 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
         this.confirmTextColorStr = builder.confirmTextColorStr;
         this.cancelTextColorStr = builder.cancelTextColorStr;
 
-        this.defaultDistrict = builder.defaultDistrict;
         this.defaultCityName = builder.defaultCityName;
         this.defaultProvinceName = builder.defaultProvinceName;
 
@@ -265,40 +264,12 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
             mRelativeTitleBg.setBackgroundColor(Color.parseColor(this.titleBackgroundColorStr));
         }
 
-//        /**
-//         * 设置标题
-//         */
-//        if (!TextUtils.isEmpty(this.mTitle)) {
-//            mTvTitle.setText(this.mTitle);
-//        }
-//
-//
-//        //设置确认按钮文字颜色
-//        if (!TextUtils.isEmpty(this.titleTextColorStr)) {
-//            mTvTitle.setTextColor(Color.parseColor(this.titleTextColorStr));
-//        }
-//
-//
-//        //设置确认按钮文字颜色
-//        if (!TextUtils.isEmpty(this.confirmTextColorStr)) {
-//            mTvOK.setTextColor(Color.parseColor(this.confirmTextColorStr));
-//        }
-//
-//        //设置取消按钮文字颜色
-//        if (!TextUtils.isEmpty(this.cancelTextColorStr)) {
-//            mTvCancel.setTextColor(Color.parseColor(this.cancelTextColorStr));
-//        }
-
 
         //只显示省市两级联动
-        if (this.showProvinceAndCity) {
-            mViewDistrict.setVisibility(View.GONE);
-        } else {
-            mViewDistrict.setVisibility(View.VISIBLE);
-        }
-
+        mViewDistrict.setVisibility(View.GONE);
         //初始化城市数据
-        initProvinceDatas(context);
+//        initProvinceDatas(context);
+        initProvinceNewDatas();
 
         // 添加change事件
         mViewProvince.addChangingListener(this);
@@ -317,16 +288,14 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
         mTvOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (showProvinceAndCity) {
-                    listener.onSelected(mCurrentProviceName, mCurrentCityName, "", mCurrentZipCode);
-                } else {
-                    listener.onSelected(mCurrentProviceName, mCurrentCityName, mCurrentDistrictName, mCurrentZipCode);
-                }
+                listener.onSelected(mCurrentProviceName, mCurrentCityName, mCurrentZipCode);
+
                 hide();
             }
         });
 
     }
+
 
     public static class Builder {
         /**
@@ -355,7 +324,7 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
         /**
          * 省滚轮是否循环滚动
          */
-        private boolean isProvinceCyclic = true;
+        private boolean isProvinceCyclic = false;
 
         /**
          * 市滚轮是否循环滚动
@@ -368,6 +337,7 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
         private boolean isDistrictCyclic = true;
 
         private Context mContext;
+        public ProvinceBean mProvinceBean;
 
         /**
          * item间距
@@ -400,12 +370,12 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
         /**
          * 第一次默认的显示省份，一般配合定位，使用
          */
-        private String defaultProvinceName = "江苏";
+        private String defaultProvinceName = "北京市";
 
         /**
          * 第一次默认得显示城市，一般配合定位，使用
          */
-        private String defaultCityName = "常州";
+        private String defaultCityName = "朝阳区";
 
         /**
          * 第一次默认得显示，一般配合定位，使用
@@ -427,8 +397,9 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
          */
         private int backgroundPop = 0xa0000000;
 
-        public Builder(Context context) {
+        public Builder(Context context, ProvinceBean provinceBean) {
             this.mContext = context;
+            this.mProvinceBean = provinceBean;
         }
 
         /**
@@ -509,58 +480,6 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
             return this;
         }
 
-        /**
-         * 第一次默认地区显示，一般配合定位，使用
-         *
-         * @param defaultDistrict
-         * @return
-         */
-        public Builder district(String defaultDistrict) {
-            this.defaultDistrict = defaultDistrict;
-            return this;
-        }
-
-        //        /**
-        //         * 确认按钮文字颜色
-        //         * @param color
-        //         * @return
-        //         */
-        //        public Builder confirTextColor(int color) {
-        //            this.confirmTextColor = color;
-        //            return this;
-        //        }
-
-        /**
-         * 确认按钮文字颜色
-         *
-         * @param color
-         * @return
-         */
-        public Builder confirTextColor(String color) {
-            this.confirmTextColorStr = color;
-            return this;
-        }
-
-        //        /**
-        //         * 取消按钮文字颜色
-        //         * @param color
-        //         * @return
-        //         */
-        //        public Builder cancelTextColor(int color) {
-        //            this.cancelTextColor = color;
-        //            return this;
-        //        }
-
-        /**
-         * 取消按钮文字颜色
-         *
-         * @param color
-         * @return
-         */
-        public Builder cancelTextColor(String color) {
-            this.cancelTextColorStr = color;
-            return this;
-        }
 
         /**
          * item文字颜色
@@ -665,10 +584,10 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
         // 设置可见条目数量
         mViewProvince.setVisibleItems(visibleItems);
         mViewCity.setVisibleItems(visibleItems);
-        mViewDistrict.setVisibleItems(visibleItems);
-        mViewProvince.setCyclic(isProvinceCyclic);
-        mViewCity.setCyclic(isCityCyclic);
-        mViewDistrict.setCyclic(isDistrictCyclic);
+//        mViewDistrict.setVisibleItems(visibleItems);
+        mViewProvince.setCyclic(false);
+        mViewCity.setCyclic(false);
+//        mViewDistrict.setCyclic(isDistrictCyclic);
         arrayWheelAdapter.setPadding(padding);
         arrayWheelAdapter.setTextColor(textColor);
         arrayWheelAdapter.setTextSize(textSize);
@@ -678,115 +597,32 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
     }
 
     /**
-     * 解析省市区的XML数据
-     */
-
-    protected void initProvinceDatas(Context context) {
-        List<ProvinceModel> provinceList = null;
-        AssetManager asset = context.getAssets();
-        try {
-            InputStream input = asset.open("province_data.xml");
-            // 创建一个解析xml的工厂对象
-            SAXParserFactory spf = SAXParserFactory.newInstance();
-            // 解析xml
-            SAXParser parser = spf.newSAXParser();
-            XmlParserHandler handler = new XmlParserHandler();
-            parser.parse(input, handler);
-            input.close();
-            // 获取解析出来的数据
-            provinceList = handler.getDataList();
-            //*/ 初始化默认选中的省、市、区
-            if (provinceList != null && !provinceList.isEmpty()) {
-                mCurrentProviceName = provinceList.get(0).getName();
-                List<CityModel> cityList = provinceList.get(0).getCityList();
-                if (cityList != null && !cityList.isEmpty()) {
-                    mCurrentCityName = cityList.get(0).getName();
-                    List<DistrictModel> districtList = cityList.get(0).getDistrictList();
-                    mCurrentDistrictName = districtList.get(0).getName();
-                    mCurrentZipCode = districtList.get(0).getZipcode();
-                }
-            }
-            //*/
-            mProvinceDatas = new String[provinceList.size()];
-            for (int i = 0; i < provinceList.size(); i++) {
-                // 遍历所有省的数据
-                mProvinceDatas[i] = provinceList.get(i).getName();
-                List<CityModel> cityList = provinceList.get(i).getCityList();
-                String[] cityNames = new String[cityList.size()];
-                for (int j = 0; j < cityList.size(); j++) {
-                    // 遍历省下面的所有市的数据
-                    cityNames[j] = cityList.get(j).getName();
-                    List<DistrictModel> districtList = cityList.get(j).getDistrictList();
-                    String[] distrinctNameArray = new String[districtList.size()];
-                    DistrictModel[] distrinctArray = new DistrictModel[districtList.size()];
-                    for (int k = 0; k < districtList.size(); k++) {
-                        // 遍历市下面所有区/县的数据
-                        DistrictModel districtModel = new DistrictModel(districtList.get(k).getName(),
-                                districtList.get(k).getZipcode());
-                        // 区/县对于的邮编，保存到mZipcodeDatasMap
-//                        JLogUtils.D("zipcode: " + mProvinceDatas[i] + cityNames[j] +
-//                                districtList.get(k).getName() + "  " + districtList.get(k).getZipcode());
-                        mZipcodeDatasMap.put(mProvinceDatas[i] + cityNames[j] +
-                                        districtList.get(k).getName(),
-                                districtList.get(k).getZipcode());
-                        distrinctArray[k] = districtModel;
-                        distrinctNameArray[k] = districtModel.getName();
-                    }
-                    // 市-区/县的数据，保存到mDistrictDatasMap
-                    mDistrictDatasMap.put(cityNames[j], distrinctNameArray);
-                }
-                // 省-市的数据，保存到mCitisDatasMap
-                mCitisDatasMap.put(provinceList.get(i).getName(), cityNames);
-            }
-            Log.d("test", mCitisDatasMap.toString());
-        } catch (Throwable e) {
-            e.printStackTrace();
-        } finally {
-
-        }
-    }
-
-    /**
      * 根据当前的市，更新区WheelView的信息
      */
     private void updateAreas() {
         int pCurrent = mViewCity.getCurrentItem();
         mCurrentCityName = mCitisDatasMap.get(mCurrentProviceName)[pCurrent];
-        String[] areas = mDistrictDatasMap.get(mCurrentCityName);
 
-        if (areas == null) {
-            areas = new String[]{""};
-        }
+    }
 
-        int districtDefault = -1;
-        if (!TextUtils.isEmpty(defaultDistrict) && areas.length > 0) {
-            for (int i = 0; i < areas.length; i++) {
-                if (areas[i].contains(defaultDistrict)) {
-                    districtDefault = i;
-                    break;
-                }
+    /**
+     * 构建省市数据
+     */
+    public void initProvinceNewDatas() {
+//        mCitisDatasMap ＝
+        mProvinceDatas = new String[mBuilder.mProvinceBean.getData().size()];
+
+        for (int i = 0; i < mBuilder.mProvinceBean.getData().size(); i++) {
+            String province_name = mBuilder.mProvinceBean.getData().get(i).getProvince_name();
+            mProvinceDatas[i] = province_name;
+            String[] citys = new String[mBuilder.mProvinceBean.getData().get(i).getCitys().size()];
+            for (int j = 0; j < mBuilder.mProvinceBean.getData().get(i).getCitys().size(); j++) {
+                citys[j] = mBuilder.mProvinceBean.getData().get(i).getCitys().get(j).getCity_name();
             }
+            mCitisDatasMap.put(province_name, citys);
         }
 
-        ArrayWheelAdapter districtWheel = new ArrayWheelAdapter<String>(context, areas);
-        // 设置可见条目数量
-        districtWheel.setTextColor(textColor);
-        districtWheel.setTextSize(textSize);
-        mViewDistrict.setViewAdapter(districtWheel);
-        if (-1 != districtDefault) {
-            mViewDistrict.setCurrentItem(districtDefault);
-            //获取默认设置的区
-            mCurrentDistrictName = defaultDistrict;
-        } else {
-            mViewDistrict.setCurrentItem(0);
-            //获取第一个区名称
-            mCurrentDistrictName = mDistrictDatasMap.get(mCurrentCityName)[0];
 
-        }
-        districtWheel.setPadding(padding);
-//        JLogUtils.D("zipcode key: " + mCurrentProviceName + mCurrentCityName + mCurrentDistrictName);
-        //获取第一个区名称
-        mCurrentZipCode = mZipcodeDatasMap.get(mCurrentProviceName + mCurrentCityName + mCurrentDistrictName);
     }
 
     /**
@@ -803,13 +639,16 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
         int cityDefault = -1;
         if (!TextUtils.isEmpty(defaultCityName) && cities.length > 0) {
             for (int i = 0; i < cities.length; i++) {
-                if (cities[i].contains(defaultCityName)) {
-                    cityDefault = i;
-                    break;
+                try {
+                    if (cities[i].contains(defaultCityName)) {
+                        cityDefault = i;
+                        break;
+                    }
+                } catch (Exception e) {
+
                 }
             }
         }
-
         ArrayWheelAdapter cityWheel = new ArrayWheelAdapter<String>(context, cities);
         // 设置可见条目数量
         cityWheel.setTextColor(textColor);
@@ -822,7 +661,7 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
         }
 
         cityWheel.setPadding(padding);
-        updateAreas();
+//        updateAreas();
     }
 
     @Override
@@ -857,10 +696,6 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
             updateCities();
         } else if (wheel == mViewCity) {
             updateAreas();
-        } else if (wheel == mViewDistrict) {
-            mCurrentDistrictName = mDistrictDatasMap.get(mCurrentCityName)[newValue];
-//            JLogUtils.D("zipcode key: " + mCurrentProviceName + mCurrentCityName + mCurrentDistrictName);
-            mCurrentZipCode = mZipcodeDatasMap.get(mCurrentProviceName + mCurrentCityName + mCurrentDistrictName);
         }
     }
 }

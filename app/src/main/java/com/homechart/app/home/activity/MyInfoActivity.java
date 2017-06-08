@@ -118,19 +118,6 @@ public class MyInfoActivity
         } else {
             getUserInfo();
         }
-        cityPicker = new CityPicker.Builder(MyInfoActivity.this).textSize(20)
-                .titleTextColor("#000000")
-                .backgroundPop(R.color.white)
-                .province("北京市")
-                .city("北京市")
-                .textColor(Color.parseColor("#000000"))
-                .provinceCyclic(true)
-                .cityCyclic(false)
-                .districtCyclic(false)
-                .visibleItemsCount(7)
-                .itemPadding(10)
-                .onlyShowProvinceAndCity(true)
-                .build();
 
     }
 
@@ -227,13 +214,27 @@ public class MyInfoActivity
     private void openCity() {
 
         if (provinceBean != null) {
+
+            cityPicker = new CityPicker.Builder(MyInfoActivity.this,provinceBean).textSize(20)
+                    .titleTextColor("#000000")
+                    .backgroundPop(R.color.white)
+                    .province("北京市")
+                    .city("朝阳区")
+                    .textColor(Color.parseColor("#000000"))
+                    .provinceCyclic(true)
+                    .cityCyclic(false)
+                    .districtCyclic(false)
+                    .visibleItemsCount(7)
+                    .itemPadding(10)
+                    .onlyShowProvinceAndCity(true)
+                    .build();
+
             cityPicker.show();
             cityPicker.setOnCityItemClickListener(new CityPicker.OnCityItemClickListener() {
                 @Override
                 public void onSelected(String... citySelected) {
 
-                    Toast.makeText(MyInfoActivity.this, "选择结果：\n省：" + citySelected[0] + "\n市：" + citySelected[1] + "\n区："
-                            + citySelected[2] + "\n邮编：" + citySelected[3], Toast.LENGTH_LONG).show();
+                    Toast.makeText(MyInfoActivity.this, "选择结果：\n省：" + citySelected[0] + "\n市：" + citySelected[1]  + "\n邮编：" + citySelected[2], Toast.LENGTH_LONG).show();
                 }
 
                 @Override
