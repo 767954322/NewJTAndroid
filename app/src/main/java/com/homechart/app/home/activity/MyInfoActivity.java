@@ -24,6 +24,7 @@ import com.homechart.app.home.bean.fensi.FenSiBean;
 import com.homechart.app.home.bean.userinfo.UserCenterInfoBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.RoundImageView;
+import com.homechart.app.timepiker.citypickerview.widget.AgePiker;
 import com.homechart.app.timepiker.citypickerview.widget.CityPicker;
 import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.SharedPreferencesUtils;
@@ -58,6 +59,7 @@ public class MyInfoActivity
     private int mTag = 0;
     private RelativeLayout rl_myinfo_location;
     private RelativeLayout rl_myinfo_header;
+    private RelativeLayout rl_myinfo_age;
     private RoundImageView iv_myinfo_header;
     private UserCenterInfoBean userCenterInfoBean;
     private EditText tv_myinfo_nikename;
@@ -67,6 +69,8 @@ public class MyInfoActivity
     private TextView tv_myinfo_location;
     private CityPicker cityPicker;
     private String mUserId;
+    private AgePiker agerPicker;
+    private TextView tv_myinfo_age;
 
     @Override
     protected int getLayoutResId() {
@@ -86,9 +90,11 @@ public class MyInfoActivity
         mIBBack = (ImageButton) findViewById(R.id.nav_left_imageButton);
         mTVTital = (TextView) findViewById(R.id.tv_tital_comment);
         mTVBaoCun = (TextView) findViewById(R.id.tv_content_right);
+        tv_myinfo_age = (TextView) findViewById(R.id.tv_myinfo_age);
         tv_myinfo_location = (TextView) findViewById(R.id.tv_myinfo_location);
         rl_myinfo_header = (RelativeLayout) findViewById(R.id.rl_myinfo_header);
         rl_myinfo_location = (RelativeLayout) findViewById(R.id.rl_myinfo_location);
+        rl_myinfo_age = (RelativeLayout) findViewById(R.id.rl_myinfo_age);
         iv_myinfo_header = (RoundImageView) findViewById(R.id.iv_myinfo_header);
         tv_myinfo_nikename = (EditText) findViewById(R.id.tv_myinfo_nikename);
         rg_sex = (RadioGroup) findViewById(R.id.rg_sex);
@@ -104,6 +110,7 @@ public class MyInfoActivity
         mTVBaoCun.setOnClickListener(this);
         rl_myinfo_location.setOnClickListener(this);
         rl_myinfo_header.setOnClickListener(this);
+        rl_myinfo_age.setOnClickListener(this);
         rg_sex.setOnCheckedChangeListener(this);
 
     }
@@ -205,6 +212,28 @@ public class MyInfoActivity
                 } else {
                     openCity();
                 }
+
+                break;
+
+            case R.id.rl_myinfo_age:
+                agerPicker = new AgePiker.Builder(MyInfoActivity.this, provinceBean).textSize(20)
+                        .itemPadding(10)
+                        .build();
+
+                agerPicker.show();
+                agerPicker.setOnCityItemClickListener(new AgePiker.OnCityItemClickListener() {
+                    @Override
+                    public void onSelected(String... citySelected) {
+
+                        tv_myinfo_age.setText(citySelected[0]);
+
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        Toast.makeText(MyInfoActivity.this, "已取消", Toast.LENGTH_LONG).show();
+                    }
+                });
 
 
                 break;
