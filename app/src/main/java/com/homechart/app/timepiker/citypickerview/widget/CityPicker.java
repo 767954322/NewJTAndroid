@@ -288,6 +288,11 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
         mTvOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if (mCurrentCityName.equals("和平区")) {
+                    mCurrentCityName = mCitisDatasMap.get(mCurrentProviceName)[0];
+                }
+
                 listener.onSelected(mCurrentProviceName, mCurrentCityName, mCurrentZipCode);
 
                 hide();
