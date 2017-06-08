@@ -6,11 +6,18 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.homechart.app.utils.UILImageLoader;
 import com.homechart.app.utils.imageloader.ImageUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
+
+import cn.finalteam.galleryfinal.CoreConfig;
+import cn.finalteam.galleryfinal.FunctionConfig;
+import cn.finalteam.galleryfinal.GalleryFinal;
+import cn.finalteam.galleryfinal.ImageLoader;
+import cn.finalteam.galleryfinal.ThemeConfig;
 
 /**
  * Created by gumenghao on 17/5/17.
@@ -28,9 +35,23 @@ public class MyApplication extends Application {
         myApplication = this;
         queue = Volley.newRequestQueue(this);
         initImageLoader();
+        initPike();
         initYouMeng();
         //禁止默认的页面统计方式，这样将不会再自动统计Activity
         MobclickAgent.openActivityDurationTrack(false);
+    }
+
+    private void initPike() {
+        ThemeConfig themeConfig = ThemeConfig.DEFAULT;
+        FunctionConfig functionConfig = new FunctionConfig.Builder()
+                .setMutiSelectMaxSize(1)
+                .setEnableEdit(true)
+                .setEnableCrop(true)
+                .setCropSquare(true).build();
+        ImageLoader imageLoader = new UILImageLoader();
+        CoreConfig coreConfig = new CoreConfig.Builder(this, imageLoader, themeConfig)
+                .setFunctionConfig(functionConfig).build();
+        GalleryFinal.init(coreConfig);
     }
 
     private void initImageLoader() {

@@ -54,4 +54,8 @@
     <string name="fensi_tital">粉丝</string>
     <string name="setactivity_tital">设置</string>
     <string name="setactivity_baocun">保存</string>
+
+    <!-- MyInfoActivity -->
+
+    <string name="citydata_error">城市信息获取失败</string>
 </resources>
