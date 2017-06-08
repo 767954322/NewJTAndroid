@@ -66,7 +66,6 @@ public class AgePiker implements CanShow, OnWheelChangedListener {
     protected String mCurrentProviceName;
 
 
-
     private OnCityItemClickListener listener;
 
     public interface OnCityItemClickListener {
@@ -97,6 +96,7 @@ public class AgePiker implements CanShow, OnWheelChangedListener {
     /**
      * 滚轮显示的item个数
      */
+    //TODO  一页显示的条数
     private static final int DEF_VISIBLE_ITEMS = 7;
 
     // Count of visible items
@@ -297,7 +297,6 @@ public class AgePiker implements CanShow, OnWheelChangedListener {
         private String titleBackgroundColorStr = "#E9E9E9";
 
 
-
         /**
          * 第一次默认的显示省份，一般配合定位，使用
          */
@@ -324,7 +323,6 @@ public class AgePiker implements CanShow, OnWheelChangedListener {
         }
 
 
-
         /**
          * 设置标题
          *
@@ -335,7 +333,6 @@ public class AgePiker implements CanShow, OnWheelChangedListener {
             this.mTitle = mtitle;
             return this;
         }
-
 
 
         /**
@@ -383,7 +380,8 @@ public class AgePiker implements CanShow, OnWheelChangedListener {
         ArrayWheelAdapter arrayWheelAdapter = new ArrayWheelAdapter<String>(context, mProvinceDatas);
         mViewProvince.setViewAdapter(arrayWheelAdapter);
         //获取所设置的省的位置，直接定位到该位置
-            mViewProvince.setCurrentItem(3);
+        //TODO  位置
+        mViewProvince.setCurrentItem(3);
         // 设置可见条目数量
         mViewProvince.setVisibleItems(visibleItems);
         mViewCity.setVisibleItems(visibleItems);
@@ -402,7 +400,8 @@ public class AgePiker implements CanShow, OnWheelChangedListener {
      */
     public void initProvinceNewDatas() {
 
-        mProvinceDatas = new String[]{"1","2","3","4","5","6","7"};
+        //TODO  内容
+        mProvinceDatas = new String[]{"1", "2", "3", "4", "5", "6", "7"};
 
     }
 
