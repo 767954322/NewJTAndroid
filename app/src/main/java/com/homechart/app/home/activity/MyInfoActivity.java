@@ -26,6 +26,7 @@ import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.timepiker.citypickerview.widget.CityPicker;
 import com.homechart.app.utils.GsonUtil;
+import com.homechart.app.utils.SharedPreferencesUtils;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.imageloader.ImageUtils;
@@ -65,6 +66,7 @@ public class MyInfoActivity
     private RadioButton rb_nv;
     private TextView tv_myinfo_location;
     private CityPicker cityPicker;
+    private String mUserId;
 
     @Override
     protected int getLayoutResId() {
@@ -76,6 +78,7 @@ public class MyInfoActivity
         super.initExtraBundle();
 
         userCenterInfoBean = (UserCenterInfoBean) getIntent().getSerializableExtra("info");
+        mUserId = SharedPreferencesUtils.readString(ClassConstant.LoginSucces.USER_ID);
     }
 
     @Override
@@ -109,13 +112,12 @@ public class MyInfoActivity
     protected void initData(Bundle savedInstanceState) {
         mTVTital.setText(R.string.setactivity_tital);
         mTVBaoCun.setText(R.string.setactivity_baocun);
-
-        if (null != userCenterInfoBean && null != userCenterInfoBean.getUser_info()) {
-            ImageUtils.displayRoundImage(userCenterInfoBean.getUser_info().getAvatar().getBig(), iv_myinfo_header);
-            tv_myinfo_nikename.setText(userCenterInfoBean.getUser_info().getNickname());
-            tv_myinfo_location.setText(userCenterInfoBean.getUser_info().getLocation());
-        }
         getCitydata(mTag);
+        if (userCenterInfoBean != null) {
+            changeUI();
+        } else {
+            getUserInfo();
+        }
         cityPicker = new CityPicker.Builder(MyInfoActivity.this).textSize(20)
                 .titleTextColor("#000000")
                 .backgroundPop(R.color.white)
@@ -129,6 +131,48 @@ public class MyInfoActivity
                 .itemPadding(10)
                 .onlyShowProvinceAndCity(true)
                 .build();
+
+    }
+
+    private void changeUI() {
+        if (null != userCenterInfoBean && null != userCenterInfoBean.getUser_info()) {
+            ImageUtils.displayRoundImage(userCenterInfoBean.getUser_info().getAvatar().getBig(), iv_myinfo_header);
+            tv_myinfo_nikename.setText(userCenterInfoBean.getUser_info().getNickname());
+            tv_myinfo_location.setText(userCenterInfoBean.getUser_info().getLocation());
+        }
+    }
+
+    //获取用户信息
+    private void getUserInfo() {
+
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                ToastUtils.showCenter(MyInfoActivity.this, getString(R.string.userinfo_get_error));
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+
+                        Message msg = new Message();
+                        msg.arg1 = 3;
+                        msg.obj = data_msg;
+                        handler.sendMessage(msg);
+                    } else {
+                        ToastUtils.showCenter(MyInfoActivity.this, error_msg);
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        };
+        MyHttpManager.getInstance().getUserInfo(mUserId, callBack);
+
 
     }
 
@@ -169,23 +213,38 @@ public class MyInfoActivity
                 break;
             case R.id.rl_myinfo_location:
 
-                cityPicker.show();
-                cityPicker.setOnCityItemClickListener(new CityPicker.OnCityItemClickListener() {
-                    @Override
-                    public void onSelected(String... citySelected) {
+                if (provinceBean == null) {
+                    getCitydata(mTag);
+                } else {
+                    openCity();
+                }
 
-                        Toast.makeText(MyInfoActivity.this, "选择结果：\n省：" + citySelected[0] + "\n市：" + citySelected[1] + "\n区："
-                                + citySelected[2] + "\n邮编：" + citySelected[3], Toast.LENGTH_LONG).show();
-                    }
-
-                    @Override
-                    public void onCancel() {
-                        Toast.makeText(MyInfoActivity.this, "已取消", Toast.LENGTH_LONG).show();
-                    }
-                });
 
                 break;
         }
+    }
+
+    private void openCity() {
+
+        if (provinceBean != null) {
+            cityPicker.show();
+            cityPicker.setOnCityItemClickListener(new CityPicker.OnCityItemClickListener() {
+                @Override
+                public void onSelected(String... citySelected) {
+
+                    Toast.makeText(MyInfoActivity.this, "选择结果：\n省：" + citySelected[0] + "\n市：" + citySelected[1] + "\n区："
+                            + citySelected[2] + "\n邮编：" + citySelected[3], Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onCancel() {
+                    Toast.makeText(MyInfoActivity.this, "已取消", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            getCitydata(mTag);
+        }
+
     }
 
     //获取省市信息
@@ -233,10 +292,14 @@ public class MyInfoActivity
             int tag = msg.arg1;
             if (tag == 1 && null != provinceBean) {//传1：为未获取城市数据，重新获取的，传0：为刚进来获取数据，不需要操作
                 //TODO 打开省市区
-
+                openCity();
             } else if (tag == 2) {//拍照回调
                 path = (String) msg.obj;
                 ImageUtils.displayRoundImage("file://" + path, iv_myinfo_header);
+            } else if (tag == 3) { //获取个人资料的返回
+                String info = (String) msg.obj;
+                userCenterInfoBean = GsonUtil.jsonToBean(info, UserCenterInfoBean.class);
+                changeUI();
             }
         }
     };
