@@ -246,7 +246,7 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
         popwindow.setBackgroundDrawable(new ColorDrawable(UIUtils.getColor(R.color.touming)));
         popwindow.setAnimationStyle(R.style.AnimBottom);
         popwindow.setTouchable(true);
-        popwindow.setOutsideTouchable(false);
+        popwindow.setOutsideTouchable(true);
         popwindow.setFocusable(true);
 
 
@@ -257,29 +257,29 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
             mRelativeTitleBg.setBackgroundColor(Color.parseColor(this.titleBackgroundColorStr));
         }
 
-        /**
-         * 设置标题
-         */
-        if (!TextUtils.isEmpty(this.mTitle)) {
-            mTvTitle.setText(this.mTitle);
-        }
-
-
-        //设置确认按钮文字颜色
-        if (!TextUtils.isEmpty(this.titleTextColorStr)) {
-            mTvTitle.setTextColor(Color.parseColor(this.titleTextColorStr));
-        }
-
-
-        //设置确认按钮文字颜色
-        if (!TextUtils.isEmpty(this.confirmTextColorStr)) {
-            mTvOK.setTextColor(Color.parseColor(this.confirmTextColorStr));
-        }
-
-        //设置取消按钮文字颜色
-        if (!TextUtils.isEmpty(this.cancelTextColorStr)) {
-            mTvCancel.setTextColor(Color.parseColor(this.cancelTextColorStr));
-        }
+//        /**
+//         * 设置标题
+//         */
+//        if (!TextUtils.isEmpty(this.mTitle)) {
+//            mTvTitle.setText(this.mTitle);
+//        }
+//
+//
+//        //设置确认按钮文字颜色
+//        if (!TextUtils.isEmpty(this.titleTextColorStr)) {
+//            mTvTitle.setTextColor(Color.parseColor(this.titleTextColorStr));
+//        }
+//
+//
+//        //设置确认按钮文字颜色
+//        if (!TextUtils.isEmpty(this.confirmTextColorStr)) {
+//            mTvOK.setTextColor(Color.parseColor(this.confirmTextColorStr));
+//        }
+//
+//        //设置取消按钮文字颜色
+//        if (!TextUtils.isEmpty(this.cancelTextColorStr)) {
+//            mTvCancel.setTextColor(Color.parseColor(this.cancelTextColorStr));
+//        }
 
 
         //只显示省市两级联动

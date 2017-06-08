@@ -155,13 +155,9 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
             case R.id.iv_center_header:
             case R.id.rl_wodeanli:
 
-                if (userCenterInfoBean != null) {
-                    Intent intent_wodeanli = new Intent(activity, MyInfoActivity.class);
-                    intent_wodeanli.putExtra("info", userCenterInfoBean);
-                    startActivity(intent_wodeanli);
-                } else {
-                    ToastUtils.showCenter(activity, "个人信息获取失败！");
-                }
+                Intent intent_wodeanli = new Intent(activity, MyInfoActivity.class);
+                intent_wodeanli.putExtra("info", userCenterInfoBean);
+                startActivity(intent_wodeanli);
 
                 break;
             case R.id.rl_set:

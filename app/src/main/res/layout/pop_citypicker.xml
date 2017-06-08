@@ -1,32 +1,33 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/ll_title_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/rl_title"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:background="@color/province_line_border">
+            android:layout_height="@dimen/font_44"
+            android:background="@color/bg_f7f7f7">
 
             <TextView
                 android:id="@+id/tv_confirm"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="15dp"
+                android:layout_marginRight="@dimen/font_15"
                 android:gravity="center_vertical"
                 android:text="确定"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
+                android:textColor="@color/bg_e79056"
+                android:textSize="@dimen/size_15" />
 
             <TextView
                 android:id="@+id/tv_title"
@@ -35,6 +36,7 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center_vertical"
                 android:text="选择地区"
+                android:visibility="gone"
                 android:textColor="#000000"
                 android:textSize="18sp" />
 
@@ -46,8 +48,8 @@
                 android:layout_marginLeft="15dp"
                 android:gravity="center_vertical"
                 android:text="取消"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
+                android:textColor="@color/bg_262626"
+                android:textSize="@dimen/size_15" />
 
         </RelativeLayout>
 
