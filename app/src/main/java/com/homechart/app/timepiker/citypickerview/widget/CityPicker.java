@@ -39,6 +39,7 @@ import javax.xml.parsers.SAXParserFactory;
  */
 public class CityPicker implements CanShow, OnWheelChangedListener {
 
+    private final View view_pop_tital;
     private Context context;
 
     private PopupWindow popwindow;
@@ -237,6 +238,7 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
         mTvOK = (TextView) popview.findViewById(R.id.tv_confirm);
         mTvTitle = (TextView) popview.findViewById(R.id.tv_title);
         mTvCancel = (TextView) popview.findViewById(R.id.tv_cancel);
+        view_pop_tital = (View) popview.findViewById(R.id.view_pop_tital);
 
 
         popwindow = new PopupWindow(popview, LinearLayout.LayoutParams.MATCH_PARENT,
@@ -249,6 +251,12 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
         popwindow.setOutsideTouchable(true);
         popwindow.setFocusable(true);
 
+        view_pop_tital.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popwindow.dismiss();
+            }
+        });
 
         /**
          * 设置标题背景颜色
