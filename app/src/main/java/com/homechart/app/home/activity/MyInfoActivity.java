@@ -234,12 +234,16 @@ public class MyInfoActivity
                 @Override
                 public void onSelected(String... citySelected) {
 
+
                     Toast.makeText(MyInfoActivity.this,
                             "选择结果：\n省：" + citySelected[0] +
                                     "\n市：" + citySelected[1] +
                                     "\n省份编号：" + citySelected[2] +
                                     "\n城市编号：" + citySelected[3],
                             Toast.LENGTH_LONG).show();
+
+                    tv_myinfo_location.setText(citySelected[0] + "  " + citySelected[1]);
+
                 }
 
                 @Override

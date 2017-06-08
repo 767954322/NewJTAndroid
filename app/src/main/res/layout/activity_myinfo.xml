@@ -201,7 +201,6 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/font_15"
                     android:layout_toLeftOf="@+id/iv_myinfo_location_icon"
-                    android:text="北京  朝阳"
                     android:textColor="@color/bg_b2b2b2"
                     android:textSize="@dimen/size_14" />
 
