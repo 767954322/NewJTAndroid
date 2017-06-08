@@ -15,7 +15,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.homechart.app.R;
+import com.homechart.app.home.bean.city.CityItemBean;
 import com.homechart.app.home.bean.city.ProvinceBean;
+import com.homechart.app.home.bean.province.MyCityBean;
 import com.homechart.app.timepiker.citypickerview.model.CityModel;
 import com.homechart.app.timepiker.citypickerview.model.DistrictModel;
 import com.homechart.app.timepiker.citypickerview.model.ProvinceModel;
@@ -26,6 +28,7 @@ import com.homechart.app.timepiker.citypickerview.widget.wheel.adapters.ArrayWhe
 import com.homechart.app.utils.UIUtils;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,6 +73,7 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
      * key - 省 value - 市
      */
     protected Map<String, String[]> mCitisDatasMap = new HashMap<String, String[]>();
+    protected Map<String, List<MyCityBean>> mCitisID = new HashMap<String, List<MyCityBean>>();
 
     /**
      * key - 市 values - 区
@@ -292,8 +296,16 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
                 if (mCurrentCityName.equals("和平区")) {
                     mCurrentCityName = mCitisDatasMap.get(mCurrentProviceName)[0];
                 }
+                List<MyCityBean> list = mCitisID.get(mCurrentProviceName);
+                MyCityBean myCityBean = null;
+                for (int i = 0; i < list.size(); i++) {
+                    String cityname = list.get(i).getCityName().trim();
+                    if (cityname.equals(mCurrentCityName.trim())) {
+                        myCityBean = list.get(i);
+                    }
+                }
 
-                listener.onSelected(mCurrentProviceName, mCurrentCityName, mCurrentZipCode);
+                listener.onSelected(mCurrentProviceName, mCurrentCityName, myCityBean.getProvinceid(), myCityBean.getCityid());
 
                 hide();
             }
@@ -620,10 +632,14 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
         for (int i = 0; i < mBuilder.mProvinceBean.getData().size(); i++) {
             String province_name = mBuilder.mProvinceBean.getData().get(i).getProvince_name();
             mProvinceDatas[i] = province_name;
+            List<MyCityBean> list = new ArrayList<>();
             String[] citys = new String[mBuilder.mProvinceBean.getData().get(i).getCitys().size()];
             for (int j = 0; j < mBuilder.mProvinceBean.getData().get(i).getCitys().size(); j++) {
-                citys[j] = mBuilder.mProvinceBean.getData().get(i).getCitys().get(j).getCity_name();
+                CityItemBean cityItemBean = mBuilder.mProvinceBean.getData().get(i).getCitys().get(j);
+                citys[j] = cityItemBean.getCity_name();
+                list.add(new MyCityBean(cityItemBean.getCity_name(), cityItemBean.getCity_id(), cityItemBean.getFather_id()));
             }
+            mCitisID.put(province_name, list);
             mCitisDatasMap.put(province_name, citys);
         }
 
