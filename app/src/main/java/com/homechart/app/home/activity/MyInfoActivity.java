@@ -1,5 +1,6 @@
 package com.homechart.app.home.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -446,6 +447,8 @@ public class MyInfoActivity
                     if (error_code == 0) {
                         CustomProgress.cancelDialog();
                         ToastUtils.showCenter(MyInfoActivity.this, "保存成功");
+                        Intent intent_result = getIntent();
+                        setResult(1, intent_result);
                         MyInfoActivity.this.finish();
 
                     } else {

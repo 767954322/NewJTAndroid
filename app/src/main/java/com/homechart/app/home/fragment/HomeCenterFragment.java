@@ -16,6 +16,8 @@ import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.home.activity.FenSiListActivity;
 import com.homechart.app.home.activity.GuanZuListActivity;
+import com.homechart.app.home.activity.HomeActivity;
+import com.homechart.app.home.activity.LoginActivity;
 import com.homechart.app.home.activity.MessagesListActivity;
 import com.homechart.app.home.activity.MyInfoActivity;
 import com.homechart.app.home.activity.SetActivity;
@@ -157,7 +159,7 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
 
                 Intent intent_wodeanli = new Intent(activity, MyInfoActivity.class);
                 intent_wodeanli.putExtra("info", userCenterInfoBean);
-                startActivity(intent_wodeanli);
+                startActivityForResult(intent_wodeanli, 0);
 
                 break;
             case R.id.rl_set:
@@ -227,4 +229,14 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
     }
 
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //修改后的返回
+        if (requestCode == 0 && resultCode == 1) {
+            getUserInfo();
+        }
+
+    }
 }
