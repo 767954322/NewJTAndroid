@@ -200,7 +200,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/font_15"
                     android:layout_toLeftOf="@+id/iv_myinfo_location_icon"
-                    android:textColor="@color/bg_b2b2b2"
+                    android:textColor="@color/bg_262626"
                     android:textSize="@dimen/size_14" />
 
             </RelativeLayout>
@@ -394,8 +394,8 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/font_15"
                     android:layout_toLeftOf="@+id/iv_myinfo_shiming_icon"
-                    android:text="未设置"
-                    android:textColor="@color/bg_b2b2b2"
+                    android:text="设计师"
+                    android:textColor="@color/bg_262626"
                     android:textSize="@dimen/size_14" />
 
             </RelativeLayout>

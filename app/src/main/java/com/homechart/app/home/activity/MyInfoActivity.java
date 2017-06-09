@@ -314,7 +314,9 @@ public class MyInfoActivity
                 if (userCenterInfoBean != null && !userCenterInfoBean.getUser_info().getProfession().equals("0")) {
 
                     //TODO 跳转专业用户资料页
-                    ToastUtils.showCenter(MyInfoActivity.this, "跳转到设计师资料页");
+                    Intent intent = new Intent(MyInfoActivity.this, DesinerInfoActivity.class);
+                    startActivity(intent);
+
                 }
 
                 break;
