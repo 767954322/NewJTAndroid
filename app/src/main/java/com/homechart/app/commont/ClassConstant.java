@@ -64,6 +64,12 @@ public class ClassConstant {
         public static final String PASSWORD = "password";
     }
 
+    public static class BundleMobile {
+        public static final String MOBILE = "mobile";
+        public static final String CAPTCHA = "captcha";
+        public static final String PASSWORD = "password";
+    }
+
     public static class Parame {
         public static final String ERROR_CODE = "error_code";
         public static final String ERROR_MSG = "error_msg";
@@ -101,6 +107,7 @@ public class ClassConstant {
         public static final String LAST_ID = "last_id";
         public static final String N = "n";
     }
+
     //获取收藏列表
     public static class ShouCangList {
         public static final String USER_ID = "user_id";

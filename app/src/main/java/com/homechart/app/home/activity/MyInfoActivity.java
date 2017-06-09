@@ -302,8 +302,8 @@ public class MyInfoActivity
 
                 if (userCenterInfoBean != null && TextUtils.isEmpty(userCenterInfoBean.getUser_info().getMobile())) {
 
-                    //TODO 跳转绑定页绑定页
-                    ToastUtils.showCenter(MyInfoActivity.this, "跳转到绑定页");
+                    Intent intent = new Intent(MyInfoActivity.this, BundleMobileActivity.class);
+                    startActivityForResult(intent, 0);
 
                 }
 
@@ -370,7 +370,7 @@ public class MyInfoActivity
                 et_myinfo_jianjie.setText(userCenterInfoBean.getUser_info().getSlogan());
             }
 
-            if(!TextUtils.isEmpty(userCenterInfoBean.getUser_info().getAge_group())){
+            if (!TextUtils.isEmpty(userCenterInfoBean.getUser_info().getAge_group())) {
                 tv_myinfo_age.setText(userCenterInfoBean.getUser_info().getAge_group());
             }
 
@@ -656,5 +656,15 @@ public class MyInfoActivity
     public void onFails() {
         header_id = "";
         CustomProgress.cancelDialog();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 0 && resultCode == 1) {//绑定手机号嘛回调
+
+        }
+
     }
 }

@@ -15,18 +15,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
-import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.commont.RegexUtil;
 import com.homechart.app.home.base.BaseActivity;
-import com.homechart.app.home.bean.login.LoginBean;
 import com.homechart.app.utils.CustomProgress;
-import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.alertview.AlertView;
@@ -34,8 +30,6 @@ import com.homechart.app.utils.alertview.OnItemClickListener;
 import com.homechart.app.utils.geetest.GeetestTest;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
-import com.umeng.socialize.UMShareAPI;
-import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,7 +40,7 @@ import static com.homechart.app.R.id.tv_tital_comment;
  * Created by gumenghao on 17/6/5.
  */
 
-public class ResetPasswordActivity
+public class BundleMobileActivity
         extends BaseActivity
         implements View.OnClickListener,
         GeetestTest.CallBack {
@@ -76,7 +70,7 @@ public class ResetPasswordActivity
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.activity_reset_password;
+        return R.layout.activity_bundle_mobile;
     }
 
     @Override
@@ -104,7 +98,7 @@ public class ResetPasswordActivity
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        mTVTital.setText(R.string.reset_pass_tital);
+        mTVTital.setText(R.string.bundle_tital);
     }
 
     @Override
@@ -112,7 +106,7 @@ public class ResetPasswordActivity
         switch (v.getId()) {
             case R.id.nav_left_imageButton:
 
-                ResetPasswordActivity.this.finish();
+                BundleMobileActivity.this.finish();
 
                 break;
 
@@ -155,7 +149,7 @@ public class ResetPasswordActivity
 
     //判断权限是否添加
     private void clickSendMessage() {
-        if (ContextCompat.checkSelfPermission(ResetPasswordActivity.this, Manifest.permission.READ_PHONE_STATE)
+        if (ContextCompat.checkSelfPermission(BundleMobileActivity.this, Manifest.permission.READ_PHONE_STATE)
                 != PackageManager.PERMISSION_GRANTED) {
             new AlertView(UIUtils.getString(R.string.addpromiss),
                     null, UIUtils.getString(R.string.setpromiss), new String[]{UIUtils.getString(R.string.okpromiss)},
@@ -163,14 +157,14 @@ public class ResetPasswordActivity
                 @Override
                 public void onItemClick(Object object, int position) {
                     if (position == -1) {
-                        Uri packageURI = Uri.parse(URL_HEADER + ResetPasswordActivity.this.getPackageName());
+                        Uri packageURI = Uri.parse(URL_HEADER + BundleMobileActivity.this.getPackageName());
                         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, packageURI);
                         startActivity(intent);
                     }
                 }
             }).show();
         } else {
-            CustomProgress.show(ResetPasswordActivity.this, getString(R.string.jiazaiing), false, null);
+            CustomProgress.show(BundleMobileActivity.this, getString(R.string.jiazaiing), false, null);
             judgeMobile();
         }
     }
@@ -182,13 +176,13 @@ public class ResetPasswordActivity
         String phone = mETPhone.getText().toString();
         if (TextUtils.isEmpty(phone) || !phone.matches(RegexUtil.PHONE_REGEX)) {
             CustomProgress.cancelDialog();
-            ToastUtils.showCenter(ResetPasswordActivity.this, UIUtils.getString(R.string.phonenum_error));
+            ToastUtils.showCenter(BundleMobileActivity.this, UIUtils.getString(R.string.phonenum_error));
         } else {
             OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
                     CustomProgress.cancelDialog();
-                    ToastUtils.showCenter(ResetPasswordActivity.this, getString(R.string.error_judgemobile));
+                    ToastUtils.showCenter(BundleMobileActivity.this, getString(R.string.error_judgemobile));
                 }
 
                 @Override
@@ -201,11 +195,11 @@ public class ResetPasswordActivity
                             getGYParams();
                         } else {
                             CustomProgress.cancelDialog();
-                            ToastUtils.showCenter(ResetPasswordActivity.this, error_msg);
+                            ToastUtils.showCenter(BundleMobileActivity.this, error_msg);
                         }
                     } catch (JSONException e) {
                         CustomProgress.cancelDialog();
-                        ToastUtils.showCenter(ResetPasswordActivity.this, getString(R.string.error_judgemobile));
+                        ToastUtils.showCenter(BundleMobileActivity.this, getString(R.string.error_judgemobile));
                     }
                 }
             };
@@ -220,13 +214,13 @@ public class ResetPasswordActivity
         String phone = mETPhone.getText().toString();
         if (TextUtils.isEmpty(phone) || !phone.matches(RegexUtil.PHONE_REGEX)) {
             CustomProgress.cancelDialog();
-            ToastUtils.showCenter(ResetPasswordActivity.this, UIUtils.getString(R.string.phonenum_error));
+            ToastUtils.showCenter(BundleMobileActivity.this, UIUtils.getString(R.string.phonenum_error));
         } else {
             OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
                     CustomProgress.cancelDialog();
-                    ToastUtils.showCenter(ResetPasswordActivity.this, getString(R.string.error_judgemobile));
+                    ToastUtils.showCenter(BundleMobileActivity.this, getString(R.string.error_judgemobile));
                 }
 
                 @Override
@@ -239,14 +233,14 @@ public class ResetPasswordActivity
                         String data = jsonObject.getString(ClassConstant.Parame.DATA);
                         if (error_code == 0) {
                             JSONObject dataObject = new JSONObject(data);
-                            GeetestTest.openGtTest(ResetPasswordActivity.this, dataObject, ResetPasswordActivity.this);
+                            GeetestTest.openGtTest(BundleMobileActivity.this, dataObject, BundleMobileActivity.this);
                         } else {
                             CustomProgress.cancelDialog();
-                            ToastUtils.showCenter(ResetPasswordActivity.this, error_msg);
+                            ToastUtils.showCenter(BundleMobileActivity.this, error_msg);
                         }
                     } catch (JSONException e) {
                         CustomProgress.cancelDialog();
-                        ToastUtils.showCenter(ResetPasswordActivity.this, getString(R.string.error_judgemobile));
+                        ToastUtils.showCenter(BundleMobileActivity.this, getString(R.string.error_judgemobile));
                     }
                 }
             };
@@ -262,7 +256,7 @@ public class ResetPasswordActivity
         OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                ToastUtils.showCenter(ResetPasswordActivity.this, getString(R.string.error_sendmessage));
+                ToastUtils.showCenter(BundleMobileActivity.this, getString(R.string.error_sendmessage));
             }
 
             @Override
@@ -274,17 +268,17 @@ public class ResetPasswordActivity
                     if (error_code == 0) {
                         mTVSendJiYan.setEnabled(false);
                         timer.start();
-                        ToastUtils.showCenter(ResetPasswordActivity.this, getString(R.string.succes_sendmessage));
+                        ToastUtils.showCenter(BundleMobileActivity.this, getString(R.string.succes_sendmessage));
                     } else {
-                        ToastUtils.showCenter(ResetPasswordActivity.this, error_msg);
+                        ToastUtils.showCenter(BundleMobileActivity.this, error_msg);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    ToastUtils.showCenter(ResetPasswordActivity.this, getString(R.string.error_sendmessage));
+                    ToastUtils.showCenter(BundleMobileActivity.this, getString(R.string.error_sendmessage));
                 }
             }
         };
-        MyHttpManager.getInstance().sendMessageByJY(ClassConstant.JiYan.FINDPWD, mobile, challenge, validate, seccode, callBack);
+        MyHttpManager.getInstance().sendMessageByJY(ClassConstant.JiYan.BING, mobile, challenge, validate, seccode, callBack);
     }
 
 
@@ -295,22 +289,22 @@ public class ResetPasswordActivity
         String yzCode = mETYanZheng.getText().toString();
         String passWord = mETPassWord.getText().toString();
         if (TextUtils.isEmpty(phone) || !phone.matches(RegexUtil.PHONE_REGEX)) {
-            ToastUtils.showCenter(ResetPasswordActivity.this, UIUtils.getString(R.string.phonenum_error));
+            ToastUtils.showCenter(BundleMobileActivity.this, UIUtils.getString(R.string.phonenum_error));
             return;
         }
         if (TextUtils.isEmpty(yzCode)) {
-            ToastUtils.showCenter(ResetPasswordActivity.this, UIUtils.getString(R.string.yanzhengma_error));
+            ToastUtils.showCenter(BundleMobileActivity.this, UIUtils.getString(R.string.yanzhengma_error));
             return;
         }
         if (TextUtils.isEmpty(passWord) || !passWord.matches(RegexUtil.ADDRESS_REGEX_PASS)) {
-            ToastUtils.showCenter(ResetPasswordActivity.this, UIUtils.getString(R.string.password_error));
+            ToastUtils.showCenter(BundleMobileActivity.this, UIUtils.getString(R.string.password_error));
             return;
         }
 
         OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                ToastUtils.showCenter(ResetPasswordActivity.this, getString(R.string.resetpwd_error));
+                ToastUtils.showCenter(BundleMobileActivity.this, getString(R.string.bundle_error));
             }
 
             @Override
@@ -321,16 +315,18 @@ public class ResetPasswordActivity
                     String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
                     String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
                     if (error_code == 0) {
-                        ToastUtils.showCenter(ResetPasswordActivity.this, UIUtils.getString(R.string.resetpwd_succes));
-                        ResetPasswordActivity.this.finish();
+                        ToastUtils.showCenter(BundleMobileActivity.this, UIUtils.getString(R.string.bundle_succes));
+                        BundleMobileActivity.this.finish();
                     } else {
-                        ToastUtils.showCenter(ResetPasswordActivity.this, error_msg);
+                        ToastUtils.showCenter(BundleMobileActivity.this, error_msg);
                     }
                 } catch (JSONException e) {
+
+                    ToastUtils.showCenter(BundleMobileActivity.this, getString(R.string.bundle_error));
                 }
             }
         };
-        MyHttpManager.getInstance().resetPassWord(phone, yzCode, passWord, callBack);
+        MyHttpManager.getInstance().bundleMobile(phone, yzCode, passWord, callBack);
 
     }
 

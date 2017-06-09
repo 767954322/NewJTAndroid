@@ -42,6 +42,10 @@
     <string name="reset_pass_tital">重置密码</string>
     <string name="resetpwd_error">提交失败，请重新提交！</string>
     <string name="resetpwd_succes">重置密码成功</string>
+    <!-- BundleMobileActivity -->
+    <string name="bundle_tital">手机号绑定</string>
+    <string name="bundle_error">绑定失败，请重新提交！</string>
+    <string name="bundle_succes">手机号码绑定成功</string>
 
     <!-- HomeCenterFragment -->
     <string name="frg_center_tital">我的</string>
