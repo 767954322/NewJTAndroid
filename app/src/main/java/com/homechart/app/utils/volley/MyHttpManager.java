@@ -342,6 +342,36 @@ public class MyHttpManager {
     }
 
     /**
+     * 获取关注列表
+     *
+     * @param user_id
+     * @param last_id
+     * @param n
+     * @param callback
+     */
+    public void getGuanZuList(final String user_id, final String last_id, final String n, OkStringRequest.OKResponseCallback callback) {
+        OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.GUANZHU_LIST, callback) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
+                map.put(ClassConstant.FenSiList.USER_ID, user_id);
+                map.put(ClassConstant.FenSiList.LAST_ID, last_id);
+                map.put(ClassConstant.FenSiList.N, n);
+
+                String signString = PublicUtils.getSinaString(map);
+                String tabMd5String = Md5Util.getMD5twoTimes(signString);
+                map.put(ClassConstant.PublicKey.SIGN, tabMd5String);
+                return map;
+            }
+
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return PublicUtils.getPublicHeader(MyApplication.getInstance());
+            }
+        };
+        queue.add(okStringRequest);
+    }
+
+    /**
      * 获取省市区列表
      *
      * @param callback
@@ -392,6 +422,7 @@ public class MyHttpManager {
         };
         queue.add(okStringRequest);
     }
+
     /**
      * 更改用户信息
      *
@@ -432,7 +463,7 @@ public class MyHttpManager {
      * @param password
      * @param callback
      */
-    public void  bundleMobile(final String mobile, final String captcha, final String password, OkStringRequest.OKResponseCallback callback) {
+    public void bundleMobile(final String mobile, final String captcha, final String password, OkStringRequest.OKResponseCallback callback) {
         OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.BUNDLE_MOBILE, callback) {
 
             @Override
