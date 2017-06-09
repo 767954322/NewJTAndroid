@@ -12,24 +12,24 @@ import java.util.List;
 public class ShouCangBean implements Serializable{
 
 
-    private List<ShouCangItemBean> data;
+    private List<ShouCangItemBean> item_list;
 
-    public ShouCangBean(List<ShouCangItemBean> data) {
-        this.data = data;
+    public ShouCangBean(List<ShouCangItemBean> item_list) {
+        this.item_list = item_list;
     }
 
-    public List<ShouCangItemBean> getData() {
-        return data;
+    public List<ShouCangItemBean> getItem_list() {
+        return item_list;
     }
 
-    public void setData(List<ShouCangItemBean> data) {
-        this.data = data;
+    public void setItem_list(List<ShouCangItemBean> item_list) {
+        this.item_list = item_list;
     }
 
     @Override
     public String toString() {
         return "ShouCangBean{" +
-                "data=" + data +
+                "item_list=" + item_list +
                 '}';
     }
 }

@@ -256,10 +256,9 @@ public class ShouCangListActivity
                         String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
                         String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
                         if (error_code == 0) {
-                            String newJson = "{\"data\":" + data_msg + "}";
-                            ShouCangBean shouCangBean = GsonUtil.jsonToBean(newJson, ShouCangBean.class);
-                            if (null != shouCangBean.getData() && 0 != shouCangBean.getData().size()) {
-                                updateViewFromData(shouCangBean.getData(), state);
+                            ShouCangBean shouCangBean = GsonUtil.jsonToBean(data_msg, ShouCangBean.class);
+                            if (null != shouCangBean.getItem_list() && 0 != shouCangBean.getItem_list().size()) {
+                                updateViewFromData(shouCangBean.getItem_list(), state);
                             } else {
                                 updateViewFromData(null, state);
                             }
