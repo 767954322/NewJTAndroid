@@ -45,7 +45,6 @@
                     android:id="@+id/tv_info_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="150-300"
                     android:textColor="@color/bg_707070"
                     android:textSize="@dimen/size_14" />
 
@@ -78,7 +77,6 @@
                 android:layout_marginLeft="@dimen/font_20"
                 android:layout_marginRight="@dimen/font_20"
                 android:layout_marginTop="@dimen/font_15"
-                android:text="啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
                 android:textColor="@color/bg_707070"
                 android:textSize="@dimen/size_14" />
 
@@ -113,7 +111,6 @@
                 android:layout_marginLeft="@dimen/font_20"
                 android:layout_marginRight="@dimen/font_20"
                 android:layout_marginTop="@dimen/font_17"
-                android:text="啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
                 android:textColor="@color/bg_707070"
                 android:textSize="@dimen/size_14" />
 
@@ -137,7 +134,6 @@
                 android:layout_marginLeft="@dimen/font_20"
                 android:layout_marginRight="@dimen/font_20"
                 android:layout_marginTop="@dimen/font_17"
-                android:text="啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊"
                 android:textColor="@color/bg_707070"
                 android:textSize="@dimen/size_14" />
 
@@ -238,9 +234,9 @@
                     android:id="@+id/tv_lianxi_one"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/font_7"
                     android:layout_toRightOf="@+id/desiner_icro_one"
-                    android:layout_centerVertical="true"
                     android:textColor="@color/bg_707070"
                     android:textSize="@dimen/size_14" />
 
@@ -266,8 +262,8 @@
                     android:id="@+id/tv_lianxi_two"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/font_7"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/font_7"
                     android:layout_toRightOf="@+id/desiner_icro_two"
                     android:text="767954322@qq.com"
                     android:textColor="@color/bg_707070"
@@ -294,8 +290,8 @@
                     android:id="@+id/tv_lianxi_three"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/font_7"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/font_7"
                     android:layout_toRightOf="@+id/desiner_icro_three"
                     android:text="www.baidu.com"
                     android:textColor="@color/bg_707070"
@@ -322,10 +318,10 @@
                     android:id="@+id/tv_lianxi_four"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/font_7"
                     android:layout_toRightOf="@+id/desiner_icro_four"
                     android:text="767954322"
-                    android:layout_centerVertical="true"
                     android:textColor="@color/bg_707070"
                     android:textSize="@dimen/size_14" />
 
@@ -350,10 +346,10 @@
                     android:id="@+id/tv_lianxi_five"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/font_7"
                     android:layout_toRightOf="@+id/desiner_icro_five"
                     android:text="767954322"
-                    android:layout_centerVertical="true"
                     android:textColor="@color/bg_707070"
                     android:textSize="@dimen/size_14" />
 
@@ -378,8 +374,8 @@
                     android:id="@+id/tv_lianxi_six"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/font_7"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/font_7"
                     android:layout_toRightOf="@+id/desiner_icro_six"
                     android:text="北京.朝阳"
                     android:textColor="@color/bg_707070"

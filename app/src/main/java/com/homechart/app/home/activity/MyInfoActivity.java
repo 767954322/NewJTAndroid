@@ -315,6 +315,7 @@ public class MyInfoActivity
 
                     //TODO 跳转专业用户资料页
                     Intent intent = new Intent(MyInfoActivity.this, DesinerInfoActivity.class);
+                    intent.putExtra("info", userCenterInfoBean);
                     startActivity(intent);
 
                 }
