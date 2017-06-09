@@ -203,7 +203,7 @@ public class BundleMobileActivity
                     }
                 }
             };
-            MyHttpManager.getInstance().judgeMobile(ClassConstant.JiYan.FINDPWD, phone, callBack);
+            MyHttpManager.getInstance().judgeMobile(ClassConstant.JiYan.BING, phone, callBack);
         }
     }
 
@@ -285,7 +285,7 @@ public class BundleMobileActivity
     //点击修改密码
     private void clickResetPWD() {
 
-        String phone = mETPhone.getText().toString();
+        final String phone = mETPhone.getText().toString();
         String yzCode = mETYanZheng.getText().toString();
         String passWord = mETPassWord.getText().toString();
         if (TextUtils.isEmpty(phone) || !phone.matches(RegexUtil.PHONE_REGEX)) {
@@ -316,6 +316,9 @@ public class BundleMobileActivity
                     String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
                     if (error_code == 0) {
                         ToastUtils.showCenter(BundleMobileActivity.this, UIUtils.getString(R.string.bundle_succes));
+                        Intent intent_result = getIntent();
+                        intent_result.putExtra("mobile",phone);
+                        setResult(1, intent_result);
                         BundleMobileActivity.this.finish();
                     } else {
                         ToastUtils.showCenter(BundleMobileActivity.this, error_msg);

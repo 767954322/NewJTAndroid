@@ -209,6 +209,7 @@ public class MyInfoActivity
     protected void initData(Bundle savedInstanceState) {
         mTVTital.setText(R.string.myinfoactivity_tital);
         mTVBaoCun.setText(R.string.setactivity_baocun);
+
         getCitydata(mTag);
         if (userCenterInfoBean != null) {
             changeUI();
@@ -664,6 +665,16 @@ public class MyInfoActivity
 
         if (requestCode == 0 && resultCode == 1) {//绑定手机号嘛回调
 
+            String mobile = (String) data.getStringExtra("mobile");
+            tv_myinfo_mobile_num.setVisibility(View.VISIBLE);
+            iv_myinfo_mobile_icon.setVisibility(View.GONE);
+            tv_myinfo_mobile.setVisibility(View.GONE);
+            String a = mobile.substring(0, 5);
+            String b = mobile.substring(9, 11);
+            mobile = a + "*****" + b;
+            tv_myinfo_mobile_num.setText(mobile);
+            Intent intent_result = getIntent();
+            setResult(1, intent_result);
         }
 
     }
