@@ -370,6 +370,10 @@ public class MyInfoActivity
                 et_myinfo_jianjie.setText(userCenterInfoBean.getUser_info().getSlogan());
             }
 
+            if(!TextUtils.isEmpty(userCenterInfoBean.getUser_info().getAge_group())){
+                tv_myinfo_age.setText(userCenterInfoBean.getUser_info().getAge_group());
+            }
+
         }
     }
 
