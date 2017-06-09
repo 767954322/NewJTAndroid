@@ -67,7 +67,10 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/font_15"
+        android:paddingLeft="@dimen/font_15"
+        android:paddingRight="@dimen/font_15"
+        android:paddingTop="@dimen/font_15"
+        android:paddingBottom="@dimen/font_15"
         android:textColor="@color/case_text_tital_name"
         android:textSize="@dimen/font_14" />
 </RelativeLayout>

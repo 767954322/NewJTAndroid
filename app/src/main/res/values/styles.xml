@@ -51,4 +51,7 @@
         <item name="android:button">@drawable/checkbox_style</item>
     </style>
 
+    <style name="ShouCangRadioButtonStyles">
+        <item name="android:button">@drawable/shoucang_checkbox_style</item>
+    </style>
 </resources>
