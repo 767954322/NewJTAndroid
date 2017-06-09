@@ -361,7 +361,7 @@ public class MyInfoActivity
                 if (gender.trim().equals("m")) {
                     rb_nan.setChecked(true);
                 } else if (gender.trim().equals("f")) {
-                    rb_nan.setChecked(true);
+                    rb_nv.setChecked(true);
                 }
 
             }
