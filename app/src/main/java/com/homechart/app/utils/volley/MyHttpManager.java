@@ -424,6 +424,34 @@ public class MyHttpManager {
     }
 
     /**
+     * 获取晒家列表
+     *
+     * @param user_id
+     * @param callback
+     */
+    public void getShaiJiaList(final String user_id, final int s, final String n, OkStringRequest.OKResponseCallback callback) {
+        OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.SHAIJIA_LIST, callback) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
+                map.put(ClassConstant.ShouCangList.USER_ID, user_id);
+                map.put(ClassConstant.ShouCangList.S, s + "");
+                map.put(ClassConstant.ShouCangList.N, n);
+
+                String signString = PublicUtils.getSinaString(map);
+                String tabMd5String = Md5Util.getMD5twoTimes(signString);
+                map.put(ClassConstant.PublicKey.SIGN, tabMd5String);
+                return map;
+            }
+
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return PublicUtils.getPublicHeader(MyApplication.getInstance());
+            }
+        };
+        queue.add(okStringRequest);
+    }
+
+    /**
      * 更改用户信息
      *
      * @param map_can
@@ -490,11 +518,41 @@ public class MyHttpManager {
 
     /**
      * 删除收藏列表
+     *
      * @param item_id
      * @param callback
      */
     public void deleteShouCang(final String item_id, OkStringRequest.OKResponseCallback callback) {
         OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.DELETE_SHOUCANG, callback) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
+                map.put(ClassConstant.ShouCangList.ITEM_ID, item_id);
+
+                String signString = PublicUtils.getSinaString(map);
+                String tabMd5String = Md5Util.getMD5twoTimes(signString);
+                map.put(ClassConstant.PublicKey.SIGN, tabMd5String);
+                return map;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return PublicUtils.getPublicHeader(MyApplication.getInstance());
+            }
+
+        };
+        queue.add(okStringRequest);
+    }
+
+    /**
+     * 删除晒家列表
+     *
+     * @param item_id
+     * @param callback
+     */
+    public void deleteShaiJia(final String item_id, OkStringRequest.OKResponseCallback callback) {
+        OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.DELETE_SHAIJIA, callback) {
 
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
