@@ -113,6 +113,7 @@ public class ClassConstant {
         public static final String USER_ID = "user_id";
         public static final String S = "s";
         public static final String N = "n";
+        public static final String ITEM_ID = "item_id";
     }
 
 }

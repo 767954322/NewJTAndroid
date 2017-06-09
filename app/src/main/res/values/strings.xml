@@ -66,4 +66,6 @@
 
     <!-- ShouCangListActivity -->
     <string name="error_shoucang">收藏数据加载失败，请重新刷新加载</string>
+    <string name="error_delete_shoucang">删除失败，请重新删除</string>
+    <string name="succes_delete_shoucang">删除成功</string>
 </resources>

@@ -2,6 +2,7 @@ package com.homechart.app.home.activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +33,7 @@ import com.homechart.app.recyclerlibrary.recyclerview.HRecyclerView;
 import com.homechart.app.recyclerlibrary.recyclerview.OnLoadMoreListener;
 import com.homechart.app.recyclerlibrary.recyclerview.OnRefreshListener;
 import com.homechart.app.timepiker.citypickerview.widget.CityPicker;
+import com.homechart.app.utils.CustomProgress;
 import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.SharedPreferencesUtils;
 import com.homechart.app.utils.ToastUtils;
@@ -71,7 +73,7 @@ public class ShouCangListActivity
     private TextView tv_content_right;
     private TextView tv_shoucang_two;
     private RelativeLayout rl_below;
-    private Map<String, String> map_delete = new HashMap<>();//选择的唯一标示
+    private Map<String, ShouCangItemBean> map_delete = new HashMap<>();//选择的唯一标示
     private ImageView iv_delete_icon;
 
     @Override
@@ -126,7 +128,7 @@ public class ShouCangListActivity
                         if (isChecked) {
                             ++num_checked;
                             if (!map_delete.containsKey(item_id)) {
-                                map_delete.put(item_id, item_id);
+                                map_delete.put(item_id, mListData.get(position));
                             }
                         } else {
                             if (map_delete.containsKey(item_id)) {
@@ -207,7 +209,52 @@ public class ShouCangListActivity
 
                 break;
             case R.id.iv_delete_icon:
-                ToastUtils.showCenter(ShouCangListActivity.this, "删除了图片");
+
+                if (map_delete.size() > 0) {
+                    CustomProgress.show(ShouCangListActivity.this, "正在删除...", false, null);
+                    String delete_items = "";
+                    for (String key : map_delete.keySet()) {
+                        delete_items = delete_items + key + ",";
+                    }
+                    delete_items = delete_items.substring(0, delete_items.length() - 1);
+                    OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            CustomProgress.cancelDialog();
+                            ToastUtils.showCenter(ShouCangListActivity.this, getString(R.string.error_delete_shoucang));
+                        }
+
+                        @Override
+                        public void onResponse(String s) {
+                            try {
+                                JSONObject jsonObject = new JSONObject(s);
+                                int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                                String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                                String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                                if (error_code == 0) {
+                                    for (String key : map_delete.keySet()) {
+                                        mListData.remove(map_delete.get(key));
+                                    }
+                                    map_delete.clear();
+                                    upCheckedStatus();
+                                    mAdapter.notifyDataSetChanged();
+                                    CustomProgress.cancelDialog();
+                                    ToastUtils.showCenter(ShouCangListActivity.this, getString(R.string.succes_delete_shoucang));
+                                } else {
+                                    CustomProgress.cancelDialog();
+                                    ToastUtils.showCenter(ShouCangListActivity.this, error_msg);
+                                }
+                            } catch (JSONException e) {
+                                CustomProgress.cancelDialog();
+                                ToastUtils.showCenter(ShouCangListActivity.this, getString(R.string.error_delete_shoucang));
+                            }
+                        }
+                    };
+                    MyHttpManager.getInstance().deleteShouCang(delete_items, callBack);
+                } else {
+                    ToastUtils.showCenter(ShouCangListActivity.this, "请选择删除项");
+                }
+
                 break;
         }
     }
@@ -323,5 +370,7 @@ public class ShouCangListActivity
 
     public void upCheckedStatus() {
         tv_shoucang_two.setText(map_delete.size() + "");
+        Log.d("test", "个数：" + map_delete.size());
+        Log.d("test", "数据：" + map_delete.toString());
     }
 }

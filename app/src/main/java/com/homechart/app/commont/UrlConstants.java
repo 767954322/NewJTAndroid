@@ -24,5 +24,6 @@ public class UrlConstants {
     public static final String SAVE_INFO = "https://api.idcool.com.cn/user/user/setUserInfo";  // 保存用户个人资料
     public static final String PUT_FILE = "https://api.idcool.com.cn/user/user/uploadAvatar";  // 上传头像
     public static final String BUNDLE_MOBILE = "https://api.idcool.com.cn/user/account/bindMobile";  // 绑定手机号码
+    public static final String DELETE_SHOUCANG = "https://api.idcool.com.cn/collect/single/remove";  // 删除收藏列表
 
 }
