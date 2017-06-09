@@ -679,6 +679,15 @@ public class MyInfoActivity
             Intent intent_result = getIntent();
             setResult(1, intent_result);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (null == userCenterInfoBean) {
+            getUserInfo();
+        }
 
     }
 }

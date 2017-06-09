@@ -73,6 +73,12 @@ public class DesinerInfoActivity extends BaseActivity implements View.OnClickLis
         tv_info_quyu.setText(userCenterInfoBean.getPro_info().getService_area());
         tv_info_liucheng.setText(userCenterInfoBean.getPro_info().getService_flow());
         tv_info_guanyuwo.setText(userCenterInfoBean.getPro_info().getDescription());
+        tv_lianxi_one.setText(userCenterInfoBean.getPro_info().getMobile());
+        tv_lianxi_two.setText(userCenterInfoBean.getPro_info().getEmail());
+        tv_lianxi_three.setText(userCenterInfoBean.getPro_info().getHomepage());
+        tv_lianxi_four.setText(userCenterInfoBean.getPro_info().getWechat());
+        tv_lianxi_five.setText(userCenterInfoBean.getPro_info().getQq());
+        tv_lianxi_six.setText(userCenterInfoBean.getPro_info().getLocation());
     }
 
     @Override

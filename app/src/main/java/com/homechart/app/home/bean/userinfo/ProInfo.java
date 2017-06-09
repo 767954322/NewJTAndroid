@@ -14,17 +14,26 @@ public class ProInfo implements Serializable {
     private String service_area;
     private String service_flow;
     private String description;
+    private String mobile;
+    private String email;
+    private String qq;
+    private String wechat;
+    private String homepage;
+    private String location;
 
-    public ProInfo(String unit_price, String fee_scale, String service_items, String service_area, String service_flow, String description) {
+    public ProInfo(String unit_price, String fee_scale, String service_items, String service_area, String service_flow, String description, String mobile, String email, String qq, String wechat, String homepage, String location) {
         this.unit_price = unit_price;
         this.fee_scale = fee_scale;
         this.service_items = service_items;
         this.service_area = service_area;
         this.service_flow = service_flow;
         this.description = description;
-    }
-
-    public ProInfo() {
+        this.mobile = mobile;
+        this.email = email;
+        this.qq = qq;
+        this.wechat = wechat;
+        this.homepage = homepage;
+        this.location = location;
     }
 
     public String getUnit_price() {
@@ -75,6 +84,54 @@ public class ProInfo implements Serializable {
         this.description = description;
     }
 
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getQq() {
+        return qq;
+    }
+
+    public void setQq(String qq) {
+        this.qq = qq;
+    }
+
+    public String getWechat() {
+        return wechat;
+    }
+
+    public void setWechat(String wechat) {
+        this.wechat = wechat;
+    }
+
+    public String getHomepage() {
+        return homepage;
+    }
+
+    public void setHomepage(String homepage) {
+        this.homepage = homepage;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     @Override
     public String toString() {
         return "ProInfo{" +
@@ -84,6 +141,12 @@ public class ProInfo implements Serializable {
                 ", service_area='" + service_area + '\'' +
                 ", service_flow='" + service_flow + '\'' +
                 ", description='" + description + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", email='" + email + '\'' +
+                ", qq='" + qq + '\'' +
+                ", wechat='" + wechat + '\'' +
+                ", homepage='" + homepage + '\'' +
+                ", location='" + location + '\'' +
                 '}';
     }
 }

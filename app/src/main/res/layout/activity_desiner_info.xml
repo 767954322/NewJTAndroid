@@ -265,7 +265,6 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/font_7"
                     android:layout_toRightOf="@+id/desiner_icro_two"
-                    android:text="767954322@qq.com"
                     android:textColor="@color/bg_707070"
                     android:textSize="@dimen/size_14" />
 
@@ -293,7 +292,6 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/font_7"
                     android:layout_toRightOf="@+id/desiner_icro_three"
-                    android:text="www.baidu.com"
                     android:textColor="@color/bg_707070"
                     android:textSize="@dimen/size_14" />
 
@@ -321,7 +319,6 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/font_7"
                     android:layout_toRightOf="@+id/desiner_icro_four"
-                    android:text="767954322"
                     android:textColor="@color/bg_707070"
                     android:textSize="@dimen/size_14" />
 
@@ -349,7 +346,6 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/font_7"
                     android:layout_toRightOf="@+id/desiner_icro_five"
-                    android:text="767954322"
                     android:textColor="@color/bg_707070"
                     android:textSize="@dimen/size_14" />
 
@@ -377,7 +373,6 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/font_7"
                     android:layout_toRightOf="@+id/desiner_icro_six"
-                    android:text="北京.朝阳"
                     android:textColor="@color/bg_707070"
                     android:textSize="@dimen/size_14" />
 
