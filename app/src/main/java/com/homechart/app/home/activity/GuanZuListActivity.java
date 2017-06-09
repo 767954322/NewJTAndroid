@@ -8,14 +8,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-import com.homechart.app.MyApplication;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.home.base.BaseActivity;
-import com.homechart.app.home.bean.fensi.FenSiBean;
-import com.homechart.app.home.bean.fensi.UserListBean;
+import com.homechart.app.home.bean.guanzhu.GuanZhuBean;
+import com.homechart.app.home.bean.guanzhu.GuanZhuUserListBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.recyclerlibrary.adapter.CommonAdapter;
@@ -51,9 +48,9 @@ public class GuanZuListActivity
         OnLoadMoreListener,
         OnRefreshListener {
 
-    private List<UserListBean> mListData = new ArrayList<>();
+    private List<GuanZhuUserListBean> mListData = new ArrayList<>();
     private LoadMoreFooterView mLoadMoreFooterView;
-    private CommonAdapter<UserListBean> mAdapter;
+    private CommonAdapter<GuanZhuUserListBean> mAdapter;
     private HRecyclerView mRecyclerView;
     private ImageButton mIBBack;
     private TextView mTVTital;
@@ -91,7 +88,7 @@ public class GuanZuListActivity
     protected void initData(Bundle savedInstanceState) {
         mTVTital.setText("关注");
 
-        mAdapter = new CommonAdapter<UserListBean>(this, R.layout.item_fensi, mListData) {
+        mAdapter = new CommonAdapter<GuanZhuUserListBean>(this, R.layout.item_guanzhu, mListData) {
             @Override
             public void convert(BaseViewHolder holder, int position) {
 
@@ -174,7 +171,7 @@ public class GuanZuListActivity
                     String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
                     String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
                     if (error_code == 0) {
-                        FenSiBean fenSiBean = GsonUtil.jsonToBean(data_msg, FenSiBean.class);
+                        GuanZhuBean fenSiBean = GsonUtil.jsonToBean(data_msg, GuanZhuBean.class);
                         if (null != fenSiBean.getUser_list() && 0 != fenSiBean.getUser_list().size()) {
                             updateViewFromData(fenSiBean.getUser_list(), state);
                         } else {
@@ -193,7 +190,7 @@ public class GuanZuListActivity
 
     }
 
-    private void updateViewFromData(List<UserListBean> listData, String state) {
+    private void updateViewFromData(List<GuanZhuUserListBean> listData, String state) {
 
         switch (state) {
 
