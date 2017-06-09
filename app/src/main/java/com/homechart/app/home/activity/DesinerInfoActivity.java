@@ -23,6 +23,12 @@ public class DesinerInfoActivity extends BaseActivity implements View.OnClickLis
     private TextView tv_info_quyu;
     private TextView tv_info_liucheng;
     private TextView tv_info_guanyuwo;
+    private TextView tv_lianxi_one;
+    private TextView tv_lianxi_two;
+    private TextView tv_lianxi_three;
+    private TextView tv_lianxi_four;
+    private TextView tv_lianxi_five;
+    private TextView tv_lianxi_six;
 
     @Override
     protected int getLayoutResId() {
@@ -48,6 +54,12 @@ public class DesinerInfoActivity extends BaseActivity implements View.OnClickLis
         tv_info_quyu = (TextView) findViewById(R.id.tv_info_quyu);
         tv_info_liucheng = (TextView) findViewById(R.id.tv_info_liucheng);
         tv_info_guanyuwo = (TextView) findViewById(R.id.tv_info_guanyuwo);
+        tv_lianxi_one = (TextView) findViewById(R.id.tv_lianxi_one);
+        tv_lianxi_two = (TextView) findViewById(R.id.tv_lianxi_two);
+        tv_lianxi_three = (TextView) findViewById(R.id.tv_lianxi_three);
+        tv_lianxi_four = (TextView) findViewById(R.id.tv_lianxi_four);
+        tv_lianxi_five = (TextView) findViewById(R.id.tv_lianxi_five);
+        tv_lianxi_six = (TextView) findViewById(R.id.tv_lianxi_six);
 
     }
 
