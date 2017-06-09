@@ -118,9 +118,9 @@ public class ShouCangListActivity
                     holder.getView(R.id.cb_check).setVisibility(View.VISIBLE);
 
                 }
-
                 ImageUtils.displayFilletImage(mListData.get(position).getItem_info().getImage().getImg0(),
                         (ImageView) holder.getView(R.id.iv_shoucang_image));
+
 
                 ((CheckBox) holder.getView(R.id.cb_check)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override

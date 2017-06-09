@@ -287,7 +287,7 @@
                     android:gravity="right"
                     android:hint="一句话介绍15个字以内～"
                     android:singleLine="true"
-                    android:textColor="@color/bg_b2b2b2"
+                    android:textColor="@color/bg_262626"
                     android:textColorHint="@color/bg_b2b2b2"
                     android:textCursorDrawable="@null"
                     android:textSize="@dimen/size_14" />

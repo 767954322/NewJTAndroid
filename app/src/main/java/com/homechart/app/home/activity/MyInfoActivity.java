@@ -286,6 +286,7 @@ public class MyInfoActivity
                     @Override
                     public void onSelected(String... citySelected) {
                         age_select = citySelected[0];
+                        tv_myinfo_age.setTextColor(UIUtils.getColor(R.color.bg_262626));
                         tv_myinfo_age.setText(age_select);
 
                     }
@@ -329,7 +330,15 @@ public class MyInfoActivity
         if (null != userCenterInfoBean && null != userCenterInfoBean.getUser_info()) {
             ImageUtils.displayRoundImage(userCenterInfoBean.getUser_info().getAvatar().getBig(), iv_myinfo_header);
             et_myinfo_nikename.setText(userCenterInfoBean.getUser_info().getNickname());
-            tv_myinfo_location.setText(userCenterInfoBean.getUser_info().getLocation());
+
+            if(TextUtils.isEmpty(userCenterInfoBean.getUser_info().getLocation())){
+                tv_myinfo_location.setText("未设置");
+                tv_myinfo_location.setTextColor(UIUtils.getColor(R.color.bg_b2b2b2));
+            }else {
+                tv_myinfo_location.setText(userCenterInfoBean.getUser_info().getLocation());
+                tv_myinfo_location.setTextColor(UIUtils.getColor(R.color.bg_262626));
+            }
+
 
             if (TextUtils.isEmpty(userCenterInfoBean.getUser_info().getMobile())) {
 
@@ -375,7 +384,11 @@ public class MyInfoActivity
             }
 
             if (!TextUtils.isEmpty(userCenterInfoBean.getUser_info().getAge_group())) {
+                tv_myinfo_age.setTextColor(UIUtils.getColor(R.color.bg_262626));
                 tv_myinfo_age.setText(userCenterInfoBean.getUser_info().getAge_group());
+            }else {
+                tv_myinfo_age.setTextColor(UIUtils.getColor(R.color.bg_b2b2b2));
+                tv_myinfo_age.setText("未设置");
             }
 
         }
@@ -531,6 +544,7 @@ public class MyInfoActivity
 //                                    "\n城市编号：" + citySelected[3],
 //                            Toast.LENGTH_LONG).show();
 
+                    tv_myinfo_location.setTextColor(UIUtils.getColor(R.color.bg_262626));
                     tv_myinfo_location.setText(citySelected[0] + "  " + citySelected[1]);
 
                 }
