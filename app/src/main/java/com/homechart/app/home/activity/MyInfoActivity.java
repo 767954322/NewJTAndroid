@@ -293,7 +293,6 @@ public class MyInfoActivity
 
                     @Override
                     public void onCancel() {
-                        Toast.makeText(MyInfoActivity.this, "已取消", Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -551,7 +550,6 @@ public class MyInfoActivity
 
                 @Override
                 public void onCancel() {
-                    Toast.makeText(MyInfoActivity.this, "已取消", Toast.LENGTH_LONG).show();
                 }
             });
         } else {
