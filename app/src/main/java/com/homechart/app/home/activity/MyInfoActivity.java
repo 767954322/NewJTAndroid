@@ -28,11 +28,13 @@ import com.homechart.app.commont.UrlConstants;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.city.ProvinceBean;
 import com.homechart.app.home.bean.fensi.FenSiBean;
+import com.homechart.app.home.bean.putheader.HeaderBean;
 import com.homechart.app.home.bean.userinfo.UserCenterInfoBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.timepiker.citypickerview.widget.AgePiker;
 import com.homechart.app.timepiker.citypickerview.widget.CityPicker;
+import com.homechart.app.utils.CustomProgress;
 import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.Md5Util;
 import com.homechart.app.utils.SharedPreferencesUtils;
@@ -94,6 +96,15 @@ public class MyInfoActivity
     private RelativeLayout rl_myinfo_mobile;
     private RelativeLayout rl_myinfo_shiming;
     private View view_below_mobile;
+
+    private String province_id = "";
+    private String city_id = "";
+    private String age_select = "";
+
+    private String path = "";//获取的头像路径
+    private String avatar_id = "";//通过获取用户信息或上传头像接口获得
+    private int sex = 0;//1:男  2:女
+    private String header_id = "";//上传头像的id
 
     @Override
     protected int getLayoutResId() {
@@ -206,136 +217,6 @@ public class MyInfoActivity
 
     }
 
-    private void changeUI() {
-        if (null != userCenterInfoBean && null != userCenterInfoBean.getUser_info()) {
-            ImageUtils.displayRoundImage(userCenterInfoBean.getUser_info().getAvatar().getBig(), iv_myinfo_header);
-            et_myinfo_nikename.setText(userCenterInfoBean.getUser_info().getNickname());
-            tv_myinfo_location.setText(userCenterInfoBean.getUser_info().getLocation());
-
-            if (TextUtils.isEmpty(userCenterInfoBean.getUser_info().getMobile())) {
-
-                tv_myinfo_mobile_num.setVisibility(View.GONE);
-                iv_myinfo_mobile_icon.setVisibility(View.VISIBLE);
-                tv_myinfo_mobile.setVisibility(View.VISIBLE);
-
-            } else {
-
-                tv_myinfo_mobile_num.setVisibility(View.VISIBLE);
-                iv_myinfo_mobile_icon.setVisibility(View.GONE);
-                tv_myinfo_mobile.setVisibility(View.GONE);
-                tv_myinfo_mobile_num.setText(userCenterInfoBean.getUser_info().getMobile());
-
-            }
-
-            if (!userCenterInfoBean.getUser_info().getProfession().equals("0")) {
-
-                rl_myinfo_shiming.setVisibility(View.VISIBLE);
-                view_below_mobile.setVisibility(View.VISIBLE);
-
-
-            } else {
-
-                rl_myinfo_shiming.setVisibility(View.GONE);
-                view_below_mobile.setVisibility(View.GONE);
-
-            }
-
-
-        }
-    }
-
-    //获取用户信息
-    private void getUserInfo() {
-
-        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                ToastUtils.showCenter(MyInfoActivity.this, getString(R.string.userinfo_get_error));
-            }
-
-            @Override
-            public void onResponse(String s) {
-                try {
-                    JSONObject jsonObject = new JSONObject(s);
-                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
-                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
-                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
-                    if (error_code == 0) {
-
-                        Message msg = new Message();
-                        msg.arg1 = 3;
-                        msg.obj = data_msg;
-                        handler.sendMessage(msg);
-                    } else {
-                        ToastUtils.showCenter(MyInfoActivity.this, error_msg);
-                    }
-                } catch (JSONException e) {
-                }
-            }
-        };
-        MyHttpManager.getInstance().getUserInfo(mUserId, callBack);
-
-
-    }
-    //保存用户信息
-
-    private void saveUserInfo() {
-
-        String nikename = et_myinfo_nikename.getText().toString();
-
-        Map<String, String> map = new HashMap<>();
-        map.put("nickname", nikename);
-        if (sex != 0) {
-            if (sex == 1) {
-                map.put("gender", "m");
-            } else {
-                map.put("gender", "f");
-            }
-        }
-        if (!TextUtils.isEmpty(province_id) && !TextUtils.isEmpty(city_id)) {
-            map.put("province", province_id);
-            map.put("city", city_id);
-        }
-        if (!TextUtils.isEmpty(age_select)) {
-            map.put("age_group", age_select);
-        }
-        map.put("slogan", et_myinfo_jianjie.getText().toString());
-
-
-        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                ToastUtils.showCenter(MyInfoActivity.this, getString(R.string.userinfo_get_error));
-            }
-
-            @Override
-            public void onResponse(String s) {
-                try {
-                    JSONObject jsonObject = new JSONObject(s);
-                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
-                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
-                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
-                    if (error_code == 0) {
-
-                        Message msg = new Message();
-                        msg.arg1 = 3;
-                        msg.obj = data_msg;
-                        handler.sendMessage(msg);
-
-                    } else {
-
-                        ToastUtils.showCenter(MyInfoActivity.this, error_msg);
-
-                    }
-                } catch (JSONException e) {
-                }
-            }
-        };
-        MyHttpManager.getInstance().saveUserInfo(map, callBack);
-
-
-    }
-
     @Override
     public void onClick(View v) {
 
@@ -351,10 +232,9 @@ public class MyInfoActivity
                     return;
                 }
 
+                CustomProgress.show(MyInfoActivity.this, "正在保存...", false, null);
                 if (!path.equals("")) {
-                    //TODO 上传头像
                     upLoaderHeader();
-
                 } else {
                     saveUserInfo();
                 }
@@ -438,6 +318,151 @@ public class MyInfoActivity
                 break;
         }
     }
+    private void changeUI() {
+
+        if (null != userCenterInfoBean && null != userCenterInfoBean.getUser_info()) {
+            ImageUtils.displayRoundImage(userCenterInfoBean.getUser_info().getAvatar().getBig(), iv_myinfo_header);
+            et_myinfo_nikename.setText(userCenterInfoBean.getUser_info().getNickname());
+            tv_myinfo_location.setText(userCenterInfoBean.getUser_info().getLocation());
+
+            if (TextUtils.isEmpty(userCenterInfoBean.getUser_info().getMobile())) {
+
+                tv_myinfo_mobile_num.setVisibility(View.GONE);
+                iv_myinfo_mobile_icon.setVisibility(View.VISIBLE);
+                tv_myinfo_mobile.setVisibility(View.VISIBLE);
+
+            } else {
+
+                tv_myinfo_mobile_num.setVisibility(View.VISIBLE);
+                iv_myinfo_mobile_icon.setVisibility(View.GONE);
+                tv_myinfo_mobile.setVisibility(View.GONE);
+                tv_myinfo_mobile_num.setText(userCenterInfoBean.getUser_info().getMobile());
+
+            }
+
+            if (!userCenterInfoBean.getUser_info().getProfession().equals("0")) {
+
+                rl_myinfo_shiming.setVisibility(View.VISIBLE);
+                view_below_mobile.setVisibility(View.VISIBLE);
+
+
+            } else {
+
+                rl_myinfo_shiming.setVisibility(View.GONE);
+                view_below_mobile.setVisibility(View.GONE);
+
+            }
+
+            String gender = userCenterInfoBean.getUser_info().getGender();
+            if (!gender.trim().equals("")) {
+
+                if (gender.trim().equals("m")) {
+                    rb_nan.setChecked(true);
+                } else if (gender.trim().equals("f")) {
+                    rb_nan.setChecked(true);
+                }
+
+            }
+
+        }
+    }
+
+    //获取用户信息
+    private void getUserInfo() {
+
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                ToastUtils.showCenter(MyInfoActivity.this, getString(R.string.userinfo_get_error));
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+
+                        Message msg = new Message();
+                        msg.arg1 = 3;
+                        msg.obj = data_msg;
+                        handler.sendMessage(msg);
+                    } else {
+                        ToastUtils.showCenter(MyInfoActivity.this, error_msg);
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        };
+        MyHttpManager.getInstance().getUserInfo(mUserId, callBack);
+
+
+    }
+    //保存用户信息
+
+    private void saveUserInfo() {
+
+        String nikename = et_myinfo_nikename.getText().toString();
+
+        Map<String, String> map = new HashMap<>();
+        map.put("nickname", nikename);
+        if (!TextUtils.isEmpty(header_id)) {
+            map.put("avatar_id", header_id);
+        }
+
+        if (sex != 0) {
+            if (sex == 1) {
+                map.put("gender", "m");
+            } else {
+                map.put("gender", "f");
+            }
+        }
+        if (!TextUtils.isEmpty(province_id) && !TextUtils.isEmpty(city_id)) {
+            map.put("province", province_id);
+            map.put("city", city_id);
+        }
+        if (!TextUtils.isEmpty(age_select)) {
+            map.put("age_group", age_select);
+        }
+        map.put("slogan", et_myinfo_jianjie.getText().toString());
+
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+                CustomProgress.cancelDialog();
+                ToastUtils.showCenter(MyInfoActivity.this, getString(R.string.userinfo_get_error));
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        CustomProgress.cancelDialog();
+                        ToastUtils.showCenter(MyInfoActivity.this, "保存成功");
+                        MyInfoActivity.this.finish();
+
+                    } else {
+                        CustomProgress.cancelDialog();
+                        ToastUtils.showCenter(MyInfoActivity.this, error_msg);
+
+                    }
+                } catch (JSONException e) {
+                    CustomProgress.cancelDialog();
+                }
+            }
+        };
+        MyHttpManager.getInstance().saveUserInfo(map, callBack);
+
+
+    }
+
 
     private void upLoaderHeader() {
         new Thread() {
@@ -457,10 +482,6 @@ public class MyInfoActivity
         }.start();
 
     }
-
-    private String province_id = "";
-    private String city_id = "";
-    private String age_select = "";
 
     private void openCity() {
 
@@ -487,12 +508,12 @@ public class MyInfoActivity
 
                     province_id = citySelected[2];
                     city_id = citySelected[3];
-                    Toast.makeText(MyInfoActivity.this,
-                            "选择结果：\n省：" + citySelected[0] +
-                                    "\n市：" + citySelected[1] +
-                                    "\n省份编号：" + citySelected[2] +
-                                    "\n城市编号：" + citySelected[3],
-                            Toast.LENGTH_LONG).show();
+//                    Toast.makeText(MyInfoActivity.this,
+//                            "选择结果：\n省：" + citySelected[0] +
+//                                    "\n市：" + citySelected[1] +
+//                                    "\n省份编号：" + citySelected[2] +
+//                                    "\n城市编号：" + citySelected[3],
+//                            Toast.LENGTH_LONG).show();
 
                     tv_myinfo_location.setText(citySelected[0] + "  " + citySelected[1]);
 
@@ -567,10 +588,6 @@ public class MyInfoActivity
     };
 
 
-    private String path = "";//获取的头像路径
-    private String avatar_id = "";//通过获取用户信息或上传头像接口获得
-    private int sex = 0;//1:男  2:女
-
     @Override
     public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
         if (checkedId == R.id.rb_nan) {
@@ -601,11 +618,31 @@ public class MyInfoActivity
 
     @Override
     public void onSucces(String result) {
-        Log.d("test", result);
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+            String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+            String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+            if (error_code == 0) {
+                HeaderBean headerBean = GsonUtil.jsonToBean(data_msg, HeaderBean.class);
+                header_id = headerBean.getAvatar_id();
+                saveUserInfo();
+            } else {
+                header_id = "";
+                CustomProgress.cancelDialog();
+                ToastUtils.showCenter(MyInfoActivity.this, error_msg);
+            }
+        } catch (JSONException e) {
+            header_id = "";
+            CustomProgress.cancelDialog();
+            ToastUtils.showCenter(MyInfoActivity.this, UIUtils.getString(R.string.putheader_error));
+        }
+
     }
 
     @Override
     public void onFails() {
-        Log.d("test", "失败");
+        header_id = "";
+        CustomProgress.cancelDialog();
     }
 }
