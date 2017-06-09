@@ -319,6 +319,7 @@ public class MyInfoActivity
                 break;
         }
     }
+
     private void changeUI() {
 
         if (null != userCenterInfoBean && null != userCenterInfoBean.getUser_info()) {
@@ -363,6 +364,10 @@ public class MyInfoActivity
                     rb_nan.setChecked(true);
                 }
 
+            }
+
+            if (!TextUtils.isEmpty(userCenterInfoBean.getUser_info().getSlogan())) {
+                et_myinfo_jianjie.setText(userCenterInfoBean.getUser_info().getSlogan());
             }
 
         }
