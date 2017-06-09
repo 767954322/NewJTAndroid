@@ -392,4 +392,35 @@ public class MyHttpManager {
         };
         queue.add(okStringRequest);
     }
+    /**
+     * 更改用户信息
+     *
+     * @param map_can
+     * @param callback
+     */
+    public void saveUserInfo(final Map<String, String> map_can, OkStringRequest.OKResponseCallback callback) {
+        OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.SAVE_INFO, callback) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
+
+                for (String key : map_can.keySet()) {
+                    map.put(key, map_can.get(key));
+                }
+                String signString = PublicUtils.getSinaString(map);
+                String tabMd5String = Md5Util.getMD5twoTimes(signString);
+                map.put(ClassConstant.PublicKey.SIGN, tabMd5String);
+                return map;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return PublicUtils.getPublicHeader(MyApplication.getInstance());
+            }
+
+        };
+        queue.add(okStringRequest);
+    }
+
 }

@@ -381,7 +381,7 @@ public class AgePiker implements CanShow, OnWheelChangedListener {
         mViewProvince.setViewAdapter(arrayWheelAdapter);
         //获取所设置的省的位置，直接定位到该位置
         //TODO  位置
-        mViewProvince.setCurrentItem(3);
+        mViewProvince.setCurrentItem(2);
         // 设置可见条目数量
         mViewProvince.setVisibleItems(visibleItems);
         mViewCity.setVisibleItems(visibleItems);
@@ -401,7 +401,7 @@ public class AgePiker implements CanShow, OnWheelChangedListener {
     public void initProvinceNewDatas() {
 
         //TODO  内容
-        mProvinceDatas = new String[]{"我是70后", "我是75后","我是80后", "我是85后", "我是90后", "我是95后", "我是00后"};
+        mProvinceDatas = new String[]{"我是70后", "我是75后","我是80后", "我是85后", "我是90后", "我是95后"};
 
     }
 

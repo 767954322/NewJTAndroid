@@ -51,7 +51,7 @@
                     android:layout_height="@dimen/font_60"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/font_15"
-                    android:layout_toLeftOf="@+id/iv_myinfo_header_icon"/>
+                    android:layout_toLeftOf="@+id/iv_myinfo_header_icon" />
 
             </RelativeLayout>
 
@@ -140,7 +140,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/font_15"
-                        android:checked="true"
                         android:paddingLeft="6dp"
                         android:text="男"
                         android:textColor="@color/bg_262626"
@@ -338,6 +337,18 @@
                     android:text="去绑定"
                     android:textColor="@color/bg_e79056"
                     android:textSize="@dimen/size_14" />
+
+                <TextView
+                    android:id="@+id/tv_myinfo_mobile_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/font_25"
+                    android:textColor="@color/bg_262626"
+                    android:textSize="@dimen/size_14"
+                    android:visibility="gone" />
+
 
             </RelativeLayout>
 

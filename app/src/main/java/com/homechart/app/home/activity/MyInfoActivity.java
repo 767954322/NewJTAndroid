@@ -6,11 +6,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.IdRes;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -18,8 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.homechart.app.MyApplication;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
+import com.homechart.app.commont.PublicUtils;
+import com.homechart.app.commont.UrlConstants;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.city.ProvinceBean;
 import com.homechart.app.home.bean.fensi.FenSiBean;
@@ -29,18 +34,25 @@ import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.timepiker.citypickerview.widget.AgePiker;
 import com.homechart.app.timepiker.citypickerview.widget.CityPicker;
 import com.homechart.app.utils.GsonUtil;
+import com.homechart.app.utils.Md5Util;
 import com.homechart.app.utils.SharedPreferencesUtils;
+import com.homechart.app.utils.StringUtils;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.imageloader.ImageUtils;
+import com.homechart.app.utils.volley.FileHttpManager;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
+import com.homechart.app.utils.volley.PutFileCallBack;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
@@ -52,6 +64,7 @@ import cn.finalteam.galleryfinal.model.PhotoInfo;
 public class MyInfoActivity
         extends BaseActivity
         implements View.OnClickListener,
+        PutFileCallBack,
         RadioGroup.OnCheckedChangeListener,
         TextWatcher {
 
@@ -75,6 +88,12 @@ public class MyInfoActivity
     private String mUserId;
     private AgePiker agerPicker;
     private TextView tv_myinfo_age;
+    private TextView tv_myinfo_mobile_num;
+    private ImageView iv_myinfo_mobile_icon;
+    private TextView tv_myinfo_mobile;
+    private RelativeLayout rl_myinfo_mobile;
+    private RelativeLayout rl_myinfo_shiming;
+    private View view_below_mobile;
 
     @Override
     protected int getLayoutResId() {
@@ -95,13 +114,19 @@ public class MyInfoActivity
         mTVTital = (TextView) findViewById(R.id.tv_tital_comment);
         mTVBaoCun = (TextView) findViewById(R.id.tv_content_right);
         tv_myinfo_age = (TextView) findViewById(R.id.tv_myinfo_age);
+        tv_myinfo_mobile = (TextView) findViewById(R.id.tv_myinfo_mobile);
+        tv_myinfo_mobile_num = (TextView) findViewById(R.id.tv_myinfo_mobile_num);
         tv_myinfo_location = (TextView) findViewById(R.id.tv_myinfo_location);
+        iv_myinfo_mobile_icon = (ImageView) findViewById(R.id.iv_myinfo_mobile_icon);
         rl_myinfo_header = (RelativeLayout) findViewById(R.id.rl_myinfo_header);
         rl_myinfo_location = (RelativeLayout) findViewById(R.id.rl_myinfo_location);
         rl_myinfo_age = (RelativeLayout) findViewById(R.id.rl_myinfo_age);
+        rl_myinfo_mobile = (RelativeLayout) findViewById(R.id.rl_myinfo_mobile);
+        rl_myinfo_shiming = (RelativeLayout) findViewById(R.id.rl_myinfo_shiming);
         iv_myinfo_header = (RoundImageView) findViewById(R.id.iv_myinfo_header);
         et_myinfo_nikename = (EditText) findViewById(R.id.et_myinfo_nikename);
         et_myinfo_jianjie = (EditText) findViewById(R.id.et_myinfo_jianjie);
+        view_below_mobile = (View) findViewById(R.id.view_below_mobile);
         rg_sex = (RadioGroup) findViewById(R.id.rg_sex);
         rb_nan = (RadioButton) findViewById(R.id.rb_nan);
         rb_nv = (RadioButton) findViewById(R.id.rb_nv);
@@ -116,6 +141,8 @@ public class MyInfoActivity
         rl_myinfo_location.setOnClickListener(this);
         rl_myinfo_header.setOnClickListener(this);
         rl_myinfo_age.setOnClickListener(this);
+        rl_myinfo_mobile.setOnClickListener(this);
+        rl_myinfo_shiming.setOnClickListener(this);
         rg_sex.setOnCheckedChangeListener(this);
         et_myinfo_nikename.addTextChangedListener(new TextWatcher() {
 
@@ -168,7 +195,7 @@ public class MyInfoActivity
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        mTVTital.setText(R.string.setactivity_tital);
+        mTVTital.setText(R.string.myinfoactivity_tital);
         mTVBaoCun.setText(R.string.setactivity_baocun);
         getCitydata(mTag);
         if (userCenterInfoBean != null) {
@@ -184,6 +211,36 @@ public class MyInfoActivity
             ImageUtils.displayRoundImage(userCenterInfoBean.getUser_info().getAvatar().getBig(), iv_myinfo_header);
             et_myinfo_nikename.setText(userCenterInfoBean.getUser_info().getNickname());
             tv_myinfo_location.setText(userCenterInfoBean.getUser_info().getLocation());
+
+            if (TextUtils.isEmpty(userCenterInfoBean.getUser_info().getMobile())) {
+
+                tv_myinfo_mobile_num.setVisibility(View.GONE);
+                iv_myinfo_mobile_icon.setVisibility(View.VISIBLE);
+                tv_myinfo_mobile.setVisibility(View.VISIBLE);
+
+            } else {
+
+                tv_myinfo_mobile_num.setVisibility(View.VISIBLE);
+                iv_myinfo_mobile_icon.setVisibility(View.GONE);
+                tv_myinfo_mobile.setVisibility(View.GONE);
+                tv_myinfo_mobile_num.setText(userCenterInfoBean.getUser_info().getMobile());
+
+            }
+
+            if (!userCenterInfoBean.getUser_info().getProfession().equals("0")) {
+
+                rl_myinfo_shiming.setVisibility(View.VISIBLE);
+                view_below_mobile.setVisibility(View.VISIBLE);
+
+
+            } else {
+
+                rl_myinfo_shiming.setVisibility(View.GONE);
+                view_below_mobile.setVisibility(View.GONE);
+
+            }
+
+
         }
     }
 
@@ -220,6 +277,64 @@ public class MyInfoActivity
 
 
     }
+    //保存用户信息
+
+    private void saveUserInfo() {
+
+        String nikename = et_myinfo_nikename.getText().toString();
+
+        Map<String, String> map = new HashMap<>();
+        map.put("nickname", nikename);
+        if (sex != 0) {
+            if (sex == 1) {
+                map.put("gender", "m");
+            } else {
+                map.put("gender", "f");
+            }
+        }
+        if (!TextUtils.isEmpty(province_id) && !TextUtils.isEmpty(city_id)) {
+            map.put("province", province_id);
+            map.put("city", city_id);
+        }
+        if (!TextUtils.isEmpty(age_select)) {
+            map.put("age_group", age_select);
+        }
+        map.put("slogan", et_myinfo_jianjie.getText().toString());
+
+
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                ToastUtils.showCenter(MyInfoActivity.this, getString(R.string.userinfo_get_error));
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+
+                        Message msg = new Message();
+                        msg.arg1 = 3;
+                        msg.obj = data_msg;
+                        handler.sendMessage(msg);
+
+                    } else {
+
+                        ToastUtils.showCenter(MyInfoActivity.this, error_msg);
+
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        };
+        MyHttpManager.getInstance().saveUserInfo(map, callBack);
+
+
+    }
 
     @Override
     public void onClick(View v) {
@@ -230,6 +345,19 @@ public class MyInfoActivity
                 break;
             case R.id.tv_content_right:
 
+                String nikename = et_myinfo_nikename.getText().toString();
+                if (nikename.length() < 2) {
+                    ToastUtils.showCenter(MyInfoActivity.this, "请输入长度2-15个字的昵称");
+                    return;
+                }
+
+                if (!path.equals("")) {
+                    //TODO 上传头像
+                    upLoaderHeader();
+
+                } else {
+                    saveUserInfo();
+                }
 
                 break;
             case R.id.rl_myinfo_header:
@@ -275,8 +403,8 @@ public class MyInfoActivity
                 agerPicker.setOnCityItemClickListener(new AgePiker.OnCityItemClickListener() {
                     @Override
                     public void onSelected(String... citySelected) {
-
-                        tv_myinfo_age.setText(citySelected[0]);
+                        age_select = citySelected[0];
+                        tv_myinfo_age.setText(age_select);
 
                     }
 
@@ -288,8 +416,51 @@ public class MyInfoActivity
 
 
                 break;
+
+            case R.id.rl_myinfo_mobile:
+
+                if (userCenterInfoBean != null && TextUtils.isEmpty(userCenterInfoBean.getUser_info().getMobile())) {
+
+                    //TODO 跳转绑定页绑定页
+                    ToastUtils.showCenter(MyInfoActivity.this, "跳转到绑定页");
+
+                }
+
+                break;
+            case R.id.rl_myinfo_shiming:
+
+                if (userCenterInfoBean != null && !userCenterInfoBean.getUser_info().getProfession().equals("0")) {
+
+                    //TODO 跳转专业用户资料页
+                    ToastUtils.showCenter(MyInfoActivity.this, "跳转到设计师资料页");
+                }
+
+                break;
         }
     }
+
+    private void upLoaderHeader() {
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+
+                Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
+                String signString = PublicUtils.getSinaString(map);
+                String tabMd5String = Md5Util.getMD5twoTimes(signString);
+                map.put(ClassConstant.PublicKey.SIGN, tabMd5String);
+                FileHttpManager.getInstance().uploadFile(MyInfoActivity.this, new File(path),
+                        UrlConstants.PUT_FILE,
+                        map,
+                        PublicUtils.getPublicHeader(MyApplication.getInstance()));
+            }
+        }.start();
+
+    }
+
+    private String province_id = "";
+    private String city_id = "";
+    private String age_select = "";
 
     private void openCity() {
 
@@ -314,7 +485,8 @@ public class MyInfoActivity
                 @Override
                 public void onSelected(String... citySelected) {
 
-
+                    province_id = citySelected[2];
+                    city_id = citySelected[3];
                     Toast.makeText(MyInfoActivity.this,
                             "选择结果：\n省：" + citySelected[0] +
                                     "\n市：" + citySelected[1] +
@@ -396,7 +568,8 @@ public class MyInfoActivity
 
 
     private String path = "";//获取的头像路径
-    private int sex = 1;//1:男  2:女
+    private String avatar_id = "";//通过获取用户信息或上传头像接口获得
+    private int sex = 0;//1:男  2:女
 
     @Override
     public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
@@ -424,5 +597,15 @@ public class MyInfoActivity
     @Override
     public void afterTextChanged(Editable s) {
 
+    }
+
+    @Override
+    public void onSucces(String result) {
+        Log.d("test", result);
+    }
+
+    @Override
+    public void onFails() {
+        Log.d("test", "失败");
     }
 }
