@@ -76,4 +76,9 @@ public abstract class CommonAdapter<T> extends RecyclerView.Adapter<BaseViewHold
     public void setOnItemLongClickListener(OnItemLongClickListener onItemLongClickListener) {
         this.mOnItemLongClickListener = onItemLongClickListener;
     }
+
+    public void notifyData(List<T> datas){
+        mDatas = datas;
+        notifyDataSetChanged();
+    }
 }

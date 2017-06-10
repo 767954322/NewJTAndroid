@@ -3,6 +3,7 @@ package com.homechart.app.home.activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -91,10 +92,12 @@ public class GuanZuListActivity
         mAdapter = new CommonAdapter<GuanZhuUserListBean>(this, R.layout.item_guanzhu, mListData) {
             @Override
             public void convert(BaseViewHolder holder, int position) {
-
+                RoundImageView iv_fensi_header = (RoundImageView) holder.getView(R.id.iv_fensi_header);
                 holder.setText(R.id.tv_fensi_name, mListData.get(position).getNickname());
+
                 ImageUtils.displayRoundImage(mListData.get(position).getAvatar().getBig(),
-                        (RoundImageView) holder.getView(R.id.iv_fensi_header));
+                        iv_fensi_header);
+
                 if (!mListData.get(position).getProfession().equals("0")) {
                     holder.getView(R.id.iv_fensi_zhuanye).setVisibility(View.VISIBLE);
                 } else {
@@ -111,6 +114,7 @@ public class GuanZuListActivity
 //        scaleAdapter.setFirstOnly(false);
 //        scaleAdapter.setDuration(500);
 
+        mAdapter.setHasStableIds(true);
         mRecyclerView.setOnRefreshListener(this);
         mRecyclerView.setOnLoadMoreListener(this);
         mRecyclerView.setAdapter(mAdapter);
@@ -210,7 +214,8 @@ public class GuanZuListActivity
             case LOADMORE_STATUS:
                 if (null != listData) {
                     mListData.addAll(listData);
-                    mAdapter.notifyItemInserted(mListData.size() + 1);
+                    mAdapter.notifyData(mListData);
+//                    mAdapter.notifyItemInserted(mListData.size() + 1);
                     mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
                     last_id = mListData.get(mListData.size() - 1).getId();
                 } else {
