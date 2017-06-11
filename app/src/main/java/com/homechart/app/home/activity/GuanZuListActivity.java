@@ -17,6 +17,7 @@ import com.homechart.app.home.bean.guanzhu.GuanZhuUserListBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.recyclerlibrary.adapter.CommonAdapter;
+import com.homechart.app.recyclerlibrary.anims.adapters.ScaleInAnimationAdapter;
 import com.homechart.app.recyclerlibrary.anims.animators.LandingAnimator;
 import com.homechart.app.recyclerlibrary.holder.BaseViewHolder;
 import com.homechart.app.recyclerlibrary.recyclerview.HRecyclerView;
@@ -214,8 +215,8 @@ public class GuanZuListActivity
             case LOADMORE_STATUS:
                 if (null != listData) {
                     mListData.addAll(listData);
-                    mAdapter.notifyData(mListData);
-//                    mAdapter.notifyItemInserted(mListData.size() + 1);
+//                    mAdapter.notifyData(mListData);
+                    mAdapter.notifyItemInserted(mListData.size() + 1);
                     mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
                     last_id = mListData.get(mListData.size() - 1).getId();
                 } else {

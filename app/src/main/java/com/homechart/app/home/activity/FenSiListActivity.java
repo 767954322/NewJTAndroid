@@ -210,8 +210,8 @@ public class FenSiListActivity
                 if (null != listData) {
                     mListData.addAll(listData);
 
-                    mAdapter.notifyData(mListData);
-//                    mAdapter.notifyItemInserted(mListData.size() + 1);
+//                    mAdapter.notifyData(mListData);
+                    mAdapter.notifyItemInserted(mListData.size() + 1);
                     mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
                     last_id = mListData.get(mListData.size() - 1).getId();
                 } else {
