@@ -1,5 +1,6 @@
 package com.homechart.app.home.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -141,7 +142,9 @@ public class GuanZuListActivity
     //RecyclerView的Item点击事件
     @Override
     public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-        ToastUtils.showCenter(GuanZuListActivity.this, "查看关注个人资料");
+        Intent intent = new Intent(GuanZuListActivity.this, UserInfoActivity.class);
+        intent.putExtra(ClassConstant.LoginSucces.USER_ID, mListData.get(position).getUser_id());
+        startActivity(intent);
     }
 
     @Override
