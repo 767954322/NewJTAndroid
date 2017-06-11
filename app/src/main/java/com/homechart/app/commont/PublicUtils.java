@@ -20,8 +20,12 @@ import android.widget.EditText;
 import com.homechart.app.R;
 import com.homechart.app.home.bean.login.LoginBean;
 import com.homechart.app.utils.CustomProgress;
+import com.homechart.app.utils.DataCleanManager;
+import com.homechart.app.utils.MPFileUtility;
 import com.homechart.app.utils.SharedPreferencesUtils;
 import com.homechart.app.utils.ToastUtils;
+import com.homechart.app.utils.UIUtils;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -355,6 +359,19 @@ public class PublicUtils {
         DisplayMetrics metrics = new DisplayMetrics();
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
         return metrics.heightPixels;
+    }
+
+    /**
+     * 清除应用缓存
+     *
+     * @param context
+     */
+    public static void clearAppCache(Context context) {
+        DataCleanManager.cleanInternalCache(UIUtils.getContext());
+        DataCleanManager.cleanCustomCache(context.getCacheDir().getAbsolutePath());
+        MPFileUtility.clearCacheContent(context);
+        ImageLoader.getInstance().clearDiskCache();
+        ImageLoader.getInstance().clearMemoryCache();
     }
 
 }
