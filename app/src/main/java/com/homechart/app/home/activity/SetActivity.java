@@ -1,5 +1,6 @@
 package com.homechart.app.home.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -92,9 +93,17 @@ public class SetActivity
             case R.id.rl_set_guanyu:
                 break;
             case R.id.rl_set_clear:
-                mAlertView.show();
+                if (!tv_clear_num.getText().equals("0.0MB")) {
+                    mAlertView.show();
+                } else {
+                    ToastUtils.showCenter(SetActivity.this, "暂无缓存数据");
+                }
+
                 break;
             case R.id.rl_set_fankui:
+                Intent intent = new Intent(this, IssueBackActivity.class);
+                startActivity(intent);
+
                 break;
             case R.id.rl_set_tuijian:
                 break;
@@ -114,7 +123,7 @@ public class SetActivity
     @Override
     public void onItemClick(Object object, int position) {
         if (object == mAlertView && position != AlertView.CANCELPOSITION) {
-            if (getCacheSize().equals("0.0B")) {
+            if (getCacheSize().equals("0.0MB")) {
                 ToastUtils.showCenter(this, UIUtils.getString(R.string.no_cath));
             } else {
                 CustomProgress.show(SetActivity.this, "清除缓存中...", false, null);
