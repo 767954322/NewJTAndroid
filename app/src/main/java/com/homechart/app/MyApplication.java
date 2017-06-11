@@ -6,6 +6,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.homechart.app.commont.ActivityManager;
 import com.homechart.app.utils.UILImageLoader;
 import com.homechart.app.utils.imageloader.ImageUtils;
 import com.umeng.analytics.MobclickAgent;

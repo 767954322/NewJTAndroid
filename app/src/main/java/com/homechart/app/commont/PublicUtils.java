@@ -320,6 +320,7 @@ public class PublicUtils {
 
     /**
      * 登陆成功后，数据存储
+     *
      * @param loginBean
      */
     public static void loginSucces(LoginBean loginBean) {
@@ -338,6 +339,7 @@ public class PublicUtils {
     }
 
     //12................................................................................................
+
     /**
      * 获取屏幕的宽度
      *
@@ -349,6 +351,7 @@ public class PublicUtils {
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
         return metrics.widthPixels;
     }
+
     /**
      * 获取屏幕的高度
      *
@@ -360,6 +363,9 @@ public class PublicUtils {
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(metrics);
         return metrics.heightPixels;
     }
+
+
+    //13................................................................................................
 
     /**
      * 清除应用缓存
@@ -373,5 +379,23 @@ public class PublicUtils {
         ImageLoader.getInstance().clearDiskCache();
         ImageLoader.getInstance().clearMemoryCache();
     }
+    //14................................................................................................
 
+    /**
+     * 清除SharedPreferencesUtils数据
+     *
+     * @param context
+     */
+    public static void clearShared(Context context) {
+        SharedPreferencesUtils.writeBoolean(ClassConstant.LoginSucces.LOGIN_STATUS, false);
+        SharedPreferencesUtils.clear(context, ClassConstant.LoginSucces.AUTH_TOKEN);
+        SharedPreferencesUtils.clear(context, ClassConstant.LoginSucces.USER_ID);
+        SharedPreferencesUtils.clear(context, ClassConstant.LoginSucces.NIKE_NAME);
+        SharedPreferencesUtils.clear(context, ClassConstant.LoginSucces.SLOGAN);
+        SharedPreferencesUtils.clear(context, ClassConstant.LoginSucces.BIG);
+        SharedPreferencesUtils.clear(context, ClassConstant.LoginSucces.THUMB);
+        SharedPreferencesUtils.clear(context, ClassConstant.LoginSucces.EMAIL);
+        SharedPreferencesUtils.clear(context, ClassConstant.LoginSucces.MOBILE);
+        SharedPreferencesUtils.clear(context, ClassConstant.LoginSucces.PROFESSION);
+    }
 }

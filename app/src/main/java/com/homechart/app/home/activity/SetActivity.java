@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -11,17 +12,24 @@ import android.widget.TextView;
 import com.google.android.gms.analytics.HitBuilders;
 import com.homechart.app.MyApplication;
 import com.homechart.app.R;
+import com.homechart.app.commont.ActivityManager;
+import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.utils.CustomProgress;
 import com.homechart.app.utils.DataCleanManager;
 import com.homechart.app.utils.MPFileUtility;
+import com.homechart.app.utils.SharedPreferencesUtils;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.alertview.AlertView;
 import com.homechart.app.utils.alertview.OnItemClickListener;
+import com.umeng.socialize.UMAuthListener;
+import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import java.io.File;
+import java.util.Map;
 
 /**
  * Created by gumenghao on 17/6/7.
@@ -43,6 +51,7 @@ public class SetActivity
     private File externalCacheDir;
     private TextView tv_clear_num;
     private String cacheSize;
+    private Button btn_outlogin;
 
     @Override
     protected int getLayoutResId() {
@@ -58,6 +67,7 @@ public class SetActivity
         rl_set_clear = (RelativeLayout) findViewById(R.id.rl_set_clear);
         rl_set_fankui = (RelativeLayout) findViewById(R.id.rl_set_fankui);
         rl_set_tuijian = (RelativeLayout) findViewById(R.id.rl_set_tuijian);
+        btn_outlogin = (Button) findViewById(R.id.btn_outlogin);
     }
 
     @Override
@@ -69,6 +79,7 @@ public class SetActivity
         rl_set_clear.setOnClickListener(this);
         rl_set_fankui.setOnClickListener(this);
         rl_set_tuijian.setOnClickListener(this);
+        btn_outlogin.setOnClickListener(this);
 
     }
 
@@ -101,11 +112,26 @@ public class SetActivity
 
                 break;
             case R.id.rl_set_fankui:
+                PublicUtils.clearAppCache(SetActivity.this);
                 Intent intent = new Intent(this, IssueBackActivity.class);
                 startActivity(intent);
 
                 break;
             case R.id.rl_set_tuijian:
+
+                break;
+            case R.id.btn_outlogin:
+
+                //清除登陆数据
+                PublicUtils.clearShared(SetActivity.this);
+                //清除所有显示Activity
+                ActivityManager.getInstance().exit(SetActivity.this);
+                //清除友盟授权
+                clearUMengOauth();
+
+                Intent intent1 = new Intent(SetActivity.this, LoginActivity.class);
+                startActivity(intent1);
+                SetActivity.this.finish();
                 break;
         }
     }
@@ -163,4 +189,29 @@ public class SetActivity
         return cacheSize;
     }
 
+
+    private void clearUMengOauth() {
+        UMShareAPI.get(this).deleteOauth(SetActivity.this, ClassConstant.UMengPlatform.platform_qq, umAuthListener);
+        UMShareAPI.get(this).deleteOauth(SetActivity.this, ClassConstant.UMengPlatform.platform_weixin, umAuthListener);
+        UMShareAPI.get(this).deleteOauth(SetActivity.this, ClassConstant.UMengPlatform.platform_sina, umAuthListener);
+    }
+
+    private UMAuthListener umAuthListener = new UMAuthListener() {
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+            //授权开始的回调
+        }
+
+        @Override
+        public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform, int action) {
+        }
+    };
 }

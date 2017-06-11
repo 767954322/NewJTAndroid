@@ -6,6 +6,8 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
+import com.homechart.app.commont.ActivityManager;
+
 
 public abstract class BaseActivity extends FragmentActivity {
     private boolean destroyed = false;
@@ -15,6 +17,7 @@ public abstract class BaseActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(getLayoutResId());
+        ActivityManager.getInstance().addActivity(this);
         initView();
         initExtraBundle();
         initData(savedInstanceState);
@@ -59,6 +62,7 @@ public abstract class BaseActivity extends FragmentActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        ActivityManager.getInstance().removeActivity(this);
     }
 
 
@@ -70,4 +74,5 @@ public abstract class BaseActivity extends FragmentActivity {
         res.updateConfiguration(config, res.getDisplayMetrics());
         return res;
     }
+
 }
