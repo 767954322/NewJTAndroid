@@ -58,7 +58,6 @@ public class ShaiJiaListActivity extends BaseActivity
     private LoadMoreFooterView mLoadMoreFooterView;
 
     private int page_num = 1;
-    private String mUserId;
     private int guanli_tag = 0;//0:未打开管理   1:打开管理
     private int num_checked = 0; //选择的个数
     private TextView tv_content_right;
@@ -66,6 +65,7 @@ public class ShaiJiaListActivity extends BaseActivity
     private RelativeLayout rl_below;
     private Map<String, ShouCangItemBean> map_delete = new HashMap<>();//选择的唯一标示
     private ImageView iv_delete_icon;
+    private String user_id;
 
     @Override
     protected int getLayoutResId() {
@@ -81,7 +81,13 @@ public class ShaiJiaListActivity extends BaseActivity
         tv_content_right = (TextView) findViewById(R.id.tv_content_right);
         tv_shoucang_two = (TextView) findViewById(R.id.tv_shoucang_two);
         mRecyclerView = (HRecyclerView) findViewById(R.id.rcy_recyclerview_shoucang);
-        mUserId = SharedPreferencesUtils.readString(ClassConstant.LoginSucces.USER_ID);
+    }
+
+    @Override
+    protected void initExtraBundle() {
+        super.initExtraBundle();
+
+        user_id = (String) getIntent().getSerializableExtra(ClassConstant.LoginSucces.USER_ID);
     }
 
     @Override
@@ -319,7 +325,7 @@ public class ShaiJiaListActivity extends BaseActivity
                 }
             }
         };
-        MyHttpManager.getInstance().getShaiJiaList(mUserId, (page_num - 1) * 20, "20", callback);
+        MyHttpManager.getInstance().getShaiJiaList(user_id, (page_num - 1) * 20, "20", callback);
 //        MyHttpManager.getInstance().getShouCangList("100050", (page_num - 1) * 20, "20", callback);
 
     }

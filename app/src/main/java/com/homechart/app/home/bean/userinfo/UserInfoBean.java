@@ -18,11 +18,12 @@ public class UserInfoBean implements Serializable{
     private String location;
     private String slogan;
     private String email;
+    private String relation;
     private String mobile;
     private String profession;
     private AvatarBean avatar;
 
-    public UserInfoBean(String user_id, String nickname, String avatar_id, String gender, String age_group, String province, String city, String location, String slogan, String email, String mobile, String profession, AvatarBean avatar) {
+    public UserInfoBean(String user_id, String nickname, String avatar_id, String gender, String age_group, String province, String city, String location, String slogan, String email, String relation, String mobile, String profession, AvatarBean avatar) {
         this.user_id = user_id;
         this.nickname = nickname;
         this.avatar_id = avatar_id;
@@ -33,12 +34,10 @@ public class UserInfoBean implements Serializable{
         this.location = location;
         this.slogan = slogan;
         this.email = email;
+        this.relation = relation;
         this.mobile = mobile;
         this.profession = profession;
         this.avatar = avatar;
-    }
-
-    public UserInfoBean() {
     }
 
     public String getUser_id() {
@@ -121,6 +120,14 @@ public class UserInfoBean implements Serializable{
         this.email = email;
     }
 
+    public String getRelation() {
+        return relation;
+    }
+
+    public void setRelation(String relation) {
+        this.relation = relation;
+    }
+
     public String getMobile() {
         return mobile;
     }
@@ -158,6 +165,7 @@ public class UserInfoBean implements Serializable{
                 ", location='" + location + '\'' +
                 ", slogan='" + slogan + '\'' +
                 ", email='" + email + '\'' +
+                ", relation='" + relation + '\'' +
                 ", mobile='" + mobile + '\'' +
                 ", profession='" + profession + '\'' +
                 ", avatar=" + avatar +

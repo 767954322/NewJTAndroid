@@ -60,7 +60,7 @@ public class GuanZuListActivity
     private final String LOADMORE_STATUS = "loadmore";
     private String last_id = "0";//上一页最后一条数据id,第一次传0值
     private String n = "20";//返回数据条数，默认20
-    private String mUserId;
+    private String user_id;
 
     @Override
     protected int getLayoutResId() {
@@ -73,7 +73,6 @@ public class GuanZuListActivity
         mRecyclerView = (HRecyclerView) findViewById(R.id.rcy_recyclerview_pic);
         mIBBack = (ImageButton) findViewById(R.id.nav_left_imageButton);
         mTVTital = (TextView) findViewById(R.id.tv_tital_comment);
-        mUserId = SharedPreferencesUtils.readString(ClassConstant.LoginSucces.USER_ID);
     }
 
     @Override
@@ -85,6 +84,12 @@ public class GuanZuListActivity
 
     }
 
+    @Override
+    protected void initExtraBundle() {
+        super.initExtraBundle();
+
+        user_id = (String) getIntent().getSerializableExtra(ClassConstant.LoginSucces.USER_ID);
+    }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
@@ -190,7 +195,7 @@ public class GuanZuListActivity
                 }
             }
         };
-//        MyHttpManager.getInstance().getFensiList(mUserId, last_id, n, callback);
+//        MyHttpManager.getInstance().getFensiList(user_id, last_id, n, callback);
         MyHttpManager.getInstance().getGuanZuList("100050", last_id, n, callback);
 
     }

@@ -133,12 +133,14 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
             case R.id.rl_fensi:
 
                 Intent intent_fensi = new Intent(activity, FenSiListActivity.class);
+                intent_fensi.putExtra(ClassConstant.LoginSucces.USER_ID,mUserId);
                 startActivity(intent_fensi);
 
                 break;
             case R.id.rl_guanzu:
 
                 Intent intent_guanzu = new Intent(activity, GuanZuListActivity.class);
+                intent_guanzu.putExtra(ClassConstant.LoginSucces.USER_ID,mUserId);
                 startActivity(intent_guanzu);
 
                 break;
@@ -151,6 +153,7 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
             case R.id.rl_shaijia:
 
                 Intent intent_shaijia = new Intent(activity, ShaiJiaListActivity.class);
+                intent_shaijia.putExtra(ClassConstant.LoginSucces.USER_ID,mUserId);
                 startActivity(intent_shaijia);
 
                 break;

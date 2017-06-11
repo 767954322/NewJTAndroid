@@ -1,5 +1,6 @@
 package com.homechart.app.home.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
+import com.homechart.app.commont.UrlConstants;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.fensi.FenSiBean;
 import com.homechart.app.home.bean.fensi.UserListBean;
@@ -56,7 +58,7 @@ public class FenSiListActivity
     private final String LOADMORE_STATUS = "loadmore";
     private String last_id = "0";//上一页最后一条数据id,第一次传0值
     private String n = "20";//返回数据条数，默认20
-    private String mUserId;
+    private String user_id;
 
     @Override
     protected int getLayoutResId() {
@@ -69,7 +71,13 @@ public class FenSiListActivity
         mRecyclerView = (HRecyclerView) findViewById(R.id.rcy_recyclerview_pic);
         mIBBack = (ImageButton) findViewById(R.id.nav_left_imageButton);
         mTVTital = (TextView) findViewById(R.id.tv_tital_comment);
-        mUserId = SharedPreferencesUtils.readString(ClassConstant.LoginSucces.USER_ID);
+    }
+
+    @Override
+    protected void initExtraBundle() {
+        super.initExtraBundle();
+
+        user_id = (String) getIntent().getSerializableExtra(ClassConstant.LoginSucces.USER_ID);
     }
 
     @Override
@@ -130,7 +138,11 @@ public class FenSiListActivity
     //RecyclerView的Item点击事件
     @Override
     public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-        ToastUtils.showCenter(FenSiListActivity.this, "查看粉丝个人资料");
+
+        Intent intent = new Intent(FenSiListActivity.this, UserInfoActivity.class);
+        intent.putExtra(ClassConstant.LoginSucces.USER_ID, mListData.get(position).getUser_id());
+        startActivity(intent);
+
     }
 
     @Override
@@ -184,7 +196,7 @@ public class FenSiListActivity
                 }
             }
         };
-//        MyHttpManager.getInstance().getFensiList(mUserId, last_id, n, callback);
+//        MyHttpManager.getInstance().getFensiList(user_id, last_id, n, callback);
         MyHttpManager.getInstance().getFensiList("100050", last_id, n, callback);
 
     }
