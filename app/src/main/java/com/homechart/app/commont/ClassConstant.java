@@ -125,4 +125,9 @@ public class ClassConstant {
 
     }
 
+    public static class MessageList{
+        public static final String S = "s";
+        public static final String N = "n";
+    }
+
 }

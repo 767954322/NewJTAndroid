@@ -120,6 +120,7 @@ public class UserInfoActivity
         mTVTital.setText("");
         getUserInfo();
 
+
         mAdapter = new CommonAdapter<ShouCangItemBean>(this, R.layout.item_userinfo, mListData) {
             @Override
             public void convert(final BaseViewHolder holder, final int position) {
