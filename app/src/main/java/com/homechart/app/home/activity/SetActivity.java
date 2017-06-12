@@ -104,6 +104,10 @@ public class SetActivity
                 SetActivity.this.finish();
                 break;
             case R.id.rl_set_guanyu:
+
+                Intent intent_guanyu = new Intent(SetActivity.this, GuanYuActivity.class);
+                startActivity(intent_guanyu);
+
                 break;
             case R.id.rl_set_clear:
                 if (!tv_clear_num.getText().equals("0.0B")) {
