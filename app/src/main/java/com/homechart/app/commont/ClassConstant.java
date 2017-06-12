@@ -114,6 +114,15 @@ public class ClassConstant {
         public static final String S = "s";
         public static final String N = "n";
         public static final String ITEM_ID = "item_id";
+    }    //获取收藏列表
+
+    public static class IssueBack {
+        public static final String IMMAGE_ID = "immage_id";
+        public static final String MOBILE = "mobile";
+        public static final String CONTENT = "content";
+        public static final String IMAGE_ID = "image_id";
+
+
     }
 
 }

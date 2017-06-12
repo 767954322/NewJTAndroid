@@ -110,29 +110,29 @@ public class UserInfoActivity
                 break;
             case R.id.rl_info_guanzhu:
 
-                if (!TextUtils.isEmpty(user_id)) {
-                    Intent intent_guanzu = new Intent(UserInfoActivity.this, GuanZuListActivity.class);
-                    intent_guanzu.putExtra(ClassConstant.LoginSucces.USER_ID, user_id);
-                    startActivity(intent_guanzu);
-                }
+//                if (!TextUtils.isEmpty(user_id)) {
+//                    Intent intent_guanzu = new Intent(UserInfoActivity.this, GuanZuListActivity.class);
+//                    intent_guanzu.putExtra(ClassConstant.LoginSucces.USER_ID, user_id);
+//                    startActivity(intent_guanzu);
+//                }
 
                 break;
             case R.id.rl_info_shaijia:
 
-                if (!TextUtils.isEmpty(user_id)) {
-                    Intent intent_shaijia = new Intent(UserInfoActivity.this, ShaiJiaListActivity.class);
-                    intent_shaijia.putExtra(ClassConstant.LoginSucces.USER_ID, user_id);
-                    startActivity(intent_shaijia);
-                }
+//                if (!TextUtils.isEmpty(user_id)) {
+//                    Intent intent_shaijia = new Intent(UserInfoActivity.this, ShaiJiaListActivity.class);
+//                    intent_shaijia.putExtra(ClassConstant.LoginSucces.USER_ID, user_id);
+//                    startActivity(intent_shaijia);
+//                }
 
                 break;
             case R.id.rl_info_fensi:
 
-                if (!TextUtils.isEmpty(user_id)) {
-                    Intent intent_fensi = new Intent(UserInfoActivity.this, FenSiListActivity.class);
-                    intent_fensi.putExtra(ClassConstant.LoginSucces.USER_ID, user_id);
-                    startActivity(intent_fensi);
-                }
+//                if (!TextUtils.isEmpty(user_id)) {
+//                    Intent intent_fensi = new Intent(UserInfoActivity.this, FenSiListActivity.class);
+//                    intent_fensi.putExtra(ClassConstant.LoginSucces.USER_ID, user_id);
+//                    startActivity(intent_fensi);
+//                }
 
                 break;
         }

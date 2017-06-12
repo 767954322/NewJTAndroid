@@ -6,14 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,32 +25,36 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.homechart.app.MyApplication;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
-import com.homechart.app.commont.KeyConstans;
+import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.commont.UrlConstants;
 import com.homechart.app.home.base.BaseActivity;
-import com.homechart.app.home.contract.PutFileCallBack;
 import com.homechart.app.utils.CustomProgress;
 import com.homechart.app.utils.Md5Util;
-import com.homechart.app.utils.SharedPreferencesUtils;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.glide.GlideImgManager;
 import com.homechart.app.utils.volley.FileHttpManager;
+import com.homechart.app.utils.volley.MyHttpManager;
+import com.homechart.app.utils.volley.OkStringRequest;
+import com.homechart.app.utils.volley.PutFileCallBack;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 
-public class IssueBackActivity extends BaseActivity implements View.OnClickListener {
+public class IssueBackActivity
+        extends BaseActivity
+        implements View.OnClickListener,
+        PutFileCallBack {
     private GridView mAddPic;
     private final int REQUEST_CODE_GALLERY = 1;
     private List<String> list;
@@ -142,10 +145,107 @@ public class IssueBackActivity extends BaseActivity implements View.OnClickListe
                 IssueBackActivity.this.finish();
                 break;
             case R.id.btn_send_issue:
+                listPicId.clear();
+                String content = mETContent.getText().toString();
+                if (TextUtils.isEmpty(content) && list.size() == 0) {
+                    ToastUtils.showCenter(IssueBackActivity.this, "给点建议吧");
+                } else {
+                    CustomProgress.show(IssueBackActivity.this, "发送中...", false, null);
+                    if (list.size() != 0) {
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                super.run();
+                                Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
+                                String signString = PublicUtils.getSinaString(map);
+                                String tabMd5String = Md5Util.getMD5twoTimes(signString);
+                                map.put(ClassConstant.PublicKey.SIGN, tabMd5String);
+                                for (int i = 0; i < list.size(); i++) {
+
+                                    FileHttpManager.getInstance().uploadFile(IssueBackActivity.this, new File(list.get(i)),
+                                            UrlConstants.PUT_IMAGE,
+                                            map,
+                                            PublicUtils.getPublicHeader(MyApplication.getInstance()));
+
+                                }
+                            }
+                        }.start();
+                    } else {
+                        sendIssue();
+                    }
+                }
+
 
                 break;
         }
     }
+
+    @Override
+    public void onSucces(String result) {
+
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+            String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+            String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+            if (error_code == 0) {
+                JSONObject jsonObject1 = new JSONObject(data_msg);
+                String immage_id = jsonObject1.getString(ClassConstant.IssueBack.IMMAGE_ID);
+                listPicId.add(immage_id);
+                if (listPicId.size() == list.size()) {
+                    sendIssue();
+                }
+            } else {
+                CustomProgress.cancelDialog();
+                ToastUtils.showCenter(IssueBackActivity.this, error_msg);
+            }
+        } catch (JSONException e) {
+        }
+
+    }
+
+    private void sendIssue() {
+
+        String content = mETContent.getText().toString();
+        String phone = mETPhone.getText().toString();
+        String image_id = "";
+        if (listPicId.size() > 0) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < listPicId.size(); i++) {
+                if (i == listPicId.size() - 1) {
+                    sb.append(listPicId.get(i));
+                } else {
+                    sb.append(listPicId.get(i) + ",");
+                }
+            }
+            image_id = sb.toString();
+        }
+
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                CustomProgress.cancelDialog();
+                ToastUtils.showCenter(IssueBackActivity.this, "发送失败");
+            }
+
+            @Override
+            public void onResponse(String s) {
+                CustomProgress.cancelDialog();
+                IssueBackActivity.this.finish();
+                ToastUtils.showCenter(IssueBackActivity.this, "反馈成功");
+            }
+        };
+
+        MyHttpManager.getInstance().issueBack(phone, content, image_id, callBack);
+
+    }
+
+    @Override
+    public void onFails() {
+
+        Log.d("test", "error");
+    }
+
     class MyIssueAdapter extends BaseAdapter {
 
         private List<String> picList;

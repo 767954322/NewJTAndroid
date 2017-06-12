@@ -574,4 +574,44 @@ public class MyHttpManager {
         queue.add(okStringRequest);
     }
 
+
+    /**
+     * 问题反馈
+     *
+     * @param mobile
+     * @param content
+     * @param image_id
+     * @param callback
+     */
+    public void issueBack(final String mobile, final String content, final String image_id, OkStringRequest.OKResponseCallback callback) {
+        OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.ISSUE_BACK, callback) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
+                if (!TextUtils.isEmpty(mobile)) {
+                    map.put(ClassConstant.IssueBack.MOBILE, mobile);
+                }
+                if (!TextUtils.isEmpty(content)) {
+                    map.put(ClassConstant.IssueBack.CONTENT, content);
+                }
+                if (!TextUtils.isEmpty(image_id)) {
+                    map.put(ClassConstant.IssueBack.IMAGE_ID, image_id);
+                }
+
+                String signString = PublicUtils.getSinaString(map);
+                String tabMd5String = Md5Util.getMD5twoTimes(signString);
+                map.put(ClassConstant.PublicKey.SIGN, tabMd5String);
+                return map;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return PublicUtils.getPublicHeader(MyApplication.getInstance());
+            }
+
+        };
+        queue.add(okStringRequest);
+    }
+
 }
