@@ -413,7 +413,6 @@ public class PublicUtils {
      */
     public static void setPicHeighAndWidth(Context mContext, float bili, ImageView imageView) {
         ViewGroup.LayoutParams layoutParams = imageView.getLayoutParams();
-        layoutParams.width = getScreenWidth(mContext) / 2 - UIUtils.getDimens(R.dimen.font_12);
         layoutParams.height = (int) (div(imageView.getWidth(), bili, 2));
         imageView.setLayoutParams(layoutParams);
     }
