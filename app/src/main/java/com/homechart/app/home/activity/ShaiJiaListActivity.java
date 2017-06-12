@@ -56,6 +56,10 @@ public class ShaiJiaListActivity extends BaseActivity
     private HRecyclerView mRecyclerView;
     private CommonAdapter<ShouCangItemBean> mAdapter;
     private LoadMoreFooterView mLoadMoreFooterView;
+    private final String REFRESH_STATUS = "refresh";
+    private final String LOADMORE_STATUS = "loadmore";
+
+    private List<ShouCangItemBean> mListData = new ArrayList<>();
 
     private int page_num = 1;
     private int guanli_tag = 0;//0:未打开管理   1:打开管理
@@ -366,11 +370,6 @@ public class ShaiJiaListActivity extends BaseActivity
                 break;
         }
     }
-
-    private final String REFRESH_STATUS = "refresh";
-    private final String LOADMORE_STATUS = "loadmore";
-
-    private List<ShouCangItemBean> mListData = new ArrayList<>();
 
     public void upCheckedStatus() {
         tv_shoucang_two.setText(map_delete.size() + "");

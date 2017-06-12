@@ -4,7 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.TextUtils;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -16,8 +17,17 @@ import com.android.volley.VolleyError;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.home.base.BaseActivity;
+import com.homechart.app.home.bean.shoucang.ShouCangBean;
+import com.homechart.app.home.bean.shoucang.ShouCangItemBean;
 import com.homechart.app.home.bean.userinfo.UserCenterInfoBean;
+import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.RoundImageView;
+import com.homechart.app.recyclerlibrary.adapter.CommonAdapter;
+import com.homechart.app.recyclerlibrary.anims.animators.LandingAnimator;
+import com.homechart.app.recyclerlibrary.holder.BaseViewHolder;
+import com.homechart.app.recyclerlibrary.recyclerview.HRecyclerView;
+import com.homechart.app.recyclerlibrary.recyclerview.OnLoadMoreListener;
+import com.homechart.app.recyclerlibrary.support.MultiItemTypeSupport;
 import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.UIUtils;
@@ -28,7 +38,8 @@ import com.homechart.app.utils.volley.OkStringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by gumenghao on 17/6/11.
@@ -36,9 +47,10 @@ import java.io.Serializable;
 
 public class UserInfoActivity
         extends BaseActivity
-        implements View.OnClickListener {
+        implements View.OnClickListener,
+        OnLoadMoreListener {
 
-
+    private List<ShouCangItemBean> mListData = new ArrayList<>();
     private UserCenterInfoBean userCenterInfoBean;
     private ImageButton mIBBack;
     private TextView mTVTital;
@@ -54,6 +66,14 @@ public class UserInfoActivity
     private RelativeLayout rl_info_guanzhu;
     private RelativeLayout rl_info_shaijia;
     private RelativeLayout rl_info_fensi;
+    private CommonAdapter<ShouCangItemBean> mAdapter;
+    private HRecyclerView mRecyclerView;
+    private LoadMoreFooterView mLoadMoreFooterView;
+    private StaggeredGridLayoutManager staggeredGridLayoutManager;
+    private int page_num = 0;
+    private int TYPE_ONE = 1;
+    private int TYPE_TWO = 2;
+    private View headerView;
 
     @Override
     protected int getLayoutResId() {
@@ -62,24 +82,29 @@ public class UserInfoActivity
 
     @Override
     protected void initView() {
+
+        headerView = LayoutInflater.from(UserInfoActivity.this).inflate(R.layout.header_userinfo_info, null);
         mIBBack = (ImageButton) findViewById(R.id.nav_left_imageButton);
         mTVTital = (TextView) findViewById(R.id.tv_tital_comment);
-        tv_userinfo_nikename = (TextView) findViewById(R.id.tv_userinfo_nikename);
-        tv_info_guanzhu_num = (TextView) findViewById(R.id.tv_info_guanzhu_num);
-        tv_info_shaijia_num = (TextView) findViewById(R.id.tv_info_shaijia_num);
-        tv_info_fensi_num = (TextView) findViewById(R.id.tv_info_fensi_num);
-        btn_guanzhu_demand = (Button) findViewById(R.id.btn_guanzhu_demand);
-        rl_info_zhunaye = (RelativeLayout) findViewById(R.id.rl_info_zhunaye);
-        rl_info_guanzhu = (RelativeLayout) findViewById(R.id.rl_info_guanzhu);
-        rl_info_shaijia = (RelativeLayout) findViewById(R.id.rl_info_shaijia);
-        rl_info_fensi = (RelativeLayout) findViewById(R.id.rl_info_fensi);
-        iv_info_renzheng = (ImageView) findViewById(R.id.iv_info_renzheng);
-        iv_header_desiner_center = (RoundImageView) findViewById(R.id.iv_header_desiner_center);
+        mRecyclerView = (HRecyclerView) findViewById(R.id.rcy_recyclerview_info);
+
+        tv_userinfo_nikename = (TextView) headerView.findViewById(R.id.tv_userinfo_nikename);
+        tv_info_guanzhu_num = (TextView) headerView.findViewById(R.id.tv_info_guanzhu_num);
+        tv_info_shaijia_num = (TextView) headerView.findViewById(R.id.tv_info_shaijia_num);
+        tv_info_fensi_num = (TextView) headerView.findViewById(R.id.tv_info_fensi_num);
+        btn_guanzhu_demand = (Button) headerView.findViewById(R.id.btn_guanzhu_demand);
+        rl_info_zhunaye = (RelativeLayout) headerView.findViewById(R.id.rl_info_zhunaye);
+        rl_info_guanzhu = (RelativeLayout) headerView.findViewById(R.id.rl_info_guanzhu);
+        rl_info_shaijia = (RelativeLayout) headerView.findViewById(R.id.rl_info_shaijia);
+        rl_info_fensi = (RelativeLayout) headerView.findViewById(R.id.rl_info_fensi);
+        iv_info_renzheng = (ImageView) headerView.findViewById(R.id.iv_info_renzheng);
+        iv_header_desiner_center = (RoundImageView) headerView.findViewById(R.id.iv_header_desiner_center);
     }
 
     @Override
     protected void initExtraBundle() {
         super.initExtraBundle();
+
         user_id = (String) getIntent().getSerializableExtra(ClassConstant.LoginSucces.USER_ID);
     }
 
@@ -87,10 +112,6 @@ public class UserInfoActivity
     protected void initListener() {
         super.initListener();
         mIBBack.setOnClickListener(this);
-        rl_info_guanzhu.setOnClickListener(this);
-        rl_info_shaijia.setOnClickListener(this);
-        rl_info_fensi.setOnClickListener(this);
-
     }
 
     @Override
@@ -99,6 +120,32 @@ public class UserInfoActivity
         mTVTital.setText("");
         getUserInfo();
 
+        mAdapter = new CommonAdapter<ShouCangItemBean>(this, R.layout.item_userinfo, mListData) {
+            @Override
+            public void convert(final BaseViewHolder holder, final int position) {
+
+                String item_id = mListData.get(position).getItem_info().getItem_id();
+                if (item_id.equals(holder.getView(R.id.iv_shoucang_image).getTag())) {
+                } else {
+                    holder.getView(R.id.iv_shoucang_image).setTag(item_id);
+                    ImageUtils.displayFilletImage(mListData.get(position).getItem_info().getImage().getImg0(),
+                            (ImageView) holder.getView(R.id.iv_shoucang_image));
+                }
+            }
+        };
+        mLoadMoreFooterView = (LoadMoreFooterView) mRecyclerView.getLoadMoreFooterView();
+        staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        //解决item之间互换位置的bug
+        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+        mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
+        mRecyclerView.setItemAnimator(new LandingAnimator());
+//        ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(mAdapter);
+//        scaleAdapter.setFirstOnly(false);
+//        scaleAdapter.setDuration(500);
+        mRecyclerView.setOnLoadMoreListener(this);
+        mRecyclerView.addHeaderView(headerView);
+        mRecyclerView.setAdapter(mAdapter);
+        getListData();
     }
 
     @Override
@@ -107,33 +154,6 @@ public class UserInfoActivity
         switch (v.getId()) {
             case R.id.nav_left_imageButton:
                 UserInfoActivity.this.finish();
-                break;
-            case R.id.rl_info_guanzhu:
-
-//                if (!TextUtils.isEmpty(user_id)) {
-//                    Intent intent_guanzu = new Intent(UserInfoActivity.this, GuanZuListActivity.class);
-//                    intent_guanzu.putExtra(ClassConstant.LoginSucces.USER_ID, user_id);
-//                    startActivity(intent_guanzu);
-//                }
-
-                break;
-            case R.id.rl_info_shaijia:
-
-//                if (!TextUtils.isEmpty(user_id)) {
-//                    Intent intent_shaijia = new Intent(UserInfoActivity.this, ShaiJiaListActivity.class);
-//                    intent_shaijia.putExtra(ClassConstant.LoginSucces.USER_ID, user_id);
-//                    startActivity(intent_shaijia);
-//                }
-
-                break;
-            case R.id.rl_info_fensi:
-
-//                if (!TextUtils.isEmpty(user_id)) {
-//                    Intent intent_fensi = new Intent(UserInfoActivity.this, FenSiListActivity.class);
-//                    intent_fensi.putExtra(ClassConstant.LoginSucces.USER_ID, user_id);
-//                    startActivity(intent_fensi);
-//                }
-
                 break;
         }
 
@@ -145,7 +165,9 @@ public class UserInfoActivity
         OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+
                 ToastUtils.showCenter(UserInfoActivity.this, getString(R.string.userinfo_get_error));
+
             }
 
             @Override
@@ -161,9 +183,10 @@ public class UserInfoActivity
                         msg.obj = data_msg;
                         handler.sendMessage(msg);
 
-
                     } else {
+
                         ToastUtils.showCenter(UserInfoActivity.this, error_msg);
+
                     }
                 } catch (JSONException e) {
                 }
@@ -223,4 +246,56 @@ public class UserInfoActivity
 
     }
 
+    @Override
+    public void onLoadMore() {
+        getListData();
+    }
+
+    private void getListData() {
+        ++page_num;
+        OkStringRequest.OKResponseCallback callback = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
+                ToastUtils.showCenter(UserInfoActivity.this, UIUtils.getString(R.string.error_shaijia));
+                --page_num;
+            }
+
+            @Override
+            public void onResponse(String response) {
+                try {
+                    if (response != null) {
+                        JSONObject jsonObject = new JSONObject(response);
+                        int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                        String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                        String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                        if (error_code == 0) {
+                            ShouCangBean shouCangBean = GsonUtil.jsonToBean(data_msg, ShouCangBean.class);
+                            updateViewFromData(shouCangBean.getItem_list());
+                        } else {
+                            ToastUtils.showCenter(UserInfoActivity.this, error_msg);
+                        }
+                    } else {
+                        --page_num;
+                        mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
+
+                    }
+                } catch (JSONException e) {
+                    --page_num;
+                    ToastUtils.showCenter(UserInfoActivity.this, UIUtils.getString(R.string.error_shaijia));
+                }
+            }
+        };
+//        MyHttpManager.getInstance().getShaiJiaList(user_id, (page_num - 1) * 20, "20", callback);
+        MyHttpManager.getInstance().getShouCangList("101095", (page_num - 1) * 20, "20", callback);
+
+    }
+
+    private void updateViewFromData(List<ShouCangItemBean> item_list) {
+
+        mListData.addAll(item_list);
+        mAdapter.notifyData(mListData);
+        mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
+
+    }
 }
