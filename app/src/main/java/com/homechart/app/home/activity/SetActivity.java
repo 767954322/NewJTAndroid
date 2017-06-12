@@ -24,6 +24,8 @@ import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.alertview.AlertView;
 import com.homechart.app.utils.alertview.OnItemClickListener;
+import com.homechart.app.utils.imageloader.ImageUtils;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -104,7 +106,7 @@ public class SetActivity
             case R.id.rl_set_guanyu:
                 break;
             case R.id.rl_set_clear:
-                if (!tv_clear_num.getText().equals("0.0MB")) {
+                if (!tv_clear_num.getText().equals("0.0B")) {
                     mAlertView.show();
                 } else {
                     ToastUtils.showCenter(SetActivity.this, "暂无缓存数据");
@@ -149,7 +151,7 @@ public class SetActivity
     @Override
     public void onItemClick(Object object, int position) {
         if (object == mAlertView && position != AlertView.CANCELPOSITION) {
-            if (getCacheSize().equals("0.0MB")) {
+            if (getCacheSize().equals("0.0B")) {
                 ToastUtils.showCenter(this, UIUtils.getString(R.string.no_cath));
             } else {
                 CustomProgress.show(SetActivity.this, "清除缓存中...", false, null);
@@ -157,7 +159,7 @@ public class SetActivity
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        tv_clear_num.setText("0.0MB");
+                        tv_clear_num.setText("0.0B");
                         CustomProgress.cancelDialog();
                         ToastUtils.showCenter(SetActivity.this, "缓存已清完");
                     }
@@ -180,8 +182,9 @@ public class SetActivity
             //cacheSize = DataCleanManager.getCacheSize(cacheDir);
             double mpCachesize = DataCleanManager.getFolderSize(MPFileUtility.getCacheRootDirectoryHandle(this));
             double othercachesize = DataCleanManager.getFolderSize(cacheDir);
-
             cacheSize = DataCleanManager.getFormatSize(mpCachesize + othercachesize);
+            ImageLoader.getInstance().clearMemoryCache();
+            ImageLoader.getInstance().clearDiscCache();
 
         } catch (Exception e) {
             e.printStackTrace();
