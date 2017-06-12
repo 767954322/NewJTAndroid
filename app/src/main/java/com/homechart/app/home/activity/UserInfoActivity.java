@@ -1,6 +1,5 @@
 package com.homechart.app.home.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,12 +16,14 @@ import com.android.volley.VolleyError;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.home.base.BaseActivity;
+import com.homechart.app.home.bean.message.ItemMessageBean;
 import com.homechart.app.home.bean.shoucang.ShouCangBean;
 import com.homechart.app.home.bean.shoucang.ShouCangItemBean;
 import com.homechart.app.home.bean.userinfo.UserCenterInfoBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.recyclerlibrary.adapter.CommonAdapter;
+import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
 import com.homechart.app.recyclerlibrary.anims.animators.LandingAnimator;
 import com.homechart.app.recyclerlibrary.holder.BaseViewHolder;
 import com.homechart.app.recyclerlibrary.recyclerview.HRecyclerView;
@@ -66,13 +67,13 @@ public class UserInfoActivity
     private RelativeLayout rl_info_guanzhu;
     private RelativeLayout rl_info_shaijia;
     private RelativeLayout rl_info_fensi;
-    private CommonAdapter<ShouCangItemBean> mAdapter;
+    private MultiItemCommonAdapter<ShouCangItemBean> mAdapter;
     private HRecyclerView mRecyclerView;
     private LoadMoreFooterView mLoadMoreFooterView;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private int page_num = 0;
-    private int TYPE_ONE = 1;
-    private int TYPE_TWO = 2;
+    private int TYPE_LEFT = 1;
+    private int TYPE_RIGHT = 2;
     private View headerView;
 
     @Override
@@ -119,12 +120,30 @@ public class UserInfoActivity
 
         mTVTital.setText("");
         getUserInfo();
-
-
-        mAdapter = new CommonAdapter<ShouCangItemBean>(this, R.layout.item_userinfo, mListData) {
+        MultiItemTypeSupport<ShouCangItemBean> support = new MultiItemTypeSupport<ShouCangItemBean>() {
             @Override
-            public void convert(final BaseViewHolder holder, final int position) {
+            public int getLayoutId(int itemType) {
+                if (itemType == TYPE_LEFT) {
+                    return R.layout.item_userinfo_left;
+                } else {
+                    return R.layout.item_userinfo_right;
+                }
+            }
 
+            @Override
+            public int getItemViewType(int position, ShouCangItemBean itemMessageBean) {
+                if (position % 2 == 0) {
+                    return TYPE_LEFT;
+                } else {
+                    return TYPE_RIGHT;
+                }
+
+            }
+        };
+
+        mAdapter = new MultiItemCommonAdapter<ShouCangItemBean>(this, mListData, support) {
+            @Override
+            public void convert(BaseViewHolder holder, int position) {
                 String item_id = mListData.get(position).getItem_info().getItem_id();
                 if (item_id.equals(holder.getView(R.id.iv_shoucang_image).getTag())) {
                 } else {

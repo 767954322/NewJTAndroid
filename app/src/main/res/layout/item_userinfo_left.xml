@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/font_130"
         android:layout_marginRight="@dimen/font_4"
+        android:layout_marginLeft="@dimen/font_10"
         android:layout_marginTop="@dimen/font_10" />
 
 
