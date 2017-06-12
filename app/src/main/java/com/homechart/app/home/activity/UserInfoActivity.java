@@ -16,13 +16,11 @@ import com.android.volley.VolleyError;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.home.base.BaseActivity;
-import com.homechart.app.home.bean.message.ItemMessageBean;
-import com.homechart.app.home.bean.shoucang.ShouCangBean;
-import com.homechart.app.home.bean.shoucang.ShouCangItemBean;
+import com.homechart.app.home.bean.shaijia.ShaiJiaBean;
+import com.homechart.app.home.bean.shaijia.ShaiJiaItemBean;
 import com.homechart.app.home.bean.userinfo.UserCenterInfoBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.RoundImageView;
-import com.homechart.app.recyclerlibrary.adapter.CommonAdapter;
 import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
 import com.homechart.app.recyclerlibrary.anims.animators.LandingAnimator;
 import com.homechart.app.recyclerlibrary.holder.BaseViewHolder;
@@ -51,7 +49,7 @@ public class UserInfoActivity
         implements View.OnClickListener,
         OnLoadMoreListener {
 
-    private List<ShouCangItemBean> mListData = new ArrayList<>();
+    private List<ShaiJiaItemBean> mListData = new ArrayList<>();
     private UserCenterInfoBean userCenterInfoBean;
     private ImageButton mIBBack;
     private TextView mTVTital;
@@ -67,7 +65,7 @@ public class UserInfoActivity
     private RelativeLayout rl_info_guanzhu;
     private RelativeLayout rl_info_shaijia;
     private RelativeLayout rl_info_fensi;
-    private MultiItemCommonAdapter<ShouCangItemBean> mAdapter;
+    private MultiItemCommonAdapter<ShaiJiaItemBean> mAdapter;
     private HRecyclerView mRecyclerView;
     private LoadMoreFooterView mLoadMoreFooterView;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
@@ -120,7 +118,7 @@ public class UserInfoActivity
 
         mTVTital.setText("");
         getUserInfo();
-        MultiItemTypeSupport<ShouCangItemBean> support = new MultiItemTypeSupport<ShouCangItemBean>() {
+        MultiItemTypeSupport<ShaiJiaItemBean> support = new MultiItemTypeSupport<ShaiJiaItemBean>() {
             @Override
             public int getLayoutId(int itemType) {
                 if (itemType == TYPE_LEFT) {
@@ -131,7 +129,7 @@ public class UserInfoActivity
             }
 
             @Override
-            public int getItemViewType(int position, ShouCangItemBean itemMessageBean) {
+            public int getItemViewType(int position, ShaiJiaItemBean itemMessageBean) {
                 if (position % 2 == 0) {
                     return TYPE_LEFT;
                 } else {
@@ -141,7 +139,7 @@ public class UserInfoActivity
             }
         };
 
-        mAdapter = new MultiItemCommonAdapter<ShouCangItemBean>(this, mListData, support) {
+        mAdapter = new MultiItemCommonAdapter<ShaiJiaItemBean>(this, mListData, support) {
             @Override
             public void convert(BaseViewHolder holder, int position) {
                 String item_id = mListData.get(position).getItem_info().getItem_id();
@@ -290,7 +288,7 @@ public class UserInfoActivity
                         String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
                         String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
                         if (error_code == 0) {
-                            ShouCangBean shouCangBean = GsonUtil.jsonToBean(data_msg, ShouCangBean.class);
+                            ShaiJiaBean shouCangBean = GsonUtil.jsonToBean(data_msg, ShaiJiaBean.class);
                             updateViewFromData(shouCangBean.getItem_list());
                         } else {
                             ToastUtils.showCenter(UserInfoActivity.this, error_msg);
@@ -311,7 +309,7 @@ public class UserInfoActivity
 
     }
 
-    private void updateViewFromData(List<ShouCangItemBean> item_list) {
+    private void updateViewFromData(List<ShaiJiaItemBean> item_list) {
 
         mListData.addAll(item_list);
         mAdapter.notifyData(mListData);
