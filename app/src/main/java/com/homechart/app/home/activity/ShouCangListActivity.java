@@ -118,8 +118,14 @@ public class ShouCangListActivity
                     holder.getView(R.id.cb_check).setVisibility(View.VISIBLE);
 
                 }
-                ImageUtils.displayFilletImage(mListData.get(position).getItem_info().getImage().getImg0(),
-                        (ImageView) holder.getView(R.id.iv_shoucang_image));
+
+                if(mListData.get(position).getItem_info().getItem_id().equals(holder.getView(R.id.iv_shoucang_image).getTag())){
+
+                }else {
+                    holder.getView(R.id.iv_shoucang_image).setTag(mListData.get(position).getItem_info().getItem_id());
+                    ImageUtils.displayFilletImage(mListData.get(position).getItem_info().getImage().getImg0(),
+                            (ImageView) holder.getView(R.id.iv_shoucang_image));
+                }
 
 
                 ((CheckBox) holder.getView(R.id.cb_check)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -352,7 +358,8 @@ public class ShouCangListActivity
             case LOADMORE_STATUS:
                 if (null != listData) {
                     mListData.addAll(listData);
-                    mAdapter.notifyItemInserted(mListData.size() + 1);
+//                    mAdapter.notifyItemInserted(mListData.size() + 1);
+                    mAdapter.notifyData(mListData);
                     mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
                 } else {
                     --page_num;

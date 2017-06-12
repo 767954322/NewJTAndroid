@@ -35,7 +35,7 @@ public class ImageUtils {
 
     //demo圆形的options
     private static final DisplayImageOptions roundOptions = new DisplayImageOptions.Builder()
-            .cacheInMemory(false)
+            .cacheInMemory(true)
             .displayer(new RoundedBitmapDisplayer(360))
             .cacheOnDisk(true)
             .showImageOnFail(R.color.white)
@@ -52,7 +52,7 @@ public class ImageUtils {
             .showImageOnFail(R.color.white)
             .cacheInMemory(true)
             .cacheOnDisc(true)
-            .bitmapConfig(Bitmap.Config.ALPHA_8)   //设置图片的解码类型
+            .bitmapConfig(Bitmap.Config.RGB_565)   //设置图片的解码类型
             .displayer(new RoundedBitmapDisplayer(20))
             .imageScaleType(ImageScaleType.EXACTLY)
             .build();
