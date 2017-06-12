@@ -617,18 +617,18 @@ public class MyHttpManager {
     /**
      * 通知列表
      *
-     * @param s
+     * @param page_num
      * @param n
      * @param callback
      */
-    public void messageList(final String s, final String n, OkStringRequest.OKResponseCallback callback) {
+    public void messageList(final int page_num, final int n, OkStringRequest.OKResponseCallback callback) {
         OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.MESSAGE_LIST, callback) {
 
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
-                map.put(ClassConstant.MessageList.S, s);
-                map.put(ClassConstant.MessageList.N, n);
+                map.put(ClassConstant.MessageList.S, (page_num - 1) * n + "");
+                map.put(ClassConstant.MessageList.N, n + "");
 
                 String signString = PublicUtils.getSinaString(map);
                 String tabMd5String = Md5Util.getMD5twoTimes(signString);

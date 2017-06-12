@@ -12,6 +12,15 @@
         android:layout_marginLeft="@dimen/font_10"
         android:layout_marginTop="@dimen/font_10" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_shoucang_image"
+        android:layout_alignRight="@+id/iv_shoucang_image"
+        android:layout_marginTop="@dimen/font_10"
+        android:textSize="@dimen/font_12"
+        android:textColor="@color/bg_8f8f8f"
+        android:text="发版"/>
 
 
 </RelativeLayout>

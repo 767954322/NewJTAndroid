@@ -209,7 +209,7 @@ public class MessagesListActivity extends BaseActivity
                 }
             }
         };
-        MyHttpManager.getInstance().messageList(page_num + "", "20", callback);
+        MyHttpManager.getInstance().messageList(page_num, 20, callback);
 
     }
 

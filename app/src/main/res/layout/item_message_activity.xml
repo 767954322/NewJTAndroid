@@ -36,6 +36,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/font_10"
+        android:layout_marginTop="@dimen/font_15"
+        android:layout_below="@+id/tv_activity_time"
         android:background="@color/bg_f7f7f7"/>
 
 </RelativeLayout>
