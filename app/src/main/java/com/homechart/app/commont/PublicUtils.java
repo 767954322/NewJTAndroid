@@ -15,7 +15,9 @@ import android.text.Spanned;
 import android.text.SpannedString;
 import android.text.style.AbsoluteSizeSpan;
 import android.util.DisplayMetrics;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.homechart.app.R;
 import com.homechart.app.home.bean.login.LoginBean;
@@ -30,6 +32,7 @@ import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -397,5 +400,40 @@ public class PublicUtils {
         SharedPreferencesUtils.clear(context, ClassConstant.LoginSucces.EMAIL);
         SharedPreferencesUtils.clear(context, ClassConstant.LoginSucces.MOBILE);
         SharedPreferencesUtils.clear(context, ClassConstant.LoginSucces.PROFESSION);
+    }
+
+    //14................................................................................................
+
+    /**
+     * 设置图片的高度
+     *
+     * @param mContext
+     * @param bili
+     * @param imageView
+     */
+    public static void setPicHeighAndWidth(Context mContext, float bili, ImageView imageView) {
+        ViewGroup.LayoutParams layoutParams = imageView.getLayoutParams();
+        layoutParams.width = getScreenWidth(mContext) / 2 - UIUtils.getDimens(R.dimen.font_12);
+        layoutParams.height = (int) (div(imageView.getWidth(), bili, 2));
+        imageView.setLayoutParams(layoutParams);
+    }
+
+    /**
+     * 提供（相对）精确的除法运算。当发生除不尽的情况时，由scale参数指
+     * 定精度，以后的数字四舍五入。
+     *
+     * @param v1    被除数
+     * @param v2    除数
+     * @param scale 表示表示需要精确到小数点以后几位。
+     * @return 两个参数的商
+     */
+    public static double div(double v1, double v2, int scale) {
+        if (scale < 0) {
+            throw new IllegalArgumentException(
+                    "The scale must be a positive integer or zero");
+        }
+        BigDecimal b1 = new BigDecimal(Double.toString(v1));
+        BigDecimal b2 = new BigDecimal(Double.toString(v2));
+        return b1.divide(b2, scale, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 }

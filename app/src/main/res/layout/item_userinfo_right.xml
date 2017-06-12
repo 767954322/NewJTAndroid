@@ -7,11 +7,13 @@
     <ImageView
         android:id="@+id/iv_shoucang_image"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/font_130"
+        android:layout_height="match_parent"
         android:layout_marginRight="@dimen/font_10"
         android:layout_marginLeft="@dimen/font_4"
+        android:scaleType="fitXY"
         android:layout_marginTop="@dimen/font_10" />
     <TextView
+        android:id="@+id/item_info_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv_shoucang_image"

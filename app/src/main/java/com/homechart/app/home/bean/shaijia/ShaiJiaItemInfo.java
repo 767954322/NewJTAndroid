@@ -14,14 +14,16 @@ public class ShaiJiaItemInfo implements Serializable {
     private String tag;
     private String collect_num;
     private String comment_num;
-    protected ShaiJiaItemImageBean image;
+    private String add_time;
+    private ShaiJiaItemImageBean image;
 
 
-    public ShaiJiaItemInfo(String item_id, String tag, String collect_num, String comment_num, ShaiJiaItemImageBean image) {
+    public ShaiJiaItemInfo(String item_id, String tag, String collect_num, String comment_num, String add_time, ShaiJiaItemImageBean image) {
         this.item_id = item_id;
         this.tag = tag;
         this.collect_num = collect_num;
         this.comment_num = comment_num;
+        this.add_time = add_time;
         this.image = image;
     }
 
@@ -57,6 +59,14 @@ public class ShaiJiaItemInfo implements Serializable {
         this.comment_num = comment_num;
     }
 
+    public String getAdd_time() {
+        return add_time;
+    }
+
+    public void setAdd_time(String add_time) {
+        this.add_time = add_time;
+    }
+
     public ShaiJiaItemImageBean getImage() {
         return image;
     }
@@ -72,6 +82,7 @@ public class ShaiJiaItemInfo implements Serializable {
                 ", tag='" + tag + '\'' +
                 ", collect_num='" + collect_num + '\'' +
                 ", comment_num='" + comment_num + '\'' +
+                ", add_time='" + add_time + '\'' +
                 ", image=" + image +
                 '}';
     }

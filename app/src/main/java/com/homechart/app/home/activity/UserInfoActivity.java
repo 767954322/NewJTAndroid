@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
+import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.shaijia.ShaiJiaBean;
 import com.homechart.app.home.bean.shaijia.ShaiJiaItemBean;
@@ -146,15 +147,21 @@ public class UserInfoActivity
                 if (item_id.equals(holder.getView(R.id.iv_shoucang_image).getTag())) {
                 } else {
                     holder.getView(R.id.iv_shoucang_image).setTag(item_id);
-                    ImageUtils.displayFilletImage(mListData.get(position).getItem_info().getImage().getImg0(),
+                    PublicUtils.setPicHeighAndWidth(UserInfoActivity.this,
+                            mListData.get(position).getItem_info().getImage().getRatio(),
+                            (ImageView) holder.getView(R.id.iv_shoucang_image));
+                    ImageUtils.displayFilletImage(mListData.get(position).getItem_info().getImage().getImg1(),
                             (ImageView) holder.getView(R.id.iv_shoucang_image));
                 }
+                ((TextView) holder.getView(R.id.item_info_time)).
+                        setText(mListData.get(position).getItem_info().getAdd_time() + "   发版");
+
             }
         };
         mLoadMoreFooterView = (LoadMoreFooterView) mRecyclerView.getLoadMoreFooterView();
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         //解决item之间互换位置的bug
-        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
+//        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
         mRecyclerView.setItemAnimator(new LandingAnimator());
 //        ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(mAdapter);
