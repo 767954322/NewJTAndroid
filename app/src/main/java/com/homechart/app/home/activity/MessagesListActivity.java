@@ -180,7 +180,7 @@ public class MessagesListActivity extends BaseActivity
                 --page_num;
                 mRecyclerView.setRefreshing(false);//刷新完毕
                 mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
-                ToastUtils.showCenter(MessagesListActivity.this, UIUtils.getString(R.string.error_fensi));
+                ToastUtils.showCenter(MessagesListActivity.this, UIUtils.getString(R.string.error_message));
             }
 
             @Override
@@ -205,7 +205,7 @@ public class MessagesListActivity extends BaseActivity
                     }
                 } catch (JSONException e) {
                     --page_num;
-                    ToastUtils.showCenter(MessagesListActivity.this, UIUtils.getString(R.string.error_fensi));
+                    ToastUtils.showCenter(MessagesListActivity.this, UIUtils.getString(R.string.error_message));
                 }
             }
         };
