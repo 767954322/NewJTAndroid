@@ -101,7 +101,7 @@ public class FenSiListActivity
 
                 if (mListData.get(position).getId().equals(holder.getView(R.id.iv_fensi_header).getTag())) {
 
-                }else {
+                } else {
                     holder.getView(R.id.iv_fensi_header).setTag(mListData.get(position).getId());
 
                     ImageUtils.displayRoundImage(mListData.get(position).getAvatar().getBig(),
@@ -229,9 +229,11 @@ public class FenSiListActivity
 
             case LOADMORE_STATUS:
                 if (null != listData) {
+                    position = mListData.size();
                     mListData.addAll(listData);
 
-                    mAdapter.notifyData(mListData);
+//                    mAdapter.notifyData(mListData);
+                    mAdapter.notifyItem(position, mListData, listData);
 //                    mAdapter.notifyItemInserted(mListData.size() + 1);
                     mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
                     last_id = mListData.get(mListData.size() - 1).getId();
@@ -247,4 +249,6 @@ public class FenSiListActivity
                 break;
         }
     }
+
+    private int position;
 }

@@ -103,7 +103,7 @@ public class GuanZuListActivity
                 holder.setText(R.id.tv_fensi_name, mListData.get(position).getNickname());
                 if (mListData.get(position).getId().equals(holder.getView(R.id.iv_fensi_header).getTag())) {
 
-                }else {
+                } else {
                     holder.getView(R.id.iv_fensi_header).setTag(mListData.get(position).getId());
 
                     ImageUtils.displayRoundImage(mListData.get(position).getAvatar().getBig(),
@@ -228,8 +228,11 @@ public class GuanZuListActivity
 
             case LOADMORE_STATUS:
                 if (null != listData) {
+
+                    position = mListData.size();
                     mListData.addAll(listData);
-                    mAdapter.notifyData(mListData);
+//                    mAdapter.notifyData(mListData);
+                    mAdapter.notifyItem(position, mListData, listData);
 //                    mAdapter.notifyItemInserted(mListData.size() + 1);
                     mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
                     last_id = mListData.get(mListData.size() - 1).getId();
@@ -245,4 +248,6 @@ public class GuanZuListActivity
                 break;
         }
     }
+
+    private int position;
 }

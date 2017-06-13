@@ -357,9 +357,12 @@ public class ShouCangListActivity
 
             case LOADMORE_STATUS:
                 if (null != listData) {
+                    position = mListData.size();
                     mListData.addAll(listData);
 //                    mAdapter.notifyItemInserted(mListData.size() + 1);
-                    mAdapter.notifyData(mListData);
+//                    mAdapter.notifyData(mListData);
+
+                    mAdapter.notifyItem(position, mListData, listData);
                     mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
                 } else {
                     --page_num;
@@ -372,6 +375,7 @@ public class ShouCangListActivity
 
     private final String REFRESH_STATUS = "refresh";
     private final String LOADMORE_STATUS = "loadmore";
+    private int position;
 
     private List<ShouCangItemBean> mListData = new ArrayList<>();
 

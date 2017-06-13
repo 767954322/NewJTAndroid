@@ -358,9 +358,11 @@ public class ShaiJiaListActivity extends BaseActivity
 
             case LOADMORE_STATUS:
                 if (null != listData) {
+                    position = mListData.size();
                     mListData.addAll(listData);
 //                    mAdapter.notifyItemInserted(mListData.size() + 1);
-                    mAdapter.notifyData(mListData);
+//                    mAdapter.notifyData(mListData);
+                    mAdapter.notifyItem(position, mListData, listData);
                     mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
                 } else {
                     --page_num;
@@ -376,4 +378,5 @@ public class ShaiJiaListActivity extends BaseActivity
         Log.d("test", "个数：" + map_delete.size());
         Log.d("test", "数据：" + map_delete.toString());
     }
+    private int position;
 }
