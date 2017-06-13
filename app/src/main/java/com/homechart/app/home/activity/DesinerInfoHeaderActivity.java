@@ -5,11 +5,13 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.homechart.app.R;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.userinfo.UserCenterInfoBean;
+import com.homechart.app.myview.MyScrollView;
 import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.utils.imageloader.ImageUtils;
 
@@ -35,6 +37,9 @@ public class DesinerInfoHeaderActivity extends BaseActivity implements View.OnCl
     private RoundImageView iv_header_desiner_center;
     private ImageView iv_info_renzheng;
     private TextView tv_userinfo_nikename;
+    private MyScrollView sv_scrollview;
+    private ImageButton nav_secondary_imageButton;
+    private RelativeLayout common_navbar;
 
     @Override
     protected int getLayoutResId() {
@@ -65,6 +70,9 @@ public class DesinerInfoHeaderActivity extends BaseActivity implements View.OnCl
         tv_lianxi_four = (TextView) findViewById(R.id.tv_lianxi_four);
         tv_lianxi_five = (TextView) findViewById(R.id.tv_lianxi_five);
         tv_lianxi_six = (TextView) findViewById(R.id.tv_lianxi_six);
+        sv_scrollview = (MyScrollView) findViewById(R.id.sv_scrollview);
+        common_navbar = (RelativeLayout) findViewById(R.id.common_navbar);
+        nav_secondary_imageButton = (ImageButton) findViewById(R.id.nav_secondary_imageButton);
 
 
         iv_header_desiner_center = (RoundImageView) findViewById(R.id.iv_header_desiner_center);
@@ -101,6 +109,24 @@ public class DesinerInfoHeaderActivity extends BaseActivity implements View.OnCl
     protected void initListener() {
         super.initListener();
         mIBBack.setOnClickListener(this);
+
+        sv_scrollview.setMyOnScrollChangedListener(new MyScrollView.MyOnScrollChangedListener() {
+            @Override
+            public void myOnScrollChanged(int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY < 300) {
+                    mIBBack.setImageResource(R.drawable.tital_back_wight);
+                    nav_secondary_imageButton.setImageResource(R.drawable.shared_icon_white);
+                    float alpha = (float) (300 - scrollY) / 300;
+                    common_navbar.setBackgroundResource(R.color.white);
+                    common_navbar.getBackground().setAlpha((int) ((1 - alpha) * 255));
+                } else {
+                    common_navbar.setBackgroundResource(R.color.white);
+                    nav_secondary_imageButton.setImageResource(R.drawable.shared_icon);
+                    mIBBack.setImageResource(R.drawable.tital_back);
+                    common_navbar.getBackground().setAlpha(255);
+                }
+            }
+        });
 
     }
 
