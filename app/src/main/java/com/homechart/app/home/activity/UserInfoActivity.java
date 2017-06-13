@@ -1,5 +1,6 @@
 package com.homechart.app.home.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -113,6 +114,7 @@ public class UserInfoActivity
     protected void initListener() {
         super.initListener();
         mIBBack.setOnClickListener(this);
+        rl_info_zhunaye.setOnClickListener(this);
     }
 
     @Override
@@ -182,6 +184,13 @@ public class UserInfoActivity
         switch (v.getId()) {
             case R.id.nav_left_imageButton:
                 UserInfoActivity.this.finish();
+                break;
+            case R.id.rl_info_zhunaye:
+                //TODO 跳转专业用户资料页
+                Intent intent = new Intent(UserInfoActivity.this, DesinerInfoHeaderActivity.class);
+                intent.putExtra("info", userCenterInfoBean);
+                startActivity(intent);
+
                 break;
         }
 
@@ -336,7 +345,7 @@ public class UserInfoActivity
 
         position = mListData.size();
         mListData.addAll(item_list);
-        mAdapter.notifyItem(position , mListData,item_list);
+        mAdapter.notifyItem(position, mListData, item_list);
 
         mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
 
