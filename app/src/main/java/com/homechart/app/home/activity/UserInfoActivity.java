@@ -168,7 +168,7 @@ public class UserInfoActivity
         //解决item之间互换位置的bug
 //        staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
-        mRecyclerView.setItemAnimator(new LandingAnimator());
+        mRecyclerView.setItemAnimator(null);
 //        ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(mAdapter);
 //        scaleAdapter.setFirstOnly(false);
 //        scaleAdapter.setDuration(500);

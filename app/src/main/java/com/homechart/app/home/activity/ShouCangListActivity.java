@@ -172,7 +172,7 @@ public class ShouCangListActivity
         };
         mLoadMoreFooterView = (LoadMoreFooterView) mRecyclerView.getLoadMoreFooterView();
         mRecyclerView.setLayoutManager(new GridLayoutManager(ShouCangListActivity.this, 2));
-        mRecyclerView.setItemAnimator(new LandingAnimator());
+        mRecyclerView.setItemAnimator(null);
 
 //        ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(mAdapter);
 //        scaleAdapter.setFirstOnly(false);

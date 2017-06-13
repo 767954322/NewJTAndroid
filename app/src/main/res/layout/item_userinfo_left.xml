@@ -8,8 +8,6 @@
         android:id="@+id/iv_shoucang_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginRight="@dimen/font_7"
-        android:layout_marginLeft="@dimen/font_7"
         android:scaleType="fitXY"
         android:layout_marginTop="@dimen/font_10" />
 

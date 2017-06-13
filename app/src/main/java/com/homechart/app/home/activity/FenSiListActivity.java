@@ -119,7 +119,7 @@ public class FenSiListActivity
         };
         mLoadMoreFooterView = (LoadMoreFooterView) mRecyclerView.getLoadMoreFooterView();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(FenSiListActivity.this));
-        mRecyclerView.setItemAnimator(new LandingAnimator());
+        mRecyclerView.setItemAnimator(null);
 
 //        ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(mAdapter);
 //        scaleAdapter.setFirstOnly(false);

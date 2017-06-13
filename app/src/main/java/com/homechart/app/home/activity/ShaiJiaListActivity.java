@@ -173,7 +173,7 @@ public class ShaiJiaListActivity extends BaseActivity
         };
         mLoadMoreFooterView = (LoadMoreFooterView) mRecyclerView.getLoadMoreFooterView();
         mRecyclerView.setLayoutManager(new GridLayoutManager(ShaiJiaListActivity.this, 2));
-        mRecyclerView.setItemAnimator(new LandingAnimator());
+        mRecyclerView.setItemAnimator(null);
 
 //        ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(mAdapter);
 //        scaleAdapter.setFirstOnly(false);

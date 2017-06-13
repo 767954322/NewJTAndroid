@@ -121,7 +121,7 @@ public class GuanZuListActivity
         };
         mLoadMoreFooterView = (LoadMoreFooterView) mRecyclerView.getLoadMoreFooterView();
         mRecyclerView.setLayoutManager(new LinearLayoutManager(GuanZuListActivity.this));
-        mRecyclerView.setItemAnimator(new LandingAnimator());
+        mRecyclerView.setItemAnimator(null);
 
 //        ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(mAdapter);
 //        scaleAdapter.setFirstOnly(false);

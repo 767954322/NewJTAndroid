@@ -223,7 +223,8 @@
                 android:layout_marginLeft="@dimen/font_15"
                 android:layout_marginTop="@dimen/font_15"
                 android:lineSpacingExtra="@dimen/font_9"
-                android:text="sdsdfsdfsdfsdfsdffdnvkdfknvjkdfnvdjnvcsdlcmslmxkaslmxlaskmxklasmlxamslxas"
+                android:layout_marginRight="@dimen/font_15"
+                android:text="\t\t\t\t家图致力于将领先的人工智能图像识别技术应用于家居垂直行业。目前已获得由IDG资本投资。家图帮助用户实现从家居空间设计、色彩选型、风格定位、软装搭配直至最终商品购买的全程智能服务。家图与全球领先的人工智能公司合作，率先利用色彩识别和商品识别技术提供家居支持,帮助用户大幅度缩短从设计到购买的决策时间。家图与各类专业家居从业者合作，帮助用户解惑家装问题、启发设计灵感、美化家居生活。"
                 android:textColor="@color/bg_707070"
                 android:textSize="@dimen/size_14" />
         </RelativeLayout>
