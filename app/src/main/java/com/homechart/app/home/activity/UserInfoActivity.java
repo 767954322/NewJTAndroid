@@ -3,9 +3,11 @@ package com.homechart.app.home.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -51,6 +53,7 @@ public class UserInfoActivity
         OnLoadMoreListener {
 
     private List<ShaiJiaItemBean> mListData = new ArrayList<>();
+    private List<Integer> mListDataHeight = new ArrayList<>();
     private UserCenterInfoBean userCenterInfoBean;
     private ImageButton mIBBack;
     private TextView mTVTital;
@@ -118,6 +121,7 @@ public class UserInfoActivity
     protected void initData(Bundle savedInstanceState) {
 
         mTVTital.setText("");
+        width_Pic = PublicUtils.getScreenWidth(UserInfoActivity.this) / 2 - UIUtils.getDimens(R.dimen.font_14);
         getUserInfo();
         MultiItemTypeSupport<ShaiJiaItemBean> support = new MultiItemTypeSupport<ShaiJiaItemBean>() {
             @Override
@@ -147,9 +151,10 @@ public class UserInfoActivity
                 if (item_id.equals(holder.getView(R.id.iv_shoucang_image).getTag())) {
                 } else {
                     holder.getView(R.id.iv_shoucang_image).setTag(item_id);
-                    PublicUtils.setPicHeighAndWidth(UserInfoActivity.this,
-                            mListData.get(position).getItem_info().getImage().getRatio(),
-                            (ImageView) holder.getView(R.id.iv_shoucang_image));
+                    ViewGroup.LayoutParams layoutParams = holder.getView(R.id.iv_shoucang_image).getLayoutParams();
+                    layoutParams.width = width_Pic;
+                    layoutParams.height = mListDataHeight.get(position);
+                    holder.getView(R.id.iv_shoucang_image).setLayoutParams(layoutParams);
                     ImageUtils.displayFilletImage(mListData.get(position).getItem_info().getImage().getImg1(),
                             (ImageView) holder.getView(R.id.iv_shoucang_image));
                 }
@@ -277,6 +282,7 @@ public class UserInfoActivity
     }
 
     private void getListData() {
+        mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.LOADING);
         ++page_num;
         OkStringRequest.OKResponseCallback callback = new OkStringRequest.OKResponseCallback() {
             @Override
@@ -296,8 +302,11 @@ public class UserInfoActivity
                         String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
                         if (error_code == 0) {
                             ShaiJiaBean shouCangBean = GsonUtil.jsonToBean(data_msg, ShaiJiaBean.class);
+                            //获取图片的高度
+                            getHeight(shouCangBean.getItem_list());
                             updateViewFromData(shouCangBean.getItem_list());
                         } else {
+                            mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
                             ToastUtils.showCenter(UserInfoActivity.this, error_msg);
                         }
                     } else {
@@ -316,11 +325,25 @@ public class UserInfoActivity
 
     }
 
+    private void getHeight(List<ShaiJiaItemBean> item_list) {
+
+        if (item_list.size() > 0) {
+            for (int i = 0; i < item_list.size(); i++) {
+                mListDataHeight.add(Math.round(width_Pic / item_list.get(i).getItem_info().getImage().getRatio()));
+            }
+        }
+    }
+
     private void updateViewFromData(List<ShaiJiaItemBean> item_list) {
 
+        position = mListData.size();
         mListData.addAll(item_list);
-        mAdapter.notifyData(mListData);
+        mAdapter.notifyItem(position , mListData,item_list);
+
         mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
 
     }
+
+    private int width_Pic;
+    private int position;
 }
