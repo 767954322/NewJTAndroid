@@ -5,10 +5,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
+    <com.homechart.app.myview.ClearEditText
+        android:id="@+id/cet_clearedit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/font_20"
+        android:background="@drawable/bg_edittext_search"
+        android:clickable="true"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:hint="搜索你感兴趣的图片，用户"
+        android:paddingLeft="@dimen/font_15" />
+
+
     <Button
         android:id="@+id/bt_change_frag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/cet_clearedit"
         android:layout_marginLeft="@dimen/font_25"
         android:text="切换" />
 

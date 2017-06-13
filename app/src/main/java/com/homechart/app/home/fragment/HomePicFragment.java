@@ -1,6 +1,7 @@
 package com.homechart.app.home.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,8 +14,10 @@ import android.view.View;
 import android.widget.Button;
 
 import com.homechart.app.R;
+import com.homechart.app.home.activity.SearchActivity;
 import com.homechart.app.home.base.BaseFragment;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
+import com.homechart.app.myview.ClearEditText;
 import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
 import com.homechart.app.recyclerlibrary.anims.adapters.ScaleInAnimationAdapter;
 import com.homechart.app.recyclerlibrary.anims.animators.LandingAnimator;
@@ -47,6 +50,7 @@ public class HomePicFragment
     private int scroll_position = 0;
     private boolean showWaterFall = true;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
+    private ClearEditText cet_clearedit;
 
     public HomePicFragment(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
@@ -60,6 +64,9 @@ public class HomePicFragment
     @Override
     protected void initView() {
 
+
+        cet_clearedit = (ClearEditText) rootView.findViewById(R.id.cet_clearedit);
+
         bt_change_frag = (Button) rootView.findViewById(R.id.bt_change_frag);
         dataList = new ArrayList<>();
         mRecyclerView = (HRecyclerView) rootView.findViewById(R.id.rcy_recyclerview_pic);
@@ -69,6 +76,8 @@ public class HomePicFragment
     @Override
     protected void initListener() {
         super.initListener();
+        cet_clearedit.setKeyListener(null);
+        cet_clearedit.setOnClickListener(this);
         bt_change_frag.setOnClickListener(this);
     }
 
@@ -89,6 +98,12 @@ public class HomePicFragment
     public void onClick(View v) {
 
         switch (v.getId()) {
+            case R.id.cet_clearedit:
+
+                Intent intent = new Intent(activity,SearchActivity.class);
+                startActivity(intent);
+
+                break;
             case R.id.bt_change_frag:
 
                 if (showWaterFall) {
