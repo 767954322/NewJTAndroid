@@ -65,6 +65,9 @@
         android:id="@+id/wl_tips"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rl_search_tital" />
+        android:layout_below="@+id/rl_search_tital"
+        android:layout_marginLeft="@dimen/font_15"
+        android:layout_marginRight="@dimen/font_15"
+        android:layout_marginTop="@dimen/font_15" />
 
 </RelativeLayout>

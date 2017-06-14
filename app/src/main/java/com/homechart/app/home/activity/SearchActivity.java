@@ -8,6 +8,7 @@ import com.homechart.app.R;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.myview.WrapLayout;
 import com.homechart.app.utils.ToastUtils;
+import com.homechart.app.utils.UIUtils;
 
 /**
  * Created by gumenghao on 17/6/13.
@@ -19,9 +20,9 @@ public class SearchActivity
     private TextView tv_quxiao;
     private WrapLayout wl_tips;
     private String[] myData = new String[]
-            {"1", "saasas2", "3", "4", "5", "6", "7",
+            {"大家都在搜", "saasas2", "3", "4", "5", "6", "7",
                     "8", "9", "10", "11", "12", "13", "14",
-                    "15", "16", "17", "18", "19", "20", "21"};
+                    "15", "16", "17", "18", "19", "20", "21","大家都在搜","23"};
 
     @Override
     protected int getLayoutResId() {
@@ -38,7 +39,22 @@ public class SearchActivity
     @Override
     protected void initData(Bundle savedInstanceState) {
         wl_tips.setStyle(0);
-        wl_tips.setData(myData, this, 15, 10, 10, 10, 10, 10, 10, 10, 10);
+        wl_tips.setData(myData, this, 14, 15, 10, 15, 10, 0, 0, UIUtils.getDimens(R.dimen.font_12), UIUtils.getDimens(R.dimen.font_15));
+        /**
+         * 设置数据
+         *
+         * @param data     文字
+         * @param context  上下文
+         * @param textSize 文字大小
+         * @param pl       左内边距
+         * @param pt       上内边距
+         * @param pr       右内边距
+         * @param pb       下内边距
+         * @param ml       左外边距
+         * @param mt       上外边距
+         * @param mr       右外边距
+         * @param mb       下外边距
+         */
     }
 
     @Override

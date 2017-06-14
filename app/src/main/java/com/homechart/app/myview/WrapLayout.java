@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.homechart.app.R;
+import com.homechart.app.utils.UIUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,14 +86,15 @@ public class WrapLayout extends ViewGroup {
                 btn = new TextView(context);
                 ((TextView) btn).setGravity(CENTER);
                 ((TextView) btn).setText(text);
+                ((TextView) btn).setTextColor(UIUtils.getColor(R.color.bg_262626));
                 ((TextView) btn).setTextSize(textSize);
-                ((TextView) btn).setBackgroundResource(R.drawable.bg_edittext_search);
+                ((TextView) btn).setBackgroundResource(R.drawable.bg_edittext_search_tag);
             } else if (style == BUTTON_STYLE) {
                 btn = new Button(context);
                 ((Button) btn).setGravity(CENTER);
                 ((Button) btn).setText(text);
                 ((Button) btn).setTextSize(textSize);
-                ((Button) btn).setBackgroundResource(R.drawable.bt_login);
+                ((Button) btn).setBackgroundResource(R.drawable.bg_edittext_search_tag);
             }
             btn.setClickable(true);
 
