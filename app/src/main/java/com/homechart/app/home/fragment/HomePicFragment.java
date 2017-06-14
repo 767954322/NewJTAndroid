@@ -18,7 +18,9 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
+import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.activity.SearchActivity;
+import com.homechart.app.home.activity.UserInfoActivity;
 import com.homechart.app.home.base.BaseFragment;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.ClearEditText;
@@ -31,6 +33,7 @@ import com.homechart.app.recyclerlibrary.recyclerview.OnLoadMoreListener;
 import com.homechart.app.recyclerlibrary.recyclerview.OnRefreshListener;
 import com.homechart.app.recyclerlibrary.support.MultiItemTypeSupport;
 import com.homechart.app.utils.ToastUtils;
+import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
 
@@ -65,6 +68,8 @@ public class HomePicFragment
     private RelativeLayout rl_unreader_msg_single;
     private TextView tv_unreader_mag_double;
     private TextView tv_unreader_mag_single;
+    private int width_Pic_Staggered;
+    private int width_Pic_List;
 
     public HomePicFragment(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
@@ -102,6 +107,12 @@ public class HomePicFragment
     protected void initData(Bundle savedInstanceState) {
 
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+
+        width_Pic_Staggered = PublicUtils.getScreenWidth(activity) / 2 - UIUtils.getDimens(R.dimen.font_14);
+        width_Pic_List = PublicUtils.getScreenWidth(activity) - UIUtils.getDimens(R.dimen.font_14);
+
+
+        getRecommendListData();
         buildData();
         buildRecyclerView();
         getUnReaderMsg();
@@ -328,8 +339,40 @@ public class HomePicFragment
                 rl_unreader_msg_single.setVisibility(View.GONE);
                 tv_unreader_mag_double.setText("99");
             }
-
         }
+    }
+
+    private void getRecommendListData() {
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+                ToastUtils.showCenter(activity, getString(R.string.recommend_get_error));
+
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+
+                        Message msg = new Message();
+                        msg.obj = data_msg;
+
+                    } else {
+
+                        ToastUtils.showCenter(activity, error_msg);
+
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        };
+        MyHttpManager.getInstance().getRecommendList("0", "20", callBack);
 
     }
 
