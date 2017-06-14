@@ -101,16 +101,10 @@ public class HomePicFragment
     @Override
     protected void initData(Bundle savedInstanceState) {
 
-        if (rootView.findViewById(R.id.pic_content) != null) {
-            staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-            //解决item之间互换位置的bug
-            staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
-            buildData();
-            buildRecyclerView();
-
-            getUnReaderMsg();
-        }
-
+        staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        buildData();
+        buildRecyclerView();
+        getUnReaderMsg();
     }
 
     @Override
