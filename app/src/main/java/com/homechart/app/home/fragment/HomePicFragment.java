@@ -12,8 +12,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.android.volley.VolleyError;
 import com.homechart.app.R;
+import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.home.activity.SearchActivity;
 import com.homechart.app.home.base.BaseFragment;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
@@ -26,6 +30,12 @@ import com.homechart.app.recyclerlibrary.recyclerview.HRecyclerView;
 import com.homechart.app.recyclerlibrary.recyclerview.OnLoadMoreListener;
 import com.homechart.app.recyclerlibrary.recyclerview.OnRefreshListener;
 import com.homechart.app.recyclerlibrary.support.MultiItemTypeSupport;
+import com.homechart.app.utils.ToastUtils;
+import com.homechart.app.utils.volley.MyHttpManager;
+import com.homechart.app.utils.volley.OkStringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +61,10 @@ public class HomePicFragment
     private boolean showWaterFall = true;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private ClearEditText cet_clearedit;
+    private RelativeLayout rl_unreader_msg_double;
+    private RelativeLayout rl_unreader_msg_single;
+    private TextView tv_unreader_mag_double;
+    private TextView tv_unreader_mag_single;
 
     public HomePicFragment(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
@@ -65,8 +79,11 @@ public class HomePicFragment
     protected void initView() {
 
 
+        tv_unreader_mag_double = (TextView) rootView.findViewById(R.id.tv_unreader_mag_double);
+        tv_unreader_mag_single = (TextView) rootView.findViewById(R.id.tv_unreader_mag_single);
+        rl_unreader_msg_single = (RelativeLayout) rootView.findViewById(R.id.rl_unreader_msg_single);
+        rl_unreader_msg_double = (RelativeLayout) rootView.findViewById(R.id.rl_unreader_msg_double);
         cet_clearedit = (ClearEditText) rootView.findViewById(R.id.cet_clearedit);
-
         bt_change_frag = (Button) rootView.findViewById(R.id.bt_change_frag);
         dataList = new ArrayList<>();
         mRecyclerView = (HRecyclerView) rootView.findViewById(R.id.rcy_recyclerview_pic);
@@ -90,6 +107,8 @@ public class HomePicFragment
             staggeredGridLayoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
             buildData();
             buildRecyclerView();
+
+            getUnReaderMsg();
         }
 
     }
@@ -100,7 +119,7 @@ public class HomePicFragment
         switch (v.getId()) {
             case R.id.cet_clearedit:
 
-                Intent intent = new Intent(activity,SearchActivity.class);
+                Intent intent = new Intent(activity, SearchActivity.class);
                 startActivity(intent);
 
                 break;
@@ -246,8 +265,78 @@ public class HomePicFragment
                     mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
                 }
 
+            } else if (msg.what == 2) {
+                String info = (String) msg.obj;
+                try {
+                    JSONObject jsonObject = new JSONObject(info);
+                    String num = jsonObject.getString("notice_num");
+                    changeUnReaderMsg(num);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
     };
+
+    //获取未读消息数
+    private void getUnReaderMsg() {
+
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                ToastUtils.showCenter(activity, getString(R.string.unreader_msg_get_error));
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        Message msg = new Message();
+                        msg.obj = data_msg;
+                        msg.what = 2;
+                        mHandler.sendMessage(msg);
+
+                    } else {
+                        ToastUtils.showCenter(activity, error_msg);
+                    }
+                } catch (JSONException e) {
+
+                    ToastUtils.showCenter(activity, getString(R.string.unreader_msg_get_error));
+                }
+            }
+        };
+        MyHttpManager.getInstance().getUnReadMsg(callBack);
+
+    }
+
+
+    private void changeUnReaderMsg(String num) {
+
+        int num_int = Integer.parseInt(num.trim());
+        if (num_int == 0) {
+            rl_unreader_msg_double.setVisibility(View.GONE);
+            rl_unreader_msg_single.setVisibility(View.GONE);
+        } else {
+            if (num_int < 10) {
+                rl_unreader_msg_double.setVisibility(View.GONE);
+                rl_unreader_msg_single.setVisibility(View.VISIBLE);
+                tv_unreader_mag_single.setText(num_int + "");
+            } else if (10 <= num_int && num_int <= 99) {
+                rl_unreader_msg_double.setVisibility(View.VISIBLE);
+                rl_unreader_msg_single.setVisibility(View.GONE);
+                tv_unreader_mag_double.setText(num_int + "");
+            } else {
+                rl_unreader_msg_double.setVisibility(View.VISIBLE);
+                rl_unreader_msg_single.setVisibility(View.GONE);
+                tv_unreader_mag_double.setText("99");
+            }
+
+        }
+
+    }
 
 }

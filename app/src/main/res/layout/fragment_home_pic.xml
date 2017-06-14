@@ -5,28 +5,101 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
-    <com.homechart.app.myview.ClearEditText
-        android:id="@+id/cet_clearedit"
+    <RelativeLayout
+        android:id="@+id/rl_homepic_top"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/font_27"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/bg_edittext_search"
-        android:drawableLeft="@drawable/fdj"
-        android:drawablePadding="@dimen/font_6"
-        android:gravity="center_vertical"
-        android:hint="搜索你感兴趣的图片，用户"
-        android:textSize="@dimen/size_14"
-        android:layout_margin="@dimen/font_15"
-        android:paddingLeft="@dimen/font_10" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/font_8"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/iv_center_msgicon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/font_10"
+            android:layout_marginRight="@dimen/font_12"
+            android:src="@drawable/ling" />
+
+        <com.homechart.app.myview.ClearEditText
+            android:id="@+id/cet_clearedit"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/font_27"
+            android:layout_centerHorizontal="true"
+            android:layout_toLeftOf="@+id/iv_center_msgicon"
+            android:background="@drawable/bg_edittext_search"
+            android:drawableLeft="@drawable/fdj"
+            android:drawablePadding="@dimen/font_6"
+            android:gravity="center_vertical"
+            android:hint="搜索你感兴趣的图片，用户"
+            android:paddingLeft="@dimen/font_10"
+            android:textSize="@dimen/size_14" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_unreader_msg_single"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/font_8"
+        android:layout_marginTop="@dimen/font_10"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_unreader_mag_single"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/xiaoxi1" />
+
+        <TextView
+            android:id="@+id/tv_unreader_mag_single"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="9"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_8"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_unreader_msg_double"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/font_5"
+        android:layout_marginTop="@dimen/font_10"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_unreader_mag_double"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/xiaoxi2" />
+
+        <TextView
+            android:id="@+id/tv_unreader_mag_double"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="99"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_8"
+            android:textStyle="bold" />
+    </RelativeLayout>
 
 
     <Button
         android:id="@+id/bt_change_frag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/cet_clearedit"
+        android:layout_below="@+id/rl_homepic_top"
         android:layout_marginLeft="@dimen/font_25"
+        android:layout_marginTop="@dimen/font_40"
         android:text="切换" />
 
     <RelativeLayout

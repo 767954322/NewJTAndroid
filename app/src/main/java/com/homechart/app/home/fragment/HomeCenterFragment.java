@@ -140,7 +140,7 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
     protected void initData(Bundle savedInstanceState) {
 
         getUserInfo();
-        getTagData();
+        getUnReaderMsg();
 
     }
 
@@ -236,7 +236,7 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
     }
 
     //获取未读消息数
-    private void getTagData() {
+    private void getUnReaderMsg() {
 
         OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
             @Override
