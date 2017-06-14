@@ -125,9 +125,16 @@ public class ClassConstant {
 
     }
 
-    public static class MessageList{
+    public static class MessageList {
         public static final String S = "s";
         public static final String N = "n";
+    }
+
+    public static class PicListType {
+        //single:单图；project:案例； article:文章
+        public static final String SINGLE = "single";
+        public static final String PROJECT = "project";
+        public static final String ARTICLE = "article";
     }
 
 }

@@ -12,7 +12,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,6 +26,8 @@ import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.activity.SearchActivity;
 import com.homechart.app.home.activity.UserInfoActivity;
 import com.homechart.app.home.base.BaseFragment;
+import com.homechart.app.home.bean.shaijia.ShaiJiaItemBean;
+import com.homechart.app.home.bean.shoucang.ShouCangItemBean;
 import com.homechart.app.home.bean.shouye.DataBean;
 import com.homechart.app.home.bean.shouye.SYDataBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
@@ -39,6 +43,7 @@ import com.homechart.app.recyclerlibrary.support.MultiItemTypeSupport;
 import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.UIUtils;
+import com.homechart.app.utils.imageloader.ImageUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
 
@@ -60,14 +65,21 @@ public class HomePicFragment
     private Button bt_change_frag;
 
     private HRecyclerView mRecyclerView;
-    private List<Integer> dataList;
 
+    private List<SYDataBean> mListData = new ArrayList<>();
+    private List<Integer> mLListDataHeight = new ArrayList<>();
+    private List<Integer> mSListDataHeight = new ArrayList<>();
     private LoadMoreFooterView mLoadMoreFooterView;
-    private MultiItemCommonAdapter<Integer> mAdapter;
+    private MultiItemCommonAdapter<SYDataBean> mAdapter;
+    private int page_num = 1;
     private int TYPE_ONE = 1;
     private int TYPE_TWO = 2;
+    private int TYPE_THREE = 3;
     private int scroll_position = 0;
-    private boolean showWaterFall = true;
+    private int position;
+    private boolean curentListTag = true;
+    private final String REFRESH_STATUS = "refresh";
+    private final String LOADMORE_STATUS = "loadmore";
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private ClearEditText cet_clearedit;
     private RelativeLayout rl_unreader_msg_double;
@@ -96,7 +108,6 @@ public class HomePicFragment
         rl_unreader_msg_double = (RelativeLayout) rootView.findViewById(R.id.rl_unreader_msg_double);
         cet_clearedit = (ClearEditText) rootView.findViewById(R.id.cet_clearedit);
         bt_change_frag = (Button) rootView.findViewById(R.id.bt_change_frag);
-        dataList = new ArrayList<>();
         mRecyclerView = (HRecyclerView) rootView.findViewById(R.id.rcy_recyclerview_pic);
 
     }
@@ -117,9 +128,6 @@ public class HomePicFragment
         width_Pic_Staggered = PublicUtils.getScreenWidth(activity) / 2 - UIUtils.getDimens(R.dimen.font_14);
         width_Pic_List = PublicUtils.getScreenWidth(activity) - UIUtils.getDimens(R.dimen.font_14);
 
-
-        getRecommendListData();
-        buildData();
         buildRecyclerView();
         getUnReaderMsg();
     }
@@ -136,13 +144,13 @@ public class HomePicFragment
                 break;
             case R.id.bt_change_frag:
 
-                if (showWaterFall) {
+                if (curentListTag) {
                     mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
-                    showWaterFall = false;
+                    curentListTag = false;
                     mRecyclerView.scrollToPosition(scroll_position);
                 } else {
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
-                    showWaterFall = true;
+                    curentListTag = true;
                     mRecyclerView.scrollToPosition(scroll_position);
                 }
 
@@ -153,130 +161,81 @@ public class HomePicFragment
 
     private void buildRecyclerView() {
 
-        MultiItemTypeSupport<Integer> support = new MultiItemTypeSupport<Integer>() {
+        MultiItemTypeSupport<SYDataBean> support = new MultiItemTypeSupport<SYDataBean>() {
             @Override
             public int getLayoutId(int itemType) {
                 if (itemType == TYPE_ONE) {
                     return R.layout.item_test_one;
+                } else if (itemType == TYPE_TWO) {
+                    return R.layout.item_test_one;
                 } else {
-                    return R.layout.item_test_two;
+                    return R.layout.item_test_one;
                 }
-
             }
 
             @Override
-            public int getItemViewType(int position, Integer s) {
-                if (position % 3 == 0) {
+            public int getItemViewType(int position, SYDataBean s) {
+                if (s.getObject_info().getType().equals(ClassConstant.PicListType.SINGLE)) {
                     return TYPE_ONE;
-                } else {
+                } else if (s.getObject_info().getType().equals(ClassConstant.PicListType.PROJECT)) {
                     return TYPE_TWO;
+                } else {
+                    return TYPE_THREE;
                 }
             }
         };
 
-        mAdapter = new MultiItemCommonAdapter<Integer>(activity, dataList, support) {
+        mAdapter = new MultiItemCommonAdapter<SYDataBean>(activity, mListData, support) {
             @Override
             public void convert(BaseViewHolder holder, int position) {
                 scroll_position = position;
-                if (position % 3 == 0) {
-                    holder.setImageResource(R.id.iv_imageview_one, R.drawable.image1);
-                    holder.setText(R.id.tv_one_top, "第一种布局:" + position);
-                } else {
-                    holder.setImageResource(R.id.iv_imageview_two, R.drawable.image2);
-                    holder.setText(R.id.tv_two_top, "第二种布局:" + position);
-                }
+                ViewGroup.LayoutParams layoutParams = holder.getView(R.id.iv_imageview_one).getLayoutParams();
+                layoutParams.width = width_Pic_List;
+                layoutParams.height = (curentListTag ? mLListDataHeight.get(position) : mSListDataHeight.get(position));
+                holder.getView(R.id.iv_imageview_one).setLayoutParams(layoutParams);
+                ((TextView) holder.getView(R.id.tv_name_pic)).setText(mListData.get(position).getUser_info().getNickname());
+                ImageUtils.displayFilletImage(mListData.get(position).getObject_info().getImage().getImg0(),
+                        (ImageView) holder.getView(R.id.iv_imageview_one));
+                ImageUtils.displayFilletImage(mListData.get(position).getUser_info().getAvatar().getBig(),
+                        (ImageView) holder.getView(R.id.iv_header_pic));
+
             }
         };
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        mRecyclerView.setItemAnimator(new LandingAnimator());
+        mRecyclerView.setItemAnimator(null);
 
-        ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(mAdapter);
-        scaleAdapter.setFirstOnly(false);
-        scaleAdapter.setDuration(500);
+//        ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(mAdapter);
+//        scaleAdapter.setFirstOnly(false);
+//        scaleAdapter.setDuration(500);
 
 
         mRecyclerView.setOnRefreshListener(this);
         mRecyclerView.setOnLoadMoreListener(this);
         mLoadMoreFooterView = (LoadMoreFooterView) mRecyclerView.getLoadMoreFooterView();
-
-        //解决瀑布流滑动到顶部出现空白的bug
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                staggeredGridLayoutManager.invalidateSpanAssignments();
-            }
-        });
-
-        mRecyclerView.setAdapter(scaleAdapter);
-
-    }
-
-    private void buildData() {
-
-        for (int i = 0; i < 10; i++) {
-            if (i % 3 == 0) {
-                dataList.add(R.drawable.image1);
-            } else {
-                dataList.add(R.drawable.image2);
-            }
-
-        }
+        mRecyclerView.setAdapter(mAdapter);
+        onRefresh();
     }
 
     @Override
     public void onRefresh() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //假装加载耗时数据
-                SystemClock.sleep(1000);
-                Message msg = Message.obtain();
-                msg.what = 0;
-                mHandler.sendMessage(msg);
-            }
-        }).start();
-
+        page_num = 1;
+        mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
+        getListData(REFRESH_STATUS);
     }
 
     @Override
     public void onLoadMore() {
-
-        if (mLoadMoreFooterView.canLoadMore()) {
-            mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.LOADING);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    //假装加载耗时数据
-                    SystemClock.sleep(1000);
-                    Message message = Message.obtain();
-                    message.what = 1;
-                    mHandler.sendMessage(message);
-                }
-            }).start();
-        }
-
+        mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.LOADING);
+        ++page_num;
+        getListData(LOADMORE_STATUS);
     }
 
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (msg.what == 0) {
-                mRecyclerView.setRefreshing(false);//刷新完毕
-            } else if (msg.what == 1) {
-
-                if (dataList.size() > 100) {//结束
-                    //没有更多数据
-                    mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.THE_END);
-                } else {//加载更多
-                    buildData();
-                    mAdapter.notifyItemInserted(dataList.size() + 1);
-                    mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
-                }
-
-            } else if (msg.what == 2) {
+            if (msg.what == 1) {
                 String info = (String) msg.obj;
                 try {
                     JSONObject jsonObject = new JSONObject(info);
@@ -308,7 +267,7 @@ public class HomePicFragment
                     if (error_code == 0) {
                         Message msg = new Message();
                         msg.obj = data_msg;
-                        msg.what = 2;
+                        msg.what = 1;
                         mHandler.sendMessage(msg);
 
                     } else {
@@ -348,11 +307,18 @@ public class HomePicFragment
         }
     }
 
-    private void getRecommendListData() {
+    private void getListData(final String state) {
         OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
 
+                mRecyclerView.setRefreshing(false);//刷新完毕
+                mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
+                if (state.equals(LOADMORE_STATUS)) {
+                    --page_num;
+                } else {
+                    page_num = 1;
+                }
                 ToastUtils.showCenter(activity, getString(R.string.recommend_get_error));
 
             }
@@ -367,9 +333,22 @@ public class HomePicFragment
                     if (error_code == 0) {
 
                         DataBean dataBean = GsonUtil.jsonToBean(data_msg, DataBean.class);
+                        if (null != dataBean.getObject_list() && 0 != dataBean.getObject_list().size()) {
+                            getHeight(dataBean.getObject_list());
+                            updateViewFromData(dataBean.getObject_list(), state);
+                        } else {
+                            updateViewFromData(null, state);
+                        }
 
                     } else {
-
+                        if (state.equals(LOADMORE_STATUS)) {
+                            --page_num;
+                            //没有更多数据
+                            mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.THE_END);
+                        } else {
+                            page_num = 1;
+                            mRecyclerView.setRefreshing(false);//刷新完毕
+                        }
                         ToastUtils.showCenter(activity, error_msg);
 
                     }
@@ -377,8 +356,49 @@ public class HomePicFragment
                 }
             }
         };
-        MyHttpManager.getInstance().getRecommendList("0", "20", callBack);
+        MyHttpManager.getInstance().getRecommendList((page_num - 1) * 20 + "", "20", callBack);
 
     }
 
+    private void updateViewFromData(List<SYDataBean> listData, String state) {
+
+        switch (state) {
+
+            case REFRESH_STATUS:
+                mListData.clear();
+                if (null != listData) {
+                    ++page_num;
+                    mListData.addAll(listData);
+                } else {
+                    page_num = 1;
+                    mListData.clear();
+                }
+                mAdapter.notifyDataSetChanged();
+                mRecyclerView.setRefreshing(false);//刷新完毕
+                break;
+
+            case LOADMORE_STATUS:
+                if (null != listData) {
+                    position = mListData.size();
+                    mListData.addAll(listData);
+                    mAdapter.notifyItem(position, mListData, listData);
+                    mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
+                } else {
+                    --page_num;
+                    //没有更多数据
+                    mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.THE_END);
+                }
+                break;
+        }
+    }
+
+
+    private void getHeight(List<SYDataBean> item_list) {
+        if (item_list.size() > 0) {
+            for (int i = 0; i < item_list.size(); i++) {
+                mLListDataHeight.add(Math.round(width_Pic_List / item_list.get(i).getObject_info().getImage().getRatio()));
+                mSListDataHeight.add(Math.round(width_Pic_Staggered / item_list.get(i).getObject_info().getImage().getRatio()));
+            }
+        }
+    }
 }

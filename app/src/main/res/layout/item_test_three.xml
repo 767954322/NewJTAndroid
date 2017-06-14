@@ -4,7 +4,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/iv_imageview_two"
+        android:id="@+id/iv_imageview_three"
         android:layout_width="match_parent"
         android:layout_height="@dimen/font_170" />
 
