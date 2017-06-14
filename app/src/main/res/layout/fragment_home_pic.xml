@@ -9,15 +9,16 @@
     <com.homechart.app.myview.ClearEditText
         android:id="@+id/cet_clearedit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/font_27"
         android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/font_20"
         android:background="@drawable/bg_edittext_search"
-        android:clickable="true"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
+        android:drawableLeft="@drawable/shared_icon"
+        android:drawablePadding="@dimen/font_6"
+        android:gravity="center_vertical"
         android:hint="搜索你感兴趣的图片，用户"
-        android:paddingLeft="@dimen/font_15" />
+        android:textSize="@dimen/size_14"
+        android:layout_margin="@dimen/font_15"
+        android:paddingLeft="@dimen/font_10" />
 
 
     <Button
