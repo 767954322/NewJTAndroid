@@ -2,11 +2,73 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
-    <include
-        android:id="@+id/common_navbar"
-        layout="@layout/view_navigation_header" />
 
+    <RelativeLayout
+        android:id="@+id/rl_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/font_16"
+        android:gravity="center">
+
+
+        <TextView
+            android:id="@+id/tv_quxiao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:paddingRight="@dimen/font_12"
+            android:paddingLeft="@dimen/font_10"
+            android:gravity="center"
+            android:text="取消"
+            android:textStyle="bold"
+            android:textColor="@color/bg_464646"
+            android:textSize="@dimen/size_14" />
+
+        <com.homechart.app.myview.ClearEditText
+            android:id="@+id/cet_clearedit"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/font_27"
+            android:layout_marginLeft="@dimen/font_15"
+            android:layout_toLeftOf="@+id/tv_quxiao"
+            android:background="@drawable/bg_edittext_search"
+            android:drawableLeft="@drawable/fdj"
+            android:drawablePadding="@dimen/font_6"
+            android:gravity="center_vertical"
+            android:hint="输入关键词搜索"
+            android:singleLine="true"
+            android:imeOptions="actionSearch"
+            android:textSize="@dimen/size_14"
+            android:paddingLeft="@dimen/font_10" />
+    </RelativeLayout>
+
+
+    <View
+        android:id="@+id/view_one_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/font_1"
+        android:layout_below="@+id/rl_search"
+        android:layout_marginTop="@dimen/font_15"
+        android:background="@color/view_line"/>
+    <RelativeLayout
+        android:id="@+id/rl_search_tital"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/font_10"
+        android:layout_below="@+id/view_one_line"
+        android:background="@color/bg_eeeeee"/>
+
+    <com.homechart.app.recyclerlibrary.recyclerview.HRecyclerView
+        android:id="@+id/rcy_recyclerview_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl_search_tital"
+        android:layout_marginTop="@dimen/font_10"
+        app:loadMoreEnabled="true"
+        app:loadMoreFooterLayout="@layout/layout_hrecyclerview_load_more_footer"
+        app:refreshEnabled="true"
+        app:refreshHeaderLayout="@layout/layout_hrecyclerview_refresh_header" />
 
 </RelativeLayout>

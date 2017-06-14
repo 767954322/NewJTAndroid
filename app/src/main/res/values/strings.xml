@@ -55,6 +55,8 @@
     <string name="unreader_msg_get_error">未读消息数获取失败</string>
     <!-- HomePicFragment -->
     <string name="recommend_get_error">数据加载失败</string>
+    <!-- SearchResultActivity -->
+    <string name="search_result_error">搜索失败</string>
     <!-- FenSiListActivity -->
     <string name="error_fensi">粉丝数据加载失败，请重新刷新加载</string>
     <string name="fensi_tital">粉丝</string>

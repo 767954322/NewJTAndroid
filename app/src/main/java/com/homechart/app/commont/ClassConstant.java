@@ -130,6 +130,13 @@ public class ClassConstant {
         public static final String N = "n";
     }
 
+    public static class SearchList {
+        public static final String Q = "q";
+        public static final String TAG_NAME = "tag_name";
+        public static final String S = "s";
+        public static final String N = "n";
+    }
+
     public static class PicListType {
         //single:单图；project:案例； article:文章
         public static final String SINGLE = "single";

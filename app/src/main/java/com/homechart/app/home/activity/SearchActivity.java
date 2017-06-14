@@ -72,7 +72,12 @@ public class SearchActivity
         wl_tips.setMarkClickListener(new WrapLayout.MarkClickListener() {
             @Override
             public void clickMark(int position) {
-                ToastUtils.showCenter(SearchActivity.this, myData[position]);
+
+                // 跳转搜索结果页
+                Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
+                intent.putExtra("search_tag", myData[position]);
+                intent.putExtra("search_info", "");
+                startActivity(intent);
             }
         });
         cet_clearedit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -147,6 +152,7 @@ public class SearchActivity
             // 跳转搜索结果页
             Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
             intent.putExtra("search_info", searchContext);
+            intent.putExtra("search_tag", "");
             startActivity(intent);
         }
 

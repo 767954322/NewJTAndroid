@@ -33,5 +33,6 @@ public class UrlConstants {
     public static final String HOT_WORDS = "https://api.idcool.com.cn/search/search/hotWords";  // 搜索热词
     public static final String UNREADER_MSG = "https://api.idcool.com.cn/user/account/newNoticeNum";  // 未读消息数
     public static final String RECOMMEND_LIST = "https://api.idcool.com.cn/home/index/recommend";  // 获取首页推荐列表
+    public static final String SEARCH_LIST = "https://api.idcool.com.cn/search/search/single";  // 获取搜索列表
 
 }
