@@ -20,6 +20,7 @@ import com.homechart.app.home.activity.HomeActivity;
 import com.homechart.app.home.activity.LoginActivity;
 import com.homechart.app.home.activity.MessagesListActivity;
 import com.homechart.app.home.activity.MyInfoActivity;
+import com.homechart.app.home.activity.SearchActivity;
 import com.homechart.app.home.activity.SetActivity;
 import com.homechart.app.home.activity.ShaiJiaListActivity;
 import com.homechart.app.home.activity.ShouCangListActivity;
@@ -42,6 +43,8 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
     private UserCenterInfoBean userCenterInfoBean;
     private FragmentManager fragmentManager;
     private RoundImageView iv_center_header;
+    private RelativeLayout rl_unreader_msg_double;
+    private RelativeLayout rl_unreader_msg_single;
     private RelativeLayout rl_fensi;
     private RelativeLayout rl_guanzu;
     private RelativeLayout rl_shoucang;
@@ -50,6 +53,8 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
     private RelativeLayout rl_set;
     private TextView tv_center_name;
     private String mUserId;
+    private TextView tv_unreader_mag_double;
+    private TextView tv_unreader_mag_single;
     private TextView tv_fensi_num;
     private TextView tv_guanzhu_num;
     private TextView tv_shoucang_num;
@@ -62,8 +67,22 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             String info = (String) msg.obj;
-            userCenterInfoBean = GsonUtil.jsonToBean(info, UserCenterInfoBean.class);
-            changeUI();
+            int tag = msg.arg1;
+            if (tag == 0) {
+                userCenterInfoBean = GsonUtil.jsonToBean(info, UserCenterInfoBean.class);
+                changeUI();
+            } else if (tag == 1) {
+
+                try {
+                    JSONObject jsonObject = new JSONObject(info);
+                    String num = jsonObject.getString("notice_num");
+                    changeUnReaderMsg(num);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
 
         }
     };
@@ -86,12 +105,16 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
         tv_guanzhu_num = (TextView) rootView.findViewById(R.id.tv_guanzhu_num);
         tv_shoucang_num = (TextView) rootView.findViewById(R.id.tv_shoucang_num);
         tv_shaijia_num = (TextView) rootView.findViewById(R.id.tv_shaijia_num);
+        tv_unreader_mag_double = (TextView) rootView.findViewById(R.id.tv_unreader_mag_double);
+        tv_unreader_mag_single = (TextView) rootView.findViewById(R.id.tv_unreader_mag_single);
         rl_fensi = (RelativeLayout) rootView.findViewById(R.id.rl_fensi);
         rl_guanzu = (RelativeLayout) rootView.findViewById(R.id.rl_guanzu);
         rl_shoucang = (RelativeLayout) rootView.findViewById(R.id.rl_shoucang);
         rl_shaijia = (RelativeLayout) rootView.findViewById(R.id.rl_shaijia);
         rl_wodeanli = (RelativeLayout) rootView.findViewById(R.id.rl_wodeanli);
         rl_set = (RelativeLayout) rootView.findViewById(R.id.rl_set);
+        rl_unreader_msg_single = (RelativeLayout) rootView.findViewById(R.id.rl_unreader_msg_single);
+        rl_unreader_msg_double = (RelativeLayout) rootView.findViewById(R.id.rl_unreader_msg_double);
         iv_center_msgicon = (ImageView) rootView.findViewById(R.id.iv_center_msgicon);
         iv_zhuanye_icon = (ImageView) rootView.findViewById(R.id.iv_zhuanye_icon);
         mUserId = SharedPreferencesUtils.readString(ClassConstant.LoginSucces.USER_ID);
@@ -117,6 +140,7 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
     protected void initData(Bundle savedInstanceState) {
 
         getUserInfo();
+        getTagData();
 
     }
 
@@ -133,14 +157,14 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
             case R.id.rl_fensi:
 
                 Intent intent_fensi = new Intent(activity, FenSiListActivity.class);
-                intent_fensi.putExtra(ClassConstant.LoginSucces.USER_ID,mUserId);
+                intent_fensi.putExtra(ClassConstant.LoginSucces.USER_ID, mUserId);
                 startActivity(intent_fensi);
 
                 break;
             case R.id.rl_guanzu:
 
                 Intent intent_guanzu = new Intent(activity, GuanZuListActivity.class);
-                intent_guanzu.putExtra(ClassConstant.LoginSucces.USER_ID,mUserId);
+                intent_guanzu.putExtra(ClassConstant.LoginSucces.USER_ID, mUserId);
                 startActivity(intent_guanzu);
 
                 break;
@@ -153,7 +177,7 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
             case R.id.rl_shaijia:
 
                 Intent intent_shaijia = new Intent(activity, ShaiJiaListActivity.class);
-                intent_shaijia.putExtra(ClassConstant.LoginSucces.USER_ID,mUserId);
+                intent_shaijia.putExtra(ClassConstant.LoginSucces.USER_ID, mUserId);
                 startActivity(intent_shaijia);
 
                 break;
@@ -195,6 +219,7 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
 
                         Message msg = new Message();
                         msg.obj = data_msg;
+                        msg.arg1 = 0;
                         handler.sendMessage(msg);
 
 
@@ -207,6 +232,41 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
         };
         MyHttpManager.getInstance().getUserInfo(mUserId, callBack);
 
+
+    }
+
+    //获取未读消息数
+    private void getTagData() {
+
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                ToastUtils.showCenter(activity, getString(R.string.unreader_msg_get_error));
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        Message msg = new Message();
+                        msg.obj = data_msg;
+                        msg.arg1 = 1;
+                        handler.sendMessage(msg);
+
+                    } else {
+                        ToastUtils.showCenter(activity, error_msg);
+                    }
+                } catch (JSONException e) {
+
+                    ToastUtils.showCenter(activity, getString(R.string.unreader_msg_get_error));
+                }
+            }
+        };
+        MyHttpManager.getInstance().getUnReadMsg(callBack);
 
     }
 
@@ -227,6 +287,31 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
             tv_guanzhu_num.setText(userCenterInfoBean.getCounter().getFollow_num() + "");
             tv_shoucang_num.setText(userCenterInfoBean.getCounter().getCollect_num() + "");
             tv_shaijia_num.setText(userCenterInfoBean.getCounter().getSingle_num() + "");
+        }
+
+    }
+
+    private void changeUnReaderMsg(String num) {
+
+        int num_int = Integer.parseInt(num.trim());
+        if (num_int == 0) {
+            rl_unreader_msg_double.setVisibility(View.GONE);
+            rl_unreader_msg_single.setVisibility(View.GONE);
+        } else {
+            if (num_int < 10) {
+                rl_unreader_msg_double.setVisibility(View.GONE);
+                rl_unreader_msg_single.setVisibility(View.VISIBLE);
+                tv_unreader_mag_single.setText(num_int + "");
+            } else if (10 <= num_int && num_int <= 99) {
+                rl_unreader_msg_double.setVisibility(View.VISIBLE);
+                rl_unreader_msg_single.setVisibility(View.GONE);
+                tv_unreader_mag_double.setText(num_int + "");
+            } else {
+                rl_unreader_msg_double.setVisibility(View.VISIBLE);
+                rl_unreader_msg_single.setVisibility(View.GONE);
+                tv_unreader_mag_double.setText("99");
+            }
+
         }
 
     }

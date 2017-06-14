@@ -38,6 +38,61 @@
 
     </RelativeLayout>
 
+
+    <RelativeLayout
+        android:id="@+id/rl_unreader_msg_single"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/font_16"
+        android:layout_marginTop="@dimen/font_33"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_unreader_mag_single"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/xiaoxi1" />
+
+        <TextView
+            android:id="@+id/tv_unreader_mag_single"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="9"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_8"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_unreader_msg_double"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/font_12"
+        android:layout_marginTop="@dimen/font_33"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_unreader_mag_double"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/xiaoxi2" />
+
+        <TextView
+            android:id="@+id/tv_unreader_mag_double"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="99"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_8"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/rl_center_header"
         android:layout_width="match_parent"
@@ -69,8 +124,8 @@
             android:layout_alignBottom="@+id/iv_center_header"
             android:layout_alignRight="@+id/iv_center_header"
             android:layout_marginRight="@dimen/font_4"
-            android:visibility="gone"
-            android:src="@drawable/pro" />
+            android:src="@drawable/pro"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
