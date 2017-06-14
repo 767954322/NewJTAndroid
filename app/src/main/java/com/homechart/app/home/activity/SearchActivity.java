@@ -2,6 +2,8 @@ package com.homechart.app.home.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -9,12 +11,23 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
 import com.homechart.app.R;
+import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.home.base.BaseActivity;
+import com.homechart.app.home.bean.hotwords.HotWordsBean;
 import com.homechart.app.myview.ClearEditText;
 import com.homechart.app.myview.WrapLayout;
+import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.UIUtils;
+import com.homechart.app.utils.volley.MyHttpManager;
+import com.homechart.app.utils.volley.OkStringRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Created by gumenghao on 17/6/13.
@@ -25,10 +38,11 @@ public class SearchActivity
         implements View.OnClickListener {
     private TextView tv_quxiao;
     private WrapLayout wl_tips;
-    private String[] myData = new String[]
-            {"大家都在搜", "saasas2", "3", "4", "5", "6", "7",
-                    "8", "9", "10", "11", "12", "13", "14",
-                    "15", "16", "17", "18", "19", "20", "21", "大家都在搜", "23"};
+    private String[] myData;
+    //    private String[] myData = new String[]
+//            {"大家都在搜", "saasas2", "3", "4", "5", "6", "7",
+//                    "8", "9", "10", "11", "12", "13", "14",
+//                    "15", "16", "17", "18", "19", "20", "21", "大家都在搜", "23"};
     private ClearEditText cet_clearedit;
 
     @Override
@@ -46,23 +60,9 @@ public class SearchActivity
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        wl_tips.setStyle(0);
-        wl_tips.setData(myData, this, 14, 15, 10, 15, 10, 0, 0, UIUtils.getDimens(R.dimen.font_12), UIUtils.getDimens(R.dimen.font_15));
-        /**
-         * 设置数据
-         *
-         * @param data     文字
-         * @param context  上下文
-         * @param textSize 文字大小
-         * @param pl       左内边距
-         * @param pt       上内边距
-         * @param pr       右内边距
-         * @param pb       下内边距
-         * @param ml       左外边距
-         * @param mt       上外边距
-         * @param mr       右外边距
-         * @param mb       下外边距
-         */
+
+        getTagData();
+
     }
 
     @Override
@@ -105,8 +105,39 @@ public class SearchActivity
         }
     }
 
-    // 搜索功能
+    private void getTagData() {
 
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                ToastUtils.showCenter(SearchActivity.this, getString(R.string.searchtag_get_error));
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        Message msg = new Message();
+                        msg.obj = data_msg;
+                        handler.sendMessage(msg);
+
+                    } else {
+                        ToastUtils.showCenter(SearchActivity.this, error_msg);
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        };
+        MyHttpManager.getInstance().getSearchHotWords(callBack);
+
+    }
+
+
+    // 搜索功能
     private void search() {
 
         String searchContext = cet_clearedit.getText().toString().trim();
@@ -120,4 +151,21 @@ public class SearchActivity
         }
 
     }
+
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            String dataStr = (String) msg.obj;
+            HotWordsBean hotWordsBean = GsonUtil.jsonToBean(dataStr, HotWordsBean.class);
+            List<String> listHot = hotWordsBean.getHot_words();
+            myData = new String[listHot.size()];
+            for (int i = 0; i < listHot.size(); i++) {
+                myData[i] = listHot.get(i);
+            }
+            wl_tips.setStyle(0);
+            wl_tips.setData(myData, SearchActivity.this, 14, 15, 10, 15, 10, 0, 0, UIUtils.getDimens(R.dimen.font_12), UIUtils.getDimens(R.dimen.font_15));
+        }
+    };
 }

@@ -80,7 +80,8 @@
     <string name="clear_cath_sure">清空缓存数据</string>
     <string name="no_cath">暂无缓冲</string>
 
+    <!-- SearchActivity -->
+    <string name="searchtag_get_error">用户信息获取失败</string>
     <!-- MessagesListActivity -->
-
     <string name="error_message">消息数据加载失败，请重新刷新加载</string>
 </resources>
