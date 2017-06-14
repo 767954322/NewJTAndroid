@@ -374,7 +374,6 @@ public class HomePicFragment
             case REFRESH_STATUS:
                 mListData.clear();
                 if (null != listData) {
-                    ++page_num;
                     mListData.addAll(listData);
                 } else {
                     page_num = 1;

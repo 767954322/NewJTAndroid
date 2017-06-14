@@ -119,9 +119,9 @@ public class ShouCangListActivity
 
                 }
 
-                if(mListData.get(position).getItem_info().getItem_id().equals(holder.getView(R.id.iv_shoucang_image).getTag())){
+                if (mListData.get(position).getItem_info().getItem_id().equals(holder.getView(R.id.iv_shoucang_image).getTag())) {
 
-                }else {
+                } else {
                     holder.getView(R.id.iv_shoucang_image).setTag(mListData.get(position).getItem_info().getItem_id());
                     ImageUtils.displayFilletImage(mListData.get(position).getItem_info().getImage().getImg0(),
                             (ImageView) holder.getView(R.id.iv_shoucang_image));
@@ -345,7 +345,6 @@ public class ShouCangListActivity
             case REFRESH_STATUS:
                 mListData.clear();
                 if (null != listData) {
-                    ++page_num;
                     mListData.addAll(listData);
                 } else {
                     page_num = 1;
