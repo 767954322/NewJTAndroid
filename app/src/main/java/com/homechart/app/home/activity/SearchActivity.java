@@ -142,7 +142,7 @@ public class SearchActivity
 
         String searchContext = cet_clearedit.getText().toString().trim();
         if (TextUtils.isEmpty(searchContext.trim())) {
-            ToastUtils.showCenter(this, "输入框为空，请输入");
+            ToastUtils.showCenter(this, "请输入搜索内容");
         } else {
             // 跳转搜索结果页
             Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);

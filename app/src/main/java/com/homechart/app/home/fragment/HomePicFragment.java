@@ -125,7 +125,7 @@ public class HomePicFragment
 
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
-        width_Pic_Staggered = PublicUtils.getScreenWidth(activity) / 2 - UIUtils.getDimens(R.dimen.font_14);
+        width_Pic_Staggered = PublicUtils.getScreenWidth(activity) / 2 - UIUtils.getDimens(R.dimen.font_20);
         width_Pic_List = PublicUtils.getScreenWidth(activity) - UIUtils.getDimens(R.dimen.font_14);
 
         buildRecyclerView();
@@ -194,6 +194,13 @@ public class HomePicFragment
                 layoutParams.height = (curentListTag ? mLListDataHeight.get(position) : mSListDataHeight.get(position));
                 holder.getView(R.id.iv_imageview_one).setLayoutParams(layoutParams);
                 ((TextView) holder.getView(R.id.tv_name_pic)).setText(mListData.get(position).getUser_info().getNickname());
+                if(curentListTag){
+                    ImageUtils.displayFilletImage(mListData.get(position).getObject_info().getImage().getImg0(),
+                            (ImageView) holder.getView(R.id.iv_imageview_one));
+                }else {
+                    ImageUtils.displayFilletImage(mListData.get(position).getObject_info().getImage().getImg1(),
+                            (ImageView) holder.getView(R.id.iv_imageview_one));
+                }
                 ImageUtils.displayFilletImage(mListData.get(position).getObject_info().getImage().getImg0(),
                         (ImageView) holder.getView(R.id.iv_imageview_one));
                 ImageUtils.displayFilletImage(mListData.get(position).getUser_info().getAvatar().getBig(),
@@ -334,7 +341,7 @@ public class HomePicFragment
 
                         DataBean dataBean = GsonUtil.jsonToBean(data_msg, DataBean.class);
                         if (null != dataBean.getObject_list() && 0 != dataBean.getObject_list().size()) {
-                            getHeight(dataBean.getObject_list());
+                            getHeight(dataBean.getObject_list(),state);
                             updateViewFromData(dataBean.getObject_list(), state);
                         } else {
                             updateViewFromData(null, state);
@@ -393,12 +400,18 @@ public class HomePicFragment
     }
 
 
-    private void getHeight(List<SYDataBean> item_list) {
+    private void getHeight(List<SYDataBean> item_list,String state) {
+        if (state.equals(REFRESH_STATUS)) {
+            mLListDataHeight.clear();
+            mSListDataHeight.clear();
+        }
+
         if (item_list.size() > 0) {
             for (int i = 0; i < item_list.size(); i++) {
-                mLListDataHeight.add(Math.round(width_Pic_List / item_list.get(i).getObject_info().getImage().getRatio()));
+                mLListDataHeight.add(Math.round(width_Pic_List / 1.333333f));
                 mSListDataHeight.add(Math.round(width_Pic_Staggered / item_list.get(i).getObject_info().getImage().getRatio()));
             }
         }
     }
+
 }
