@@ -92,21 +92,82 @@
             android:textStyle="bold" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_pic_choose"
+    <LinearLayout
+        android:id="@+id/ll_pic_choose"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/font_50"
+        android:layout_height="@dimen/font_90"
         android:layout_below="@+id/rl_homepic_top"
-        android:background="@color/activity_bg">
+        android:background="@color/bg_f7f7f7"
+        android:orientation="horizontal">
 
 
-    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl_kongjian"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_weight="1">
+
+            <com.homechart.app.myview.RoundImageView
+                android:id="@+id/iv_kongjian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/kongjian1" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_jubu"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_weight="1">
+
+            <com.homechart.app.myview.RoundImageView
+                android:id="@+id/iv_jubu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/jubu1" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_zhuangshi"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_weight="1">
+
+            <com.homechart.app.myview.RoundImageView
+                android:id="@+id/iv_zhuangshi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/zhuangshi1" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_shouna"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_weight="1">
+
+            <com.homechart.app.myview.RoundImageView
+                android:id="@+id/iv_shouna"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/zhuangshi1" />
+        </RelativeLayout>
+
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/rl_pic_change"
         android:layout_width="match_parent"
         android:layout_height="@dimen/font_40"
-        android:layout_below="@+id/rl_pic_choose"
+        android:layout_below="@+id/ll_pic_choose"
         android:background="@color/bg_f2f2f2">
 
         <Button

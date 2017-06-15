@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,12 +24,15 @@ import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.activity.SearchActivity;
 import com.homechart.app.home.base.BaseFragment;
+import com.homechart.app.home.bean.pictag.TagDataBean;
 import com.homechart.app.home.bean.shouye.DataBean;
 import com.homechart.app.home.bean.shouye.SYDataBean;
 import com.homechart.app.home.bean.shouye.SYDataColorBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.ClearEditText;
 import com.homechart.app.myview.GridSpacingItemDecoration;
+import com.homechart.app.myview.HomeTabPopWin;
+import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
 import com.homechart.app.recyclerlibrary.holder.BaseViewHolder;
 import com.homechart.app.recyclerlibrary.recyclerview.HRecyclerView;
@@ -52,7 +57,8 @@ public class HomePicFragment
         extends BaseFragment
         implements View.OnClickListener,
         OnLoadMoreListener,
-        OnRefreshListener {
+        OnRefreshListener,
+        ViewPager.OnPageChangeListener {
 
     private FragmentManager fragmentManager;
     private Button bt_change_frag;
@@ -82,6 +88,17 @@ public class HomePicFragment
     private int width_Pic_Staggered;
     private int width_Pic_List;
     private GridSpacingItemDecoration gridSpacingItemDecoration;
+    private HomeTabPopWin homeTabPopWin;
+    private LinearLayout ll_pic_choose;
+    private RoundImageView iv_kongjian;
+    private RoundImageView iv_jubu;
+    private RoundImageView iv_zhuangshi;
+    private RoundImageView iv_shouna;
+    private RelativeLayout rl_kongjian;
+    private RelativeLayout rl_jubu;
+    private RelativeLayout rl_zhuangshi;
+    private RelativeLayout rl_shouna;
+    public TagDataBean tagDataBean;
 
     public HomePicFragment(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
@@ -95,14 +112,24 @@ public class HomePicFragment
     @Override
     protected void initView() {
 
-
         tv_unreader_mag_double = (TextView) rootView.findViewById(R.id.tv_unreader_mag_double);
         tv_unreader_mag_single = (TextView) rootView.findViewById(R.id.tv_unreader_mag_single);
         rl_unreader_msg_single = (RelativeLayout) rootView.findViewById(R.id.rl_unreader_msg_single);
         rl_unreader_msg_double = (RelativeLayout) rootView.findViewById(R.id.rl_unreader_msg_double);
+        ll_pic_choose = (LinearLayout) rootView.findViewById(R.id.ll_pic_choose);
         cet_clearedit = (ClearEditText) rootView.findViewById(R.id.cet_clearedit);
         bt_change_frag = (Button) rootView.findViewById(R.id.bt_change_frag);
         mRecyclerView = (HRecyclerView) rootView.findViewById(R.id.rcy_recyclerview_pic);
+
+
+        iv_kongjian = (RoundImageView) rootView.findViewById(R.id.iv_kongjian);
+        iv_jubu = (RoundImageView) rootView.findViewById(R.id.iv_jubu);
+        iv_zhuangshi = (RoundImageView) rootView.findViewById(R.id.iv_zhuangshi);
+        iv_shouna = (RoundImageView) rootView.findViewById(R.id.iv_shouna);
+        rl_kongjian = (RelativeLayout) rootView.findViewById(R.id.rl_kongjian);
+        rl_jubu = (RelativeLayout) rootView.findViewById(R.id.rl_jubu);
+        rl_zhuangshi = (RelativeLayout) rootView.findViewById(R.id.rl_zhuangshi);
+        rl_shouna = (RelativeLayout) rootView.findViewById(R.id.rl_shouna);
 
     }
 
@@ -112,6 +139,10 @@ public class HomePicFragment
         cet_clearedit.setKeyListener(null);
         cet_clearedit.setOnClickListener(this);
         bt_change_frag.setOnClickListener(this);
+        rl_kongjian.setOnClickListener(this);
+        rl_jubu.setOnClickListener(this);
+        rl_zhuangshi.setOnClickListener(this);
+        rl_shouna.setOnClickListener(this);
     }
 
     @Override
@@ -121,8 +152,8 @@ public class HomePicFragment
 
         width_Pic_Staggered = PublicUtils.getScreenWidth(activity) / 2 - UIUtils.getDimens(R.dimen.font_20);
         width_Pic_List = PublicUtils.getScreenWidth(activity) - UIUtils.getDimens(R.dimen.font_14);
-
         buildRecyclerView();
+        getTagData();
         getUnReaderMsg();
     }
 
@@ -147,7 +178,20 @@ public class HomePicFragment
                     curentListTag = true;
                     mRecyclerView.scrollToPosition(scroll_position);
                 }
+                break;
 
+            case R.id.rl_kongjian:
+                showPopwindow();
+
+                break;
+            case R.id.rl_jubu:
+                showPopwindow();
+                break;
+            case R.id.rl_zhuangshi:
+                showPopwindow();
+                break;
+            case R.id.rl_shouna:
+                showPopwindow();
                 break;
         }
     }
@@ -272,11 +316,6 @@ public class HomePicFragment
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
         mRecyclerView.setItemAnimator(null);
-//        ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(mAdapter);
-//        scaleAdapter.setFirstOnly(false);
-//        scaleAdapter.setDuration(500);
-
-
         mRecyclerView.setOnRefreshListener(this);
         mRecyclerView.setOnLoadMoreListener(this);
         mLoadMoreFooterView = (LoadMoreFooterView) mRecyclerView.getLoadMoreFooterView();
@@ -299,6 +338,8 @@ public class HomePicFragment
     }
 
     private Handler mHandler = new Handler() {
+
+
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -311,9 +352,45 @@ public class HomePicFragment
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            } else if (msg.what == 2) {
+                String info = (String) msg.obj;
+                tagDataBean = GsonUtil.jsonToBean(info, TagDataBean.class);
             }
         }
     };
+
+    //获取tag信息
+    private void getTagData() {
+
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                ToastUtils.showCenter(activity, getString(R.string.filter_get_error));
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        data_msg = "{ \"tag_id\": " + data_msg + "}";
+                        Message msg = new Message();
+                        msg.obj = data_msg;
+                        msg.what = 2;
+                        mHandler.sendMessage(msg);
+                    } else {
+                        ToastUtils.showCenter(activity, error_msg);
+                    }
+                } catch (JSONException e) {
+                    ToastUtils.showCenter(activity, getString(R.string.filter_get_error));
+                }
+            }
+        };
+        MyHttpManager.getInstance().getPicTagData(callBack);
+    }
 
     //获取未读消息数
     private void getUnReaderMsg() {
@@ -472,5 +549,36 @@ public class HomePicFragment
             }
         }
     }
+
+    private void showPopwindow() {
+        if (tagDataBean != null) {
+            if (null == homeTabPopWin) {
+                homeTabPopWin = new HomeTabPopWin(activity, this,tagDataBean);
+            }
+            if (homeTabPopWin.isShowing()) {
+                homeTabPopWin.dismiss();
+            } else {
+                homeTabPopWin.showAsDropDown(ll_pic_choose);
+            }
+        } else {
+            ToastUtils.showCenter(activity, "数据加载中");
+        }
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
 
 }
