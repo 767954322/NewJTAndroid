@@ -2,20 +2,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <com.homechart.app.myview.WrapLayout
-        android:id="@+id/wl_tips"
+
+    <com.homechart.app.myview.FlowLayout
+        android:id="@+id/his_flowLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/font_15"
         android:layout_marginRight="@dimen/font_15"
-        android:layout_marginTop="@dimen/font_15" />
-
-
+        android:paddingTop="@dimen/font_20"
+        android:paddingBottom="@dimen/font_5"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+    <View
+        android:id="@+id/view_flowlayout"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:visibility="gone"
+        android:layout_below="@+id/his_flowLayout"
+        android:background="@color/navbar_bottom_border_color" />
     <RelativeLayout
         android:id="@+id/rl_pic_change"
         android:layout_width="match_parent"
         android:layout_height="@dimen/font_44"
-        android:layout_below="@+id/wl_tips"
+        android:layout_below="@+id/view_flowlayout"
         android:background="@color/white">
 
         <ImageView

@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.homechart.app.R;
@@ -28,6 +29,7 @@ import com.homechart.app.home.bean.shaixuan.ShaiXuanBean;
 import com.homechart.app.home.bean.shouye.SYDataBean;
 import com.homechart.app.home.bean.shouye.SYDataColorBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
+import com.homechart.app.myview.FlowLayout;
 import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.myview.WrapLayout;
 import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
@@ -61,7 +63,7 @@ public class ShaiXuanResultActicity
     private String shaixuan_tag;
     private ImageButton nav_left_imageButton;
     private TextView tv_tital_comment;
-    private WrapLayout wl_tips;
+    private FlowLayout his_flowLayout;
     private String[] myData;
     private HRecyclerView mRecyclerView;
     private MultiItemCommonAdapter<SearchItemDataBean> mAdapter;
@@ -74,6 +76,7 @@ public class ShaiXuanResultActicity
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private ImageView iv_change_frag;
     private View view;
+    private View view_flowlayout;
 
     @Override
     protected int getLayoutResId() {
@@ -95,7 +98,8 @@ public class ShaiXuanResultActicity
         mRecyclerView = (HRecyclerView) findViewById(R.id.rcy_recyclerview_info);
         nav_left_imageButton = (ImageButton) findViewById(R.id.nav_left_imageButton);
         tv_tital_comment = (TextView) findViewById(R.id.tv_tital_comment);
-        wl_tips = (WrapLayout) view.findViewById(R.id.wl_tips);
+        his_flowLayout = (FlowLayout) view.findViewById(R.id.his_flowLayout);
+        view_flowlayout =  view.findViewById(R.id.view_flowlayout);
         iv_change_frag = (ImageView) view.findViewById(R.id.iv_change_frag);
 
     }
@@ -105,17 +109,17 @@ public class ShaiXuanResultActicity
         super.initListener();
         nav_left_imageButton.setOnClickListener(this);
         iv_change_frag.setOnClickListener(this);
-        wl_tips.setMarkClickListener(new WrapLayout.MarkClickListener() {
-            @Override
-            public void clickMark(int position) {
-
-                // 跳转搜索结果页
-                Intent intent = new Intent(ShaiXuanResultActicity.this, ShaiXuanResultActicity.class);
-                intent.putExtra("shaixuan_tag", strTuiJian.get(position));
-                startActivity(intent);
-
-            }
-        });
+//        wl_tips.setMarkClickListener(new WrapLayout.MarkClickListener() {
+//            @Override
+//            public void clickMark(int position) {
+//
+//                // 跳转搜索结果页
+//                Intent intent = new Intent(ShaiXuanResultActicity.this, ShaiXuanResultActicity.class);
+//                intent.putExtra("shaixuan_tag", strTuiJian.get(position));
+//                startActivity(intent);
+//
+//            }
+//        });
     }
 
     @Override
@@ -215,16 +219,26 @@ public class ShaiXuanResultActicity
     private void changeUI() {
 
         if (null != strTuiJian && strTuiJian.size() > 0) {
-            wl_tips.setVisibility(View.VISIBLE);
+            his_flowLayout.setVisibility(View.VISIBLE);
+            view_flowlayout.setVisibility(View.VISIBLE);
             myData = new String[strTuiJian.size()];
             for (int i = 0; i < strTuiJian.size(); i++) {
                 myData[i] = strTuiJian.get(i);
             }
-            wl_tips.setStyle(0);
-            wl_tips.setData(myData, ShaiXuanResultActicity.this, 14, 15, 10, 15, 10, 0, 0, UIUtils.getDimens(R.dimen.font_12), UIUtils.getDimens(R.dimen.font_15));
-
+            his_flowLayout.setColorful(false);
+            his_flowLayout.setData(myData);
+            his_flowLayout.setOnTagClickListener(new FlowLayout.OnTagClickListener() {
+                @Override
+                public void TagClick(String text) {
+                    // 跳转搜索结果页
+                    Intent intent = new Intent(ShaiXuanResultActicity.this, ShaiXuanResultActicity.class);
+                    intent.putExtra("shaixuan_tag", text);
+                    startActivity(intent);
+                }
+            });
         } else {
-            wl_tips.setVisibility(View.GONE);
+            his_flowLayout.setVisibility(View.GONE);
+            view_flowlayout.setVisibility(View.GONE);
         }
     }
 
