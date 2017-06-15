@@ -2,6 +2,7 @@ package com.homechart.app.home.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,10 +27,12 @@ import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.activity.SearchActivity;
 import com.homechart.app.home.activity.UserInfoActivity;
 import com.homechart.app.home.base.BaseFragment;
+import com.homechart.app.home.bean.search.SearchDataColorBean;
 import com.homechart.app.home.bean.shaijia.ShaiJiaItemBean;
 import com.homechart.app.home.bean.shoucang.ShouCangItemBean;
 import com.homechart.app.home.bean.shouye.DataBean;
 import com.homechart.app.home.bean.shouye.SYDataBean;
+import com.homechart.app.home.bean.shouye.SYDataColorBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.ClearEditText;
 import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
@@ -164,24 +167,47 @@ public class HomePicFragment
         MultiItemTypeSupport<SYDataBean> support = new MultiItemTypeSupport<SYDataBean>() {
             @Override
             public int getLayoutId(int itemType) {
+//                if (curentListTag) {//List
+//                    if (itemType == TYPE_ONE) {
+//                        return R.layout.item_test_one;
+//                    } else if (itemType == TYPE_TWO) {
+//                        return R.layout.item_test_one;
+//                    } else {
+//                        return R.layout.item_test_one;
+//                    }
+//                } else {
+//                    if (itemType == TYPE_ONE) {
+//                        return R.layout.item_test_pic_pubu;
+//                    } else if (itemType == TYPE_TWO) {
+//                        return R.layout.item_test_pic_pubu;
+//                    } else {
+//                        return R.layout.item_test_pic_pubu;
+//                    }
+//                }
+
                 if (itemType == TYPE_ONE) {
                     return R.layout.item_test_one;
-                } else if (itemType == TYPE_TWO) {
-                    return R.layout.item_test_one;
                 } else {
-                    return R.layout.item_test_one;
+                    return R.layout.item_test_pic_pubu;
                 }
+
             }
 
             @Override
             public int getItemViewType(int position, SYDataBean s) {
-                if (s.getObject_info().getType().equals(ClassConstant.PicListType.SINGLE)) {
+//                if (s.getObject_info().getType().equals(ClassConstant.PicListType.SINGLE)) {
+//                    return TYPE_ONE;
+//                } else if (s.getObject_info().getType().equals(ClassConstant.PicListType.PROJECT)) {
+//                    return TYPE_TWO;
+//                } else {
+//                    return TYPE_THREE;
+//                }
+                if (curentListTag) {
                     return TYPE_ONE;
-                } else if (s.getObject_info().getType().equals(ClassConstant.PicListType.PROJECT)) {
-                    return TYPE_TWO;
                 } else {
-                    return TYPE_THREE;
+                    return TYPE_TWO;
                 }
+
             }
         };
 
@@ -193,16 +219,62 @@ public class HomePicFragment
                 layoutParams.width = width_Pic_List;
                 layoutParams.height = (curentListTag ? mLListDataHeight.get(position) : mSListDataHeight.get(position));
                 holder.getView(R.id.iv_imageview_one).setLayoutParams(layoutParams);
-                ((TextView) holder.getView(R.id.tv_name_pic)).setText(mListData.get(position).getUser_info().getNickname());
-                if(curentListTag){
+
+                String nikeName = mListData.get(position).getUser_info().getNickname();
+
+                if (!curentListTag && nikeName.length() > 6) {
+                    nikeName = nikeName.substring(0, 6) + "...";
+                }
+
+                ((TextView) holder.getView(R.id.tv_name_pic)).setText(nikeName);
+                if (curentListTag) {
                     ImageUtils.displayFilletImage(mListData.get(position).getObject_info().getImage().getImg0(),
                             (ImageView) holder.getView(R.id.iv_imageview_one));
-                }else {
+                } else {
                     ImageUtils.displayFilletImage(mListData.get(position).getObject_info().getImage().getImg1(),
                             (ImageView) holder.getView(R.id.iv_imageview_one));
                 }
                 ImageUtils.displayFilletImage(mListData.get(position).getUser_info().getAvatar().getBig(),
                         (ImageView) holder.getView(R.id.iv_header_pic));
+
+
+                List<SYDataColorBean> list_color = mListData.get(position).getColor_info();
+                if (null != list_color && list_color.size() == 1) {
+                    holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
+                    holder.getView(R.id.iv_color_center).setVisibility(View.GONE);
+                    holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
+                    if (curentListTag) {
+                        holder.getView(R.id.tv_color_tital).setVisibility(View.VISIBLE);
+                    }
+                } else if (null != mListData.get(position).getColor_info() && mListData.get(position).getColor_info().size() == 2) {
+
+                    holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
+                    holder.getView(R.id.iv_color_center).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(1).getColor_value()));
+                    holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
+                    if (curentListTag) {
+                        holder.getView(R.id.tv_color_tital).setVisibility(View.VISIBLE);
+                    }
+                } else if (null != mListData.get(position).getColor_info() && mListData.get(position).getColor_info().size() == 3) {
+                    holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_left).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_center).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(2).getColor_value()));
+                    holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color.get(1).getColor_value()));
+                    holder.getView(R.id.iv_color_left).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
+                    if (curentListTag) {
+                        holder.getView(R.id.tv_color_tital).setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    holder.getView(R.id.iv_color_right).setVisibility(View.GONE);
+                    holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
+                    holder.getView(R.id.iv_color_center).setVisibility(View.GONE);
+                    if (curentListTag) {
+                        holder.getView(R.id.tv_color_tital).setVisibility(View.GONE);
+                    }
+                }
 
             }
         };
@@ -339,7 +411,7 @@ public class HomePicFragment
 
                         DataBean dataBean = GsonUtil.jsonToBean(data_msg, DataBean.class);
                         if (null != dataBean.getObject_list() && 0 != dataBean.getObject_list().size()) {
-                            getHeight(dataBean.getObject_list(),state);
+                            getHeight(dataBean.getObject_list(), state);
                             updateViewFromData(dataBean.getObject_list(), state);
                         } else {
                             updateViewFromData(null, state);
@@ -397,7 +469,7 @@ public class HomePicFragment
     }
 
 
-    private void getHeight(List<SYDataBean> item_list,String state) {
+    private void getHeight(List<SYDataBean> item_list, String state) {
         if (state.equals(REFRESH_STATUS)) {
             mLListDataHeight.clear();
             mSListDataHeight.clear();
