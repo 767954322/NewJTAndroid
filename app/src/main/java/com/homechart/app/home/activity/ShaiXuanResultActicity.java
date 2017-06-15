@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -72,6 +73,7 @@ public class ShaiXuanResultActicity
     private final String LOADMORE_STATUS = "loadmore";
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private ImageView iv_change_frag;
+    private View view;
 
     @Override
     protected int getLayoutResId() {
@@ -89,12 +91,12 @@ public class ShaiXuanResultActicity
     @Override
     protected void initView() {
 
-
+        view = LayoutInflater.from(ShaiXuanResultActicity.this).inflate(R.layout.header_shaixuan, null);
         mRecyclerView = (HRecyclerView) findViewById(R.id.rcy_recyclerview_info);
         nav_left_imageButton = (ImageButton) findViewById(R.id.nav_left_imageButton);
         tv_tital_comment = (TextView) findViewById(R.id.tv_tital_comment);
-        wl_tips = (WrapLayout) findViewById(R.id.wl_tips);
-        iv_change_frag = (ImageView) findViewById(R.id.iv_change_frag);
+        wl_tips = (WrapLayout) view.findViewById(R.id.wl_tips);
+        iv_change_frag = (ImageView) view.findViewById(R.id.iv_change_frag);
 
     }
 
@@ -109,7 +111,7 @@ public class ShaiXuanResultActicity
 
                 // 跳转搜索结果页
                 Intent intent = new Intent(ShaiXuanResultActicity.this, ShaiXuanResultActicity.class);
-                intent.putExtra("shaixuan_tag",strTuiJian.get(position));
+                intent.putExtra("shaixuan_tag", strTuiJian.get(position));
                 startActivity(intent);
 
             }
@@ -136,12 +138,10 @@ public class ShaiXuanResultActicity
                 if (curentListTag) {
                     mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
                     curentListTag = false;
-                    onRefresh();
 //                    mRecyclerView.scrollToPosition(scroll_position);
                 } else {
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(ShaiXuanResultActicity.this));
                     curentListTag = true;
-                    onRefresh();
 //                    mRecyclerView.scrollToPosition(scroll_position);
                 }
                 break;
@@ -270,8 +270,8 @@ public class ShaiXuanResultActicity
                     ImageUtils.displayFilletImage(mListData.get(position).getItem_info().getImage().getImg0(),
                             (ImageView) holder.getView(R.id.iv_imageview_one));
                 } else {
-                        ImageUtils.displayFilletImage(mListData.get(position).getItem_info().getImage().getImg1(),
-                                (ImageView) holder.getView(R.id.iv_imageview_one));
+                    ImageUtils.displayFilletImage(mListData.get(position).getItem_info().getImage().getImg1(),
+                            (ImageView) holder.getView(R.id.iv_imageview_one));
 
                 }
                 ImageUtils.displayFilletImage(mListData.get(position).getUser_info().getAvatar().getBig(),
@@ -322,6 +322,7 @@ public class ShaiXuanResultActicity
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(ShaiXuanResultActicity.this));
         mRecyclerView.setItemAnimator(null);
+        mRecyclerView.addHeaderView(view);
 
         mRecyclerView.setOnRefreshListener(this);
         mRecyclerView.setOnLoadMoreListener(this);
