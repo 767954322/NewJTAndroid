@@ -109,7 +109,7 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     public void replaceFragment(Fragment fragment) {
         transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.main_content, fragment);
-        transaction.commit();
+        transaction.commitAllowingStateLoss();
     }
 
 }

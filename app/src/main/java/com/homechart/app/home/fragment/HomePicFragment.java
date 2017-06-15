@@ -23,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
+import com.homechart.app.home.activity.MessagesListActivity;
 import com.homechart.app.home.activity.SearchActivity;
 import com.homechart.app.home.activity.ShaiXuanResultActicity;
 import com.homechart.app.home.adapter.HomeTagAdapter;
@@ -112,6 +113,7 @@ public class HomePicFragment
     public TagDataBean tagDataBean;
     private View view;
     private Timer timer = new Timer(true);
+    private ImageView iv_center_msgicon;
 
     public HomePicFragment(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
@@ -131,6 +133,7 @@ public class HomePicFragment
         rl_unreader_msg_single = (RelativeLayout) rootView.findViewById(R.id.rl_unreader_msg_single);
         rl_unreader_msg_double = (RelativeLayout) rootView.findViewById(R.id.rl_unreader_msg_double);
 
+        iv_center_msgicon = (ImageView) rootView.findViewById(R.id.iv_center_msgicon);
         cet_clearedit = (ClearEditText) rootView.findViewById(R.id.cet_clearedit);
         mRecyclerView = (HRecyclerView) rootView.findViewById(R.id.rcy_recyclerview_pic);
 
@@ -157,6 +160,7 @@ public class HomePicFragment
         rl_jubu.setOnClickListener(this);
         rl_zhuangshi.setOnClickListener(this);
         rl_shouna.setOnClickListener(this);
+        iv_center_msgicon.setOnClickListener(this);
     }
 
     @Override
@@ -212,6 +216,8 @@ public class HomePicFragment
                 break;
             case R.id.iv_center_msgicon:
                 onDismiss();
+                Intent intent_messages = new Intent(activity, MessagesListActivity.class);
+                startActivity(intent_messages);
                 break;
         }
     }
