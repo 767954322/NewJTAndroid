@@ -6,12 +6,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -20,24 +17,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
-import com.google.gson.JsonArray;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.activity.SearchActivity;
-import com.homechart.app.home.activity.UserInfoActivity;
 import com.homechart.app.home.base.BaseFragment;
-import com.homechart.app.home.bean.search.SearchDataColorBean;
-import com.homechart.app.home.bean.shaijia.ShaiJiaItemBean;
-import com.homechart.app.home.bean.shoucang.ShouCangItemBean;
 import com.homechart.app.home.bean.shouye.DataBean;
 import com.homechart.app.home.bean.shouye.SYDataBean;
 import com.homechart.app.home.bean.shouye.SYDataColorBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.ClearEditText;
+import com.homechart.app.myview.GridSpacingItemDecoration;
 import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
-import com.homechart.app.recyclerlibrary.anims.adapters.ScaleInAnimationAdapter;
-import com.homechart.app.recyclerlibrary.anims.animators.LandingAnimator;
 import com.homechart.app.recyclerlibrary.holder.BaseViewHolder;
 import com.homechart.app.recyclerlibrary.recyclerview.HRecyclerView;
 import com.homechart.app.recyclerlibrary.recyclerview.OnLoadMoreListener;
@@ -50,7 +41,6 @@ import com.homechart.app.utils.imageloader.ImageUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -91,6 +81,7 @@ public class HomePicFragment
     private TextView tv_unreader_mag_single;
     private int width_Pic_Staggered;
     private int width_Pic_List;
+    private GridSpacingItemDecoration gridSpacingItemDecoration;
 
     public HomePicFragment(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
@@ -125,7 +116,7 @@ public class HomePicFragment
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
+        gridSpacingItemDecoration = new GridSpacingItemDecoration(2, 50, false);
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
         width_Pic_Staggered = PublicUtils.getScreenWidth(activity) / 2 - UIUtils.getDimens(R.dimen.font_20);
@@ -281,7 +272,6 @@ public class HomePicFragment
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
         mRecyclerView.setItemAnimator(null);
-
 //        ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(mAdapter);
 //        scaleAdapter.setFirstOnly(false);
 //        scaleAdapter.setDuration(500);
