@@ -50,6 +50,8 @@ public class HomeTabPopWin extends PopupWindow {
         ColorDrawable dw = new ColorDrawable(0xb0000000);
         // 设置弹出窗体的背景
         this.setBackgroundDrawable(dw);
+//        vp_home_tag.setPageTransformer(true, new ZoomOutPageTransformer());
+        vp_home_tag.setPageTransformer(true, new DepthPageTransformer());
         pageAdapter = new HomeTagAdapter(mContext, mTagList, popupWindowCallBack);
         vp_home_tag.setAdapter(pageAdapter);
     }
