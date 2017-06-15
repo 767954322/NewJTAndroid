@@ -1,5 +1,6 @@
 package com.homechart.app.home.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -13,9 +14,13 @@ import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
+import com.homechart.app.home.bean.search.SearchDataBean;
+import com.homechart.app.home.bean.search.SearchDataColorBean;
+import com.homechart.app.home.bean.search.SearchItemDataBean;
 import com.homechart.app.home.bean.shouye.DataBean;
 import com.homechart.app.home.bean.shouye.SYDataBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
+import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
 import com.homechart.app.recyclerlibrary.holder.BaseViewHolder;
 import com.homechart.app.recyclerlibrary.recyclerview.HRecyclerView;
@@ -48,11 +53,11 @@ public class SearchResultActivity
     private String search_info;
     private HRecyclerView mRecyclerView;
     private int width_Pic_Staggered;
-    private List<SYDataBean> mListData = new ArrayList<>();
+    private List<SearchItemDataBean> mListData = new ArrayList<>();
     private int page_num = 1;
     private int TYPE_ONE = 1;
     private int TYPE_TWO = 2;
-    private MultiItemCommonAdapter<SYDataBean> mAdapter;
+    private MultiItemCommonAdapter<SearchItemDataBean> mAdapter;
     private LoadMoreFooterView mLoadMoreFooterView;
     private final String REFRESH_STATUS = "refresh";
     private final String LOADMORE_STATUS = "loadmore";
@@ -79,7 +84,6 @@ public class SearchResultActivity
     @Override
     protected void initData(Bundle savedInstanceState) {
 
-        CustomProgress.show(SearchResultActivity.this, "授权中...", false, null);
         width_Pic_Staggered = PublicUtils.getScreenWidth(SearchResultActivity.this) / 2 - UIUtils.getDimens(R.dimen.font_20);
         buildRecyclerView();
     }
@@ -87,7 +91,7 @@ public class SearchResultActivity
 
     private void buildRecyclerView() {
 
-        MultiItemTypeSupport<SYDataBean> support = new MultiItemTypeSupport<SYDataBean>() {
+        MultiItemTypeSupport<SearchItemDataBean> support = new MultiItemTypeSupport<SearchItemDataBean>() {
             @Override
             public int getLayoutId(int itemType) {
                 if (itemType == TYPE_ONE) {
@@ -98,25 +102,63 @@ public class SearchResultActivity
             }
 
             @Override
-            public int getItemViewType(int position, SYDataBean s) {
+            public int getItemViewType(int position, SearchItemDataBean s) {
                 return TYPE_ONE;
             }
         };
 
-        mAdapter = new MultiItemCommonAdapter<SYDataBean>(SearchResultActivity.this, mListData, support) {
+        mAdapter = new MultiItemCommonAdapter<SearchItemDataBean>(SearchResultActivity.this, mListData, support) {
             @Override
             public void convert(BaseViewHolder holder, int position) {
+
+
+                ViewGroup.LayoutParams layoutParams = holder.getView(R.id.iv_imageview_search_one).getLayoutParams();
+                layoutParams.width = width_Pic_Staggered;
+                layoutParams.height = mListDataHeight.get(position);
+                holder.getView(R.id.iv_imageview_search_one).setLayoutParams(layoutParams);
+                String nikeName = mListData.get(position).getUser_info().getNickname();
+                if (nikeName.length() > 6) {
+                    nikeName = nikeName.substring(0,6)+"...";
+                }
+                ((TextView) holder.getView(R.id.tv_nikename_search)).setText(nikeName);
+                ImageUtils.displayFilletImage(mListData.get(position).getItem_info().getImage().getImg1(),
+                        (ImageView) holder.getView(R.id.iv_imageview_search_one));
+                ImageUtils.displayFilletImage(mListData.get(position).getUser_info().getAvatar().getBig(),
+                        (RoundImageView) holder.getView(R.id.iv_header_search));
+                List<SearchDataColorBean> list_color = mListData.get(position).getColor_info();
+                if (null != list_color && list_color.size() == 1) {
+                    holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
+                    holder.getView(R.id.iv_color_center).setVisibility(View.GONE);
+                    holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
+
+                } else if (null != mListData.get(position).getColor_info() && mListData.get(position).getColor_info().size() == 2) {
+
+                    holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
+                    holder.getView(R.id.iv_color_center).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(1).getColor_value()));
+                    holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
+
+                } else if (null != mListData.get(position).getColor_info() && mListData.get(position).getColor_info().size() == 3) {
+                    holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_left).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_center).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(2).getColor_value()));
+                    holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color.get(1).getColor_value()));
+                    holder.getView(R.id.iv_color_left).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
+
+                } else {
+                    holder.getView(R.id.iv_color_right).setVisibility(View.GONE);
+                    holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
+                    holder.getView(R.id.iv_color_center).setVisibility(View.GONE);
+                }
 
             }
         };
 
         mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         mRecyclerView.setItemAnimator(null);
-
-//        ScaleInAnimationAdapter scaleAdapter = new ScaleInAnimationAdapter(mAdapter);
-//        scaleAdapter.setFirstOnly(false);
-//        scaleAdapter.setDuration(500);
-
 
         mRecyclerView.setOnRefreshListener(this);
         mRecyclerView.setOnLoadMoreListener(this);
@@ -169,8 +211,13 @@ public class SearchResultActivity
                     String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
                     String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
                     if (error_code == 0) {
-
-
+                        SearchDataBean searchDataBean = GsonUtil.jsonToBean(data_msg, SearchDataBean.class);
+                        if (null != searchDataBean.getItem_list() && 0 != searchDataBean.getItem_list().size()) {
+                            getHeight(searchDataBean.getItem_list(), state);
+                            updateViewFromData(searchDataBean.getItem_list(), state);
+                        } else {
+                            updateViewFromData(null, state);
+                        }
                     } else {
                         if (state.equals(LOADMORE_STATUS)) {
                             --page_num;
@@ -190,4 +237,51 @@ public class SearchResultActivity
         MyHttpManager.getInstance().getSearchList(search_info, search_tag, (page_num - 1) * 20 + "", "20", callBack);
 
     }
+
+
+    private void updateViewFromData(List<SearchItemDataBean> listData, String state) {
+
+        switch (state) {
+
+            case REFRESH_STATUS:
+                mListData.clear();
+                if (null != listData) {
+                    mListData.addAll(listData);
+                } else {
+                    page_num = 1;
+                    mListData.clear();
+                }
+                mAdapter.notifyDataSetChanged();
+                mRecyclerView.setRefreshing(false);//刷新完毕
+                break;
+
+            case LOADMORE_STATUS:
+                if (null != listData) {
+                    position = mListData.size();
+                    mListData.addAll(listData);
+                    mAdapter.notifyItem(position, mListData, listData);
+                    mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
+                } else {
+                    --page_num;
+                    //没有更多数据
+                    mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.THE_END);
+                }
+                break;
+        }
+    }
+
+    private void getHeight(List<SearchItemDataBean> item_list, String state) {
+        if (state.equals(REFRESH_STATUS)) {
+            mListDataHeight.clear();
+        }
+
+        if (item_list.size() > 0) {
+            for (int i = 0; i < item_list.size(); i++) {
+                mListDataHeight.add(Math.round(width_Pic_Staggered / item_list.get(i).getItem_info().getImage().getRatio()));
+            }
+        }
+    }
+
+    private int position;
+    private List<Integer> mListDataHeight = new ArrayList<>();
 }

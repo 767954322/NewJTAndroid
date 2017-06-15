@@ -201,8 +201,6 @@ public class HomePicFragment
                     ImageUtils.displayFilletImage(mListData.get(position).getObject_info().getImage().getImg1(),
                             (ImageView) holder.getView(R.id.iv_imageview_one));
                 }
-                ImageUtils.displayFilletImage(mListData.get(position).getObject_info().getImage().getImg0(),
-                        (ImageView) holder.getView(R.id.iv_imageview_one));
                 ImageUtils.displayFilletImage(mListData.get(position).getUser_info().getAvatar().getBig(),
                         (ImageView) holder.getView(R.id.iv_header_pic));
 
