@@ -39,10 +39,6 @@ public class SearchActivity
     private TextView tv_quxiao;
     private WrapLayout wl_tips;
     private String[] myData;
-    //    private String[] myData = new String[]
-//            {"大家都在搜", "saasas2", "3", "4", "5", "6", "7",
-//                    "8", "9", "10", "11", "12", "13", "14",
-//                    "15", "16", "17", "18", "19", "20", "21", "大家都在搜", "23"};
     private ClearEditText cet_clearedit;
 
     @Override
@@ -77,7 +73,7 @@ public class SearchActivity
                 Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
                 intent.putExtra("search_tag", myData[position]);
                 intent.putExtra("search_info", "");
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
         cet_clearedit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -153,7 +149,7 @@ public class SearchActivity
             Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
             intent.putExtra("search_info", searchContext);
             intent.putExtra("search_tag", "");
-            startActivity(intent);
+            startActivityForResult(intent, 1);
         }
 
     }
@@ -174,4 +170,16 @@ public class SearchActivity
             wl_tips.setData(myData, SearchActivity.this, 14, 15, 10, 15, 10, 0, 0, UIUtils.getDimens(R.dimen.font_12), UIUtils.getDimens(R.dimen.font_15));
         }
     };
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && requestCode == 1) {
+
+            SearchActivity.this.finish();
+        }
+
+    }
 }

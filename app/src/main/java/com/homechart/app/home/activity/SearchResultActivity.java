@@ -1,11 +1,16 @@
 package com.homechart.app.home.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,6 +25,7 @@ import com.homechart.app.home.bean.search.SearchItemDataBean;
 import com.homechart.app.home.bean.shouye.DataBean;
 import com.homechart.app.home.bean.shouye.SYDataBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
+import com.homechart.app.myview.ClearEditText;
 import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
 import com.homechart.app.recyclerlibrary.holder.BaseViewHolder;
@@ -62,6 +68,8 @@ public class SearchResultActivity
     private final String REFRESH_STATUS = "refresh";
     private final String LOADMORE_STATUS = "loadmore";
     private String search_tag;
+    private ClearEditText cet_clearedit;
+    private TextView tv_quxiao;
 
     @Override
     protected int getLayoutResId() {
@@ -79,6 +87,8 @@ public class SearchResultActivity
     protected void initView() {
 
         mRecyclerView = (HRecyclerView) findViewById(R.id.rcy_recyclerview_info);
+        cet_clearedit = (ClearEditText) findViewById(R.id.cet_clearedit);
+        tv_quxiao = (TextView) findViewById(R.id.tv_quxiao);
     }
 
     @Override
@@ -88,6 +98,37 @@ public class SearchResultActivity
         buildRecyclerView();
     }
 
+    @Override
+    protected void initListener() {
+        super.initListener();
+        tv_quxiao.setOnClickListener(this);
+        cet_clearedit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    // 先隐藏键盘
+                    ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(SearchResultActivity.this.getCurrentFocus()
+                                    .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    //进行搜索操作的方法，在该方法中可以加入mEditSearchUser的非空判断
+                    String searchContext = cet_clearedit.getText().toString().trim();
+                    if (TextUtils.isEmpty(searchContext.trim())) {
+                        ToastUtils.showCenter(SearchResultActivity.this, "请输入搜索内容");
+                    } else {
+                        search_info = searchContext;
+                        search_tag = "";
+                        getListData(REFRESH_STATUS);
+                    }
+
+                    return true;
+                }
+
+                return false;
+            }
+        });
+    }
 
     private void buildRecyclerView() {
 
@@ -118,7 +159,7 @@ public class SearchResultActivity
                 holder.getView(R.id.iv_imageview_search_one).setLayoutParams(layoutParams);
                 String nikeName = mListData.get(position).getUser_info().getNickname();
                 if (nikeName.length() > 6) {
-                    nikeName = nikeName.substring(0,6)+"...";
+                    nikeName = nikeName.substring(0, 6) + "...";
                 }
                 ((TextView) holder.getView(R.id.tv_nikename_search)).setText(nikeName);
                 ImageUtils.displayFilletImage(mListData.get(position).getItem_info().getImage().getImg1(),
@@ -169,6 +210,14 @@ public class SearchResultActivity
 
     @Override
     public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.tv_quxiao:
+                Intent intent = new Intent(SearchResultActivity.this, SearchActivity.class);
+                setResult(1, intent);
+                SearchResultActivity.this.finish();
+                break;
+        }
 
     }
 
