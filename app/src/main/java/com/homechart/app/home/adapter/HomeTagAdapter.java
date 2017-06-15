@@ -28,11 +28,13 @@ public class HomeTagAdapter extends PagerAdapter {
     private View itemView;
     private Context mContext;
     private List<TagItemDataBean> mTagList;
+    private PopupWindowCallBack mPopupWindowCallBack;
     private MyTagGridAdapter mAdapter;
 
-    public HomeTagAdapter(Context mContext, List<TagItemDataBean> mTagList) {
+    public HomeTagAdapter(Context mContext, List<TagItemDataBean> mTagList,PopupWindowCallBack popupWindowCallBack) {
         this.mContext = mContext;
         this.mTagList = mTagList;
+        this.mPopupWindowCallBack = popupWindowCallBack;
     }
 
     @Override
@@ -55,6 +57,13 @@ public class HomeTagAdapter extends PagerAdapter {
         container.removeView(itemView);
         container.addView(itemView);
         GridView gv_pager_gridview = (GridView) itemView.findViewById(R.id.gv_pager_gridview);
+        View view_tab_bottom = itemView.findViewById(R.id.view_tab_bottom);
+        view_tab_bottom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPopupWindowCallBack.onDismiss();
+            }
+        });
         mAdapter = new MyTagGridAdapter(mTagList.get(position).getChildren());
         gv_pager_gridview.setAdapter(mAdapter);
         return itemView;
@@ -104,6 +113,10 @@ public class HomeTagAdapter extends PagerAdapter {
             private Button bt_tag_page_item;
 
         }
+    }
+
+    public interface PopupWindowCallBack {
+        void onDismiss();
     }
 
 }

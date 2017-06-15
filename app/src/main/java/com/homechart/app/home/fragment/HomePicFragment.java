@@ -23,6 +23,7 @@ import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.activity.SearchActivity;
+import com.homechart.app.home.adapter.HomeTagAdapter;
 import com.homechart.app.home.base.BaseFragment;
 import com.homechart.app.home.bean.pictag.TagDataBean;
 import com.homechart.app.home.bean.shouye.DataBean;
@@ -58,7 +59,8 @@ public class HomePicFragment
         implements View.OnClickListener,
         OnLoadMoreListener,
         OnRefreshListener,
-        ViewPager.OnPageChangeListener {
+        ViewPager.OnPageChangeListener,
+        HomeTagAdapter.PopupWindowCallBack {
 
     private FragmentManager fragmentManager;
     private Button bt_change_frag;
@@ -553,7 +555,7 @@ public class HomePicFragment
     private void showPopwindow() {
         if (tagDataBean != null) {
             if (null == homeTabPopWin) {
-                homeTabPopWin = new HomeTabPopWin(activity, this,tagDataBean);
+                homeTabPopWin = new HomeTabPopWin(activity, this,tagDataBean,this);
             }
             if (homeTabPopWin.isShowing()) {
                 homeTabPopWin.dismiss();
@@ -579,6 +581,11 @@ public class HomePicFragment
     public void onPageScrollStateChanged(int state) {
 
     }
-
-
+    //关闭tab弹出框
+    @Override
+    public void onDismiss() {
+        if(homeTabPopWin != null){
+            homeTabPopWin.dismiss();
+        }
+    }
 }

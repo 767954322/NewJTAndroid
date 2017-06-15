@@ -24,7 +24,7 @@ public class HomeTabPopWin extends PopupWindow {
     private Context mContext;
     private List<TagItemDataBean> mTagList;
 
-    public HomeTabPopWin(Context context, ViewPager.OnPageChangeListener onPageChangeListener, TagDataBean tagDataBean) {
+    public HomeTabPopWin(Context context, ViewPager.OnPageChangeListener onPageChangeListener, TagDataBean tagDataBean, HomeTagAdapter.PopupWindowCallBack popupWindowCallBack) {
 
         this.mContext = context;
         mTagList = tagDataBean.getTag_id();
@@ -50,7 +50,7 @@ public class HomeTabPopWin extends PopupWindow {
         ColorDrawable dw = new ColorDrawable(0xb0000000);
         // 设置弹出窗体的背景
         this.setBackgroundDrawable(dw);
-        pageAdapter = new HomeTagAdapter(mContext, mTagList);
+        pageAdapter = new HomeTagAdapter(mContext, mTagList,popupWindowCallBack);
         vp_home_tag.setAdapter(pageAdapter);
     }
 
