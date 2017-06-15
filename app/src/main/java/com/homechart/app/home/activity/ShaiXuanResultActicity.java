@@ -21,6 +21,8 @@ import com.homechart.app.utils.volley.OkStringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 /**
  * Created by gumenghao on 17/6/15.
  */
@@ -34,7 +36,7 @@ public class ShaiXuanResultActicity
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.activity_shaijia_list;
+        return R.layout.activity_shuaixuan;
     }
 
     @Override
@@ -116,8 +118,8 @@ public class ShaiXuanResultActicity
             if (msg.what == 1) {
                 String info = (String) msg.obj;
 
-                shaiXuanBean = GsonUtil.jsonToBean(info, ShaiXuanBean.class);
-
+                ShaiXuanBean shaiXuanBean = GsonUtil.jsonToBean(info, ShaiXuanBean.class);
+                strTuiJian = shaiXuanBean.getTag_list();
                 changeUI();
 
             }
@@ -126,9 +128,13 @@ public class ShaiXuanResultActicity
 
     private void changeUI() {
 
+        if (null != strTuiJian && strTuiJian.size() > 0) {
+
+        }
+
 
     }
 
-    private ShaiXuanBean shaiXuanBean;
+    private List<String> strTuiJian;
 
 }
