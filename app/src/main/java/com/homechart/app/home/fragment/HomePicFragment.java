@@ -169,9 +169,7 @@ public class HomePicFragment
         switch (v.getId()) {
             case R.id.cet_clearedit:
 
-                if (homeTabPopWin != null && homeTabPopWin.isShowing()) {
-                    homeTabPopWin.dismiss();
-                }
+                onDismiss();
                 Intent intent = new Intent(activity, SearchActivity.class);
                 startActivity(intent);
 
@@ -204,9 +202,7 @@ public class HomePicFragment
                 showPopwindow(R.id.rl_shouna, 3);
                 break;
             case R.id.iv_center_msgicon:
-                if (homeTabPopWin != null && homeTabPopWin.isShowing()) {
-                    homeTabPopWin.dismiss();
-                }
+                onDismiss();
                 break;
         }
     }
