@@ -19,7 +19,6 @@ import java.util.List;
 public class HomeTabPopWin extends PopupWindow {
 
     private final MyViewPager vp_home_tag;
-    private final View view_null;
     private final HomeTagAdapter pageAdapter;
     private View view;
     private Context mContext;
@@ -33,12 +32,10 @@ public class HomeTabPopWin extends PopupWindow {
 
         //找对象
         vp_home_tag = (MyViewPager) this.view.findViewById(R.id.vp_home_tag);
-        view_null = this.view.findViewById(R.id.view_null);
         vp_home_tag.setOffscreenPageLimit(4);
         // 设置按钮监听
         vp_home_tag.addOnPageChangeListener(onPageChangeListener);
-        pageAdapter = new HomeTagAdapter(mContext, mTagList);
-        vp_home_tag.setAdapter(pageAdapter);
+
         // 设置外部可点击
         this.setOutsideTouchable(true);
         // 设置视图
@@ -53,13 +50,8 @@ public class HomeTabPopWin extends PopupWindow {
         ColorDrawable dw = new ColorDrawable(0xb0000000);
         // 设置弹出窗体的背景
         this.setBackgroundDrawable(dw);
-
-        view_null.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                HomeTabPopWin.this.dismiss();
-            }
-        });
+        pageAdapter = new HomeTagAdapter(mContext, mTagList);
+        vp_home_tag.setAdapter(pageAdapter);
     }
 
 
