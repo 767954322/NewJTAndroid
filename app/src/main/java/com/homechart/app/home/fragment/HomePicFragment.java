@@ -23,6 +23,7 @@ import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.activity.SearchActivity;
+import com.homechart.app.home.activity.ShaiXuanResultActicity;
 import com.homechart.app.home.adapter.HomeTagAdapter;
 import com.homechart.app.home.base.BaseFragment;
 import com.homechart.app.home.bean.pictag.TagDataBean;
@@ -555,7 +556,7 @@ public class HomePicFragment
     private void showPopwindow() {
         if (tagDataBean != null) {
             if (null == homeTabPopWin) {
-                homeTabPopWin = new HomeTabPopWin(activity, this,tagDataBean,this);
+                homeTabPopWin = new HomeTabPopWin(activity, this, tagDataBean, this);
             }
             if (homeTabPopWin.isShowing()) {
                 homeTabPopWin.dismiss();
@@ -581,11 +582,21 @@ public class HomePicFragment
     public void onPageScrollStateChanged(int state) {
 
     }
+
     //关闭tab弹出框
     @Override
     public void onDismiss() {
-        if(homeTabPopWin != null){
+        if (homeTabPopWin != null) {
             homeTabPopWin.dismiss();
         }
+    }
+
+    @Override
+    public void onItemClick(String tagStr) {
+        onDismiss();
+        //跳转到筛选结果页
+        Intent intent = new Intent(activity, ShaiXuanResultActicity.class);
+        intent.putExtra("shaixuan_tag",tagStr);
+        startActivity(intent);
     }
 }

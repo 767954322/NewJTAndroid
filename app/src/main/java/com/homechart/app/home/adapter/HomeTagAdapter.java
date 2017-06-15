@@ -5,6 +5,7 @@ import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
@@ -31,7 +32,7 @@ public class HomeTagAdapter extends PagerAdapter {
     private PopupWindowCallBack mPopupWindowCallBack;
     private MyTagGridAdapter mAdapter;
 
-    public HomeTagAdapter(Context mContext, List<TagItemDataBean> mTagList,PopupWindowCallBack popupWindowCallBack) {
+    public HomeTagAdapter(Context mContext, List<TagItemDataBean> mTagList, PopupWindowCallBack popupWindowCallBack) {
         this.mContext = mContext;
         this.mTagList = mTagList;
         this.mPopupWindowCallBack = popupWindowCallBack;
@@ -93,7 +94,7 @@ public class HomeTagAdapter extends PagerAdapter {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(final int position, View convertView, ViewGroup parent) {
 
             MyHolder myHolder;
             if (convertView == null) {
@@ -105,6 +106,12 @@ public class HomeTagAdapter extends PagerAdapter {
                 myHolder = (MyHolder) convertView.getTag();
             }
             myHolder.bt_tag_page_item.setText(mList_child.get(position).getTag_name());
+            myHolder.bt_tag_page_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mPopupWindowCallBack.onItemClick(mList_child.get(position).getTag_name());
+                }
+            });
             return convertView;
         }
 
@@ -117,6 +124,8 @@ public class HomeTagAdapter extends PagerAdapter {
 
     public interface PopupWindowCallBack {
         void onDismiss();
+
+        void onItemClick(String tagStr);
     }
 
 }
