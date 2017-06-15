@@ -54,6 +54,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @SuppressLint("ValidFragment")
 public class HomePicFragment
@@ -104,6 +106,7 @@ public class HomePicFragment
     private RelativeLayout rl_shouna;
     public TagDataBean tagDataBean;
     private View view;
+    private Timer timer = new Timer(true);
 
     public HomePicFragment(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
@@ -161,6 +164,7 @@ public class HomePicFragment
         buildRecyclerView();
         getTagData();
         getUnReaderMsg();
+        timer.schedule(task, 5 * 60 * 1000, 5 * 60 * 1000);
     }
 
     @Override
@@ -709,7 +713,12 @@ public class HomePicFragment
         intent.putExtra("shaixuan_tag", tagStr);
         startActivity(intent);
     }
-
+    //任务
+    private TimerTask task = new TimerTask() {
+        public void run() {
+            getUnReaderMsg();
+        }
+    };
     int last_id = 0;
 
 }

@@ -37,6 +37,9 @@ import com.homechart.app.utils.volley.OkStringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 @SuppressLint("ValidFragment")
 public class HomeCenterFragment extends BaseFragment implements View.OnClickListener {
 
@@ -61,6 +64,7 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
     private TextView tv_shaijia_num;
     private ImageView iv_center_msgicon;
     private ImageView iv_zhuanye_icon;
+    private Timer timer = new Timer(true);
 
     Handler handler = new Handler() {
         @Override
@@ -141,7 +145,7 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
 
         getUserInfo();
         getUnReaderMsg();
-
+        timer.schedule(task, 5 * 60 * 1000, 5 * 60 * 1000);
     }
 
     @Override
@@ -337,4 +341,11 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
         }
 
     }
+
+    //任务
+    private TimerTask task = new TimerTask() {
+        public void run() {
+            getUnReaderMsg();
+        }
+    };
 }
