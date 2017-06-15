@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -64,7 +65,7 @@ public class HomePicFragment
         HomeTagAdapter.PopupWindowCallBack {
 
     private FragmentManager fragmentManager;
-    private Button bt_change_frag;
+    private ImageView iv_change_frag;
 
     private HRecyclerView mRecyclerView;
 
@@ -102,6 +103,7 @@ public class HomePicFragment
     private RelativeLayout rl_zhuangshi;
     private RelativeLayout rl_shouna;
     public TagDataBean tagDataBean;
+    private View view;
 
     public HomePicFragment(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
@@ -115,24 +117,25 @@ public class HomePicFragment
     @Override
     protected void initView() {
 
+        view = LayoutInflater.from(activity).inflate(R.layout.header_homepic, null);
         tv_unreader_mag_double = (TextView) rootView.findViewById(R.id.tv_unreader_mag_double);
         tv_unreader_mag_single = (TextView) rootView.findViewById(R.id.tv_unreader_mag_single);
         rl_unreader_msg_single = (RelativeLayout) rootView.findViewById(R.id.rl_unreader_msg_single);
         rl_unreader_msg_double = (RelativeLayout) rootView.findViewById(R.id.rl_unreader_msg_double);
-        ll_pic_choose = (LinearLayout) rootView.findViewById(R.id.ll_pic_choose);
+
         cet_clearedit = (ClearEditText) rootView.findViewById(R.id.cet_clearedit);
-        bt_change_frag = (Button) rootView.findViewById(R.id.bt_change_frag);
         mRecyclerView = (HRecyclerView) rootView.findViewById(R.id.rcy_recyclerview_pic);
 
-
-        iv_kongjian = (RoundImageView) rootView.findViewById(R.id.iv_kongjian);
-        iv_jubu = (RoundImageView) rootView.findViewById(R.id.iv_jubu);
-        iv_zhuangshi = (RoundImageView) rootView.findViewById(R.id.iv_zhuangshi);
-        iv_shouna = (RoundImageView) rootView.findViewById(R.id.iv_shouna);
-        rl_kongjian = (RelativeLayout) rootView.findViewById(R.id.rl_kongjian);
-        rl_jubu = (RelativeLayout) rootView.findViewById(R.id.rl_jubu);
-        rl_zhuangshi = (RelativeLayout) rootView.findViewById(R.id.rl_zhuangshi);
-        rl_shouna = (RelativeLayout) rootView.findViewById(R.id.rl_shouna);
+        ll_pic_choose = (LinearLayout) view.findViewById(R.id.ll_pic_choose);
+        iv_change_frag = (ImageView) view.findViewById(R.id.iv_change_frag);
+        iv_kongjian = (RoundImageView) view.findViewById(R.id.iv_kongjian);
+        iv_jubu = (RoundImageView) view.findViewById(R.id.iv_jubu);
+        iv_zhuangshi = (RoundImageView) view.findViewById(R.id.iv_zhuangshi);
+        iv_shouna = (RoundImageView) view.findViewById(R.id.iv_shouna);
+        rl_kongjian = (RelativeLayout) view.findViewById(R.id.rl_kongjian);
+        rl_jubu = (RelativeLayout) view.findViewById(R.id.rl_jubu);
+        rl_zhuangshi = (RelativeLayout) view.findViewById(R.id.rl_zhuangshi);
+        rl_shouna = (RelativeLayout) view.findViewById(R.id.rl_shouna);
 
     }
 
@@ -141,7 +144,7 @@ public class HomePicFragment
         super.initListener();
         cet_clearedit.setKeyListener(null);
         cet_clearedit.setOnClickListener(this);
-        bt_change_frag.setOnClickListener(this);
+        iv_change_frag.setOnClickListener(this);
         rl_kongjian.setOnClickListener(this);
         rl_jubu.setOnClickListener(this);
         rl_zhuangshi.setOnClickListener(this);
@@ -170,16 +173,16 @@ public class HomePicFragment
                 startActivity(intent);
 
                 break;
-            case R.id.bt_change_frag:
+            case R.id.iv_change_frag:
 
                 if (curentListTag) {
                     mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
                     curentListTag = false;
-                    mRecyclerView.scrollToPosition(scroll_position);
+//                    mRecyclerView.scrollToPosition(scroll_position);
                 } else {
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
                     curentListTag = true;
-                    mRecyclerView.scrollToPosition(scroll_position);
+//                    mRecyclerView.scrollToPosition(scroll_position);
                 }
                 break;
 
@@ -316,11 +319,14 @@ public class HomePicFragment
 
             }
         };
-
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
         mRecyclerView.setItemAnimator(null);
         mRecyclerView.setOnRefreshListener(this);
         mRecyclerView.setOnLoadMoreListener(this);
+
+
+        mRecyclerView.addHeaderView(view);
+
         mLoadMoreFooterView = (LoadMoreFooterView) mRecyclerView.getLoadMoreFooterView();
         mRecyclerView.setAdapter(mAdapter);
         onRefresh();
@@ -596,7 +602,7 @@ public class HomePicFragment
         onDismiss();
         //跳转到筛选结果页
         Intent intent = new Intent(activity, ShaiXuanResultActicity.class);
-        intent.putExtra("shaixuan_tag",tagStr);
+        intent.putExtra("shaixuan_tag", tagStr);
         startActivity(intent);
     }
 }
