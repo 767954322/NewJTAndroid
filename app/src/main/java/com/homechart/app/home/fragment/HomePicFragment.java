@@ -29,8 +29,12 @@ import com.homechart.app.home.adapter.HomeTagAdapter;
 import com.homechart.app.home.base.BaseFragment;
 import com.homechart.app.home.bean.pictag.TagDataBean;
 import com.homechart.app.home.bean.shouye.DataBean;
+import com.homechart.app.home.bean.shouye.SYActivityBean;
+import com.homechart.app.home.bean.shouye.SYActivityInfoBean;
 import com.homechart.app.home.bean.shouye.SYDataBean;
 import com.homechart.app.home.bean.shouye.SYDataColorBean;
+import com.homechart.app.home.bean.shouye.SYDataObjectBean;
+import com.homechart.app.home.bean.shouye.SYDataObjectImgBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.ClearEditText;
 import com.homechart.app.myview.GridSpacingItemDecoration;
@@ -80,6 +84,7 @@ public class HomePicFragment
     private int TYPE_ONE = 1;
     private int TYPE_TWO = 2;
     private int TYPE_THREE = 3;
+    private int TYPE_FOUR = 4;
     private int scroll_position = 0;
     private int position;
     private boolean curentListTag = true;
@@ -237,8 +242,14 @@ public class HomePicFragment
 
                 if (itemType == TYPE_ONE) {
                     return R.layout.item_test_one;
-                } else {
+                } else if (itemType == TYPE_TWO) {
                     return R.layout.item_test_pic_pubu;
+                } else if (itemType == TYPE_THREE) {
+                    //活动(线性)
+                    return R.layout.item_test_huodong_list;
+                } else {
+                    //活动(瀑布)
+                    return R.layout.item_test_huodong_pubu;
                 }
 
             }
@@ -252,10 +263,19 @@ public class HomePicFragment
 //                } else {
 //                    return TYPE_THREE;
 //                }
-                if (curentListTag) {
-                    return TYPE_ONE;
+                if (s.getObject_info().getType().equals("活动")) {
+
+                    if (curentListTag) {
+                        return TYPE_THREE;
+                    } else {
+                        return TYPE_FOUR;
+                    }
                 } else {
-                    return TYPE_TWO;
+                    if (curentListTag) {
+                        return TYPE_ONE;
+                    } else {
+                        return TYPE_TWO;
+                    }
                 }
 
             }
@@ -269,8 +289,13 @@ public class HomePicFragment
                 layoutParams.width = width_Pic_List;
                 layoutParams.height = (curentListTag ? mLListDataHeight.get(position) : mSListDataHeight.get(position));
                 holder.getView(R.id.iv_imageview_one).setLayoutParams(layoutParams);
+                String nikeName = "";
+                if (mListData.get(position).getObject_info().getType().equals("活动")) {
+                    nikeName = mListData.get(position).getObject_info().getTag();
+                } else {
+                    nikeName = mListData.get(position).getUser_info().getNickname();
+                }
 
-                String nikeName = mListData.get(position).getUser_info().getNickname();
 
                 if (!curentListTag && nikeName.length() > 6) {
                     nikeName = nikeName.substring(0, 6) + "...";
@@ -284,45 +309,48 @@ public class HomePicFragment
                     ImageUtils.displayFilletImage(mListData.get(position).getObject_info().getImage().getImg1(),
                             (ImageView) holder.getView(R.id.iv_imageview_one));
                 }
-                ImageUtils.displayFilletImage(mListData.get(position).getUser_info().getAvatar().getBig(),
-                        (ImageView) holder.getView(R.id.iv_header_pic));
+                if (!mListData.get(position).getObject_info().getType().equals("活动")) {
+                    ImageUtils.displayFilletImage(mListData.get(position).getUser_info().getAvatar().getBig(),
+                            (ImageView) holder.getView(R.id.iv_header_pic));
+                }
 
+                if (!mListData.get(position).getObject_info().getType().equals("活动")) {
+                    List<SYDataColorBean> list_color = mListData.get(position).getColor_info();
+                    if (null != list_color && list_color.size() == 1) {
+                        holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
+                        holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
+                        holder.getView(R.id.iv_color_center).setVisibility(View.GONE);
+                        holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
+                        if (curentListTag) {
+                            holder.getView(R.id.tv_color_tital).setVisibility(View.VISIBLE);
+                        }
+                    } else if (null != mListData.get(position).getColor_info() && mListData.get(position).getColor_info().size() == 2) {
 
-                List<SYDataColorBean> list_color = mListData.get(position).getColor_info();
-                if (null != list_color && list_color.size() == 1) {
-                    holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
-                    holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
-                    holder.getView(R.id.iv_color_center).setVisibility(View.GONE);
-                    holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
-                    if (curentListTag) {
-                        holder.getView(R.id.tv_color_tital).setVisibility(View.VISIBLE);
-                    }
-                } else if (null != mListData.get(position).getColor_info() && mListData.get(position).getColor_info().size() == 2) {
-
-                    holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
-                    holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
-                    holder.getView(R.id.iv_color_center).setVisibility(View.VISIBLE);
-                    holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(1).getColor_value()));
-                    holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
-                    if (curentListTag) {
-                        holder.getView(R.id.tv_color_tital).setVisibility(View.VISIBLE);
-                    }
-                } else if (null != mListData.get(position).getColor_info() && mListData.get(position).getColor_info().size() == 3) {
-                    holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
-                    holder.getView(R.id.iv_color_left).setVisibility(View.VISIBLE);
-                    holder.getView(R.id.iv_color_center).setVisibility(View.VISIBLE);
-                    holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(2).getColor_value()));
-                    holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color.get(1).getColor_value()));
-                    holder.getView(R.id.iv_color_left).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
-                    if (curentListTag) {
-                        holder.getView(R.id.tv_color_tital).setVisibility(View.VISIBLE);
-                    }
-                } else {
-                    holder.getView(R.id.iv_color_right).setVisibility(View.GONE);
-                    holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
-                    holder.getView(R.id.iv_color_center).setVisibility(View.GONE);
-                    if (curentListTag) {
-                        holder.getView(R.id.tv_color_tital).setVisibility(View.GONE);
+                        holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
+                        holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
+                        holder.getView(R.id.iv_color_center).setVisibility(View.VISIBLE);
+                        holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(1).getColor_value()));
+                        holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
+                        if (curentListTag) {
+                            holder.getView(R.id.tv_color_tital).setVisibility(View.VISIBLE);
+                        }
+                    } else if (null != mListData.get(position).getColor_info() && mListData.get(position).getColor_info().size() == 3) {
+                        holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
+                        holder.getView(R.id.iv_color_left).setVisibility(View.VISIBLE);
+                        holder.getView(R.id.iv_color_center).setVisibility(View.VISIBLE);
+                        holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(2).getColor_value()));
+                        holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color.get(1).getColor_value()));
+                        holder.getView(R.id.iv_color_left).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
+                        if (curentListTag) {
+                            holder.getView(R.id.tv_color_tital).setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        holder.getView(R.id.iv_color_right).setVisibility(View.GONE);
+                        holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
+                        holder.getView(R.id.iv_color_center).setVisibility(View.GONE);
+                        if (curentListTag) {
+                            holder.getView(R.id.tv_color_tital).setVisibility(View.GONE);
+                        }
                     }
                 }
 
@@ -493,11 +521,26 @@ public class HomePicFragment
                     String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
                     String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
                     if (error_code == 0) {
-
                         DataBean dataBean = GsonUtil.jsonToBean(data_msg, DataBean.class);
-                        if (null != dataBean.getObject_list() && 0 != dataBean.getObject_list().size()) {
-                            getHeight(dataBean.getObject_list(), state);
-                            updateViewFromData(dataBean.getObject_list(), state);
+                        List<SYActivityBean> list_activity = dataBean.getActivity_list();
+                        List<SYDataBean> list_data = dataBean.getObject_list();
+                        List<SYDataBean> list_newdata = new ArrayList<>();
+                        if (null != list_data && 0 != list_data.size()) {
+
+                            if (list_activity != null && list_activity.size() > 0) {
+                                SYActivityInfoBean syActivityInfoBean = list_activity.get(0).getActivity_info();
+                                SYDataBean syDataBean = new SYDataBean(new SYDataObjectBean
+                                        (syActivityInfoBean.getId(), "活动", syActivityInfoBean.getTitle(),
+                                                new SYDataObjectImgBean(1.33333f, syActivityInfoBean.getImage().getImg0(), syActivityInfoBean.getImage().getImg0())
+                                        ), null, null);
+                                if (state.equals(REFRESH_STATUS)) {
+                                    list_newdata.add(syDataBean);
+                                    list_newdata.addAll(list_data);
+                                }
+                            }
+
+                            getHeight(list_newdata, state);
+                            updateViewFromData(list_newdata, state);
                         } else {
                             updateViewFromData(null, state);
                         }
@@ -713,12 +756,13 @@ public class HomePicFragment
         intent.putExtra("shaixuan_tag", tagStr);
         startActivity(intent);
     }
+
     //任务
     private TimerTask task = new TimerTask() {
         public void run() {
             getUnReaderMsg();
         }
     };
-    int last_id = 0;
+    private int last_id = 0;
 
 }
