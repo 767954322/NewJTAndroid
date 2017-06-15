@@ -169,6 +169,9 @@ public class HomePicFragment
         switch (v.getId()) {
             case R.id.cet_clearedit:
 
+                if (homeTabPopWin != null && homeTabPopWin.isShowing()) {
+                    homeTabPopWin.dismiss();
+                }
                 Intent intent = new Intent(activity, SearchActivity.class);
                 startActivity(intent);
 
@@ -187,17 +190,23 @@ public class HomePicFragment
                 break;
 
             case R.id.rl_kongjian:
-                showPopwindow();
-
+                showPopwindow(R.id.rl_kongjian, 0);
                 break;
             case R.id.rl_jubu:
-                showPopwindow();
+                showPopwindow(R.id.rl_jubu, 1);
+
                 break;
             case R.id.rl_zhuangshi:
-                showPopwindow();
+                showPopwindow(R.id.rl_zhuangshi, 2);
+
                 break;
             case R.id.rl_shouna:
-                showPopwindow();
+                showPopwindow(R.id.rl_shouna, 3);
+                break;
+            case R.id.iv_center_msgicon:
+                if (homeTabPopWin != null && homeTabPopWin.isShowing()) {
+                    homeTabPopWin.dismiss();
+                }
                 break;
         }
     }
@@ -559,17 +568,86 @@ public class HomePicFragment
         }
     }
 
-    private void showPopwindow() {
+    private void showPopwindow(int id, int position) {
         if (tagDataBean != null) {
             if (null == homeTabPopWin) {
                 homeTabPopWin = new HomeTabPopWin(activity, this, tagDataBean, this);
             }
             if (homeTabPopWin.isShowing()) {
-                homeTabPopWin.dismiss();
+                if (last_id != 0 && last_id == id) {
+                    last_id = 0;
+                    homeTabPopWin.dismiss();
+                    iv_kongjian.setImageResource(R.drawable.kongjian1);
+                    iv_jubu.setImageResource(R.drawable.jubu1);
+                    iv_zhuangshi.setImageResource(R.drawable.zhuangshi1);
+                    iv_shouna.setImageResource(R.drawable.shouna1);
+                } else {
+                    last_id = id;
+
+                    homeTabPopWin.setPagePosition(position);
+                    switch (position) {
+                        case 0:
+                            iv_kongjian.setImageResource(R.drawable.kongjian);
+                            iv_jubu.setImageResource(R.drawable.jubu1);
+                            iv_zhuangshi.setImageResource(R.drawable.zhuangshi1);
+                            iv_shouna.setImageResource(R.drawable.shouna1);
+                            break;
+                        case 1:
+                            iv_kongjian.setImageResource(R.drawable.kongjian1);
+                            iv_jubu.setImageResource(R.drawable.jubu);
+                            iv_zhuangshi.setImageResource(R.drawable.zhuangshi1);
+                            iv_shouna.setImageResource(R.drawable.shouna1);
+                            break;
+                        case 2:
+                            iv_kongjian.setImageResource(R.drawable.kongjian1);
+                            iv_jubu.setImageResource(R.drawable.jubu1);
+                            iv_zhuangshi.setImageResource(R.drawable.zhuangshi);
+                            iv_shouna.setImageResource(R.drawable.shouna1);
+                            break;
+                        case 3:
+                            iv_kongjian.setImageResource(R.drawable.kongjian1);
+                            iv_jubu.setImageResource(R.drawable.jubu1);
+                            iv_zhuangshi.setImageResource(R.drawable.zhuangshi1);
+                            iv_shouna.setImageResource(R.drawable.shouna);
+                            break;
+                    }
+                }
+
             } else {
+
+                homeTabPopWin.setPagePosition(position);
+                last_id = id;
                 homeTabPopWin.showAsDropDown(ll_pic_choose);
+
+                switch (id) {
+                    case R.id.rl_kongjian:
+                        iv_kongjian.setImageResource(R.drawable.kongjian);
+                        iv_jubu.setImageResource(R.drawable.jubu1);
+                        iv_zhuangshi.setImageResource(R.drawable.zhuangshi1);
+                        iv_shouna.setImageResource(R.drawable.shouna1);
+                        break;
+                    case R.id.rl_jubu:
+                        iv_kongjian.setImageResource(R.drawable.kongjian1);
+                        iv_jubu.setImageResource(R.drawable.jubu);
+                        iv_zhuangshi.setImageResource(R.drawable.zhuangshi1);
+                        iv_shouna.setImageResource(R.drawable.shouna1);
+                        break;
+                    case R.id.rl_zhuangshi:
+                        iv_kongjian.setImageResource(R.drawable.kongjian1);
+                        iv_jubu.setImageResource(R.drawable.jubu1);
+                        iv_zhuangshi.setImageResource(R.drawable.zhuangshi);
+                        iv_shouna.setImageResource(R.drawable.shouna1);
+                        break;
+                    case R.id.rl_shouna:
+                        iv_kongjian.setImageResource(R.drawable.kongjian1);
+                        iv_jubu.setImageResource(R.drawable.jubu1);
+                        iv_zhuangshi.setImageResource(R.drawable.zhuangshi1);
+                        iv_shouna.setImageResource(R.drawable.shouna);
+                        break;
+                }
             }
         } else {
+            getTagData();
             ToastUtils.showCenter(activity, "数据加载中");
         }
     }
@@ -581,11 +659,37 @@ public class HomePicFragment
 
     @Override
     public void onPageSelected(int position) {
-
+        switch (position) {
+            case 0:
+                iv_kongjian.setImageResource(R.drawable.kongjian);
+                iv_jubu.setImageResource(R.drawable.jubu1);
+                iv_zhuangshi.setImageResource(R.drawable.zhuangshi1);
+                iv_shouna.setImageResource(R.drawable.shouna1);
+                break;
+            case 1:
+                iv_kongjian.setImageResource(R.drawable.kongjian1);
+                iv_jubu.setImageResource(R.drawable.jubu);
+                iv_zhuangshi.setImageResource(R.drawable.zhuangshi1);
+                iv_shouna.setImageResource(R.drawable.shouna1);
+                break;
+            case 2:
+                iv_kongjian.setImageResource(R.drawable.kongjian1);
+                iv_jubu.setImageResource(R.drawable.jubu1);
+                iv_zhuangshi.setImageResource(R.drawable.zhuangshi);
+                iv_shouna.setImageResource(R.drawable.shouna1);
+                break;
+            case 3:
+                iv_kongjian.setImageResource(R.drawable.kongjian1);
+                iv_jubu.setImageResource(R.drawable.jubu1);
+                iv_zhuangshi.setImageResource(R.drawable.zhuangshi1);
+                iv_shouna.setImageResource(R.drawable.shouna);
+                break;
+        }
     }
 
     @Override
     public void onPageScrollStateChanged(int state) {
+
 
     }
 
@@ -594,6 +698,10 @@ public class HomePicFragment
     public void onDismiss() {
         if (homeTabPopWin != null) {
             homeTabPopWin.dismiss();
+            iv_kongjian.setImageResource(R.drawable.kongjian1);
+            iv_jubu.setImageResource(R.drawable.jubu1);
+            iv_zhuangshi.setImageResource(R.drawable.zhuangshi1);
+            iv_shouna.setImageResource(R.drawable.shouna1);
         }
     }
 
@@ -605,4 +713,7 @@ public class HomePicFragment
         intent.putExtra("shaixuan_tag", tagStr);
         startActivity(intent);
     }
+
+    int last_id = 0;
+
 }
