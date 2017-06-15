@@ -326,7 +326,12 @@ public class SearchResultActivity
 
         if (item_list.size() > 0) {
             for (int i = 0; i < item_list.size(); i++) {
-                mListDataHeight.add(Math.round(width_Pic_Staggered / item_list.get(i).getItem_info().getImage().getRatio()));
+                if(item_list.get(i).getItem_info().getImage().getRatio() == 0){
+                    mListDataHeight.add(width_Pic_Staggered);
+                }else {
+                    mListDataHeight.add(Math.round(width_Pic_Staggered / item_list.get(i).getItem_info().getImage().getRatio()));
+
+                }
             }
         }
     }

@@ -108,6 +108,9 @@ public class ShaiXuanResultActicity
             public void clickMark(int position) {
 
                 // 跳转搜索结果页
+                Intent intent = new Intent(ShaiXuanResultActicity.this, ShaiXuanResultActicity.class);
+                intent.putExtra("shaixuan_tag",strTuiJian.get(position));
+                startActivity(intent);
 
             }
         });
@@ -133,10 +136,12 @@ public class ShaiXuanResultActicity
                 if (curentListTag) {
                     mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
                     curentListTag = false;
+                    onRefresh();
 //                    mRecyclerView.scrollToPosition(scroll_position);
                 } else {
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(ShaiXuanResultActicity.this));
                     curentListTag = true;
+                    onRefresh();
 //                    mRecyclerView.scrollToPosition(scroll_position);
                 }
                 break;
@@ -250,7 +255,7 @@ public class ShaiXuanResultActicity
             public void convert(BaseViewHolder holder, int position) {
                 scroll_position = position;
                 ViewGroup.LayoutParams layoutParams = holder.getView(R.id.iv_imageview_one).getLayoutParams();
-                layoutParams.width = width_Pic_List;
+                layoutParams.width = (curentListTag ? width_Pic_List : width_Pic_Staggered);
                 layoutParams.height = (curentListTag ? mLListDataHeight.get(position) : mSListDataHeight.get(position));
                 holder.getView(R.id.iv_imageview_one).setLayoutParams(layoutParams);
 
@@ -265,8 +270,9 @@ public class ShaiXuanResultActicity
                     ImageUtils.displayFilletImage(mListData.get(position).getItem_info().getImage().getImg0(),
                             (ImageView) holder.getView(R.id.iv_imageview_one));
                 } else {
-                    ImageUtils.displayFilletImage(mListData.get(position).getItem_info().getImage().getImg1(),
-                            (ImageView) holder.getView(R.id.iv_imageview_one));
+                        ImageUtils.displayFilletImage(mListData.get(position).getItem_info().getImage().getImg1(),
+                                (ImageView) holder.getView(R.id.iv_imageview_one));
+
                 }
                 ImageUtils.displayFilletImage(mListData.get(position).getUser_info().getAvatar().getBig(),
                         (ImageView) holder.getView(R.id.iv_header_pic));
@@ -384,7 +390,11 @@ public class ShaiXuanResultActicity
         if (item_list.size() > 0) {
             for (int i = 0; i < item_list.size(); i++) {
                 mLListDataHeight.add(Math.round(width_Pic_List / 1.333333f));
-                mSListDataHeight.add(Math.round(width_Pic_Staggered / item_list.get(i).getItem_info().getImage().getRatio()));
+                if (item_list.get(i).getItem_info().getImage().getRatio() == 0) {
+                    mSListDataHeight.add(width_Pic_Staggered);
+                } else {
+                    mSListDataHeight.add(Math.round(width_Pic_Staggered / item_list.get(i).getItem_info().getImage().getRatio()));
+                }
             }
         }
     }
