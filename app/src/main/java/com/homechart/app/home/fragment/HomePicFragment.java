@@ -166,23 +166,24 @@ public class HomePicFragment
         rl_zhuangshi.setOnClickListener(this);
         rl_shouna.setOnClickListener(this);
         iv_center_msgicon.setOnClickListener(this);
-//        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            int mScrollThreshold = 100;
-//
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                boolean isSignificantDelta = Math.abs(dy) > mScrollThreshold;
-//                if (isSignificantDelta) {
-//                    if (dy > 0) {
-//                        rl_tos_choose.setVisibility(View.GONE);
-//                    } else {
-//                        rl_tos_choose.setVisibility(View.VISIBLE);
-//                    }
-//                }
-//            }
-//
-//        });
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            int mScrollThreshold = 100;
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                boolean isSignificantDelta = Math.abs(dy) > mScrollThreshold;
+                if (isSignificantDelta) {
+                    if (dy > 0) {
+                        rl_tos_choose.setVisibility(View.GONE);
+                    } else {
+                        rl_tos_choose.setVisibility(View.VISIBLE);
+                    }
+                }
+
+            }
+
+        });
     }
 
     @Override
@@ -786,6 +787,7 @@ public class HomePicFragment
         startActivity(intent);
     }
 
+
     //任务
     private TimerTask task = new TimerTask() {
         public void run() {
@@ -793,6 +795,5 @@ public class HomePicFragment
         }
     };
     private int last_id = 0;
-
 
 }

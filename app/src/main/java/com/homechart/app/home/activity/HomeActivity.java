@@ -6,9 +6,12 @@ import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.homechart.app.R;
 import com.homechart.app.home.base.BaseActivity;
@@ -19,6 +22,7 @@ import com.homechart.app.home.fragment.HomePicFragment;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 /**
  * Created by allen on 2017/6/1.
  */
