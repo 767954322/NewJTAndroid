@@ -190,11 +190,13 @@ public class HomePicFragment
             case R.id.iv_change_frag:
 
                 if (curentListTag) {
+                    iv_change_frag.setImageResource(R.drawable.changtu);
                     mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
                     curentListTag = false;
 //                    mRecyclerView.scrollToPosition(scroll_position);
                 } else {
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
+                    iv_change_frag.setImageResource(R.drawable.pubuliu);
                     curentListTag = true;
 //                    mRecyclerView.scrollToPosition(scroll_position);
                 }

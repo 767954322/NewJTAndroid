@@ -90,7 +90,7 @@
             android:paddingRight="@dimen/font_12"
             android:paddingTop="@dimen/font_5"
             android:paddingBottom="@dimen/font_5"
-            android:src="@drawable/changtu" />
+            android:src="@drawable/pubuliu" />
     </RelativeLayout>
 
 
