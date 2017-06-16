@@ -14,13 +14,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv_imageview_one"
-        android:layout_marginTop="@dimen/font_20"
-        android:layout_marginBottom="@dimen/font_20">
+        android:layout_marginBottom="@dimen/font_20"
+        android:layout_marginTop="@dimen/font_20">
 
         <com.homechart.app.myview.RoundImageView
             android:id="@+id/iv_header_pic"
-            android:layout_width="@dimen/font_40"
-            android:layout_height="@dimen/font_40"
+            android:layout_width="@dimen/font_32"
+            android:layout_height="@dimen/font_32"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/font_10" />
 
@@ -28,11 +28,10 @@
             android:id="@+id/tv_name_pic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/iv_header_pic"
-            android:layout_marginLeft="@dimen/font_10"
             android:layout_centerVertical="true"
-            android:text="小明"/>
-
+            android:layout_marginLeft="@dimen/font_10"
+            android:layout_toRightOf="@+id/iv_header_pic"
+            android:text="小明" />
 
 
         <com.homechart.app.myview.RoundImageView
@@ -65,12 +64,12 @@
             android:id="@+id/tv_color_tital"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/bg_8f8f8f"
-            android:textSize="@dimen/size_12"
-            android:layout_toLeftOf="@+id/iv_color_left"
-            android:layout_marginRight="@dimen/size_6"
             android:layout_centerVertical="true"
-            android:text="色彩搭配"/>
+            android:layout_marginRight="@dimen/size_6"
+            android:layout_toLeftOf="@+id/iv_color_left"
+            android:text="色彩搭配"
+            android:textColor="@color/bg_8f8f8f"
+            android:textSize="@dimen/size_12" />
     </RelativeLayout>
 
 </RelativeLayout>
