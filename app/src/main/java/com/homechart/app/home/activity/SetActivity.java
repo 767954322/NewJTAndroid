@@ -147,7 +147,7 @@ public class SetActivity
      */
     private void showDialog() {
         mAlertView = new AlertView
-                (UIUtils.getString(R.string.clear_cath_toast),
+                ("",
                         "确认清理缓存", UIUtils.getString(R.string.cancel), new String[]{UIUtils.getString(R.string.clear_cath_sure)},
                         null, this, AlertView.Style.Alert, this);
     }

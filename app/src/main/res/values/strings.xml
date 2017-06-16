@@ -84,7 +84,7 @@
     <!-- SetActivity -->
     <string name="clear_cath_toast">清除</string>
     <string name="cancel">取消</string>
-    <string name="clear_cath_sure">清空缓存数据</string>
+    <string name="clear_cath_sure">清理</string>
     <string name="no_cath">暂无缓冲</string>
 
     <!-- SearchActivity -->
