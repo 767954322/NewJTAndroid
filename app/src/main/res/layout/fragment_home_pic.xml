@@ -21,14 +21,15 @@
             android:layout_marginLeft="@dimen/font_10"
             android:layout_marginRight="@dimen/font_12"
             android:src="@drawable/ling" />
+
         <ImageView
             android:id="@+id/iv_top_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/font_15"
             android:layout_marginRight="@dimen/font_10"
-            android:layout_alignParentLeft="true"
             android:src="@drawable/jiatu" />
 
         <com.homechart.app.myview.ClearEditText
@@ -54,7 +55,7 @@
         android:layout_height="@dimen/font_1"
         android:layout_below="@+id/rl_homepic_top"
         android:layout_marginTop="@dimen/font_7"
-        android:background="@color/view_line"/>
+        android:background="@color/view_line" />
 
     <RelativeLayout
         android:id="@+id/rl_unreader_msg_single"
@@ -111,12 +112,111 @@
     </RelativeLayout>
 
 
+    <RelativeLayout
+        android:id="@+id/rl_tos_choose"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_homepic_top">
+
+        <LinearLayout
+            android:id="@+id/ll_pic_choose"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/font_90"
+            android:background="@color/bg_f7f7f7"
+            android:orientation="horizontal">
+
+
+            <RelativeLayout
+                android:id="@+id/rl_kongjian"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_weight="1">
+
+                <com.homechart.app.myview.RoundImageView
+                    android:id="@+id/iv_kongjian"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/kongjian1" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_jubu"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_weight="1">
+
+                <com.homechart.app.myview.RoundImageView
+                    android:id="@+id/iv_jubu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/jubu1" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_zhuangshi"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_weight="1">
+
+                <com.homechart.app.myview.RoundImageView
+                    android:id="@+id/iv_zhuangshi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/zhuangshi1" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_shouna"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_weight="1">
+
+                <com.homechart.app.myview.RoundImageView
+                    android:id="@+id/iv_shouna"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/shouna1" />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_pic_change"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/font_44"
+            android:layout_below="@+id/ll_pic_choose"
+            android:background="@color/white">
+
+            <ImageView
+                android:id="@+id/iv_change_frag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingBottom="@dimen/font_5"
+                android:paddingLeft="@dimen/font_100"
+                android:paddingRight="@dimen/font_12"
+                android:paddingTop="@dimen/font_5"
+                android:src="@drawable/pubuliu" />
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
 
     <com.homechart.app.recyclerlibrary.recyclerview.HRecyclerView
         android:id="@+id/rcy_recyclerview_pic"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/view_line_top"
+        android:layout_below="@+id/rl_tos_choose"
         app:loadMoreEnabled="true"
         app:loadMoreFooterLayout="@layout/layout_hrecyclerview_load_more_footer"
         app:refreshEnabled="true"

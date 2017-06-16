@@ -1,14 +1,18 @@
 package com.homechart.app.home.fragment;
 
+import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -114,6 +118,7 @@ public class HomePicFragment
     private View view;
     private Timer timer = new Timer(true);
     private ImageView iv_center_msgicon;
+    private RelativeLayout rl_tos_choose;
 
     public HomePicFragment(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
@@ -126,8 +131,6 @@ public class HomePicFragment
 
     @Override
     protected void initView() {
-
-        view = LayoutInflater.from(activity).inflate(R.layout.header_homepic, null);
         tv_unreader_mag_double = (TextView) rootView.findViewById(R.id.tv_unreader_mag_double);
         tv_unreader_mag_single = (TextView) rootView.findViewById(R.id.tv_unreader_mag_single);
         rl_unreader_msg_single = (RelativeLayout) rootView.findViewById(R.id.rl_unreader_msg_single);
@@ -137,19 +140,21 @@ public class HomePicFragment
         cet_clearedit = (ClearEditText) rootView.findViewById(R.id.cet_clearedit);
         mRecyclerView = (HRecyclerView) rootView.findViewById(R.id.rcy_recyclerview_pic);
 
-        ll_pic_choose = (LinearLayout) view.findViewById(R.id.ll_pic_choose);
-        iv_change_frag = (ImageView) view.findViewById(R.id.iv_change_frag);
-        iv_kongjian = (RoundImageView) view.findViewById(R.id.iv_kongjian);
-        iv_jubu = (RoundImageView) view.findViewById(R.id.iv_jubu);
-        iv_zhuangshi = (RoundImageView) view.findViewById(R.id.iv_zhuangshi);
-        iv_shouna = (RoundImageView) view.findViewById(R.id.iv_shouna);
-        rl_kongjian = (RelativeLayout) view.findViewById(R.id.rl_kongjian);
-        rl_jubu = (RelativeLayout) view.findViewById(R.id.rl_jubu);
-        rl_zhuangshi = (RelativeLayout) view.findViewById(R.id.rl_zhuangshi);
-        rl_shouna = (RelativeLayout) view.findViewById(R.id.rl_shouna);
+        ll_pic_choose = (LinearLayout) rootView.findViewById(R.id.ll_pic_choose);
+        iv_change_frag = (ImageView) rootView.findViewById(R.id.iv_change_frag);
+        iv_kongjian = (RoundImageView) rootView.findViewById(R.id.iv_kongjian);
+        iv_jubu = (RoundImageView) rootView.findViewById(R.id.iv_jubu);
+        iv_zhuangshi = (RoundImageView) rootView.findViewById(R.id.iv_zhuangshi);
+        iv_shouna = (RoundImageView) rootView.findViewById(R.id.iv_shouna);
+        rl_kongjian = (RelativeLayout) rootView.findViewById(R.id.rl_kongjian);
+        rl_jubu = (RelativeLayout) rootView.findViewById(R.id.rl_jubu);
+        rl_zhuangshi = (RelativeLayout) rootView.findViewById(R.id.rl_zhuangshi);
+        rl_shouna = (RelativeLayout) rootView.findViewById(R.id.rl_shouna);
+        rl_tos_choose = (RelativeLayout) rootView.findViewById(R.id.rl_tos_choose);
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void initListener() {
         super.initListener();
@@ -161,13 +166,29 @@ public class HomePicFragment
         rl_zhuangshi.setOnClickListener(this);
         rl_shouna.setOnClickListener(this);
         iv_center_msgicon.setOnClickListener(this);
+//        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            int mScrollThreshold = 100;
+//
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                boolean isSignificantDelta = Math.abs(dy) > mScrollThreshold;
+//                if (isSignificantDelta) {
+//                    if (dy > 0) {
+//                        rl_tos_choose.setVisibility(View.GONE);
+//                    } else {
+//                        rl_tos_choose.setVisibility(View.VISIBLE);
+//                    }
+//                }
+//            }
+//
+//        });
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
         gridSpacingItemDecoration = new GridSpacingItemDecoration(2, 50, false);
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-
         width_Pic_Staggered = PublicUtils.getScreenWidth(activity) / 2 - UIUtils.getDimens(R.dimen.font_20);
         width_Pic_List = PublicUtils.getScreenWidth(activity) - UIUtils.getDimens(R.dimen.font_14);
         buildRecyclerView();
@@ -772,5 +793,6 @@ public class HomePicFragment
         }
     };
     private int last_id = 0;
+
 
 }

@@ -223,7 +223,7 @@ public class HRecyclerView extends RecyclerView {
 
     public void addHeaderView(View headerView) {
         ensureHeaderViewContainer();
-        mHeaderViewContainer.addView(headerView);
+//        mHeaderViewContainer.addView(headerView);
         Adapter adapter = getAdapter();
         if (adapter != null) {
             adapter.notifyItemChanged(1);
