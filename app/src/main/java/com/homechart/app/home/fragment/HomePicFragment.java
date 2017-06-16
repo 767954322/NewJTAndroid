@@ -391,9 +391,6 @@ public class HomePicFragment
         mRecyclerView.setOnRefreshListener(this);
         mRecyclerView.setOnLoadMoreListener(this);
 
-
-        mRecyclerView.addHeaderView(view);
-
         mLoadMoreFooterView = (LoadMoreFooterView) mRecyclerView.getLoadMoreFooterView();
         mRecyclerView.setAdapter(mAdapter);
         onRefresh();
