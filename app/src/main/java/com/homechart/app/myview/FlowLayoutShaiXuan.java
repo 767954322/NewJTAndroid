@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.homechart.app.R;
+import com.homechart.app.utils.UIUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,20 +22,20 @@ import java.util.Random;
 /**
  * 自定义流式布局
  */
-public class FlowLayout extends ViewGroup {
+public class FlowLayoutShaiXuan extends ViewGroup {
 
     private LayoutInflater mInflater;
     private boolean isColorful;
 
-    public FlowLayout(Context context) {
+    public FlowLayoutShaiXuan(Context context) {
         this(context, null);
     }
 
-    public FlowLayout(Context context, AttributeSet attrs) {
+    public FlowLayoutShaiXuan(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public FlowLayout(Context context, AttributeSet attrs, int defStyle) {
+    public FlowLayoutShaiXuan(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mInflater = LayoutInflater.from(getContext());
     }
@@ -102,7 +103,7 @@ public class FlowLayout extends ViewGroup {
                         : width + getPaddingLeft() + getPaddingRight(),
                 modeHeight == MeasureSpec.EXACTLY ? sizeHeight : height
                         + getPaddingTop() + getPaddingBottom());
-        setPadding(dp2px(20), dp2px(10), dp2px(20), dp2px(10));
+        setPadding(UIUtils.getDimens(R.dimen.font_15), UIUtils.getDimens(R.dimen.font_20), UIUtils.getDimens(R.dimen.font_15), UIUtils.getDimens(R.dimen.font_5));
     }
 
     // 储存所有的View
@@ -217,7 +218,7 @@ public class FlowLayout extends ViewGroup {
 
         int count = strings.length;
         for (int i = 0; i < count; i++) {
-            final TextView tv = (TextView) mInflater.inflate(R.layout.flowlayout_textview, this,
+            final TextView tv = (TextView) mInflater.inflate(R.layout.flowlayout_textview_shaixuan, this,
                     false);
             tv.setText(strings[i]);
             tv.setOnClickListener(new OnClickListener() {
@@ -246,7 +247,7 @@ public class FlowLayout extends ViewGroup {
 
         int count = list.size();
         for (int i = 0; i < count; i++) {
-            final TextView tv = (TextView) mInflater.inflate(R.layout.flowlayout_textview, this,
+            final TextView tv = (TextView) mInflater.inflate(R.layout.flowlayout_textview_shaixuan, this,
                     false);
             tv.setText(list.get(i));
             tv.setOnClickListener(new OnClickListener() {
@@ -267,7 +268,7 @@ public class FlowLayout extends ViewGroup {
      * @param text
      */
     public void addTag(String text) {
-        final TextView tv = (TextView) mInflater.inflate(R.layout.flowlayout_textview, this,
+        final TextView tv = (TextView) mInflater.inflate(R.layout.flowlayout_textview_shaixuan, this,
                 false);
         tv.setText(text);
         tv.setOnClickListener(new OnClickListener() {

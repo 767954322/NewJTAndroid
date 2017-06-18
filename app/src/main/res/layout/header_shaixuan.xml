@@ -3,13 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.homechart.app.myview.FlowLayout
+    <com.homechart.app.myview.FlowLayoutShaiXuan
         android:id="@+id/his_flowLayout"
         android:layout_width="match_parent"
-        android:layout_marginLeft="@dimen/font_5"
-        android:layout_marginRight="@dimen/font_15"
-        android:paddingTop="@dimen/font_20"
-        android:paddingBottom="@dimen/font_5"
+        android:background="@color/bg_f7f7f7"
         android:layout_height="wrap_content"
         android:visibility="gone"/>
     <View

@@ -247,7 +247,7 @@ public class FlowLayoutSearch extends ViewGroup {
 
         int count = list.size();
         for (int i = 0; i < count; i++) {
-            final TextView tv = (TextView) mInflater.inflate(R.layout.flowlayout_textview, this,
+            final TextView tv = (TextView) mInflater.inflate(R.layout.flowlayout_textview_shaixuan, this,
                     false);
             tv.setText(list.get(i));
             tv.setOnClickListener(new OnClickListener() {
@@ -268,7 +268,7 @@ public class FlowLayoutSearch extends ViewGroup {
      * @param text
      */
     public void addTag(String text) {
-        final TextView tv = (TextView) mInflater.inflate(R.layout.flowlayout_textview, this,
+        final TextView tv = (TextView) mInflater.inflate(R.layout.flowlayout_textview_shaixuan, this,
                 false);
         tv.setText(text);
         tv.setOnClickListener(new OnClickListener() {

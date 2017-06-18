@@ -12,9 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.homechart.app.R;
@@ -26,7 +24,7 @@ import com.homechart.app.home.bean.search.SearchDataColorBean;
 import com.homechart.app.home.bean.search.SearchItemDataBean;
 import com.homechart.app.home.bean.shaixuan.ShaiXuanBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
-import com.homechart.app.myview.FlowLayout;
+import com.homechart.app.myview.FlowLayoutShaiXuan;
 import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
 import com.homechart.app.recyclerlibrary.holder.BaseViewHolder;
 import com.homechart.app.recyclerlibrary.recyclerview.HRecyclerView;
@@ -58,7 +56,7 @@ public class ShaiXuanResultActicity
     private String shaixuan_tag;
     private ImageButton nav_left_imageButton;
     private TextView tv_tital_comment;
-    private FlowLayout his_flowLayout;
+    private FlowLayoutShaiXuan his_flowLayout;
     private String[] myData;
     private HRecyclerView mRecyclerView;
     private MultiItemCommonAdapter<SearchItemDataBean> mAdapter;
@@ -93,7 +91,7 @@ public class ShaiXuanResultActicity
         mRecyclerView = (HRecyclerView) findViewById(R.id.rcy_recyclerview_info);
         nav_left_imageButton = (ImageButton) findViewById(R.id.nav_left_imageButton);
         tv_tital_comment = (TextView) findViewById(R.id.tv_tital_comment);
-        his_flowLayout = (FlowLayout) view.findViewById(R.id.his_flowLayout);
+        his_flowLayout = (FlowLayoutShaiXuan) view.findViewById(R.id.his_flowLayout);
         view_flowlayout =  view.findViewById(R.id.view_flowlayout);
         iv_change_frag = (ImageView) view.findViewById(R.id.iv_change_frag);
 
@@ -222,7 +220,7 @@ public class ShaiXuanResultActicity
             }
             his_flowLayout.setColorful(false);
             his_flowLayout.setData(myData);
-            his_flowLayout.setOnTagClickListener(new FlowLayout.OnTagClickListener() {
+            his_flowLayout.setOnTagClickListener(new FlowLayoutShaiXuan.OnTagClickListener() {
                 @Override
                 public void TagClick(String text) {
                     // 跳转搜索结果页

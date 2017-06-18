@@ -17,12 +17,9 @@ import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.hotwords.HotWordsBean;
 import com.homechart.app.myview.ClearEditText;
-import com.homechart.app.myview.FlowLayout;
 import com.homechart.app.myview.FlowLayoutSearch;
-import com.homechart.app.myview.WrapLayout;
 import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.ToastUtils;
-import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
 
