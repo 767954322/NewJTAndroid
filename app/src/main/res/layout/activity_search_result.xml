@@ -65,7 +65,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/rl_search_tital"
-        android:layout_marginTop="@dimen/font_10"
         app:loadMoreEnabled="true"
         app:loadMoreFooterLayout="@layout/layout_hrecyclerview_load_more_footer"
         app:refreshEnabled="true"
