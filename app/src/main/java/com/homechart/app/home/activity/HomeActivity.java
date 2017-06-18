@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.homechart.app.R;
@@ -70,7 +71,7 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
             transaction.add(R.id.main_content, mHomePicFragment).commit();
         }
         mRadioGroup.check(R.id.radio_btn_pic);
-
+        mRadioGroup.setAlpha(0.96f);
     }
 
     @Override

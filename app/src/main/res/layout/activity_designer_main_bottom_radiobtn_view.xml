@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/size_49"
-    android:background="@android:color/transparent">
+    android:layout_height="@dimen/size_49">
 
 
     <RadioGroup
@@ -10,7 +9,6 @@
         android:layout_width="fill_parent"
         android:layout_height="@dimen/size_49"
         android:layout_alignParentBottom="true"
-        android:background="@color/white"
         android:orientation="horizontal">
 
         <!--图片-->
@@ -30,7 +28,7 @@
             android:layout_marginTop="@dimen/size_6"
             android:checked="true"
             android:text=""
-            android:textSize="@dimen/size_11"/>
+            android:textSize="@dimen/size_11" />
 
         <RadioButton
             android:id="@+id/radio_btn_center"
