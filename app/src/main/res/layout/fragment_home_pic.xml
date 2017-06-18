@@ -116,7 +116,7 @@
         android:id="@+id/rl_tos_choose"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rl_homepic_top">
+        android:layout_below="@+id/view_line_top">
 
         <LinearLayout
             android:id="@+id/ll_pic_choose"
@@ -187,12 +187,19 @@
             </RelativeLayout>
 
         </LinearLayout>
+        <View
+            android:id="@+id/view_line_bommon"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/font_1"
+            android:layout_below="@+id/ll_pic_choose"
+            android:layout_marginTop="@dimen/font_7"
+            android:background="@color/view_line" />
 
         <RelativeLayout
             android:id="@+id/rl_pic_change"
             android:layout_width="match_parent"
             android:layout_height="@dimen/font_44"
-            android:layout_below="@+id/ll_pic_choose"
+            android:layout_below="@+id/view_line_bommon"
             android:background="@color/white">
 
             <ImageView
