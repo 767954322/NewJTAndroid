@@ -29,6 +29,7 @@ import com.homechart.app.recyclerlibrary.holder.BaseViewHolder;
 import com.homechart.app.recyclerlibrary.recyclerview.HRecyclerView;
 import com.homechart.app.recyclerlibrary.recyclerview.OnLoadMoreListener;
 import com.homechart.app.recyclerlibrary.support.MultiItemTypeSupport;
+import com.homechart.app.utils.CustomProgress;
 import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.UIUtils;
@@ -115,6 +116,7 @@ public class UserInfoActivity
         super.initListener();
         mIBBack.setOnClickListener(this);
         rl_info_zhunaye.setOnClickListener(this);
+        btn_guanzhu_demand.setOnClickListener(this);
     }
 
     @Override
@@ -192,8 +194,91 @@ public class UserInfoActivity
                 startActivity(intent);
 
                 break;
+            case R.id.btn_guanzhu_demand:
+
+                if (userCenterInfoBean != null) {
+                    if (userCenterInfoBean.getUser_info().getRelation().equals("0")) {//未关注（去关注）
+                        getGuanZhu();
+                    } else if (userCenterInfoBean.getUser_info().getRelation().equals("1")) {//已关注
+                        getQuXiao();
+                    } else if (userCenterInfoBean.getUser_info().getRelation().equals("0")) {//相互关注
+                        getQuXiao();
+                    }
+                } else {
+                    ToastUtils.showCenter(UserInfoActivity.this, "个人信息获取失败");
+                }
+
+                break;
         }
 
+    }
+
+    //关注用户
+    private void getGuanZhu() {
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                if (userCenterInfoBean.getUser_info().getRelation().equals("0")) {//未关注（去关注）
+                    ToastUtils.showCenter(UserInfoActivity.this, "关注失败");
+                } else if (userCenterInfoBean.getUser_info().getRelation().equals("1")) {//已关注
+                    ToastUtils.showCenter(UserInfoActivity.this, "取消关注失败");
+                } else if (userCenterInfoBean.getUser_info().getRelation().equals("0")) {//相互关注
+                    ToastUtils.showCenter(UserInfoActivity.this, "取消关注失败");
+                }
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        getUserInfo();
+                    } else {
+                        ToastUtils.showCenter(UserInfoActivity.this, error_msg);
+
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        };
+        MyHttpManager.getInstance().goGuanZhu(user_id, callBack);
+
+    }
+
+    //取消关注用户
+    private void getQuXiao() {
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+                ToastUtils.showCenter(UserInfoActivity.this, getString(R.string.userinfo_get_error));
+
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+
+                        getUserInfo();
+
+                    } else {
+
+                        ToastUtils.showCenter(UserInfoActivity.this, error_msg);
+
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        };
+        MyHttpManager.getInstance().goQuXiaoGuanZhu(user_id, callBack);
     }
 
     //获取用户信息
@@ -269,12 +354,12 @@ public class UserInfoActivity
                 btn_guanzhu_demand.setText("关注Ta");
 
             } else if (userCenterInfoBean.getUser_info().getRelation().equals("1")) {//已关注
-                btn_guanzhu_demand.setBackgroundResource(UIUtils.getColor(R.color.bg_f2f2f2));
+                btn_guanzhu_demand.setBackgroundResource(R.drawable.bt_guanzhu);
                 btn_guanzhu_demand.setTextColor(UIUtils.getColor(R.color.bg_8f8f8f));
                 btn_guanzhu_demand.setText("已关注");
 
             } else if (userCenterInfoBean.getUser_info().getRelation().equals("2")) {//互相关注
-                btn_guanzhu_demand.setBackgroundResource(UIUtils.getColor(R.color.bg_f2f2f2));
+                btn_guanzhu_demand.setBackgroundResource(R.drawable.bt_guanzhu);
                 btn_guanzhu_demand.setTextColor(UIUtils.getColor(R.color.bg_8f8f8f));
                 btn_guanzhu_demand.setText("互相关注");
             }
