@@ -101,7 +101,7 @@
             android:layout_marginTop="@dimen/font_20"
             android:layout_toLeftOf="@+id/iv_show_pass"
             android:background="@null"
-            android:hint="请输入登陆密码（6-20个字符）"
+            android:hint="请输入登录密码（6-20个字符）"
             android:inputType="textPassword"
             android:lines="1"
             android:textColorHint="@color/case_text_tital_detail"
