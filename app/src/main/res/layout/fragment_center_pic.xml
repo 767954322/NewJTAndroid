@@ -24,8 +24,7 @@
             android:layout_centerVertical="true"
             android:text="@string/frg_center_tital"
             android:textColor="@color/bg_262626"
-            android:textSize="@dimen/size_17"
-            android:textStyle="bold" />
+            android:textSize="@dimen/size_17" />
 
         <ImageView
             android:id="@+id/iv_center_msgicon"
