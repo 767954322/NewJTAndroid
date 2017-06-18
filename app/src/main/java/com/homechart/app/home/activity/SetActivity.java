@@ -111,7 +111,10 @@ public class SetActivity
                 break;
             case R.id.rl_set_clear:
                 if (!tv_clear_num.getText().equals("0.0B")) {
-                    mAlertView.show();
+                    PublicUtils.clearAppCache(this);
+                    tv_clear_num.setText("0.0B");
+                    ToastUtils.showCenter(SetActivity.this, "缓存已清完");
+
                 } else {
                     ToastUtils.showCenter(SetActivity.this, "暂无缓存数据");
                 }
