@@ -24,7 +24,6 @@
             android:paddingLeft="@dimen/font_10"
             android:gravity="center"
             android:text="取消"
-            android:textStyle="bold"
             android:textColor="@color/bg_464646"
             android:textSize="@dimen/size_14" />
 
