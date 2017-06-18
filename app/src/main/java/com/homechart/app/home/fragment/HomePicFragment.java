@@ -126,6 +126,9 @@ public class HomePicFragment
         this.fragmentManager = fragmentManager;
     }
 
+    public HomePicFragment() {
+    }
+
     @Override
     protected int getLayoutResId() {
         return R.layout.fragment_home_pic;

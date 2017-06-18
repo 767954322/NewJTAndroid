@@ -96,6 +96,9 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
         this.fragmentManager = fragmentManager;
     }
 
+    public HomeCenterFragment() {
+    }
+
     @Override
     protected int getLayoutResId() {
         return R.layout.fragment_center_pic;

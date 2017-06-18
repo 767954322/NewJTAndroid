@@ -26,6 +26,8 @@ public class HomeDesignerFragment extends BaseFragment implements View.OnClickLi
         this.fragmentManager = fragmentManager;
     }
 
+    public HomeDesignerFragment() {
+    }
 
     @Override
     protected int getLayoutResId() {
