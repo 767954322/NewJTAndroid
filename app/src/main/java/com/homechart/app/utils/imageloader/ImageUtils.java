@@ -53,7 +53,7 @@ public class ImageUtils {
             .cacheInMemory(true)
             .cacheOnDisc(true)
             .bitmapConfig(Bitmap.Config.RGB_565)   //设置图片的解码类型
-            .displayer(new RoundedBitmapDisplayer(20))
+            .displayer(new RoundedBitmapDisplayer(8))
             .imageScaleType(ImageScaleType.EXACTLY)
             .build();
 
