@@ -100,13 +100,13 @@ public class HomeTagAdapter extends PagerAdapter {
             if (convertView == null) {
                 myHolder = new MyHolder();
                 convertView = LayoutInflater.from(mContext).inflate(R.layout.viewpager_tag_page_item, null);
-                myHolder.bt_tag_page_item = (Button) convertView.findViewById(R.id.bt_tag_page_item);
+                myHolder.tv_tag_page_item = (TextView) convertView.findViewById(R.id.tv_tag_page_item);
                 convertView.setTag(myHolder);
             } else {
                 myHolder = (MyHolder) convertView.getTag();
             }
-            myHolder.bt_tag_page_item.setText(mList_child.get(position).getTag_name());
-            myHolder.bt_tag_page_item.setOnClickListener(new View.OnClickListener() {
+            myHolder.tv_tag_page_item.setText(mList_child.get(position).getTag_name());
+            myHolder.tv_tag_page_item.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mPopupWindowCallBack.onItemClick(mList_child.get(position).getTag_name());
@@ -117,7 +117,7 @@ public class HomeTagAdapter extends PagerAdapter {
 
         class MyHolder {
 
-            private Button bt_tag_page_item;
+            private TextView tv_tag_page_item;
 
         }
     }
