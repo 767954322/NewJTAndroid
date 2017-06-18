@@ -199,6 +199,7 @@ public class LoginActivity extends BaseActivity
             mIVIfShowPass.setImageResource(R.drawable.biyan);
             isChecked = true;
         }
+        mETLoginPass.setSelection(mETLoginPass.getText().length());
 
     }
 

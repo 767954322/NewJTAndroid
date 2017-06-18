@@ -201,6 +201,7 @@ public class RegisterActivity extends BaseActivity
             isChecked = true;
         }
 
+        mETPassWord.setSelection(mETPassWord.getText().length());
     }
 
     //判断手机号码是否合法,合法的话获取
