@@ -94,6 +94,12 @@ public class SearchResultActivity
     @Override
     protected void initData(Bundle savedInstanceState) {
 
+        if(!TextUtils.isEmpty(search_info)){
+            cet_clearedit.setText(search_info);
+        }else {
+            cet_clearedit.setText(search_tag);
+        }
+        cet_clearedit.setSelection(cet_clearedit.getText().length());
         width_Pic_Staggered = PublicUtils.getScreenWidth(SearchResultActivity.this) / 2 - UIUtils.getDimens(R.dimen.font_20);
         buildRecyclerView();
     }
