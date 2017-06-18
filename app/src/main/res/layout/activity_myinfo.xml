@@ -306,7 +306,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/font_58"
                 android:layout_below="@+id/view_below_jianjie"
-                android:layout_marginTop="@dimen/font_10"
                 android:background="@color/white">
 
                 <TextView
