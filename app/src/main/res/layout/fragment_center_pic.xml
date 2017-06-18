@@ -144,6 +144,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/tv_center_name"
+        android:layout_marginLeft="@dimen/font_10"
+        android:layout_marginRight="@dimen/font_10"
         android:background="@color/white"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/font_25"
@@ -163,6 +165,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="0"
+                android:textColor="@color/black"
                 android:textSize="@dimen/size_22"
                 android:textStyle="bold" />
 
@@ -188,6 +191,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="0"
+                android:textColor="@color/black"
                 android:textSize="@dimen/size_22"
                 android:textStyle="bold" />
 
@@ -213,6 +217,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="0"
+                android:textColor="@color/black"
                 android:textSize="@dimen/size_22"
                 android:textStyle="bold" />
 
@@ -238,6 +243,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:text="0"
+                android:textColor="@color/black"
                 android:textSize="@dimen/size_22"
                 android:textStyle="bold" />
 
