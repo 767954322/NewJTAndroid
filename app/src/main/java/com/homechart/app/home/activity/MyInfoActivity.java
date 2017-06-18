@@ -156,6 +156,12 @@ public class MyInfoActivity
         rl_myinfo_mobile.setOnClickListener(this);
         rl_myinfo_shiming.setOnClickListener(this);
         rg_sex.setOnCheckedChangeListener(this);
+//        et_myinfo_jianjie.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                et_myinfo_jianjie.setSelection(et_myinfo_jianjie.getText().length());
+//            }
+//        });
         et_myinfo_nikename.addTextChangedListener(new TextWatcher() {
 
             @Override
