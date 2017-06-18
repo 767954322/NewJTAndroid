@@ -133,10 +133,14 @@ public class ShaiXuanResultActicity
                 ShaiXuanResultActicity.this.finish();
             case R.id.iv_change_frag:
                 if (curentListTag) {
+
+                    iv_change_frag.setImageResource(R.drawable.changtu);
                     mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
                     curentListTag = false;
 //                    mRecyclerView.scrollToPosition(scroll_position);
                 } else {
+
+                    iv_change_frag.setImageResource(R.drawable.pubuliu);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(ShaiXuanResultActicity.this));
                     curentListTag = true;
 //                    mRecyclerView.scrollToPosition(scroll_position);
