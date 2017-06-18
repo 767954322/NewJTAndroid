@@ -27,9 +27,11 @@ import com.android.volley.VolleyError;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
+import com.homechart.app.home.activity.FenSiListActivity;
 import com.homechart.app.home.activity.MessagesListActivity;
 import com.homechart.app.home.activity.SearchActivity;
 import com.homechart.app.home.activity.ShaiXuanResultActicity;
+import com.homechart.app.home.activity.UserInfoActivity;
 import com.homechart.app.home.adapter.HomeTagAdapter;
 import com.homechart.app.home.base.BaseFragment;
 import com.homechart.app.home.bean.pictag.TagDataBean;
@@ -313,7 +315,7 @@ public class HomePicFragment
 
         mAdapter = new MultiItemCommonAdapter<SYDataBean>(activity, mListData, support) {
             @Override
-            public void convert(BaseViewHolder holder, int position) {
+            public void convert(BaseViewHolder holder, final int position) {
                 scroll_position = position;
                 ViewGroup.LayoutParams layoutParams = holder.getView(R.id.iv_imageview_one).getLayoutParams();
                 layoutParams.width = width_Pic_List;
@@ -350,7 +352,6 @@ public class HomePicFragment
                             holder.getView(R.id.iv_desiner_icon).setVisibility(View.VISIBLE);
                         }
                     }
-
                     List<SYDataColorBean> list_color = mListData.get(position).getColor_info();
                     if (null != list_color && list_color.size() == 1) {
                         holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
@@ -388,6 +389,17 @@ public class HomePicFragment
                             holder.getView(R.id.tv_color_tital).setVisibility(View.GONE);
                         }
                     }
+                }
+
+                if(null != mListData.get(position).getUser_info() && null != mListData.get(position).getUser_info().getUser_id()){
+                    holder.getView(R.id.iv_header_pic).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(activity, UserInfoActivity.class);
+                            intent.putExtra(ClassConstant.LoginSucces.USER_ID, mListData.get(position).getUser_info().getUser_id());
+                            startActivity(intent);
+                        }
+                    });
                 }
 
             }
