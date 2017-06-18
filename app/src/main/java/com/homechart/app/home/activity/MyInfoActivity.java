@@ -474,8 +474,6 @@ public class MyInfoActivity
                         ToastUtils.showCenter(MyInfoActivity.this, "保存成功");
                         Intent intent_result = getIntent();
                         setResult(1, intent_result);
-                        MyInfoActivity.this.finish();
-
                     } else {
                         CustomProgress.cancelDialog();
                         ToastUtils.showCenter(MyInfoActivity.this, error_msg);
