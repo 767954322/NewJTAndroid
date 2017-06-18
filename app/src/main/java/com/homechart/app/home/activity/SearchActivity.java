@@ -17,6 +17,8 @@ import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.hotwords.HotWordsBean;
 import com.homechart.app.myview.ClearEditText;
+import com.homechart.app.myview.FlowLayout;
+import com.homechart.app.myview.FlowLayoutSearch;
 import com.homechart.app.myview.WrapLayout;
 import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.ToastUtils;
@@ -37,7 +39,7 @@ public class SearchActivity
         extends BaseActivity
         implements View.OnClickListener {
     private TextView tv_quxiao;
-    private WrapLayout wl_tips;
+    private FlowLayoutSearch his_flowLayout;
     private String[] myData;
     private ClearEditText cet_clearedit;
 
@@ -50,7 +52,7 @@ public class SearchActivity
     protected void initView() {
 
         tv_quxiao = (TextView) findViewById(R.id.tv_quxiao);
-        wl_tips = (WrapLayout) findViewById(R.id.wl_tips);
+        his_flowLayout = (FlowLayoutSearch) findViewById(R.id.his_flowLayout);
         cet_clearedit = (ClearEditText) findViewById(R.id.cet_clearedit);
     }
 
@@ -65,17 +67,6 @@ public class SearchActivity
     protected void initListener() {
         super.initListener();
         tv_quxiao.setOnClickListener(this);
-        wl_tips.setMarkClickListener(new WrapLayout.MarkClickListener() {
-            @Override
-            public void clickMark(int position) {
-
-                // 跳转搜索结果页
-                Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
-                intent.putExtra("search_tag", myData[position]);
-                intent.putExtra("search_info", "");
-                startActivityForResult(intent, 1);
-            }
-        });
         cet_clearedit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
             @Override
@@ -166,8 +157,20 @@ public class SearchActivity
             for (int i = 0; i < listHot.size(); i++) {
                 myData[i] = listHot.get(i);
             }
-            wl_tips.setStyle(0);
-            wl_tips.setData(myData, SearchActivity.this, 14, 15, 10, 15, 10, 0, 0, UIUtils.getDimens(R.dimen.font_12), UIUtils.getDimens(R.dimen.font_15));
+
+
+            his_flowLayout.setColorful(false);
+            his_flowLayout.setData(myData);
+            his_flowLayout.setOnTagClickListener(new FlowLayoutSearch.OnTagClickListener() {
+                @Override
+                public void TagClick(String text) {
+                    // 跳转搜索结果页
+                    Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
+                    intent.putExtra("search_tag", text);
+                    intent.putExtra("search_info", "");
+                    startActivityForResult(intent, 1);
+                }
+            });
         }
     };
 
