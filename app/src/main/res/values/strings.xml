@@ -7,7 +7,7 @@
 
 
     <!-- RegisterActivity -->
-    <string name="phonenum_error">请填写正确的手机号码</string>
+    <string name="phonenum_error">请输入手机号</string>
     <string name="yanzhengma_error">验证码输入错误</string>
     <string name="nikename_error">请输入长度2-15个字的昵称</string>
     <string name="password_error">请输入长度6-20个字的密码</string>
