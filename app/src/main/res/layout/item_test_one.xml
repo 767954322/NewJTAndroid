@@ -32,8 +32,15 @@
             android:layout_marginLeft="@dimen/font_10"
             android:layout_toRightOf="@+id/iv_header_pic"
             android:text="小明" />
-
-
+        <ImageView
+            android:id="@+id/iv_desiner_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/font_5"
+            android:src="@drawable/fensi"
+            android:visibility="gone"
+            android:layout_toRightOf="@+id/tv_name_pic"/>
         <com.homechart.app.myview.RoundImageView
             android:id="@+id/iv_color_right"
             android:layout_width="@dimen/font_15"

@@ -345,6 +345,12 @@ public class HomePicFragment
                 }
 
                 if (!mListData.get(position).getObject_info().getType().equals("活动")) {
+                    if (curentListTag) {
+                        if (mListData.get(position).getUser_info().getProfession() != "0") {
+                            holder.getView(R.id.iv_desiner_icon).setVisibility(View.VISIBLE);
+                        }
+                    }
+
                     List<SYDataColorBean> list_color = mListData.get(position).getColor_info();
                     if (null != list_color && list_color.size() == 1) {
                         holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
@@ -564,10 +570,14 @@ public class HomePicFragment
                                     list_newdata.add(syDataBean);
                                     list_newdata.addAll(list_data);
                                 }
+
+                                getHeight(list_newdata, state);
+                                updateViewFromData(list_newdata, state);
+                            } else {
+                                getHeight(list_data, state);
+                                updateViewFromData(list_data, state);
                             }
 
-                            getHeight(list_newdata, state);
-                            updateViewFromData(list_newdata, state);
                         } else {
                             updateViewFromData(null, state);
                         }
