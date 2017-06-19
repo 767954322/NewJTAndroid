@@ -13,7 +13,7 @@
         android:id="@+id/rl_center_tital"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/font_25">
+        android:layout_marginTop="@dimen/font_15">
 
         <TextView
             android:id="@+id/tv_center_tital"
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/font_16"
-        android:layout_marginTop="@dimen/font_24"
+        android:layout_marginTop="@dimen/font_11"
         android:visibility="gone">
 
         <ImageView
