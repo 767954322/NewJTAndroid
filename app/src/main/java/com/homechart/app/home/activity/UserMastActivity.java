@@ -41,7 +41,7 @@ public class UserMastActivity extends BaseActivity implements View.OnClickListen
         WebSettings settings = webView.getSettings();
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
-        webView.loadUrl("http://team.idcool.com.cn/policy.html");
+        webView.loadUrl("http://h5.idcool.com.cn/terms");
     }
 
     @Override
