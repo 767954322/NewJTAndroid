@@ -34,13 +34,13 @@ public class SelectColorPopupWindow extends PopupWindow{
         //设置SelectPicPopupWindow的View
         this.setContentView(mMenuView);
         //设置SelectPicPopupWindow弹出窗体的宽
-        this.setWidth(ViewGroup.LayoutParams.FILL_PARENT);
+        this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         //设置SelectPicPopupWindow弹出窗体的高
-        this.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        this.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
         //设置SelectPicPopupWindow弹出窗体可点击
         this.setFocusable(true);
         //设置SelectPicPopupWindow弹出窗体动画效果
-        this.setAnimationStyle(R.style.AnimBottom);
+//        this.setAnimationStyle(R.style.AnimBottom);
         //实例化一个ColorDrawable颜色为半透明
         ColorDrawable dw = new ColorDrawable(0xb0000000);
         //设置SelectPicPopupWindow弹出窗体的背景
