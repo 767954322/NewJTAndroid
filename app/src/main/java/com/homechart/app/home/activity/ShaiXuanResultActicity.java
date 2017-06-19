@@ -165,9 +165,9 @@ public class ShaiXuanResultActicity
                         0,
                         0); //设置layout在PopupWindow中显示的位置
                 break;
-            case R.id.rl_pop_main:
-                selectColorPopupWindow.dismiss();
-                break;
+//            case R.id.rl_pop_main:
+//                selectColorPopupWindow.dismiss();
+//                break;
         }
     }
 

@@ -48,7 +48,7 @@
 
 
             <TextView
-                android:layout_width="@dimen/font_50"
+                android:layout_width="@dimen/font_55"
                 android:layout_height="@dimen/font_25"
                 android:background="@drawable/tv_pop_color_sure"
                 android:layout_alignParentRight="true"
@@ -60,6 +60,11 @@
                 android:text="确认" />
         </RelativeLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/font_1"
+            android:layout_below="@+id/rl_pop_color_top"
+            android:background="@color/view_line"/>
 
     </RelativeLayout>
 
