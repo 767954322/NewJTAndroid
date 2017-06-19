@@ -38,5 +38,6 @@ public class UrlConstants {
     public static final String TUIJIAN_TAG = "https://api.idcool.com.cn/base/tag/getRecommendTag";  // 获取推荐标签
     public static final String GUANZHU = "https://api.idcool.com.cn/user/user/followMe";  //关注某个用户
     public static final String QUXIAO_GUANZHU = "https://api.idcool.com.cn/user/user/cancelFollow";  //取消关注某个用户
+    public static final String COLOR_LIST = "https://api.idcool.com.cn/base/color/getFilterColor";  //获取颜色列表
 
 }

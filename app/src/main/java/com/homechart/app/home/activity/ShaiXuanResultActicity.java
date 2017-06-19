@@ -111,17 +111,6 @@ public class ShaiXuanResultActicity
         iv_change_frag.setOnClickListener(this);
         iv_color_icon.setOnClickListener(this);
         iv_color_tital.setOnClickListener(this);
-//        wl_tips.setMarkClickListener(new WrapLayout.MarkClickListener() {
-//            @Override
-//            public void clickMark(int position) {
-//
-//                // 跳转搜索结果页
-//                Intent intent = new Intent(ShaiXuanResultActicity.this, ShaiXuanResultActicity.class);
-//                intent.putExtra("shaixuan_tag", strTuiJian.get(position));
-//                startActivity(intent);
-//
-//            }
-//        });
     }
 
     @Override
@@ -130,9 +119,10 @@ public class ShaiXuanResultActicity
         width_Pic_Staggered = PublicUtils.getScreenWidth(ShaiXuanResultActicity.this) / 2 - UIUtils.getDimens(R.dimen.font_20);
         width_Pic_List = PublicUtils.getScreenWidth(ShaiXuanResultActicity.this) - UIUtils.getDimens(R.dimen.font_14);
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        selectColorPopupWindow = new SelectColorPopupWindow(this,this);
+        selectColorPopupWindow = new SelectColorPopupWindow(this, this);
         getSearchData();
         buildRecyclerView();
+        getColorData();
     }
 
     @Override
@@ -157,8 +147,8 @@ public class ShaiXuanResultActicity
                 break;
             case R.id.iv_color_tital:
             case R.id.iv_color_icon:
-                if(selectColorPopupWindow == null){
-                    selectColorPopupWindow = new SelectColorPopupWindow(this,this);
+                if (selectColorPopupWindow == null) {
+                    selectColorPopupWindow = new SelectColorPopupWindow(this, this);
                 }
                 selectColorPopupWindow.showAtLocation(ShaiXuanResultActicity.this.findViewById(R.id.shaixuan_main),
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
@@ -215,6 +205,37 @@ public class ShaiXuanResultActicity
             }
         };
         MyHttpManager.getInstance().getTuiJianTagData(shaixuan_tag, callBack);
+
+    }
+
+    private void getColorData() {
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                ToastUtils.showCenter(ShaiXuanResultActicity.this, getString(R.string.color_get_error));
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        Message msg = new Message();
+                        msg.obj = data_msg;
+                        msg.what = 2;
+                        mHandler.sendMessage(msg);
+                    } else {
+                        ToastUtils.showCenter(ShaiXuanResultActicity.this, error_msg);
+                    }
+                } catch (JSONException e) {
+                    ToastUtils.showCenter(ShaiXuanResultActicity.this, getString(R.string.color_get_error));
+                }
+            }
+        };
+        MyHttpManager.getInstance().getColorListData(callBack);
 
     }
 
@@ -414,8 +435,6 @@ public class ShaiXuanResultActicity
         MyHttpManager.getInstance().getSearchList("", shaixuan_tag, (page_num - 1) * 20 + "", "20", callBack);
 
     }
-
-
 
 
     private void getHeight(List<SearchItemDataBean> item_list, String state) {
