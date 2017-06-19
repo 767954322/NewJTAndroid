@@ -6,8 +6,10 @@ import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -19,6 +21,8 @@ import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.fragment.HomeCenterFragment;
 import com.homechart.app.home.fragment.HomeDesignerFragment;
 import com.homechart.app.home.fragment.HomePicFragment;
+import com.homechart.app.myview.SelectPicPopupWindow;
+import com.homechart.app.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,6 +43,7 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     private FragmentTransaction transaction;
     private Fragment mTagFragment;
     private ImageView iv_add_icon;
+    private SelectPicPopupWindow menuWindow;
 
 
     @Override
@@ -72,6 +77,7 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         }
         mRadioGroup.check(R.id.radio_btn_pic);
         mRadioGroup.setAlpha(0.96f);
+        menuWindow = new SelectPicPopupWindow(HomeActivity.this, itemsOnClick);
     }
 
     @Override
@@ -89,14 +95,27 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 break;
             case R.id.radio_btn_designer:
             case R.id.iv_add_icon:
-                if (null == mHomeDesignerFragment) {
-                    mHomeDesignerFragment = new HomeDesignerFragment(getSupportFragmentManager());
+//                if (null == mHomeDesignerFragment) {
+//                    mHomeDesignerFragment = new HomeDesignerFragment(getSupportFragmentManager());
+//                }
+//                if (mTagFragment != mHomeDesignerFragment) {
+//                    mTagFragment = mHomeDesignerFragment;
+//                    replaceFragment(mHomeDesignerFragment);
+//                }
+//                jumpPosition = 1;
+                if (jumpPosition == 0) {
+                    mRadioGroup.check(R.id.radio_btn_pic);
+                } else if (jumpPosition == 2) {
+                    mRadioGroup.check(R.id.radio_btn_center);
                 }
-                if (mTagFragment != mHomeDesignerFragment) {
-                    mTagFragment = mHomeDesignerFragment;
-                    replaceFragment(mHomeDesignerFragment);
+                //显示窗口
+                if (menuWindow == null) {
+                    menuWindow = new SelectPicPopupWindow(HomeActivity.this, itemsOnClick);
                 }
-                jumpPosition = 1;
+                menuWindow.showAtLocation(HomeActivity.this.findViewById(R.id.main),
+                        Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
+                        0,
+                        0); //设置layout在PopupWindow中显示的位置
                 break;
             case R.id.radio_btn_center:
                 if (null == mHomeCenterFragment) {
@@ -116,6 +135,27 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         transaction.replace(R.id.main_content, fragment);
         transaction.commitAllowingStateLoss();
     }
+
+    //为弹出窗口实现监听类
+    private View.OnClickListener itemsOnClick = new View.OnClickListener() {
+
+        public void onClick(View v) {
+            menuWindow.dismiss();
+            switch (v.getId()) {
+                case R.id.iv_takephoto:
+                    ToastUtils.showCenter(HomeActivity.this, "拍照");
+                    break;
+                case R.id.iv_pic:
+                    ToastUtils.showCenter(HomeActivity.this, "相册");
+                    break;
+                default:
+                    break;
+            }
+
+
+        }
+
+    };
 
 }
 
