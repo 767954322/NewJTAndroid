@@ -4,7 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+
     <RelativeLayout
+        android:id="@+id/rl_pop_center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -77,6 +80,15 @@
 
 
     </RelativeLayout>
-
+    <View
+        android:id="@+id/view_pop_top"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/rl_pop_center"/>
+    <View
+        android:id="@+id/view_pop_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rl_pop_center"/>
 
 </RelativeLayout>

@@ -18,6 +18,8 @@ import com.homechart.app.R;
 public class SelectColorPopupWindow extends PopupWindow{
 
     private final RelativeLayout rl_pop_main;
+    private final View view_pop_top;
+    private final View view_pop_bottom;
     private View mMenuView;
 
     public SelectColorPopupWindow(Context context, View.OnClickListener itemsOnClick) {
@@ -27,10 +29,14 @@ public class SelectColorPopupWindow extends PopupWindow{
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mMenuView = inflater.inflate(R.layout.pop_color, null);
         rl_pop_main = (RelativeLayout) mMenuView.findViewById(R.id.rl_pop_main);
+        view_pop_top =  mMenuView.findViewById(R.id.view_pop_top);
+        view_pop_bottom =  mMenuView.findViewById(R.id.view_pop_bottom);
 
 
         //设置按钮监听
         rl_pop_main.setOnClickListener(itemsOnClick);
+        view_pop_top.setOnClickListener(itemsOnClick);
+        view_pop_bottom.setOnClickListener(itemsOnClick);
         //设置SelectPicPopupWindow的View
         this.setContentView(mMenuView);
         //设置SelectPicPopupWindow弹出窗体的宽

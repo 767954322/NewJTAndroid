@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
+import com.homechart.app.home.bean.color.ColorBean;
 import com.homechart.app.home.bean.search.SearchDataBean;
 import com.homechart.app.home.bean.search.SearchDataColorBean;
 import com.homechart.app.home.bean.search.SearchItemDataBean;
@@ -74,6 +76,7 @@ public class ShaiXuanResultActicity
     private View view_flowlayout;
     private ImageView iv_color_icon;
     private TextView iv_color_tital;
+    private ColorBean colorBean;
     private SelectColorPopupWindow selectColorPopupWindow;
 
     @Override
@@ -155,9 +158,10 @@ public class ShaiXuanResultActicity
                         0,
                         0); //设置layout在PopupWindow中显示的位置
                 break;
-//            case R.id.rl_pop_main:
-//                selectColorPopupWindow.dismiss();
-//                break;
+            case R.id.view_pop_top:
+            case R.id.view_pop_bottom:
+                selectColorPopupWindow.dismiss();
+                break;
         }
     }
 
@@ -239,6 +243,7 @@ public class ShaiXuanResultActicity
 
     }
 
+
     private Handler mHandler = new Handler() {
 
 
@@ -252,6 +257,10 @@ public class ShaiXuanResultActicity
                 strTuiJian = shaiXuanBean.getTag_list();
                 changeUI();
 
+            } else if (msg.what == 2) {
+                String info = (String) msg.obj;
+                colorBean = GsonUtil.jsonToBean(info, ColorBean.class);
+                Log.d("test", colorBean.toString());
             }
         }
     };
