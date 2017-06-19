@@ -122,7 +122,6 @@ public class ShaiXuanResultActicity
         width_Pic_Staggered = PublicUtils.getScreenWidth(ShaiXuanResultActicity.this) / 2 - UIUtils.getDimens(R.dimen.font_20);
         width_Pic_List = PublicUtils.getScreenWidth(ShaiXuanResultActicity.this) - UIUtils.getDimens(R.dimen.font_14);
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        selectColorPopupWindow = new SelectColorPopupWindow(this, this);
         getSearchData();
         buildRecyclerView();
         getColorData();
@@ -150,13 +149,20 @@ public class ShaiXuanResultActicity
                 break;
             case R.id.iv_color_tital:
             case R.id.iv_color_icon:
-                if (selectColorPopupWindow == null) {
-                    selectColorPopupWindow = new SelectColorPopupWindow(this, this);
+
+                if (null == colorBean) {
+
+                    getColorData();
+                    ToastUtils.showCenter(ShaiXuanResultActicity.this, "色彩信息获取失败");
+                } else {
+                    if (selectColorPopupWindow == null) {
+                        selectColorPopupWindow = new SelectColorPopupWindow(this, this,colorBean);
+                    }
+                    selectColorPopupWindow.showAtLocation(ShaiXuanResultActicity.this.findViewById(R.id.shaixuan_main),
+                            Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
+                            0,
+                            0); //设置layout在PopupWindow中显示的位置
                 }
-                selectColorPopupWindow.showAtLocation(ShaiXuanResultActicity.this.findViewById(R.id.shaixuan_main),
-                        Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
-                        0,
-                        0); //设置layout在PopupWindow中显示的位置
                 break;
             case R.id.view_pop_top:
             case R.id.view_pop_bottom:
@@ -245,8 +251,6 @@ public class ShaiXuanResultActicity
 
 
     private Handler mHandler = new Handler() {
-
-
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);

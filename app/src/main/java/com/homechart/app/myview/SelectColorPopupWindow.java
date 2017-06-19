@@ -5,34 +5,42 @@ import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 
 import com.homechart.app.R;
+import com.homechart.app.home.adapter.MyColorAdapter;
+import com.homechart.app.home.bean.color.ColorBean;
 
 /**
  * Created by gumenghao on 17/6/19.
  */
 
-public class SelectColorPopupWindow extends PopupWindow{
+public class SelectColorPopupWindow extends PopupWindow {
 
     private final RelativeLayout rl_pop_main;
     private final View view_pop_top;
     private final View view_pop_bottom;
+    private final GridView gv_color_gridview;
     private View mMenuView;
 
-    public SelectColorPopupWindow(Context context, View.OnClickListener itemsOnClick) {
+    public SelectColorPopupWindow(Context context, View.OnClickListener itemsOnClick, ColorBean colorBean) {
         super(context);
 
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mMenuView = inflater.inflate(R.layout.pop_color, null);
         rl_pop_main = (RelativeLayout) mMenuView.findViewById(R.id.rl_pop_main);
-        view_pop_top =  mMenuView.findViewById(R.id.view_pop_top);
-        view_pop_bottom =  mMenuView.findViewById(R.id.view_pop_bottom);
+        view_pop_top = mMenuView.findViewById(R.id.view_pop_top);
+        view_pop_bottom = mMenuView.findViewById(R.id.view_pop_bottom);
+        gv_color_gridview = (GridView) mMenuView.findViewById(R.id.gv_color_gridview);
 
-
+        if (colorBean != null) {
+            MyColorAdapter colorAdapter = new MyColorAdapter(context, colorBean.getColor_list());
+            gv_color_gridview.setAdapter(colorAdapter);
+        }
         //设置按钮监听
         rl_pop_main.setOnClickListener(itemsOnClick);
         view_pop_top.setOnClickListener(itemsOnClick);
