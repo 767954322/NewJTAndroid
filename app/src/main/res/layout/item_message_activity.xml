@@ -29,8 +29,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_activity_tital"
-        android:layout_marginTop="@dimen/font_10"
+        android:layout_marginTop="@dimen/font_5"
         android:layout_marginLeft="@dimen/font_15"
+        android:textSize="@dimen/size_11"
+        android:textColor="@color/bg_8f8f8f"
         android:text="1213332312"/>
 
     <View
