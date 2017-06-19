@@ -22,6 +22,7 @@ import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.color.ColorBean;
+import com.homechart.app.home.bean.color.ColorItemBean;
 import com.homechart.app.home.bean.search.SearchDataBean;
 import com.homechart.app.home.bean.search.SearchDataColorBean;
 import com.homechart.app.home.bean.search.SearchItemDataBean;
@@ -47,6 +48,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by gumenghao on 17/6/15.
@@ -56,7 +58,8 @@ public class ShaiXuanResultActicity
         extends BaseActivity
         implements View.OnClickListener,
         OnLoadMoreListener,
-        OnRefreshListener {
+        OnRefreshListener,
+        SelectColorPopupWindow.SureColor {
     private String shaixuan_tag;
     private ImageButton nav_left_imageButton;
     private TextView tv_tital_comment;
@@ -155,9 +158,8 @@ public class ShaiXuanResultActicity
                     getColorData();
                     ToastUtils.showCenter(ShaiXuanResultActicity.this, "色彩信息获取失败");
                 } else {
-                    if (selectColorPopupWindow == null) {
-                        selectColorPopupWindow = new SelectColorPopupWindow(this, this,colorBean);
-                    }
+                    selectColorPopupWindow = null;
+                    selectColorPopupWindow = new SelectColorPopupWindow(this, this, colorBean, this);
                     selectColorPopupWindow.showAtLocation(ShaiXuanResultActicity.this.findViewById(R.id.shaixuan_main),
                             Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
                             0,
@@ -497,6 +499,13 @@ public class ShaiXuanResultActicity
                 }
                 break;
         }
+    }
+
+    //选择图片的回调
+    @Override
+    public void clickSureColor(Map<Integer, ColorItemBean> selectListData) {
+
+        ToastUtils.showCenter(ShaiXuanResultActicity.this, "回调");
     }
 
     private List<SearchItemDataBean> mListData = new ArrayList<>();

@@ -10,6 +10,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.homechart.app.R;
 import com.homechart.app.home.adapter.MyColorAdapter;
@@ -32,21 +33,25 @@ public class SelectColorPopupWindow extends PopupWindow {
     private final View view_pop_top;
     private final View view_pop_bottom;
     private final GridView gv_color_gridview;
+    private final TextView tv_makesure_color;
     private MyColorAdapter colorAdapter;
     private List<ColorItemBean> mListData;
     private Map<Integer, ColorItemBean> mSelectListData;
     private View mMenuView;
+    private SureColor mSureColor;
 
-    public SelectColorPopupWindow(final Context context, View.OnClickListener itemsOnClick, ColorBean colorBean) {
+    public SelectColorPopupWindow(final Context context, View.OnClickListener itemsOnClick, ColorBean colorBean, SureColor sureColor) {
         super(context);
         if (colorBean != null) {
             mListData = colorBean.getColor_list();
             mSelectListData = new HashMap<>();
         }
+        this.mSureColor = sureColor;
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mMenuView = inflater.inflate(R.layout.pop_color, null);
         rl_pop_main = (RelativeLayout) mMenuView.findViewById(R.id.rl_pop_main);
+        tv_makesure_color = (TextView) mMenuView.findViewById(R.id.tv_makesure_color);
         view_pop_top = mMenuView.findViewById(R.id.view_pop_top);
         view_pop_bottom = mMenuView.findViewById(R.id.view_pop_bottom);
         gv_color_gridview = (GridView) mMenuView.findViewById(R.id.gv_color_gridview);
@@ -81,6 +86,18 @@ public class SelectColorPopupWindow extends PopupWindow {
         rl_pop_main.setOnClickListener(itemsOnClick);
         view_pop_top.setOnClickListener(itemsOnClick);
         view_pop_bottom.setOnClickListener(itemsOnClick);
+        tv_makesure_color.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (mSelectListData.size() != 0) {
+                    mSureColor.clickSureColor(mSelectListData);
+                } else {
+                    ToastUtils.showCenter(context, "请先选择颜色再点击确认");
+                }
+
+            }
+        });
         //设置SelectPicPopupWindow的View
         this.setContentView(mMenuView);
         //设置SelectPicPopupWindow弹出窗体的宽
@@ -96,5 +113,9 @@ public class SelectColorPopupWindow extends PopupWindow {
         //设置SelectPicPopupWindow弹出窗体的背景
         this.setBackgroundDrawable(dw);
 
+    }
+
+    public interface SureColor {
+        void clickSureColor(Map<Integer, ColorItemBean> selectListData);
     }
 }

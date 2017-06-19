@@ -51,6 +51,7 @@
 
 
             <TextView
+                android:id="@+id/tv_makesure_color"
                 android:layout_width="@dimen/font_55"
                 android:layout_height="@dimen/font_25"
                 android:layout_alignParentRight="true"
