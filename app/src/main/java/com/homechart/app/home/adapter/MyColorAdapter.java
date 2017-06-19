@@ -36,12 +36,25 @@ public class MyColorAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mColorlist.size();
+        if (null != mSelectColorMap && mSelectColorMap.size() > 0) {
+
+            return mColorlist.size() + 1;
+        } else {
+            return mColorlist.size();
+        }
     }
 
     @Override
     public Object getItem(int position) {
-        return mColorlist.get(position);
+        if (null != mSelectColorMap && mSelectColorMap.size() > 0) {
+            if (position == mColorlist.size()) {
+                return mColorlist.get(mColorlist.size() - 1);
+            } else {
+                return mColorlist.get(position);
+            }
+        } else {
+            return mColorlist.get(position);
+        }
     }
 
     @Override
@@ -65,25 +78,32 @@ public class MyColorAdapter extends BaseAdapter {
             myHolder = (MyHolder) convertView.getTag();
         }
 
-        if (mSelectColorMap.containsKey(mColorlist.get(position).getColor_id())) {
+        if (position == mColorlist.size()) {
+            myHolder.imageView.setBackgroundResource(R.drawable.color_line_white);
+            myHolder.iv_color_select.setVisibility(View.VISIBLE);
+            myHolder.iv_color_select.setImageResource(R.drawable.qingkong);
+            myHolder.tv_name.setText("清空");
+        } else {
+            if (mSelectColorMap.containsKey(mColorlist.get(position).getColor_id())) {
+
+                if (mColorlist.get(position).getColor_name().trim().equals("白色")) {
+                    myHolder.iv_color_select.setImageResource(R.drawable.xuanbaise);
+                }
+                myHolder.iv_color_select.setVisibility(View.VISIBLE);
+                myHolder.iv_color_pic_line.setVisibility(View.VISIBLE);
+
+            } else {
+                myHolder.iv_color_select.setVisibility(View.INVISIBLE);
+                myHolder.iv_color_pic_line.setVisibility(View.INVISIBLE);
+            }
 
             if (mColorlist.get(position).getColor_name().trim().equals("白色")) {
-                myHolder.iv_color_select.setImageResource(R.drawable.xuanbaise);
+                myHolder.imageView.setBackgroundResource(R.drawable.color_line_white);
+            } else {
+                myHolder.imageView.setBackgroundColor(Color.parseColor("#" + mColorlist.get(position).getColor_value()));
             }
-            myHolder.iv_color_select.setVisibility(View.VISIBLE);
-            myHolder.iv_color_pic_line.setVisibility(View.VISIBLE);
-
-        } else {
-            myHolder.iv_color_select.setVisibility(View.INVISIBLE);
-            myHolder.iv_color_pic_line.setVisibility(View.INVISIBLE);
+            myHolder.tv_name.setText(mColorlist.get(position).getColor_name());
         }
-
-        if (mColorlist.get(position).getColor_name().trim().equals("白色")) {
-            myHolder.imageView.setBackgroundResource(R.drawable.color_line_white);
-        }else {
-            myHolder.imageView.setBackgroundColor(Color.parseColor("#" + mColorlist.get(position).getColor_value()));
-        }
-        myHolder.tv_name.setText(mColorlist.get(position).getColor_name());
         return convertView;
     }
 

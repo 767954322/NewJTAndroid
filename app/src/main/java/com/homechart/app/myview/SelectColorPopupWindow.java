@@ -68,22 +68,26 @@ public class SelectColorPopupWindow extends PopupWindow {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                int colorId = mListData.get(position).getColor_id();
-                if (mSelectListData.containsKey(colorId)) {
-                    mSelectListData.remove(colorId);
-                } else {
-
-                    if (mSelectListData.size() < 3) {
-                        mSelectListData.put(colorId, mListData.get(position));
+                if(position == mListData.size()){
+                    mSelectListData.clear();
+                    colorAdapter.changeData(mListData, mSelectListData);
+                }else {
+                    int colorId = mListData.get(position).getColor_id();
+                    if (mSelectListData.containsKey(colorId)) {
+                        mSelectListData.remove(colorId);
                     } else {
-                        ToastUtils.showCenter(context, "最多选择三种色彩搭配哦～");
+
+                        if (mSelectListData.size() < 3) {
+                            mSelectListData.put(colorId, mListData.get(position));
+                        } else {
+                            ToastUtils.showCenter(context, "最多选择三种色彩搭配哦～");
+                        }
+                    }
+
+                    if (colorAdapter != null) {
+                        colorAdapter.changeData(mListData, mSelectListData);
                     }
                 }
-
-                if (colorAdapter != null) {
-                    colorAdapter.changeData(mListData, mSelectListData);
-                }
-
             }
         });
 
