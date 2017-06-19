@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.homechart.app.R;
@@ -15,6 +16,7 @@ import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.utils.UIUtils;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by gumenghao on 17/6/19.
@@ -24,10 +26,12 @@ public class MyColorAdapter extends BaseAdapter {
 
     private Context mContext;
     private List<ColorItemBean> mColorlist;
+    private Map<Integer, ColorItemBean> mSelectColorMap;
 
-    public MyColorAdapter(Context mContext, List<ColorItemBean> color_list) {
+    public MyColorAdapter(Context mContext, List<ColorItemBean> color_list, Map<Integer, ColorItemBean> selectColorMap) {
         this.mContext = mContext;
         this.mColorlist = color_list;
+        this.mSelectColorMap = selectColorMap;
     }
 
     @Override
@@ -54,21 +58,47 @@ public class MyColorAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_pop_color, null);
             myHolder.imageView = (RoundImageView) convertView.findViewById(R.id.iv_color_pic);
             myHolder.tv_name = (TextView) convertView.findViewById(R.id.iv_color_name);
+            myHolder.iv_color_select = (ImageView) convertView.findViewById(R.id.iv_color_select);
+            myHolder.iv_color_pic_line = (RoundImageView) convertView.findViewById(R.id.iv_color_pic_line);
             convertView.setTag(myHolder);
         } else {
             myHolder = (MyHolder) convertView.getTag();
         }
 
-        myHolder.imageView.setBackgroundColor(Color.parseColor("#" + mColorlist.get(position).getColor_value()));
-        myHolder.tv_name.setText(mColorlist.get(position).getColor_name());
+        if (mSelectColorMap.containsKey(mColorlist.get(position).getColor_id())) {
 
+            if (mColorlist.get(position).getColor_name().trim().equals("白色")) {
+                myHolder.iv_color_select.setImageResource(R.drawable.xuanbaise);
+            }
+            myHolder.iv_color_select.setVisibility(View.VISIBLE);
+            myHolder.iv_color_pic_line.setVisibility(View.VISIBLE);
+
+        } else {
+            myHolder.iv_color_select.setVisibility(View.INVISIBLE);
+            myHolder.iv_color_pic_line.setVisibility(View.INVISIBLE);
+        }
+
+        if (mColorlist.get(position).getColor_name().trim().equals("白色")) {
+            myHolder.imageView.setBackgroundResource(R.drawable.color_line_white);
+        }else {
+            myHolder.imageView.setBackgroundColor(Color.parseColor("#" + mColorlist.get(position).getColor_value()));
+        }
+        myHolder.tv_name.setText(mColorlist.get(position).getColor_name());
         return convertView;
     }
 
     class MyHolder {
         private RoundImageView imageView;
         private TextView tv_name;
+        private ImageView iv_color_select;
+        private RoundImageView iv_color_pic_line;
 
     }
 
+
+    public void changeData(List<ColorItemBean> color_list, Map<Integer, ColorItemBean> selectColorMap) {
+        this.mColorlist = color_list;
+        this.mSelectColorMap = selectColorMap;
+        this.notifyDataSetChanged();
+    }
 }
