@@ -10,19 +10,56 @@
         android:layout_centerInParent="true"
         android:gravity="center_horizontal">
 
-        <com.homechart.app.myview.RoundImageView
-            android:id="@+id/iv_takephoto"
-            android:layout_width="@dimen/font_100"
-            android:layout_height="@dimen/font_100"
-            android:background="@color/bg_e79056" />
+        <RelativeLayout
+            android:id="@+id/rl_pop_color_top"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/font_44"
+            android:background="@color/white">
 
-        <com.homechart.app.myview.RoundImageView
-            android:id="@+id/iv_pic"
-            android:layout_width="@dimen/font_100"
-            android:layout_height="@dimen/font_100"
-            android:layout_marginLeft="@dimen/font_20"
-            android:layout_toRightOf="@+id/iv_takephoto"
-            android:background="@color/bg_ff3b30" />
+            <ImageView
+                android:id="@+id/iv_pop_color_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/font_15"
+                android:src="@drawable/tital_back" />
+
+            <TextView
+                android:id="@+id/tv_pop_color_tital"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/size_6"
+                android:layout_toRightOf="@+id/iv_pop_color_icon"
+                android:text="色彩筛选"
+                android:textColor="@color/bg_e79056"
+                android:textSize="@dimen/size_12" />
+
+            <TextView
+                android:id="@+id/tv_pop_color_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/size_6"
+                android:layout_toRightOf="@+id/tv_pop_color_tital"
+                android:text="(您最多可以选择三种色彩搭配)"
+                android:textColor="@color/bg_8f8f8f"
+                android:textSize="@dimen/size_12" />
+
+
+            <TextView
+                android:layout_width="@dimen/font_50"
+                android:layout_height="@dimen/font_25"
+                android:background="@drawable/tv_pop_color_sure"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:layout_marginRight="@dimen/font_10"
+                android:textSize="@dimen/size_13"
+                android:textColor="@color/bg_e79056"
+                android:text="确认" />
+        </RelativeLayout>
+
 
     </RelativeLayout>
 
