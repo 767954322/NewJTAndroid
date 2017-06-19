@@ -40,6 +40,11 @@ public class SelectColorPopupWindow extends PopupWindow {
     private View mMenuView;
     private SureColor mSureColor;
 
+    public void clearSelect(){
+        mSelectListData.clear();
+        colorAdapter.notifyDataSetChanged();
+    }
+
     public SelectColorPopupWindow(final Context context, View.OnClickListener itemsOnClick, ColorBean colorBean, SureColor sureColor) {
         super(context);
         if (colorBean != null) {
@@ -92,6 +97,7 @@ public class SelectColorPopupWindow extends PopupWindow {
 
                 if (mSelectListData.size() != 0) {
                     mSureColor.clickSureColor(mSelectListData);
+                    SelectColorPopupWindow.this.dismiss();
                 } else {
                     ToastUtils.showCenter(context, "请先选择颜色再点击确认");
                 }

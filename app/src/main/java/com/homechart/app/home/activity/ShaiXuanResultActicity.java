@@ -158,8 +158,11 @@ public class ShaiXuanResultActicity
                     getColorData();
                     ToastUtils.showCenter(ShaiXuanResultActicity.this, "色彩信息获取失败");
                 } else {
-                    selectColorPopupWindow = null;
-                    selectColorPopupWindow = new SelectColorPopupWindow(this, this, colorBean, this);
+
+                    if (selectColorPopupWindow == null) {
+                        selectColorPopupWindow = new SelectColorPopupWindow(this, this, colorBean, this);
+                    }
+                    selectColorPopupWindow.clearSelect();
                     selectColorPopupWindow.showAtLocation(ShaiXuanResultActicity.this.findViewById(R.id.shaixuan_main),
                             Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
                             0,
@@ -447,7 +450,7 @@ public class ShaiXuanResultActicity
                 }
             }
         };
-        MyHttpManager.getInstance().getSearchList("", shaixuan_tag, (page_num - 1) * 20 + "", "20", callBack);
+        MyHttpManager.getInstance().getSearchList(mSelectListData, "", shaixuan_tag, (page_num - 1) * 20 + "", "20", callBack);
 
     }
 
@@ -505,13 +508,15 @@ public class ShaiXuanResultActicity
     @Override
     public void clickSureColor(Map<Integer, ColorItemBean> selectListData) {
 
-        ToastUtils.showCenter(ShaiXuanResultActicity.this, "回调");
+        this.mSelectListData = selectListData;
+        getListData(REFRESH_STATUS);
     }
 
     private List<SearchItemDataBean> mListData = new ArrayList<>();
     private List<Integer> mLListDataHeight = new ArrayList<>();
     private List<Integer> mSListDataHeight = new ArrayList<>();
     private List<String> strTuiJian;
+    private Map<Integer, ColorItemBean> mSelectListData;
     private boolean curentListTag = true;
     private int page_num = 1;
     private int TYPE_ONE = 1;

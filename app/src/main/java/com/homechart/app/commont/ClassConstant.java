@@ -135,6 +135,7 @@ public class ClassConstant {
         public static final String TAG_NAME = "tag_name";
         public static final String S = "s";
         public static final String N = "n";
+        public static final String COLOR_ID = "color_id";
     }
 
     public static class PicListType {

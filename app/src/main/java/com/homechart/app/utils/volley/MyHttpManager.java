@@ -14,6 +14,7 @@ import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.KeyConstans;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.commont.UrlConstants;
+import com.homechart.app.home.bean.color.ColorItemBean;
 import com.homechart.app.utils.Md5Util;
 
 import java.io.UnsupportedEncodingException;
@@ -792,7 +793,7 @@ public class MyHttpManager {
      * @param n
      * @param callback
      */
-    public void getSearchList(final String q, final String tag_name, final String s, final String n, OkStringRequest.OKResponseCallback callback) {
+    public void getSearchList(final Map<Integer, ColorItemBean> mSelectListData, final String q, final String tag_name, final String s, final String n, OkStringRequest.OKResponseCallback callback) {
         OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.SEARCH_LIST, callback) {
 
             @Override
@@ -803,6 +804,17 @@ public class MyHttpManager {
                 }
                 if (!TextUtils.isEmpty(tag_name.trim())) {
                     map.put(ClassConstant.SearchList.TAG_NAME, tag_name);
+                }
+
+
+                if (null != mSelectListData && mSelectListData.size() > 0) {
+                    StringBuffer sb = new StringBuffer();
+                    for (Integer key : mSelectListData.keySet()) {
+                        sb.append(key + ",");
+                    }
+                    String color = sb.toString();
+                    color = color.substring(0, sb.length() - 1);
+                    map.put(ClassConstant.SearchList.COLOR_ID, color);
                 }
 
                 map.put(ClassConstant.SearchList.S, s);

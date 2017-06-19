@@ -289,7 +289,7 @@ public class SearchResultActivity
                 }
             }
         };
-        MyHttpManager.getInstance().getSearchList(search_info, search_tag, (page_num - 1) * 20 + "", "20", callBack);
+        MyHttpManager.getInstance().getSearchList(null,search_info, search_tag, (page_num - 1) * 20 + "", "20", callBack);
 
     }
 
