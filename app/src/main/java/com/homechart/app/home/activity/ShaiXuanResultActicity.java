@@ -29,6 +29,7 @@ import com.homechart.app.home.bean.search.SearchItemDataBean;
 import com.homechart.app.home.bean.shaixuan.ShaiXuanBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.FlowLayoutShaiXuan;
+import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.myview.SelectColorPopupWindow;
 import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
 import com.homechart.app.recyclerlibrary.holder.BaseViewHolder;
@@ -81,6 +82,9 @@ public class ShaiXuanResultActicity
     private TextView iv_color_tital;
     private ColorBean colorBean;
     private SelectColorPopupWindow selectColorPopupWindow;
+    private RoundImageView riv_round_one;
+    private RoundImageView riv_round_two;
+    private RoundImageView riv_round_three;
 
     @Override
     protected int getLayoutResId() {
@@ -107,6 +111,9 @@ public class ShaiXuanResultActicity
         iv_color_tital = (TextView) view.findViewById(R.id.iv_color_tital);
         view_flowlayout = view.findViewById(R.id.view_flowlayout);
         iv_change_frag = (ImageView) view.findViewById(R.id.iv_change_frag);
+        riv_round_one = (RoundImageView) view.findViewById(R.id.riv_round_one);
+        riv_round_two = (RoundImageView) view.findViewById(R.id.riv_round_two);
+        riv_round_three = (RoundImageView) view.findViewById(R.id.riv_round_three);
 
     }
 
@@ -117,6 +124,9 @@ public class ShaiXuanResultActicity
         iv_change_frag.setOnClickListener(this);
         iv_color_icon.setOnClickListener(this);
         iv_color_tital.setOnClickListener(this);
+        riv_round_one.setOnClickListener(this);
+        riv_round_two.setOnClickListener(this);
+        riv_round_three.setOnClickListener(this);
     }
 
     @Override
@@ -152,6 +162,9 @@ public class ShaiXuanResultActicity
                 break;
             case R.id.iv_color_tital:
             case R.id.iv_color_icon:
+            case R.id.riv_round_one:
+            case R.id.riv_round_two:
+            case R.id.riv_round_three:
 
                 if (null == colorBean) {
 
@@ -509,7 +522,42 @@ public class ShaiXuanResultActicity
     public void clickSureColor(Map<Integer, ColorItemBean> selectListData) {
 
         this.mSelectListData = selectListData;
+        changeColorRound();
         getListData(REFRESH_STATUS);
+    }
+
+    List<String> colorList;
+
+    private void changeColorRound() {
+        if(colorList == null){
+            colorList = new ArrayList<>();
+        }else {
+            colorList.clear();
+        }
+        iv_color_tital.setVisibility(View.GONE);
+        for (Integer key : mSelectListData.keySet()) {
+            colorList.add(mSelectListData.get(key).getColor_value());
+        }
+        if (colorList.size() == 1) {
+            riv_round_one.setVisibility(View.VISIBLE);
+            riv_round_one.setBackgroundColor(Color.parseColor("#" + colorList.get(0)));
+            riv_round_two.setVisibility(View.GONE);
+            riv_round_three.setVisibility(View.GONE);
+        } else if (colorList.size() == 2) {
+            riv_round_one.setVisibility(View.VISIBLE);
+            riv_round_one.setBackgroundColor(Color.parseColor("#" + colorList.get(0)));
+            riv_round_two.setVisibility(View.VISIBLE);
+            riv_round_two.setBackgroundColor(Color.parseColor("#" + colorList.get(1)));
+            riv_round_three.setVisibility(View.GONE);
+        } else if (colorList.size() == 3) {
+            riv_round_one.setVisibility(View.VISIBLE);
+            riv_round_one.setBackgroundColor(Color.parseColor("#" + colorList.get(0)));
+            riv_round_two.setVisibility(View.VISIBLE);
+            riv_round_two.setBackgroundColor(Color.parseColor("#" + colorList.get(1)));
+            riv_round_three.setVisibility(View.VISIBLE);
+            riv_round_three.setBackgroundColor(Color.parseColor("#" + colorList.get(2)));
+        }
+
     }
 
     private List<SearchItemDataBean> mListData = new ArrayList<>();
