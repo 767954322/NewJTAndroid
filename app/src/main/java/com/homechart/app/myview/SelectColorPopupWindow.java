@@ -15,6 +15,7 @@ import com.homechart.app.R;
 import com.homechart.app.home.adapter.MyColorAdapter;
 import com.homechart.app.home.bean.color.ColorBean;
 import com.homechart.app.home.bean.color.ColorItemBean;
+import com.homechart.app.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +37,7 @@ public class SelectColorPopupWindow extends PopupWindow {
     private Map<Integer, ColorItemBean> mSelectListData;
     private View mMenuView;
 
-    public SelectColorPopupWindow(Context context, View.OnClickListener itemsOnClick, ColorBean colorBean) {
+    public SelectColorPopupWindow(final Context context, View.OnClickListener itemsOnClick, ColorBean colorBean) {
         super(context);
         if (colorBean != null) {
             mListData = colorBean.getColor_list();
@@ -56,11 +57,17 @@ public class SelectColorPopupWindow extends PopupWindow {
         gv_color_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 int colorId = mListData.get(position).getColor_id();
                 if (mSelectListData.containsKey(colorId)) {
                     mSelectListData.remove(colorId);
                 } else {
-                    mSelectListData.put(colorId, mListData.get(position));
+
+                    if (mSelectListData.size() < 3) {
+                        mSelectListData.put(colorId, mListData.get(position));
+                    } else {
+                        ToastUtils.showCenter(context, "最多选择三种色彩搭配哦～");
+                    }
                 }
 
                 if (colorAdapter != null) {
