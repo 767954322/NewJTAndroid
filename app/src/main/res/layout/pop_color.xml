@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_pop_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal">
+
+        <com.homechart.app.myview.RoundImageView
+            android:id="@+id/iv_takephoto"
+            android:layout_width="@dimen/font_100"
+            android:layout_height="@dimen/font_100"
+            android:background="@color/bg_e79056" />
+
+        <com.homechart.app.myview.RoundImageView
+            android:id="@+id/iv_pic"
+            android:layout_width="@dimen/font_100"
+            android:layout_height="@dimen/font_100"
+            android:layout_marginLeft="@dimen/font_20"
+            android:layout_toRightOf="@+id/iv_takephoto"
+            android:background="@color/bg_ff3b30" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

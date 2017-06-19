@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.homechart.app.home.bean.search.SearchItemDataBean;
 import com.homechart.app.home.bean.shaixuan.ShaiXuanBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.FlowLayoutShaiXuan;
+import com.homechart.app.myview.SelectColorPopupWindow;
 import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
 import com.homechart.app.recyclerlibrary.holder.BaseViewHolder;
 import com.homechart.app.recyclerlibrary.recyclerview.HRecyclerView;
@@ -70,6 +72,9 @@ public class ShaiXuanResultActicity
     private ImageView iv_change_frag;
     private View view;
     private View view_flowlayout;
+    private ImageView iv_color_icon;
+    private TextView iv_color_tital;
+    private SelectColorPopupWindow selectColorPopupWindow;
 
     @Override
     protected int getLayoutResId() {
@@ -92,7 +97,9 @@ public class ShaiXuanResultActicity
         nav_left_imageButton = (ImageButton) findViewById(R.id.nav_left_imageButton);
         tv_tital_comment = (TextView) findViewById(R.id.tv_tital_comment);
         his_flowLayout = (FlowLayoutShaiXuan) view.findViewById(R.id.his_flowLayout);
-        view_flowlayout =  view.findViewById(R.id.view_flowlayout);
+        iv_color_icon = (ImageView) view.findViewById(R.id.iv_color_icon);
+        iv_color_tital = (TextView) view.findViewById(R.id.iv_color_tital);
+        view_flowlayout = view.findViewById(R.id.view_flowlayout);
         iv_change_frag = (ImageView) view.findViewById(R.id.iv_change_frag);
 
     }
@@ -102,6 +109,8 @@ public class ShaiXuanResultActicity
         super.initListener();
         nav_left_imageButton.setOnClickListener(this);
         iv_change_frag.setOnClickListener(this);
+        iv_color_icon.setOnClickListener(this);
+        iv_color_tital.setOnClickListener(this);
 //        wl_tips.setMarkClickListener(new WrapLayout.MarkClickListener() {
 //            @Override
 //            public void clickMark(int position) {
@@ -120,8 +129,8 @@ public class ShaiXuanResultActicity
         tv_tital_comment.setText(shaixuan_tag);
         width_Pic_Staggered = PublicUtils.getScreenWidth(ShaiXuanResultActicity.this) / 2 - UIUtils.getDimens(R.dimen.font_20);
         width_Pic_List = PublicUtils.getScreenWidth(ShaiXuanResultActicity.this) - UIUtils.getDimens(R.dimen.font_14);
-
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        selectColorPopupWindow = new SelectColorPopupWindow(this,this);
         getSearchData();
         buildRecyclerView();
     }
@@ -145,6 +154,19 @@ public class ShaiXuanResultActicity
                     curentListTag = true;
 //                    mRecyclerView.scrollToPosition(scroll_position);
                 }
+                break;
+            case R.id.iv_color_tital:
+            case R.id.iv_color_icon:
+                if(selectColorPopupWindow == null){
+                    selectColorPopupWindow = new SelectColorPopupWindow(this,this);
+                }
+                selectColorPopupWindow.showAtLocation(ShaiXuanResultActicity.this.findViewById(R.id.shaixuan_main),
+                        Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
+                        0,
+                        0); //设置layout在PopupWindow中显示的位置
+                break;
+            case R.id.rl_pop_main:
+                selectColorPopupWindow.dismiss();
                 break;
         }
     }
@@ -392,6 +414,9 @@ public class ShaiXuanResultActicity
         MyHttpManager.getInstance().getSearchList("", shaixuan_tag, (page_num - 1) * 20 + "", "20", callBack);
 
     }
+
+
+
 
     private void getHeight(List<SearchItemDataBean> item_list, String state) {
         if (state.equals(REFRESH_STATUS)) {

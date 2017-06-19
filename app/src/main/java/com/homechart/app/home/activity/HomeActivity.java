@@ -31,7 +31,10 @@ import java.util.List;
 /**
  * Created by allen on 2017/6/1.
  */
-public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
+public class HomeActivity
+        extends BaseActivity
+        implements RadioGroup.OnCheckedChangeListener,
+        View.OnClickListener {
 
     private RadioButton radio_btn_center;
     private RadioGroup mRadioGroup;
@@ -77,7 +80,7 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         }
         mRadioGroup.check(R.id.radio_btn_pic);
         mRadioGroup.setAlpha(0.96f);
-        menuWindow = new SelectPicPopupWindow(HomeActivity.this, itemsOnClick);
+        menuWindow = new SelectPicPopupWindow(HomeActivity.this, HomeActivity.this);
     }
 
     @Override
@@ -110,7 +113,7 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 }
                 //显示窗口
                 if (menuWindow == null) {
-                    menuWindow = new SelectPicPopupWindow(HomeActivity.this, itemsOnClick);
+                    menuWindow = new SelectPicPopupWindow(HomeActivity.this, HomeActivity.this);
                 }
                 menuWindow.showAtLocation(HomeActivity.this.findViewById(R.id.main),
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
@@ -136,26 +139,21 @@ public class HomeActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         transaction.commitAllowingStateLoss();
     }
 
-    //为弹出窗口实现监听类
-    private View.OnClickListener itemsOnClick = new View.OnClickListener() {
-
-        public void onClick(View v) {
-            menuWindow.dismiss();
-            switch (v.getId()) {
-                case R.id.iv_takephoto:
-                    ToastUtils.showCenter(HomeActivity.this, "拍照");
-                    break;
-                case R.id.iv_pic:
-                    ToastUtils.showCenter(HomeActivity.this, "相册");
-                    break;
-                default:
-                    break;
-            }
-
-
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_takephoto:
+                menuWindow.dismiss();
+                ToastUtils.showCenter(HomeActivity.this, "拍照");
+                break;
+            case R.id.iv_pic:
+                menuWindow.dismiss();
+                ToastUtils.showCenter(HomeActivity.this, "相册");
+                break;
+            case R.id.rl_pop_main:
+                menuWindow.dismiss();
+                break;
         }
-
-    };
-
+    }
 }
 
