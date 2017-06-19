@@ -113,7 +113,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="@dimen/font_45"
-        android:background="@drawable/bt_login"
+        android:background="@drawable/bt_issue"
         android:text="提交"
         android:textColor="@color/white"
         android:textSize="@dimen/font_17"
