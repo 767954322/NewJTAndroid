@@ -103,7 +103,8 @@ public class SelectColorPopupWindow extends PopupWindow {
                     mSureColor.clickSureColor(mSelectListData);
                     SelectColorPopupWindow.this.dismiss();
                 } else {
-                    ToastUtils.showCenter(context, "请先选择颜色再点击确认");
+//                    ToastUtils.showCenter(context, "请先选择颜色再点击确认");
+                    mSureColor.clickSureColor(null);
                 }
 
             }

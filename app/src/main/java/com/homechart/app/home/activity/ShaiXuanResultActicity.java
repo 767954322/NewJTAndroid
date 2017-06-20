@@ -175,7 +175,7 @@ public class ShaiXuanResultActicity
                     if (selectColorPopupWindow == null) {
                         selectColorPopupWindow = new SelectColorPopupWindow(this, this, colorBean, this);
                     }
-                    selectColorPopupWindow.clearSelect();
+//                    selectColorPopupWindow.clearSelect();
                     selectColorPopupWindow.showAtLocation(ShaiXuanResultActicity.this.findViewById(R.id.shaixuan_main),
                             Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
                             0,
@@ -522,16 +522,25 @@ public class ShaiXuanResultActicity
     public void clickSureColor(Map<Integer, ColorItemBean> selectListData) {
 
         this.mSelectListData = selectListData;
-        changeColorRound();
+        if (mSelectListData == null) {
+            iv_color_tital.setVisibility(View.VISIBLE);
+            riv_round_one.setVisibility(View.GONE);
+            riv_round_two.setVisibility(View.GONE);
+            riv_round_three.setVisibility(View.GONE);
+            selectColorPopupWindow.dismiss();
+        } else {
+            changeColorRound();
+        }
+
         getListData(REFRESH_STATUS);
     }
 
     List<String> colorList;
 
     private void changeColorRound() {
-        if(colorList == null){
+        if (colorList == null) {
             colorList = new ArrayList<>();
-        }else {
+        } else {
             colorList.clear();
         }
         iv_color_tital.setVisibility(View.GONE);
@@ -540,9 +549,9 @@ public class ShaiXuanResultActicity
         }
         if (colorList.size() == 1) {
             riv_round_one.setVisibility(View.VISIBLE);
-            if(colorList.get(0).equalsIgnoreCase("FFFFFF")){
+            if (colorList.get(0).equalsIgnoreCase("FFFFFF")) {
                 riv_round_one.setBackgroundResource(R.drawable.color_line_white);
-            }else {
+            } else {
                 riv_round_one.setBackgroundColor(Color.parseColor("#" + colorList.get(0)));
             }
 
@@ -550,36 +559,36 @@ public class ShaiXuanResultActicity
             riv_round_three.setVisibility(View.GONE);
         } else if (colorList.size() == 2) {
             riv_round_one.setVisibility(View.VISIBLE);
-            if(colorList.get(0).equalsIgnoreCase("FFFFFF")){
+            if (colorList.get(0).equalsIgnoreCase("FFFFFF")) {
                 riv_round_one.setBackgroundResource(R.drawable.color_line_white);
-            }else {
+            } else {
                 riv_round_one.setBackgroundColor(Color.parseColor("#" + colorList.get(0)));
             }
             riv_round_two.setVisibility(View.VISIBLE);
-            if(colorList.get(1).equalsIgnoreCase("FFFFFF")){
+            if (colorList.get(1).equalsIgnoreCase("FFFFFF")) {
                 riv_round_two.setBackgroundResource(R.drawable.color_line_white);
-            }else {
+            } else {
                 riv_round_two.setBackgroundColor(Color.parseColor("#" + colorList.get(1)));
             }
 
             riv_round_three.setVisibility(View.GONE);
         } else if (colorList.size() == 3) {
             riv_round_one.setVisibility(View.VISIBLE);
-            if(colorList.get(0).equalsIgnoreCase("FFFFFF")){
+            if (colorList.get(0).equalsIgnoreCase("FFFFFF")) {
                 riv_round_one.setBackgroundResource(R.drawable.color_line_white);
-            }else {
+            } else {
                 riv_round_one.setBackgroundColor(Color.parseColor("#" + colorList.get(0)));
             }
             riv_round_two.setVisibility(View.VISIBLE);
-            if(colorList.get(1).equalsIgnoreCase("FFFFFF")){
+            if (colorList.get(1).equalsIgnoreCase("FFFFFF")) {
                 riv_round_two.setBackgroundResource(R.drawable.color_line_white);
-            }else {
+            } else {
                 riv_round_two.setBackgroundColor(Color.parseColor("#" + colorList.get(1)));
             }
             riv_round_three.setVisibility(View.VISIBLE);
-            if(colorList.get(2).equalsIgnoreCase("FFFFFF")){
+            if (colorList.get(2).equalsIgnoreCase("FFFFFF")) {
                 riv_round_three.setBackgroundResource(R.drawable.color_line_white);
-            }else {
+            } else {
                 riv_round_three.setBackgroundColor(Color.parseColor("#" + colorList.get(2)));
             }
         }
