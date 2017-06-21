@@ -104,7 +104,7 @@ public class FlowLayoutFaBu extends ViewGroup {
                         : width + getPaddingLeft() + getPaddingRight(),
                 modeHeight == MeasureSpec.EXACTLY ? sizeHeight : height
                         + getPaddingTop() + getPaddingBottom());
-        setPadding(UIUtils.getDimens(R.dimen.font_2), UIUtils.getDimens(R.dimen.font_15), UIUtils.getDimens(R.dimen.font_15), UIUtils.getDimens(R.dimen.font_15));
+        setPadding(UIUtils.getDimens(R.dimen.font_2), UIUtils.getDimens(R.dimen.font_15), UIUtils.getDimens(R.dimen.font_15), UIUtils.getDimens(R.dimen.font_5));
     }
 
     // 储存所有的View
@@ -215,37 +215,7 @@ public class FlowLayoutFaBu extends ViewGroup {
     /**
      * 设置数据
      */
-    public void setData(String[] strings) {
-
-        int count = strings.length;
-        for (int i = 0; i < count; i++) {
-            final View view = mInflater.inflate(R.layout.flowlayout_textview_fabu, this,
-                    false);
-            final TextView tv = (TextView) view.findViewById(R.id.tv_fabu);
-            tv.setText(strings[i]);
-            tv.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (onTagClickListener != null)
-                        onTagClickListener.TagClick(tv.getText().toString());
-                }
-            });
-
-            if (isColorful) {
-                Random random = new Random();
-                int ranColor = 0xff000000 | random.nextInt(0x00ffffff);
-                tv.setBackgroundColor(ranColor);
-            }
-
-            this.addView(tv);
-        }
-    }
-
-
-    /**
-     * 设置数据
-     */
-    public void setListData(List<String> list) {
+    public void setListData(final List<String> list) {
 
         int count = list.size();
         for (int i = 0; i < count; i++) {
@@ -254,18 +224,19 @@ public class FlowLayoutFaBu extends ViewGroup {
             final TextView tv = (TextView) view.findViewById(R.id.tv_fabu);
             final ImageView delete = (ImageView) view.findViewById(R.id.iv_fabu_tag_del);
             tv.setText(list.get(i));
+            final int finalI = i;
             tv.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (onTagClickListener != null)
-                        onTagClickListener.TagClick(tv.getText().toString());
+                        onTagClickListener.TagClick(tv.getText().toString(), finalI);
                 }
             });
             delete.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (onTagClickListener != null)
-                        onTagClickListener.DeleteTag(tv.getText().toString());
+                        onTagClickListener.DeleteTag(tv.getText().toString(), finalI);
                 }
             });
             this.addView(view);
@@ -278,7 +249,7 @@ public class FlowLayoutFaBu extends ViewGroup {
             @Override
             public void onClick(View v) {
                 if (onTagClickListener != null)
-                    onTagClickListener.AddTag(tv_add.getText().toString());
+                    onTagClickListener.AddTag(tv_add.getText().toString(), list.size() );
             }
         });
         final ImageView delete_add = (ImageView) view_add.findViewById(R.id.iv_fabu_tag_del);
@@ -287,30 +258,6 @@ public class FlowLayoutFaBu extends ViewGroup {
 
     }
 
-    /**
-     * 添加标签
-     *
-     * @param text
-     */
-    public void addTag(String text) {
-        final TextView tv = (TextView) mInflater.inflate(R.layout.flowlayout_textview_fabu, this,
-                false);
-        tv.setText(text);
-        tv.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onTagClickListener != null)
-                    onTagClickListener.TagClick(tv.getText().toString());
-            }
-        });
-
-        if (isColorful) {
-            Random random = new Random();
-            int ranColor = 0xff000000 | random.nextInt(0x00ffffff);
-            tv.setBackgroundColor(ranColor);
-        }
-        this.addView(tv);
-    }
 
     /**
      * 设置多彩颜色
@@ -341,10 +288,10 @@ public class FlowLayoutFaBu extends ViewGroup {
 
 
     public interface OnTagClickListener {
-        void TagClick(String text);
+        void TagClick(String text, int position);
 
-        void DeleteTag(String text);
+        void DeleteTag(String text, int position);
 
-        void AddTag(String text);
+        void AddTag(String text, int position);
     }
 }

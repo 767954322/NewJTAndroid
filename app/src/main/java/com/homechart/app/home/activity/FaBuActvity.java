@@ -85,21 +85,22 @@ public class FaBuActvity
     }
 
     @Override
-    public void TagClick(String text) {
+    public void TagClick(String text, int position) {
 
-        ToastUtils.showCenter(FaBuActvity.this, "点击" + text);
+        ToastUtils.showCenter(FaBuActvity.this, "点击" + position + text);
     }
 
     @Override
-    public void DeleteTag(String text) {
+    public void DeleteTag(String text, int position) {
         fl_tag_flowLayout.cleanTag();
-        listTag.clear();
+        listTag.remove(position);
         fl_tag_flowLayout.setListData(listTag);
-        ToastUtils.showCenter(FaBuActvity.this, "删除" + text);
     }
 
     @Override
-    public void AddTag(String text) {
-        ToastUtils.showCenter(FaBuActvity.this, "添加" + text);
+    public void AddTag(String text, int position) {
+//        listTag.add("tag" + position);
+//        fl_tag_flowLayout.cleanTag();
+//        fl_tag_flowLayout.setListData(listTag);
     }
 }
