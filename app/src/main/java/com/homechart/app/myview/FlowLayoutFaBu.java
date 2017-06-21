@@ -10,6 +10,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.homechart.app.R;
@@ -103,7 +104,7 @@ public class FlowLayoutFaBu extends ViewGroup {
                         : width + getPaddingLeft() + getPaddingRight(),
                 modeHeight == MeasureSpec.EXACTLY ? sizeHeight : height
                         + getPaddingTop() + getPaddingBottom());
-        setPadding(UIUtils.getDimens(R.dimen.font_15), UIUtils.getDimens(R.dimen.font_15), UIUtils.getDimens(R.dimen.font_15), UIUtils.getDimens(R.dimen.font_5));
+        setPadding(UIUtils.getDimens(R.dimen.font_2), UIUtils.getDimens(R.dimen.font_15), UIUtils.getDimens(R.dimen.font_15), UIUtils.getDimens(R.dimen.font_15));
     }
 
     // 储存所有的View
@@ -218,8 +219,9 @@ public class FlowLayoutFaBu extends ViewGroup {
 
         int count = strings.length;
         for (int i = 0; i < count; i++) {
-            final TextView tv = (TextView) mInflater.inflate(R.layout.flowlayout_textview_fabu, this,
+            final View view = mInflater.inflate(R.layout.flowlayout_textview_fabu, this,
                     false);
+            final TextView tv = (TextView) view.findViewById(R.id.tv_fabu);
             tv.setText(strings[i]);
             tv.setOnClickListener(new OnClickListener() {
                 @Override
@@ -247,8 +249,10 @@ public class FlowLayoutFaBu extends ViewGroup {
 
         int count = list.size();
         for (int i = 0; i < count; i++) {
-            final TextView tv = (TextView) mInflater.inflate(R.layout.flowlayout_textview_fabu, this,
+            final View view = mInflater.inflate(R.layout.flowlayout_textview_fabu, this,
                     false);
+            final TextView tv = (TextView) view.findViewById(R.id.tv_fabu);
+            final ImageView delete = (ImageView) view.findViewById(R.id.iv_fabu_tag_del);
             tv.setText(list.get(i));
             tv.setOnClickListener(new OnClickListener() {
                 @Override
@@ -257,8 +261,14 @@ public class FlowLayoutFaBu extends ViewGroup {
                         onTagClickListener.TagClick(tv.getText().toString());
                 }
             });
-
-            this.addView(tv);
+            delete.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onTagClickListener != null)
+                        onTagClickListener.DeleteTag(tv.getText().toString());
+                }
+            });
+            this.addView(view);
         }
     }
 
@@ -268,7 +278,7 @@ public class FlowLayoutFaBu extends ViewGroup {
      * @param text
      */
     public void addTag(String text) {
-        final TextView tv = (TextView) mInflater.inflate(R.layout.flowlayout_textview_shaixuan, this,
+        final TextView tv = (TextView) mInflater.inflate(R.layout.flowlayout_textview_fabu, this,
                 false);
         tv.setText(text);
         tv.setOnClickListener(new OnClickListener() {
@@ -317,5 +327,7 @@ public class FlowLayoutFaBu extends ViewGroup {
 
     public interface OnTagClickListener {
         void TagClick(String text);
+
+        void DeleteTag(String text);
     }
 }

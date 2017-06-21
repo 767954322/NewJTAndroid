@@ -11,6 +11,7 @@ import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.myview.FlowLayoutFaBu;
 import com.homechart.app.myview.FlowLayoutShaiXuan;
 import com.homechart.app.myview.RoundImageView;
+import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.imageloader.ImageUtils;
 import com.umeng.socialize.media.Base;
 
@@ -23,7 +24,8 @@ import java.util.List;
 
 public class FaBuActvity
         extends BaseActivity
-        implements View.OnClickListener {
+        implements View.OnClickListener,
+        FlowLayoutFaBu.OnTagClickListener {
     private ImageView iv_image_fabu;
     private String urlImage;
     private ImageButton nav_left_imageButton;
@@ -67,7 +69,7 @@ public class FaBuActvity
         ImageUtils.displayFilletImage("file://" + urlImage, iv_image_fabu);
         fl_tag_flowLayout.setColorful(false);
         fl_tag_flowLayout.setListData(list);
-
+        fl_tag_flowLayout.setOnTagClickListener(this);
     }
 
     @Override
@@ -81,5 +83,19 @@ public class FaBuActvity
 
         }
 
+    }
+
+    @Override
+    public void TagClick(String text) {
+
+        ToastUtils.showCenter(FaBuActvity.this, "点击" + text);
+    }
+
+    @Override
+    public void DeleteTag(String text) {
+        fl_tag_flowLayout.cleanTag();
+        list.clear();
+        fl_tag_flowLayout.setListData(list);
+        ToastUtils.showCenter(FaBuActvity.this, "删除" + text);
     }
 }
