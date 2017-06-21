@@ -8,9 +8,14 @@ import android.widget.TextView;
 
 import com.homechart.app.R;
 import com.homechart.app.home.base.BaseActivity;
+import com.homechart.app.myview.FlowLayoutFaBu;
+import com.homechart.app.myview.FlowLayoutShaiXuan;
 import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.utils.imageloader.ImageUtils;
 import com.umeng.socialize.media.Base;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by gumenghao on 17/6/21.
@@ -24,6 +29,8 @@ public class FaBuActvity
     private ImageButton nav_left_imageButton;
     private TextView tv_tital_comment;
     private TextView tv_content_right;
+    private FlowLayoutFaBu fl_tag_flowLayout;
+    private List<String> list = new ArrayList<>();
 
     @Override
     protected int getLayoutResId() {
@@ -43,6 +50,7 @@ public class FaBuActvity
         tv_tital_comment = (TextView) findViewById(R.id.tv_tital_comment);
         tv_content_right = (TextView) findViewById(R.id.tv_content_right);
         iv_image_fabu = (ImageView) findViewById(R.id.iv_image_fabu);
+        fl_tag_flowLayout = (FlowLayoutFaBu) findViewById(R.id.fl_tag_flowLayout);
     }
 
     @Override
@@ -55,7 +63,10 @@ public class FaBuActvity
     protected void initData(Bundle savedInstanceState) {
         tv_tital_comment.setText("发布图片");
         tv_content_right.setText("发布");
+        list.add("添加标签 ＋");
         ImageUtils.displayFilletImage("file://" + urlImage, iv_image_fabu);
+        fl_tag_flowLayout.setColorful(false);
+        fl_tag_flowLayout.setListData(list);
 
     }
 
