@@ -1,32 +1,24 @@
 package com.homechart.app.home.activity;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.homechart.app.R;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.fragment.HomeCenterFragment;
-import com.homechart.app.home.fragment.HomeDesignerFragment;
 import com.homechart.app.home.fragment.HomePicFragment;
 import com.homechart.app.myview.SelectPicPopupWindow;
 import com.homechart.app.utils.ToastUtils;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by allen on 2017/6/1.
@@ -71,6 +63,7 @@ public class HomeActivity
     protected void initData(Bundle savedInstanceState) {
 
         if (findViewById(R.id.main_content) != null) {
+
             if (null == mHomePicFragment) {
                 mHomePicFragment = new HomePicFragment(getSupportFragmentManager());
             }
@@ -111,10 +104,6 @@ public class HomeActivity
                 } else if (jumpPosition == 2) {
                     mRadioGroup.check(R.id.radio_btn_center);
                 }
-                //显示窗口
-                if (menuWindow == null) {
-                    menuWindow = new SelectPicPopupWindow(HomeActivity.this, HomeActivity.this);
-                }
                 menuWindow.showAtLocation(HomeActivity.this.findViewById(R.id.main),
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
                         0,
@@ -142,18 +131,22 @@ public class HomeActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.iv_takephoto:
+            case R.id.tv_takephoto:
                 menuWindow.dismiss();
                 ToastUtils.showCenter(HomeActivity.this, "拍照");
                 break;
-            case R.id.iv_pic:
+            case R.id.tv_pic:
                 menuWindow.dismiss();
                 ToastUtils.showCenter(HomeActivity.this, "相册");
                 break;
             case R.id.rl_pop_main:
                 menuWindow.dismiss();
                 break;
+            case R.id.iv_bufabu:
+                menuWindow.dismiss();
+                break;
         }
     }
+
 }
 
