@@ -24,12 +24,12 @@
             android:id="@+id/tv_takephoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:drawableTop="@drawable/xiangji"
             android:drawablePadding="@dimen/font_10"
-            android:textColor="@color/white"
-            android:textSize="@dimen/font_14"
+            android:drawableTop="@drawable/xiangji"
             android:gravity="center"
-            android:text="相机" />
+            android:text="相机"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_14" />
 
         <TextView
             android:id="@+id/tv_pic"
@@ -40,10 +40,10 @@
 
             android:drawablePadding="@dimen/font_10"
             android:drawableTop="@drawable/xiangce"
-            android:textSize="@dimen/font_14"
             android:gravity="center"
+            android:text="相册"
             android:textColor="@color/white"
-            android:text="相册" />
+            android:textSize="@dimen/font_14" />
 
     </RelativeLayout>
 

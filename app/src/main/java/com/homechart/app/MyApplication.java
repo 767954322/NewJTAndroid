@@ -1,6 +1,8 @@
 package com.homechart.app;
 
 import android.app.Application;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
@@ -43,7 +45,18 @@ public class MyApplication extends Application {
     }
 
     private void initPike() {
-        ThemeConfig themeConfig = ThemeConfig.DEFAULT;
+
+        //黑色主题
+        ThemeConfig DARK = new ThemeConfig.Builder()
+                .setTitleBarBgColor(Color.rgb(0x38, 0x42, 0x48))
+                .setFabNornalColor(Color.rgb(0x38, 0x42, 0x48))
+                .setFabPressedColor(Color.rgb(0x20, 0x25, 0x28))
+                .setCheckSelectedColor(Color.rgb(0x38, 0x42, 0x48))
+                .setCropControlColor(Color.rgb(0x38, 0x42, 0x48))
+                .setEditPhotoBgTexture(new ColorDrawable(0xd0000000))
+                .build();
+
+        ThemeConfig themeConfig = DARK;
         FunctionConfig functionConfig = new FunctionConfig.Builder()
                 .setMutiSelectMaxSize(1)
                 .setEnableEdit(true)

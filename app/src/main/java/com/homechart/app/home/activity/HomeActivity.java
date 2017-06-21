@@ -1,8 +1,13 @@
 package com.homechart.app.home.activity;
 
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.provider.MediaStore;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -19,6 +24,12 @@ import com.homechart.app.home.fragment.HomeCenterFragment;
 import com.homechart.app.home.fragment.HomePicFragment;
 import com.homechart.app.myview.SelectPicPopupWindow;
 import com.homechart.app.utils.ToastUtils;
+
+import java.io.File;
+import java.util.List;
+
+import cn.finalteam.galleryfinal.GalleryFinal;
+import cn.finalteam.galleryfinal.model.PhotoInfo;
 
 /**
  * Created by allen on 2017/6/1.
@@ -133,11 +144,44 @@ public class HomeActivity
         switch (v.getId()) {
             case R.id.tv_takephoto:
                 menuWindow.dismiss();
-                ToastUtils.showCenter(HomeActivity.this, "拍照");
+                GalleryFinal.openCamera(0, new GalleryFinal.OnHanlderResultCallback() {
+                    @Override
+                    public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
+                        if (resultList != null && resultList.size() > 0) {
+                            Message message = new Message();
+                            message.obj = resultList.get(0).getPhotoPath().toString();
+                            handler.sendMessage(message);
+                        } else {
+                            ToastUtils.showCenter(HomeActivity.this, "拍照资源获取失败");
+                        }
+                    }
+
+                    @Override
+                    public void onHanlderFailure(int requestCode, String errorMsg) {
+
+                    }
+                });
+
+
                 break;
             case R.id.tv_pic:
                 menuWindow.dismiss();
-                ToastUtils.showCenter(HomeActivity.this, "相册");
+                GalleryFinal.openGallerySingle(0, new GalleryFinal.OnHanlderResultCallback() {
+                    @Override
+                    public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
+                        if (resultList != null && resultList.size() > 0) {
+                            Message message = new Message();
+                            message.obj = resultList.get(0).getPhotoPath().toString();
+                            handler.sendMessage(message);
+                        } else {
+                            ToastUtils.showCenter(HomeActivity.this, "图片资源获取失败");
+                        }
+                    }
+
+                    @Override
+                    public void onHanlderFailure(int requestCode, String errorMsg) {
+                    }
+                });
                 break;
             case R.id.rl_pop_main:
                 menuWindow.dismiss();
@@ -148,5 +192,17 @@ public class HomeActivity
         }
     }
 
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            String url_Imag = (String) msg.obj;
+            Intent intent = new Intent(HomeActivity.this, FaBuActvity.class);
+            intent.putExtra("image_path", url_Imag);
+            startActivity(intent);
+
+        }
+    };
 }
 
