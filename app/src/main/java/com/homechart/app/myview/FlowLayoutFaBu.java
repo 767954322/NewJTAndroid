@@ -270,6 +270,21 @@ public class FlowLayoutFaBu extends ViewGroup {
             });
             this.addView(view);
         }
+        final View view_add = mInflater.inflate(R.layout.flowlayout_textview_fabu_add, this,
+                false);
+        final TextView tv_add = (TextView) view_add.findViewById(R.id.tv_fabu);
+        tv_add.setText("添加标签＋");
+        tv_add.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onTagClickListener != null)
+                    onTagClickListener.AddTag(tv_add.getText().toString());
+            }
+        });
+        final ImageView delete_add = (ImageView) view_add.findViewById(R.id.iv_fabu_tag_del);
+        delete_add.setVisibility(INVISIBLE);
+        this.addView(view_add);
+
     }
 
     /**
@@ -329,5 +344,7 @@ public class FlowLayoutFaBu extends ViewGroup {
         void TagClick(String text);
 
         void DeleteTag(String text);
+
+        void AddTag(String text);
     }
 }

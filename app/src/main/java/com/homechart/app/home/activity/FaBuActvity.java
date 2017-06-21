@@ -32,7 +32,7 @@ public class FaBuActvity
     private TextView tv_tital_comment;
     private TextView tv_content_right;
     private FlowLayoutFaBu fl_tag_flowLayout;
-    private List<String> list = new ArrayList<>();
+    private List<String> listTag = new ArrayList<>();
 
     @Override
     protected int getLayoutResId() {
@@ -65,10 +65,9 @@ public class FaBuActvity
     protected void initData(Bundle savedInstanceState) {
         tv_tital_comment.setText("发布图片");
         tv_content_right.setText("发布");
-        list.add("添加标签 ＋");
         ImageUtils.displayFilletImage("file://" + urlImage, iv_image_fabu);
         fl_tag_flowLayout.setColorful(false);
-        fl_tag_flowLayout.setListData(list);
+        fl_tag_flowLayout.setListData(listTag);
         fl_tag_flowLayout.setOnTagClickListener(this);
     }
 
@@ -94,8 +93,13 @@ public class FaBuActvity
     @Override
     public void DeleteTag(String text) {
         fl_tag_flowLayout.cleanTag();
-        list.clear();
-        fl_tag_flowLayout.setListData(list);
+        listTag.clear();
+        fl_tag_flowLayout.setListData(listTag);
         ToastUtils.showCenter(FaBuActvity.this, "删除" + text);
+    }
+
+    @Override
+    public void AddTag(String text) {
+        ToastUtils.showCenter(FaBuActvity.this, "添加" + text);
     }
 }

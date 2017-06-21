@@ -10,11 +10,11 @@
         android:layout_height="@dimen/font_28"
         android:layout_marginBottom="@dimen/font_15"
         android:layout_marginLeft="@dimen/font_13"
-        android:background="@drawable/bg_edittext_fabu_select"
+        android:background="@drawable/bg_edittext_fabu"
         android:gravity="center_vertical"
         android:paddingLeft="@dimen/font_12"
         android:paddingRight="@dimen/font_12"
-        android:textColor="@color/white"
+        android:textColor="@color/bg_e79056"
         android:textSize="@dimen/size_14" />
 
     <ImageView

@@ -22,6 +22,7 @@
             android:id="@+id/iv_image_fabu"
             android:layout_width="100dp"
             android:layout_height="100dp"
+            android:scaleType="centerCrop"
             android:layout_marginLeft="@dimen/font_15" />
 
         <EditText
