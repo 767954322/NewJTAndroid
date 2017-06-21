@@ -10,6 +10,7 @@ import com.homechart.app.R;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.myview.FlowLayoutFaBu;
 import com.homechart.app.myview.FlowLayoutShaiXuan;
+import com.homechart.app.myview.MyListView;
 import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.imageloader.ImageUtils;
@@ -33,6 +34,7 @@ public class FaBuActvity
     private TextView tv_content_right;
     private FlowLayoutFaBu fl_tag_flowLayout;
     private List<String> listTag = new ArrayList<>();
+    private MyListView lv_zhuti;
 
     @Override
     protected int getLayoutResId() {
@@ -53,6 +55,7 @@ public class FaBuActvity
         tv_content_right = (TextView) findViewById(R.id.tv_content_right);
         iv_image_fabu = (ImageView) findViewById(R.id.iv_image_fabu);
         fl_tag_flowLayout = (FlowLayoutFaBu) findViewById(R.id.fl_tag_flowLayout);
+        lv_zhuti = (MyListView) findViewById(R.id.lv_zhuti);
     }
 
     @Override
@@ -99,8 +102,8 @@ public class FaBuActvity
 
     @Override
     public void AddTag(String text, int position) {
-//        listTag.add("tag" + position);
-//        fl_tag_flowLayout.cleanTag();
-//        fl_tag_flowLayout.setListData(listTag);
+        listTag.add("tag" + position);
+        fl_tag_flowLayout.cleanTag();
+        fl_tag_flowLayout.setListData(listTag);
     }
 }
