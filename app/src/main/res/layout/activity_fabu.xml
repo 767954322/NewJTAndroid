@@ -93,6 +93,7 @@
                 android:id="@+id/view_center"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/font_10"
+                android:visibility="gone"
                 android:layout_below="@+id/fl_tag_flowLayout"
                 android:background="@color/bg_eeeeee" />
 
@@ -105,6 +106,7 @@
                 android:layout_marginTop="@dimen/size_20"
                 android:paddingRight="@dimen/size_7"
                 android:text="参与主题"
+                android:visibility="gone"
                 android:textColor="@color/bg_262626"
                 android:textSize="@dimen/size_14" />
 

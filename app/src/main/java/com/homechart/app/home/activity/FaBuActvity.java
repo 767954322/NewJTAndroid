@@ -1,20 +1,33 @@
 package com.homechart.app.home.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
 import com.homechart.app.R;
+import com.homechart.app.commont.ClassConstant;
+import com.homechart.app.home.adapter.MyActivitysListAdapter;
 import com.homechart.app.home.base.BaseActivity;
+import com.homechart.app.home.bean.fabu.ActivityDataBean;
+import com.homechart.app.home.bean.fabu.ActivityItemDataBean;
 import com.homechart.app.myview.FlowLayoutFaBu;
 import com.homechart.app.myview.FlowLayoutShaiXuan;
 import com.homechart.app.myview.MyListView;
 import com.homechart.app.myview.RoundImageView;
+import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.imageloader.ImageUtils;
+import com.homechart.app.utils.volley.MyHttpManager;
+import com.homechart.app.utils.volley.OkStringRequest;
 import com.umeng.socialize.media.Base;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +48,10 @@ public class FaBuActvity
     private FlowLayoutFaBu fl_tag_flowLayout;
     private List<String> listTag = new ArrayList<>();
     private MyListView lv_zhuti;
+    public MyActivitysListAdapter adapter;
+    public List<ActivityItemDataBean> activityList;
+    private TextView tv_zhuti_tital;
+    private View view_center;
 
     @Override
     protected int getLayoutResId() {
@@ -53,6 +70,8 @@ public class FaBuActvity
         nav_left_imageButton = (ImageButton) findViewById(R.id.nav_left_imageButton);
         tv_tital_comment = (TextView) findViewById(R.id.tv_tital_comment);
         tv_content_right = (TextView) findViewById(R.id.tv_content_right);
+        tv_zhuti_tital = (TextView) findViewById(R.id.tv_zhuti_tital);
+        view_center = findViewById(R.id.view_center);
         iv_image_fabu = (ImageView) findViewById(R.id.iv_image_fabu);
         fl_tag_flowLayout = (FlowLayoutFaBu) findViewById(R.id.fl_tag_flowLayout);
         lv_zhuti = (MyListView) findViewById(R.id.lv_zhuti);
@@ -66,6 +85,7 @@ public class FaBuActvity
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        getColorData();
         tv_tital_comment.setText("发布图片");
         tv_content_right.setText("发布");
         ImageUtils.displayFilletImage("file://" + urlImage, iv_image_fabu);
@@ -84,6 +104,37 @@ public class FaBuActvity
             case R.id.tv_content_right:
 
         }
+
+    }
+
+    private void getColorData() {
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                ToastUtils.showCenter(FaBuActvity.this, getString(R.string.activitylist_get_error));
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        Message msg = new Message();
+                        msg.obj = data_msg;
+                        msg.what = 0;
+                        mHandler.sendMessage(msg);
+                    } else {
+                        ToastUtils.showCenter(FaBuActvity.this, error_msg);
+                    }
+                } catch (JSONException e) {
+                    ToastUtils.showCenter(FaBuActvity.this, getString(R.string.color_get_error));
+                }
+            }
+        };
+        MyHttpManager.getInstance().getDoingActivityData(callBack);
 
     }
 
@@ -106,4 +157,33 @@ public class FaBuActvity
         fl_tag_flowLayout.cleanTag();
         fl_tag_flowLayout.setListData(listTag);
     }
+
+
+    Handler mHandler = new Handler() {
+
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int code = msg.what;
+            if (code == 0) {
+                String info = (String) msg.obj;
+                ActivityDataBean activityDataBean = GsonUtil.jsonToBean(info, ActivityDataBean.class);
+
+                activityList = activityDataBean.getActivity_list();
+
+                if(activityList != null && activityList.size() >0){
+                    tv_zhuti_tital.setVisibility(View.VISIBLE);
+                    view_center.setVisibility(View.VISIBLE);
+                    adapter = new MyActivitysListAdapter(activityList, FaBuActvity.this);
+                    lv_zhuti.setAdapter(adapter);
+                }else {
+                    tv_zhuti_tital.setVisibility(View.GONE);
+                    view_center.setVisibility(View.GONE);
+                }
+
+            }
+
+        }
+    };
 }
