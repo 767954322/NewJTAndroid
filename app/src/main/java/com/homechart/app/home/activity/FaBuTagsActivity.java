@@ -1,12 +1,18 @@
 package com.homechart.app.home.activity;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -16,7 +22,6 @@ import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.pictag.TagDataBean;
 import com.homechart.app.home.bean.pictag.TagItemDataChildBean;
-import com.homechart.app.myview.FlowLayoutFaBu;
 import com.homechart.app.myview.FlowLayoutFaBuTags;
 import com.homechart.app.myview.SerializableHashMap;
 import com.homechart.app.utils.GsonUtil;
@@ -27,7 +32,7 @@ import com.homechart.app.utils.volley.OkStringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +53,9 @@ public class FaBuTagsActivity
     private FlowLayoutFaBuTags fl_tags_shouna;
     private FlowLayoutFaBuTags fl_tags_zhuangshi;
     public TagDataBean tagDataBean;
+    private List<String> listZiDing = new ArrayList<>();
     private Map<String, String> mSelectMap;
+    private EditText et_tag_text;
 
     @Override
     protected int getLayoutResId() {
@@ -64,6 +71,7 @@ public class FaBuTagsActivity
         fl_tags_jubu = (FlowLayoutFaBuTags) findViewById(R.id.fl_tags_jubu);
         fl_tags_shouna = (FlowLayoutFaBuTags) findViewById(R.id.fl_tags_shouna);
         fl_tags_zhuangshi = (FlowLayoutFaBuTags) findViewById(R.id.fl_tags_zhuangshi);
+        et_tag_text = (EditText) findViewById(R.id.et_tag_text);
     }
 
     @Override
@@ -82,6 +90,31 @@ public class FaBuTagsActivity
 
         nav_left_imageButton.setOnClickListener(this);
         tv_content_right.setOnClickListener(this);
+        et_tag_text.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    // 先隐藏键盘
+                    ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(FaBuTagsActivity.this.getCurrentFocus()
+                                    .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    //进行搜索操作的方法，在该方法中可以加入mEditSearchUser的非空判断
+                    String searchContext = et_tag_text.getText().toString().trim();
+                    if (TextUtils.isEmpty(searchContext.trim())) {
+                        ToastUtils.showCenter(FaBuTagsActivity.this, "请添加标签名称");
+                    } else {
+                        ToastUtils.showCenter(FaBuTagsActivity.this, searchContext);
+                        et_tag_text.setText("");
+                    }
+
+                    return true;
+                }
+
+                return false;
+            }
+        });
 
     }
 
