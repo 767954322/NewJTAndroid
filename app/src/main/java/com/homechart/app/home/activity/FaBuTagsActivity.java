@@ -1,5 +1,7 @@
 package com.homechart.app.home.activity;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,6 +18,7 @@ import com.homechart.app.home.bean.pictag.TagDataBean;
 import com.homechart.app.home.bean.pictag.TagItemDataChildBean;
 import com.homechart.app.myview.FlowLayoutFaBu;
 import com.homechart.app.myview.FlowLayoutFaBuTags;
+import com.homechart.app.myview.SerializableHashMap;
 import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
@@ -46,10 +49,6 @@ public class FaBuTagsActivity
     private FlowLayoutFaBuTags fl_tags_zhuangshi;
     public TagDataBean tagDataBean;
     private Map<String, String> mSelectMap;
-    private Map<String, String> mSelectMap_kongjian;
-    private Map<String, String> mSelectMap_jubu;
-    private Map<String, String> mSelectMap_shouna;
-    private Map<String, String> mSelectMap_zhuangshi;
 
     @Override
     protected int getLayoutResId() {
@@ -65,6 +64,16 @@ public class FaBuTagsActivity
         fl_tags_jubu = (FlowLayoutFaBuTags) findViewById(R.id.fl_tags_jubu);
         fl_tags_shouna = (FlowLayoutFaBuTags) findViewById(R.id.fl_tags_shouna);
         fl_tags_zhuangshi = (FlowLayoutFaBuTags) findViewById(R.id.fl_tags_zhuangshi);
+    }
+
+    @Override
+    protected void initExtraBundle() {
+        super.initExtraBundle();
+
+        Bundle bundle = getIntent().getExtras();
+        SerializableHashMap serializableHashMap = (SerializableHashMap) bundle.get("tags_select");
+        mSelectMap = serializableHashMap.getMap();
+
     }
 
     @Override
@@ -94,8 +103,19 @@ public class FaBuTagsActivity
 
                 break;
             case R.id.tv_content_right:
+                Intent intent = new Intent();
+                Bundle bundle = new Bundle();
+                if (mSelectMap != null) {
+                    SerializableHashMap myMap = new SerializableHashMap();
+                    myMap.setMap(mSelectMap);
+                    bundle.putSerializable("tags_select", myMap);
+                } else {
+                    bundle.putSerializable("tags_select", null);
+                }
 
-                Log.d("test",mSelectMap.toString());
+                intent.putExtras(bundle);
+                FaBuTagsActivity.this.setResult(1, intent);
+                FaBuTagsActivity.this.finish();
 
                 break;
         }
@@ -142,11 +162,6 @@ public class FaBuTagsActivity
         List<TagItemDataChildBean> listZhuangShi = tagDataBean.getTag_id().get(2).getChildren();
         List<TagItemDataChildBean> listShouNa = tagDataBean.getTag_id().get(3).getChildren();
         if (tagDataBean != null) {
-            mSelectMap = new HashMap<>();
-            mSelectMap.put("玄关", "玄关");
-            mSelectMap.put("读书角", "读书角");
-            mSelectMap.put("鞋收纳", "鞋收纳");
-            mSelectMap.put("灯", "灯");
 
             fl_tags_kongjian.setColorful(false);
             fl_tags_kongjian.setListData(listKongJian, mSelectMap, "空间");
@@ -164,14 +179,28 @@ public class FaBuTagsActivity
             fl_tags_zhuangshi.setListData(listZhuangShi, mSelectMap, "装饰");
             fl_tags_zhuangshi.setOnTagClickListener(this);
 
-
-            Log.d("test", "全部" + mSelectMap.toString());
         }
 
     }
 
     @Override
-    public void TagClick(String text, int position, Map<String, String> selectMap, String type) {
+    public void tagClick(String text, int position, Map<String, String> selectMap, String type) {
+
+        if (mSelectMap == null) {
+            mSelectMap = new HashMap<>();
+        }
+        mSelectMap.putAll(selectMap);
+        Log.d("test", mSelectMap.toString());
+
+    }
+
+    @Override
+    public void removeTagClick(String text, int position, Map<String, String> selectMap, String type) {
+
+        if (mSelectMap != null) {
+            mSelectMap.remove(text);
+            Log.d("test", mSelectMap.toString());
+        }
 
     }
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import com.homechart.app.myview.FlowLayoutFaBu;
 import com.homechart.app.myview.FlowLayoutShaiXuan;
 import com.homechart.app.myview.MyListView;
 import com.homechart.app.myview.RoundImageView;
+import com.homechart.app.myview.SerializableHashMap;
 import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.imageloader.ImageUtils;
@@ -32,6 +34,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by gumenghao on 17/6/21.
@@ -53,6 +56,7 @@ public class FaBuActvity
     public List<ActivityItemDataBean> activityList;
     private TextView tv_zhuti_tital;
     private View view_center;
+    private Map<String, String> selectTags;
 
     @Override
     protected int getLayoutResId() {
@@ -150,6 +154,9 @@ public class FaBuActvity
         fl_tag_flowLayout.cleanTag();
         listTag.remove(position);
         fl_tag_flowLayout.setListData(listTag);
+        if (selectTags.containsKey(text)) {
+            selectTags.remove(text);
+        }
     }
 
     @Override
@@ -157,11 +164,38 @@ public class FaBuActvity
 //        listTag.add("tag" + position);
 //        fl_tag_flowLayout.cleanTag();
 //        fl_tag_flowLayout.setListData(listTag);
-        Intent intent = new Intent(FaBuActvity.this,FaBuTagsActivity.class);
-        startActivity(intent);
+        Intent intent = new Intent(FaBuActvity.this, FaBuTagsActivity.class);
+        SerializableHashMap myMap = new SerializableHashMap();
+        myMap.setMap(selectTags);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("tags_select", myMap);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, 1);
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == 1) {
+            Bundle bundle = data.getExtras();
+            SerializableHashMap serializableHashMap = (SerializableHashMap) bundle.get("tags_select");
+
+            if (serializableHashMap != null && serializableHashMap.getMap() != null && serializableHashMap.getMap().size() > 0) {
+                selectTags = serializableHashMap.getMap();
+                Message message = new Message();
+                message.what = 1;
+                mHandler.sendMessage(message);
+            } else {
+                Message message = new Message();
+                message.what = 2;
+                mHandler.sendMessage(message);
+            }
+
+        }
+
+    }
 
     Handler mHandler = new Handler() {
 
@@ -176,16 +210,27 @@ public class FaBuActvity
 
                 activityList = activityDataBean.getActivity_list();
 
-                if(activityList != null && activityList.size() >0){
+                if (activityList != null && activityList.size() > 0) {
                     tv_zhuti_tital.setVisibility(View.VISIBLE);
                     view_center.setVisibility(View.VISIBLE);
                     adapter = new MyActivitysListAdapter(activityList, FaBuActvity.this);
                     lv_zhuti.setAdapter(adapter);
-                }else {
+                } else {
                     tv_zhuti_tital.setVisibility(View.GONE);
                     view_center.setVisibility(View.GONE);
                 }
 
+            } else if (code == 1) {
+                listTag.clear();
+                for (String key : selectTags.keySet()) {
+                    listTag.add(key);
+                }
+                fl_tag_flowLayout.cleanTag();
+                fl_tag_flowLayout.setListData(listTag);
+            } else if (code == 2) {
+                listTag.clear();
+                fl_tag_flowLayout.cleanTag();
+                fl_tag_flowLayout.setListData(listTag);
             }
 
         }

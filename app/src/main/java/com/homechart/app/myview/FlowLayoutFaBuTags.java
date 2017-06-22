@@ -218,8 +218,7 @@ public class FlowLayoutFaBuTags extends ViewGroup {
      * 设置数据
      */
     public void setListData(final List<TagItemDataChildBean> list, final Map<String, String> selectMap, final String type) {
-
-        if (null != selectMap) {
+        if(selectMap != null ){
             this.mSelectMap = selectMap;
         }
         int count = list.size();
@@ -231,7 +230,7 @@ public class FlowLayoutFaBuTags extends ViewGroup {
             tv.setText(list.get(i).getTag_name());
             tv_select.setText(list.get(i).getTag_name());
 
-            if (mSelectMap.containsKey(list.get(i).getTag_name())) {
+            if (mSelectMap != null && mSelectMap.containsKey(list.get(i).getTag_name())) {
                 tv_select.setVisibility(VISIBLE);
                 tv.setVisibility(GONE);
 
@@ -250,7 +249,7 @@ public class FlowLayoutFaBuTags extends ViewGroup {
                     tv_select.setVisibility(VISIBLE);
 
                     if (onTagClickListener != null)
-                        onTagClickListener.TagClick(tv.getText().toString(), finalI, mSelectMap, type);
+                        onTagClickListener.tagClick(tv.getText().toString(), finalI, mSelectMap, type);
                 }
             });
             tv_select.setOnClickListener(new OnClickListener() {
@@ -261,7 +260,7 @@ public class FlowLayoutFaBuTags extends ViewGroup {
                     tv_select.setVisibility(GONE);
                     tv.setVisibility(VISIBLE);
                     if (onTagClickListener != null)
-                        onTagClickListener.TagClick(tv_select.getText().toString(), finalI, mSelectMap, type);
+                        onTagClickListener.removeTagClick(tv_select.getText().toString(), finalI, mSelectMap, type);
 
                 }
             });
@@ -270,7 +269,7 @@ public class FlowLayoutFaBuTags extends ViewGroup {
 
     }
 
-    Map<String, String> mSelectMap = new HashMap<>();
+    private Map<String, String> mSelectMap = new HashMap<>();
 
     /**
      * 设置多彩颜色
@@ -301,6 +300,7 @@ public class FlowLayoutFaBuTags extends ViewGroup {
 
 
     public interface OnTagClickListener {
-        void TagClick(String text, int position, Map<String, String> selectMap, String type);
+        void tagClick(String text, int position, Map<String, String> selectMap, String type);
+        void removeTagClick(String text, int position, Map<String, String> selectMap, String type);
     }
 }
