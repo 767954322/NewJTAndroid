@@ -28,7 +28,7 @@
                 android:textColor="@color/bg_262626"
                 android:textSize="@dimen/size_12" />
 
-            <com.homechart.app.myview.FlowLayoutFaBu
+            <com.homechart.app.myview.FlowLayoutFaBuTags
                 android:id="@+id/fl_tags_kongjian"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -42,12 +42,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/fl_tags_kongjian"
                 android:layout_marginLeft="@dimen/font_15"
-                android:layout_marginTop="@dimen/font_20"
                 android:text="局部"
                 android:textColor="@color/bg_262626"
                 android:textSize="@dimen/size_12" />
 
-            <com.homechart.app.myview.FlowLayoutFaBu
+            <com.homechart.app.myview.FlowLayoutFaBuTags
                 android:id="@+id/fl_tags_jubu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -62,12 +61,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/fl_tags_jubu"
                 android:layout_marginLeft="@dimen/font_15"
-                android:layout_marginTop="@dimen/font_20"
                 android:text="收纳"
                 android:textColor="@color/bg_262626"
                 android:textSize="@dimen/size_12" />
 
-            <com.homechart.app.myview.FlowLayoutFaBu
+            <com.homechart.app.myview.FlowLayoutFaBuTags
                 android:id="@+id/fl_tags_shouna"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -82,12 +80,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/fl_tags_shouna"
                 android:layout_marginLeft="@dimen/font_15"
-                android:layout_marginTop="@dimen/font_20"
                 android:text="装饰"
                 android:textColor="@color/bg_262626"
                 android:textSize="@dimen/size_12" />
 
-            <com.homechart.app.myview.FlowLayoutFaBu
+            <com.homechart.app.myview.FlowLayoutFaBuTags
                 android:id="@+id/fl_tags_zhuangshi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

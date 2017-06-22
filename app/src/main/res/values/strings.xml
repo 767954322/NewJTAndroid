@@ -93,6 +93,7 @@
     <!-- MessagesListActivity -->
     <string name="error_message">消息数据加载失败，请重新刷新加载</string>
     <!-- FaBuActivity -->
-
     <string name="activitylist_get_error">活动列表信息获取失败</string>
+    <!-- FaBuTagsActivity -->
+    <string name="fabutags_get_error">标签获取失败</string>
 </resources>
