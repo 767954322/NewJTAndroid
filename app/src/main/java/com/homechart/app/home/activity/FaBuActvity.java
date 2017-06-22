@@ -17,6 +17,7 @@ import com.homechart.app.home.adapter.MyActivitysListAdapter;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.fabu.ActivityDataBean;
 import com.homechart.app.home.bean.fabu.ActivityItemDataBean;
+import com.homechart.app.home.bean.pictag.TagItemDataChildBean;
 import com.homechart.app.myview.FlowLayoutFaBu;
 import com.homechart.app.myview.FlowLayoutShaiXuan;
 import com.homechart.app.myview.MyListView;
@@ -32,6 +33,7 @@ import com.umeng.socialize.media.Base;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +59,7 @@ public class FaBuActvity
     private TextView tv_zhuti_tital;
     private View view_center;
     private Map<String, String> selectTags;
+    private List<TagItemDataChildBean> listZiDingSelect;
 
     @Override
     protected int getLayoutResId() {
@@ -157,19 +160,22 @@ public class FaBuActvity
         if (selectTags.containsKey(text)) {
             selectTags.remove(text);
         }
+        for (int i = 0; i < listZiDingSelect.size(); i++) {
+            if (text.equals(listZiDingSelect.get(i).getTag_name())) {
+                listZiDingSelect.remove(i);
+            }
+        }
     }
 
     @Override
     public void AddTag(String text, int position) {
-//        listTag.add("tag" + position);
-//        fl_tag_flowLayout.cleanTag();
-//        fl_tag_flowLayout.setListData(listTag);
         Intent intent = new Intent(FaBuActvity.this, FaBuTagsActivity.class);
         SerializableHashMap myMap = new SerializableHashMap();
         myMap.setMap(selectTags);
         Bundle bundle = new Bundle();
         bundle.putSerializable("tags_select", myMap);
         intent.putExtras(bundle);
+        intent.putExtra("zidingyi", (Serializable) listZiDingSelect);
         startActivityForResult(intent, 1);
 
     }
@@ -181,7 +187,7 @@ public class FaBuActvity
         if (requestCode == 1 && resultCode == 1) {
             Bundle bundle = data.getExtras();
             SerializableHashMap serializableHashMap = (SerializableHashMap) bundle.get("tags_select");
-
+            listZiDingSelect = (List<TagItemDataChildBean>) data.getSerializableExtra("zidingyi");
             if (serializableHashMap != null && serializableHashMap.getMap() != null && serializableHashMap.getMap().size() > 0) {
                 selectTags = serializableHashMap.getMap();
                 Message message = new Message();

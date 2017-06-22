@@ -32,6 +32,7 @@ import com.homechart.app.utils.volley.OkStringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -53,9 +54,11 @@ public class FaBuTagsActivity
     private FlowLayoutFaBuTags fl_tags_shouna;
     private FlowLayoutFaBuTags fl_tags_zhuangshi;
     public TagDataBean tagDataBean;
-    private List<String> listZiDing = new ArrayList<>();
+    private List<TagItemDataChildBean> listZiDing = new ArrayList<>();
+    private List<TagItemDataChildBean> listZiDingSelect = new ArrayList<>();
     private Map<String, String> mSelectMap;
     private EditText et_tag_text;
+    private FlowLayoutFaBuTags fl_tags_zidingyi;
 
     @Override
     protected int getLayoutResId() {
@@ -71,6 +74,7 @@ public class FaBuTagsActivity
         fl_tags_jubu = (FlowLayoutFaBuTags) findViewById(R.id.fl_tags_jubu);
         fl_tags_shouna = (FlowLayoutFaBuTags) findViewById(R.id.fl_tags_shouna);
         fl_tags_zhuangshi = (FlowLayoutFaBuTags) findViewById(R.id.fl_tags_zhuangshi);
+        fl_tags_zidingyi = (FlowLayoutFaBuTags) findViewById(R.id.fl_tags_zidingyi);
         et_tag_text = (EditText) findViewById(R.id.et_tag_text);
     }
 
@@ -81,7 +85,13 @@ public class FaBuTagsActivity
         Bundle bundle = getIntent().getExtras();
         SerializableHashMap serializableHashMap = (SerializableHashMap) bundle.get("tags_select");
         mSelectMap = serializableHashMap.getMap();
-
+        List<TagItemDataChildBean> list = (List<TagItemDataChildBean>) getIntent().getSerializableExtra("zidingyi");
+        listZiDing.clear();
+        listZiDingSelect.clear();
+        if (list != null && list.size() > 0) {
+            listZiDing.addAll(list);
+            listZiDingSelect.addAll(list);
+        }
     }
 
     @Override
@@ -106,7 +116,17 @@ public class FaBuTagsActivity
                         ToastUtils.showCenter(FaBuTagsActivity.this, "请添加标签名称");
                     } else {
                         ToastUtils.showCenter(FaBuTagsActivity.this, searchContext);
+                        listZiDing.add(new TagItemDataChildBean("", et_tag_text.getText().toString()));
+                        listZiDingSelect.add(new TagItemDataChildBean("", et_tag_text.getText().toString()));
+                        if (mSelectMap == null) {
+                            mSelectMap = new HashMap<String, String>();
+                        }
+                        mSelectMap.put(et_tag_text.getText().toString(), et_tag_text.getText().toString());
+                        fl_tags_zidingyi.cleanTag();
+                        fl_tags_zidingyi.setListData(listZiDing, mSelectMap, "自定义");
                         et_tag_text.setText("");
+
+                        Log.d("test", mSelectMap.toString());
                     }
 
                     return true;
@@ -147,6 +167,7 @@ public class FaBuTagsActivity
                 }
 
                 intent.putExtras(bundle);
+                intent.putExtra("zidingyi", (Serializable) listZiDingSelect);
                 FaBuTagsActivity.this.setResult(1, intent);
                 FaBuTagsActivity.this.finish();
 
@@ -212,6 +233,10 @@ public class FaBuTagsActivity
             fl_tags_zhuangshi.setListData(listZhuangShi, mSelectMap, "装饰");
             fl_tags_zhuangshi.setOnTagClickListener(this);
 
+            fl_tags_zidingyi.setColorful(false);
+            fl_tags_zidingyi.setListData(listZiDing, mSelectMap, "自定义");
+            fl_tags_zidingyi.setOnTagClickListener(this);
+
         }
 
     }
@@ -223,7 +248,10 @@ public class FaBuTagsActivity
             mSelectMap = new HashMap<>();
         }
         mSelectMap.putAll(selectMap);
-        Log.d("test", mSelectMap.toString());
+        if (type.equals("自定义") && mSelectMap.containsKey(text)) {
+            listZiDingSelect.add(new TagItemDataChildBean("", text));
+            mSelectMap.put(text, text);
+        }
 
     }
 
@@ -234,7 +262,13 @@ public class FaBuTagsActivity
             mSelectMap.remove(text);
             Log.d("test", mSelectMap.toString());
         }
-
+        if (type.equals("自定义")) {
+            for (int i = 0; i < listZiDingSelect.size(); i++) {
+                if (listZiDingSelect.get(i).getTag_name().equals(text)) {
+                    listZiDingSelect.remove(i);
+                }
+            }
+        }
     }
 
     private Handler mHandler = new Handler() {
