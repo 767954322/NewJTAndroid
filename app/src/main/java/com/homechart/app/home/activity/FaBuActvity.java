@@ -1,5 +1,6 @@
 package com.homechart.app.home.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -153,9 +154,12 @@ public class FaBuActvity
 
     @Override
     public void AddTag(String text, int position) {
-        listTag.add("tag" + position);
-        fl_tag_flowLayout.cleanTag();
-        fl_tag_flowLayout.setListData(listTag);
+//        listTag.add("tag" + position);
+//        fl_tag_flowLayout.cleanTag();
+//        fl_tag_flowLayout.setListData(listTag);
+        Intent intent = new Intent(FaBuActvity.this,FaBuTagsActivity.class);
+        startActivity(intent);
+
     }
 
 
