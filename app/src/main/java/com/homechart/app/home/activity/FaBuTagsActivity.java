@@ -3,6 +3,7 @@ package com.homechart.app.home.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +46,10 @@ public class FaBuTagsActivity
     private FlowLayoutFaBuTags fl_tags_zhuangshi;
     public TagDataBean tagDataBean;
     private Map<String, String> mSelectMap;
+    private Map<String, String> mSelectMap_kongjian;
+    private Map<String, String> mSelectMap_jubu;
+    private Map<String, String> mSelectMap_shouna;
+    private Map<String, String> mSelectMap_zhuangshi;
 
     @Override
     protected int getLayoutResId() {
@@ -89,6 +95,7 @@ public class FaBuTagsActivity
                 break;
             case R.id.tv_content_right:
 
+                Log.d("test",mSelectMap.toString());
 
                 break;
         }
@@ -135,22 +142,36 @@ public class FaBuTagsActivity
         List<TagItemDataChildBean> listZhuangShi = tagDataBean.getTag_id().get(2).getChildren();
         List<TagItemDataChildBean> listShouNa = tagDataBean.getTag_id().get(3).getChildren();
         if (tagDataBean != null) {
+            mSelectMap = new HashMap<>();
+            mSelectMap.put("玄关", "玄关");
+            mSelectMap.put("读书角", "读书角");
+            mSelectMap.put("鞋收纳", "鞋收纳");
+            mSelectMap.put("灯", "灯");
+
             fl_tags_kongjian.setColorful(false);
-            fl_tags_kongjian.setListData(listKongJian);
+            fl_tags_kongjian.setListData(listKongJian, mSelectMap, "空间");
             fl_tags_kongjian.setOnTagClickListener(this);
 
             fl_tags_jubu.setColorful(false);
-            fl_tags_jubu.setListData(listJuBu);
+            fl_tags_jubu.setListData(listJuBu, mSelectMap, "局部");
             fl_tags_jubu.setOnTagClickListener(this);
 
             fl_tags_shouna.setColorful(false);
-            fl_tags_shouna.setListData(listShouNa);
+            fl_tags_shouna.setListData(listShouNa, mSelectMap, "收纳");
             fl_tags_shouna.setOnTagClickListener(this);
 
             fl_tags_zhuangshi.setColorful(false);
-            fl_tags_zhuangshi.setListData(listZhuangShi);
+            fl_tags_zhuangshi.setListData(listZhuangShi, mSelectMap, "装饰");
             fl_tags_zhuangshi.setOnTagClickListener(this);
+
+
+            Log.d("test", "全部" + mSelectMap.toString());
         }
+
+    }
+
+    @Override
+    public void TagClick(String text, int position, Map<String, String> selectMap, String type) {
 
     }
 
@@ -166,11 +187,4 @@ public class FaBuTagsActivity
             }
         }
     };
-
-    @Override
-    public void TagClick(String text, int position, Map<String, String> selectMap) {
-
-        this.mSelectMap = selectMap;
-
-    }
 }

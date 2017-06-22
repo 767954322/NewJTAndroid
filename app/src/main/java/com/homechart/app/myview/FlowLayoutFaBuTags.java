@@ -217,8 +217,11 @@ public class FlowLayoutFaBuTags extends ViewGroup {
     /**
      * 设置数据
      */
-    public void setListData(final List<TagItemDataChildBean> list) {
+    public void setListData(final List<TagItemDataChildBean> list, final Map<String, String> selectMap, final String type) {
 
+        if (null != selectMap) {
+            this.mSelectMap = selectMap;
+        }
         int count = list.size();
         for (int i = 0; i < count; i++) {
             final View view = mInflater.inflate(R.layout.flowlayout_textview_fabu_tags, this,
@@ -227,28 +230,39 @@ public class FlowLayoutFaBuTags extends ViewGroup {
             final TextView tv_select = (TextView) view.findViewById(R.id.tv_fabu_select);
             tv.setText(list.get(i).getTag_name());
             tv_select.setText(list.get(i).getTag_name());
+
+            if (mSelectMap.containsKey(list.get(i).getTag_name())) {
+                tv_select.setVisibility(VISIBLE);
+                tv.setVisibility(GONE);
+
+            } else {
+                tv_select.setVisibility(GONE);
+                tv.setVisibility(VISIBLE);
+            }
+
             final int finalI = i;
             tv.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    selectMap.put(list.get(finalI).getTag_name(), list.get(finalI).getTag_name());
+                    mSelectMap.put(list.get(finalI).getTag_name(), list.get(finalI).getTag_name());
                     tv.setVisibility(GONE);
                     tv_select.setVisibility(VISIBLE);
 
                     if (onTagClickListener != null)
-                        onTagClickListener.TagClick(tv.getText().toString(), finalI, selectMap);
+                        onTagClickListener.TagClick(tv.getText().toString(), finalI, mSelectMap, type);
                 }
             });
             tv_select.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
-                    selectMap.remove(list.get(finalI).getTag_name());
+                    mSelectMap.remove(list.get(finalI).getTag_name());
                     tv_select.setVisibility(GONE);
                     tv.setVisibility(VISIBLE);
                     if (onTagClickListener != null)
-                        onTagClickListener.TagClick(tv_select.getText().toString(), finalI, selectMap);
+                        onTagClickListener.TagClick(tv_select.getText().toString(), finalI, mSelectMap, type);
+
                 }
             });
             this.addView(view);
@@ -256,7 +270,7 @@ public class FlowLayoutFaBuTags extends ViewGroup {
 
     }
 
-    Map<String, String> selectMap = new HashMap<>();
+    Map<String, String> mSelectMap = new HashMap<>();
 
     /**
      * 设置多彩颜色
@@ -287,6 +301,6 @@ public class FlowLayoutFaBuTags extends ViewGroup {
 
 
     public interface OnTagClickListener {
-        void TagClick(String text, int position, Map<String, String> selectMap);
+        void TagClick(String text, int position, Map<String, String> selectMap, String type);
     }
 }
