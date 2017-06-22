@@ -123,7 +123,6 @@ FlowLayoutFaBuTagsDing.OnTagClickListener{
                         ToastUtils.showCenter(FaBuTagsActivity.this, "请添加标签名称");
                     } else {
                         fl_tags_zidingyi.setVisibility(View.VISIBLE);
-                        ToastUtils.showCenter(FaBuTagsActivity.this, searchContext);
                         listZiDing.add(new TagItemDataChildBean("", et_tag_text.getText().toString()));
                         listZiDingSelect.add(new TagItemDataChildBean("", et_tag_text.getText().toString()));
                         if (mSelectMap == null) {

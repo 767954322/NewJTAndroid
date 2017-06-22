@@ -105,7 +105,7 @@ public class FlowLayoutFaBuTagsDing extends ViewGroup {
                         : width + getPaddingLeft() + getPaddingRight(),
                 modeHeight == MeasureSpec.EXACTLY ? sizeHeight : height
                         + getPaddingTop() + getPaddingBottom());
-        setPadding(UIUtils.getDimens(R.dimen.font_3), UIUtils.getDimens(R.dimen.font_15), UIUtils.getDimens(R.dimen.font_15), 0);
+        setPadding(UIUtils.getDimens(R.dimen.font_3), 0, UIUtils.getDimens(R.dimen.font_15), 0);
     }
 
     // 储存所有的View
