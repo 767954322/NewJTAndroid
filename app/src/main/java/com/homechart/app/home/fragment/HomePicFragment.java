@@ -332,7 +332,7 @@ public class HomePicFragment
                 }
 
 
-                if (!curentListTag && nikeName.length() > 6) {
+                if (nikeName != null && !curentListTag && nikeName.length() > 6) {
                     nikeName = nikeName.substring(0, 6) + "...";
                 }
 
@@ -394,7 +394,7 @@ public class HomePicFragment
                     }
                 }
 
-                if(null != mListData.get(position).getUser_info() && null != mListData.get(position).getUser_info().getUser_id()){
+                if (null != mListData.get(position).getUser_info() && null != mListData.get(position).getUser_info().getUser_id()) {
                     holder.getView(R.id.iv_header_pic).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
