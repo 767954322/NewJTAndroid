@@ -103,7 +103,7 @@
                 android:textColor="@color/bg_262626"
                 android:textSize="@dimen/size_14" />
 
-            <com.homechart.app.myview.FlowLayoutFaBuTags
+            <com.homechart.app.myview.FlowLayoutFaBuTagsDing
                 android:id="@+id/fl_tags_zidingyi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

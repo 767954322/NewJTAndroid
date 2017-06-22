@@ -23,6 +23,7 @@ import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.pictag.TagDataBean;
 import com.homechart.app.home.bean.pictag.TagItemDataChildBean;
 import com.homechart.app.myview.FlowLayoutFaBuTags;
+import com.homechart.app.myview.FlowLayoutFaBuTagsDing;
 import com.homechart.app.myview.SerializableHashMap;
 import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.ToastUtils;
@@ -45,7 +46,9 @@ import java.util.Map;
 public class FaBuTagsActivity
         extends BaseActivity
         implements View.OnClickListener,
-        FlowLayoutFaBuTags.OnTagClickListener {
+        FlowLayoutFaBuTags.OnTagClickListener,
+FlowLayoutFaBuTagsDing.OnTagClickListener{
+
     private ImageButton nav_left_imageButton;
     private TextView tv_tital_comment;
     private TextView tv_content_right;
@@ -58,7 +61,7 @@ public class FaBuTagsActivity
     private List<TagItemDataChildBean> listZiDingSelect = new ArrayList<>();
     private Map<String, String> mSelectMap;
     private EditText et_tag_text;
-    private FlowLayoutFaBuTags fl_tags_zidingyi;
+    private FlowLayoutFaBuTagsDing fl_tags_zidingyi;
 
     @Override
     protected int getLayoutResId() {
@@ -74,7 +77,7 @@ public class FaBuTagsActivity
         fl_tags_jubu = (FlowLayoutFaBuTags) findViewById(R.id.fl_tags_jubu);
         fl_tags_shouna = (FlowLayoutFaBuTags) findViewById(R.id.fl_tags_shouna);
         fl_tags_zhuangshi = (FlowLayoutFaBuTags) findViewById(R.id.fl_tags_zhuangshi);
-        fl_tags_zidingyi = (FlowLayoutFaBuTags) findViewById(R.id.fl_tags_zidingyi);
+        fl_tags_zidingyi = (FlowLayoutFaBuTagsDing) findViewById(R.id.fl_tags_zidingyi);
         et_tag_text = (EditText) findViewById(R.id.et_tag_text);
     }
 
@@ -91,6 +94,10 @@ public class FaBuTagsActivity
         if (list != null && list.size() > 0) {
             listZiDing.addAll(list);
             listZiDingSelect.addAll(list);
+            fl_tags_zidingyi.setVisibility(View.VISIBLE);
+        } else {
+
+            fl_tags_zidingyi.setVisibility(View.GONE);
         }
     }
 
@@ -115,6 +122,7 @@ public class FaBuTagsActivity
                     if (TextUtils.isEmpty(searchContext.trim())) {
                         ToastUtils.showCenter(FaBuTagsActivity.this, "请添加标签名称");
                     } else {
+                        fl_tags_zidingyi.setVisibility(View.VISIBLE);
                         ToastUtils.showCenter(FaBuTagsActivity.this, searchContext);
                         listZiDing.add(new TagItemDataChildBean("", et_tag_text.getText().toString()));
                         listZiDingSelect.add(new TagItemDataChildBean("", et_tag_text.getText().toString()));
@@ -173,8 +181,6 @@ public class FaBuTagsActivity
 
                 break;
         }
-
-
     }
 
     //获取tag信息
@@ -260,7 +266,24 @@ public class FaBuTagsActivity
 
         if (mSelectMap != null) {
             mSelectMap.remove(text);
-            Log.d("test", mSelectMap.toString());
+        }
+    }
+    @Override
+    public void tagClickDing(String text, int position, Map<String, String> selectMap, String type) {
+        if (mSelectMap == null) {
+            mSelectMap = new HashMap<>();
+        }
+        mSelectMap.putAll(selectMap);
+        if (type.equals("自定义") && mSelectMap.containsKey(text)) {
+            listZiDingSelect.add(new TagItemDataChildBean("", text));
+            mSelectMap.put(text, text);
+        }
+    }
+
+    @Override
+    public void removeTagClickDing(String text, int position, Map<String, String> selectMap, String type) {
+        if (mSelectMap != null) {
+            mSelectMap.remove(text);
         }
         if (type.equals("自定义")) {
             for (int i = 0; i < listZiDingSelect.size(); i++) {
@@ -269,8 +292,14 @@ public class FaBuTagsActivity
                 }
             }
         }
-    }
+        boolean isNoEmpty = listZiDing != null && listZiDing.size() > 0;
+        if (isNoEmpty) {
+            fl_tags_zidingyi.setVisibility(View.VISIBLE);
+        } else {
 
+            fl_tags_zidingyi.setVisibility(View.GONE);
+        }
+    }
     private Handler mHandler = new Handler() {
 
         @Override
@@ -283,4 +312,5 @@ public class FaBuTagsActivity
             }
         }
     };
+
 }
