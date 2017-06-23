@@ -109,6 +109,7 @@ public class MyInfoActivity
     private String avatar_id = "";//通过获取用户信息或上传头像接口获得
     private int sex = 0;//1:男  2:女
     private String header_id = "";//上传头像的id
+    private String[] str;
 
     @Override
     protected int getLayoutResId() {
@@ -281,6 +282,8 @@ public class MyInfoActivity
                 if (imm != null) {
                     imm.hideSoftInputFromWindow(rl_myinfo_header.getWindowToken(), 0);
                 }
+
+
                 if (provinceBean == null) {
                     getCitydata(mTag);
                 } else {
@@ -347,10 +350,13 @@ public class MyInfoActivity
             ImageUtils.displayRoundImage(userCenterInfoBean.getUser_info().getAvatar().getBig(), iv_myinfo_header);
             et_myinfo_nikename.setText(userCenterInfoBean.getUser_info().getNickname());
 
-            if(TextUtils.isEmpty(userCenterInfoBean.getUser_info().getLocation())){
+            if (TextUtils.isEmpty(userCenterInfoBean.getUser_info().getLocation())) {
                 tv_myinfo_location.setText("未设置");
                 tv_myinfo_location.setTextColor(UIUtils.getColor(R.color.bg_b2b2b2));
-            }else {
+            } else {
+
+                String str_location = userCenterInfoBean.getUser_info().getLocation();
+                str = str_location.split(" ");
                 tv_myinfo_location.setText(userCenterInfoBean.getUser_info().getLocation());
                 tv_myinfo_location.setTextColor(UIUtils.getColor(R.color.bg_262626));
             }
@@ -402,7 +408,7 @@ public class MyInfoActivity
             if (!TextUtils.isEmpty(userCenterInfoBean.getUser_info().getAge_group())) {
                 tv_myinfo_age.setTextColor(UIUtils.getColor(R.color.bg_262626));
                 tv_myinfo_age.setText(userCenterInfoBean.getUser_info().getAge_group());
-            }else {
+            } else {
                 tv_myinfo_age.setTextColor(UIUtils.getColor(R.color.bg_b2b2b2));
                 tv_myinfo_age.setText("未设置");
             }
@@ -533,8 +539,6 @@ public class MyInfoActivity
             cityPicker = new CityPicker.Builder(MyInfoActivity.this, provinceBean).textSize(20)
                     .titleTextColor("#000000")
                     .backgroundPop(R.color.white)
-                    .province("北京市")
-                    .city("朝阳区")
                     .textColor(Color.parseColor("#000000"))
                     .provinceCyclic(true)
                     .cityCyclic(false)
@@ -543,7 +547,10 @@ public class MyInfoActivity
                     .itemPadding(10)
                     .onlyShowProvinceAndCity(true)
                     .build();
-
+            if(str != null && str.length == 2){
+                cityPicker.defaultProvinceName = str[0];
+                cityPicker.defaultCityName = str[1];
+            }
             cityPicker.show();
             cityPicker.setOnCityItemClickListener(new CityPicker.OnCityItemClickListener() {
                 @Override

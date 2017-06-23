@@ -184,12 +184,12 @@ public class CityPicker implements CanShow, OnWheelChangedListener {
     /**
      * 第一次默认的显示省份，一般配合定位，使用
      */
-    private String defaultProvinceName = "北京市";
+    public String defaultProvinceName = "北京市";
 
     /**
      * 第一次默认得显示城市，一般配合定位，使用
      */
-    private String defaultCityName = "朝阳区";
+    public String defaultCityName = "朝阳区";
 
     /**
      * 两级联动
