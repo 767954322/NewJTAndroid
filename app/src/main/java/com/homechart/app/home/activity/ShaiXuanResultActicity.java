@@ -76,7 +76,7 @@ public class ShaiXuanResultActicity
     private final String LOADMORE_STATUS = "loadmore";
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private ImageView iv_change_frag;
-    private View view;
+//    private View view;
     private View view_flowlayout;
     private ImageView iv_color_icon;
     private TextView iv_color_tital;
@@ -102,18 +102,18 @@ public class ShaiXuanResultActicity
     @Override
     protected void initView() {
 
-        view = LayoutInflater.from(ShaiXuanResultActicity.this).inflate(R.layout.header_shaixuan, null);
+//        view = LayoutInflater.from(ShaiXuanResultActicity.this).inflate(R.layout.header_shaixuan, null);
         mRecyclerView = (HRecyclerView) findViewById(R.id.rcy_recyclerview_info);
         nav_left_imageButton = (ImageButton) findViewById(R.id.nav_left_imageButton);
         tv_tital_comment = (TextView) findViewById(R.id.tv_tital_comment);
-        his_flowLayout = (FlowLayoutShaiXuan) view.findViewById(R.id.his_flowLayout);
-        iv_color_icon = (ImageView) view.findViewById(R.id.iv_color_icon);
-        iv_color_tital = (TextView) view.findViewById(R.id.iv_color_tital);
-        view_flowlayout = view.findViewById(R.id.view_flowlayout);
-        iv_change_frag = (ImageView) view.findViewById(R.id.iv_change_frag);
-        riv_round_one = (RoundImageView) view.findViewById(R.id.riv_round_one);
-        riv_round_two = (RoundImageView) view.findViewById(R.id.riv_round_two);
-        riv_round_three = (RoundImageView) view.findViewById(R.id.riv_round_three);
+        his_flowLayout = (FlowLayoutShaiXuan) findViewById(R.id.his_flowLayout);
+        iv_color_icon = (ImageView) findViewById(R.id.iv_color_icon);
+        iv_color_tital = (TextView) findViewById(R.id.iv_color_tital);
+        view_flowlayout = findViewById(R.id.view_flowlayout);
+        iv_change_frag = (ImageView) findViewById(R.id.iv_change_frag);
+        riv_round_one = (RoundImageView) findViewById(R.id.riv_round_one);
+        riv_round_two = (RoundImageView) findViewById(R.id.riv_round_two);
+        riv_round_three = (RoundImageView) findViewById(R.id.riv_round_three);
 
     }
 
@@ -413,7 +413,7 @@ public class ShaiXuanResultActicity
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(ShaiXuanResultActicity.this));
         mRecyclerView.setItemAnimator(null);
-        mRecyclerView.addHeaderView(view);
+//        mRecyclerView.addHeaderView(view);
 
         mRecyclerView.setOnRefreshListener(this);
         mRecyclerView.setOnLoadMoreListener(this);
