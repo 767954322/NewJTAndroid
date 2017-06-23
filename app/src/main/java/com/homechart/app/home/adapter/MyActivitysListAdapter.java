@@ -47,7 +47,7 @@ public class MyActivitysListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        MyHolder myHolder;
+        final MyHolder myHolder;
         if (convertView == null) {
             myHolder = new MyHolder();
             convertView = LayoutInflater.from(context).inflate(R.layout.item_activitys_fabu, null);
@@ -59,6 +59,18 @@ public class MyActivitysListAdapter extends BaseAdapter {
             myHolder = (MyHolder) convertView.getTag();
         }
         myHolder.tv_tital.setText(activityList.get(position).getActivity_info().getTitle());
+        myHolder.tv_tital.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (myHolder.cb_check_add.isChecked()) {
+                    myHolder.cb_check_add.setChecked(false);
+                } else {
+                    myHolder.cb_check_add.setChecked(true);
+                }
+            }
+        });
+
+
         return convertView;
     }
 
