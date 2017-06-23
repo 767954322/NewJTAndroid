@@ -160,8 +160,13 @@ public class UserInfoActivity
                     ImageUtils.displayFilletImage(mListData.get(position).getItem_info().getImage().getImg1(),
                             (ImageView) holder.getView(R.id.iv_shoucang_image));
                 }
-                ((TextView) holder.getView(R.id.item_info_time)).
-                        setText(mListData.get(position).getItem_info().getAdd_time() + "   发版");
+
+              String[] str =   mListData.get(position).getItem_info().getAdd_time().split(" ");
+                if(str.length >0 ){
+                    ((TextView) holder.getView(R.id.item_info_time)).
+                            setText(str[0] + "   发版");
+                }
+
 
             }
         };

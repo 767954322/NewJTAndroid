@@ -20,7 +20,7 @@
         android:layout_alignRight="@+id/iv_shoucang_image"
         android:layout_below="@+id/iv_shoucang_image"
         android:layout_marginTop="@dimen/font_10"
-        android:text="发版"
+        android:text="发布"
         android:textColor="@color/bg_8f8f8f"
         android:textSize="@dimen/font_12" />
 
