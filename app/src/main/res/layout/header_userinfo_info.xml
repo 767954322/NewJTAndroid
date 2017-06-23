@@ -172,8 +172,7 @@
             android:layout_marginTop="@dimen/font_30"
             android:background="@drawable/bt_guanzu"
             android:textColor="@color/white"
-            android:textSize="@dimen/font_17"
-            android:textStyle="bold" />
+            android:textSize="@dimen/font_17" />
 
         <RelativeLayout
             android:id="@+id/rl_info_zhunaye"
