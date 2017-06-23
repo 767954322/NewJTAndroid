@@ -58,7 +58,7 @@ public class MyActivitysListAdapter extends BaseAdapter {
         } else {
             myHolder = (MyHolder) convertView.getTag();
         }
-
+        myHolder.tv_tital.setText(activityList.get(position).getActivity_info().getTitle());
         return convertView;
     }
 
