@@ -77,6 +77,7 @@ public class UserInfoActivity
     private int TYPE_LEFT = 1;
     private int TYPE_RIGHT = 2;
     private View headerView;
+    private boolean first = true;
 
     @Override
     protected int getLayoutResId() {
@@ -354,19 +355,34 @@ public class UserInfoActivity
 
             if (userCenterInfoBean.getUser_info().getRelation().equals("0")) {//未关注
 
-                btn_guanzhu_demand.setBackgroundResource(R.drawable.bt_login);
+                btn_guanzhu_demand.setBackgroundResource(R.drawable.bt_guanzu );
                 btn_guanzhu_demand.setTextColor(UIUtils.getColor(R.color.white));
                 btn_guanzhu_demand.setText("关注Ta");
+                if(first){
+                    first = false;
+                }else {
+                    ToastUtils.showCenter(UserInfoActivity.this,"已取消关注");
+                }
 
             } else if (userCenterInfoBean.getUser_info().getRelation().equals("1")) {//已关注
                 btn_guanzhu_demand.setBackgroundResource(R.drawable.bt_guanzhu);
                 btn_guanzhu_demand.setTextColor(UIUtils.getColor(R.color.bg_8f8f8f));
                 btn_guanzhu_demand.setText("已关注");
+                if(first){
+                    first = false;
+                }else {
+                    ToastUtils.showCenter(UserInfoActivity.this,"关注成功");
+                }
 
             } else if (userCenterInfoBean.getUser_info().getRelation().equals("2")) {//互相关注
                 btn_guanzhu_demand.setBackgroundResource(R.drawable.bt_guanzhu);
                 btn_guanzhu_demand.setTextColor(UIUtils.getColor(R.color.bg_8f8f8f));
                 btn_guanzhu_demand.setText("互相关注");
+                if(first){
+                    first = false;
+                }else {
+                    ToastUtils.showCenter(UserInfoActivity.this,"关注成功");
+                }
             }
 
         }
