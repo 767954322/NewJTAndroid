@@ -197,6 +197,7 @@ public class MessagesListActivity extends BaseActivity
                         if (null != list && 0 != list.size()) {
                             updateViewFromData(list, state);
                         } else {
+                            ToastUtils.showCenter(MessagesListActivity.this, "暂无消息");
                             updateViewFromData(null, state);
                         }
                     } else {

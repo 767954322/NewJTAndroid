@@ -125,6 +125,7 @@ public class SearchResultActivity
                     } else {
                         search_info = searchContext;
                         search_tag = "";
+//                        CustomProgress.show(SearchResultActivity.this, "授权中...", false, null);
                         getListData(REFRESH_STATUS);
                     }
 
@@ -206,7 +207,7 @@ public class SearchResultActivity
 
         mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         mRecyclerView.setItemAnimator(null);
-        mRecyclerView.setPadding(UIUtils.getDimens(R.dimen.font_6),0,UIUtils.getDimens(R.dimen.font_6),0);
+        mRecyclerView.setPadding(UIUtils.getDimens(R.dimen.font_6), 0, UIUtils.getDimens(R.dimen.font_6), 0);
         mRecyclerView.setOnRefreshListener(this);
         mRecyclerView.setOnLoadMoreListener(this);
         mLoadMoreFooterView = (LoadMoreFooterView) mRecyclerView.getLoadMoreFooterView();
