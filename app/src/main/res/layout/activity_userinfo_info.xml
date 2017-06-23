@@ -59,6 +59,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:background="@drawable/transparent"
+            android:src="@drawable/shared_icon_white"
             android:padding="@dimen/size_8"
             android:scaleType="centerInside" />
 
