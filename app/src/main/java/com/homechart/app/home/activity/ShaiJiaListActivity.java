@@ -196,22 +196,26 @@ public class ShaiJiaListActivity extends BaseActivity
                 break;
             case R.id.tv_content_right:
 
-                if (guanli_tag == 0) {
-                    //打开管理
-                    tv_content_right.setText("取消");
-                    map_delete.clear();
-                    guanli_tag = 1;
-                    num_checked = 0;
-                    tv_shoucang_two.setText(num_checked + "");
-                    rl_below.setVisibility(View.VISIBLE);
-                    mAdapter.notifyDataSetChanged();
+                if (mListData != null && mListData.size() > 0) {
+                    if (guanli_tag == 0) {
+                        //打开管理
+                        tv_content_right.setText("取消");
+                        map_delete.clear();
+                        guanli_tag = 1;
+                        num_checked = 0;
+                        tv_shoucang_two.setText(num_checked + "");
+                        rl_below.setVisibility(View.VISIBLE);
+                        mAdapter.notifyDataSetChanged();
+                    } else {
+                        //关闭管理
+                        tv_content_right.setText("管理");
+                        map_delete.clear();
+                        guanli_tag = 0;
+                        rl_below.setVisibility(View.GONE);
+                        mAdapter.notifyDataSetChanged();
+                    }
                 } else {
-                    //关闭管理
-                    tv_content_right.setText("管理");
-                    map_delete.clear();
-                    guanli_tag = 0;
-                    rl_below.setVisibility(View.GONE);
-                    mAdapter.notifyDataSetChanged();
+                    ToastUtils.showCenter(ShaiJiaListActivity.this, "先去发布一些图片吧");
                 }
 
                 break;
