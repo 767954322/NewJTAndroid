@@ -160,7 +160,7 @@ public class SearchResultActivity
 
 
                 ViewGroup.LayoutParams layoutParams = holder.getView(R.id.iv_imageview_search_one).getLayoutParams();
-                layoutParams.width = width_Pic_Staggered;
+//                layoutParams.width = width_Pic_Staggered;
                 layoutParams.height = mListDataHeight.get(position);
                 holder.getView(R.id.iv_imageview_search_one).setLayoutParams(layoutParams);
                 String nikeName = mListData.get(position).getUser_info().getNickname();
@@ -206,7 +206,7 @@ public class SearchResultActivity
 
         mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         mRecyclerView.setItemAnimator(null);
-
+        mRecyclerView.setPadding(UIUtils.getDimens(R.dimen.font_6),0,UIUtils.getDimens(R.dimen.font_6),0);
         mRecyclerView.setOnRefreshListener(this);
         mRecyclerView.setOnLoadMoreListener(this);
         mLoadMoreFooterView = (LoadMoreFooterView) mRecyclerView.getLoadMoreFooterView();
