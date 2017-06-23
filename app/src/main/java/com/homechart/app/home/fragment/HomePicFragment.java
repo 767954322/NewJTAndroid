@@ -44,7 +44,6 @@ import com.homechart.app.home.bean.shouye.SYDataObjectBean;
 import com.homechart.app.home.bean.shouye.SYDataObjectImgBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.ClearEditText;
-import com.homechart.app.myview.GridSpacingItemDecoration;
 import com.homechart.app.myview.HomeTabPopWin;
 import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
@@ -105,7 +104,6 @@ public class HomePicFragment
     private TextView tv_unreader_mag_single;
     private int width_Pic_Staggered;
     private int width_Pic_List;
-    private GridSpacingItemDecoration gridSpacingItemDecoration;
     private HomeTabPopWin homeTabPopWin;
     private LinearLayout ll_pic_choose;
     private RoundImageView iv_kongjian;
@@ -193,7 +191,6 @@ public class HomePicFragment
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        gridSpacingItemDecoration = new GridSpacingItemDecoration(2, 50, false);
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         width_Pic_Staggered = PublicUtils.getScreenWidth(activity) / 2 - UIUtils.getDimens(R.dimen.font_20);
         width_Pic_List = PublicUtils.getScreenWidth(activity) - UIUtils.getDimens(R.dimen.font_14);
@@ -276,8 +273,10 @@ public class HomePicFragment
 //                }
 
                 if (itemType == TYPE_ONE) {
+                    mRecyclerView.setPadding(0,0,0,0);
                     return R.layout.item_test_one;
                 } else if (itemType == TYPE_TWO) {
+                    mRecyclerView.setPadding(UIUtils.getDimens(R.dimen.font_6),0,UIUtils.getDimens(R.dimen.font_6),0);
                     return R.layout.item_test_pic_pubu;
                 } else if (itemType == TYPE_THREE) {
                     //活动(线性)
