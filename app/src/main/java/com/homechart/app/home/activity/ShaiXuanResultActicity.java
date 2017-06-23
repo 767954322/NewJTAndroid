@@ -147,16 +147,22 @@ public class ShaiXuanResultActicity
                 ShaiXuanResultActicity.this.finish();
             case R.id.iv_change_frag:
                 if (curentListTag) {
-
+                    mRecyclerView.setPadding(UIUtils.getDimens(R.dimen.font_6), 0, UIUtils.getDimens(R.dimen.font_6), 0);
                     iv_change_frag.setImageResource(R.drawable.changtu);
                     mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
                     curentListTag = false;
+//                    mListData.clear();
+//                    mAdapter.notifyDataSetChanged();
+//                    onRefresh();
 //                    mRecyclerView.scrollToPosition(scroll_position);
                 } else {
-
+                    mRecyclerView.setPadding(0, 0, 0, 0);
                     iv_change_frag.setImageResource(R.drawable.pubuliu);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(ShaiXuanResultActicity.this));
                     curentListTag = true;
+//                    mListData.clear();
+//                    mAdapter.notifyDataSetChanged();
+//                    onRefresh();
 //                    mRecyclerView.scrollToPosition(scroll_position);
                 }
                 break;
@@ -340,10 +346,10 @@ public class ShaiXuanResultActicity
             public void convert(BaseViewHolder holder, int position) {
                 scroll_position = position;
                 ViewGroup.LayoutParams layoutParams = holder.getView(R.id.iv_imageview_one).getLayoutParams();
-                layoutParams.width = (curentListTag ? width_Pic_List : width_Pic_Staggered);
+
+//                layoutParams.width = (curentListTag ? width_Pic_List : width_Pic_Staggered);
                 layoutParams.height = (curentListTag ? mLListDataHeight.get(position) : mSListDataHeight.get(position));
                 holder.getView(R.id.iv_imageview_one).setLayoutParams(layoutParams);
-
                 String nikeName = mListData.get(position).getUser_info().getNickname();
 
                 if (!curentListTag && nikeName.length() > 6) {

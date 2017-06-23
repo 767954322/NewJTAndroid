@@ -214,11 +214,13 @@ public class HomePicFragment
             case R.id.iv_change_frag:
 
                 if (curentListTag) {
+                    mRecyclerView.setPadding(UIUtils.getDimens(R.dimen.font_6),0,UIUtils.getDimens(R.dimen.font_6),0);
                     iv_change_frag.setImageResource(R.drawable.changtu);
                     mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
                     curentListTag = false;
 //                    mRecyclerView.scrollToPosition(scroll_position);
                 } else {
+                    mRecyclerView.setPadding(0,0,0,0);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
                     iv_change_frag.setImageResource(R.drawable.pubuliu);
                     curentListTag = true;
@@ -273,11 +275,9 @@ public class HomePicFragment
 //                }
 
                 if (itemType == TYPE_ONE) {
-                    mRecyclerView.setPadding(0,0,0,0);
                     return R.layout.item_test_one;
                 } else if (itemType == TYPE_TWO) {
-                    mRecyclerView.setPadding(UIUtils.getDimens(R.dimen.font_6),0,UIUtils.getDimens(R.dimen.font_6),0);
-                    return R.layout.item_test_pic_pubu;
+                   return R.layout.item_test_pic_pubu;
                 } else if (itemType == TYPE_THREE) {
                     //活动(线性)
                     return R.layout.item_test_huodong_list;
