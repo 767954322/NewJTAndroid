@@ -8,8 +8,8 @@
         android:id="@+id/iv_imageview_one"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/font_10"
-        android:layout_marginRight="@dimen/font_10" />
+        android:layout_marginLeft="@dimen/font_4"
+        android:layout_marginRight="@dimen/font_4" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
             android:layout_width="@dimen/font_25"
             android:layout_height="@dimen/font_25"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/font_10" />
+            android:layout_marginLeft="@dimen/font_4" />
 
         <TextView
             android:id="@+id/tv_name_pic"
