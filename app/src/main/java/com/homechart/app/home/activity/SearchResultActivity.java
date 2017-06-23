@@ -309,6 +309,9 @@ public class SearchResultActivity
                 }
                 mAdapter.notifyDataSetChanged();
                 mRecyclerView.setRefreshing(false);//刷新完毕
+                if (mListData.size() > 0) {
+                    mRecyclerView.smoothScrollToPosition(0);
+                }
                 break;
 
             case LOADMORE_STATUS:
