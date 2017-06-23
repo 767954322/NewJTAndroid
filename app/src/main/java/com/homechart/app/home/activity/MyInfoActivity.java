@@ -300,7 +300,12 @@ public class MyInfoActivity
                 agerPicker = new AgePiker.Builder(MyInfoActivity.this, provinceBean).textSize(20)
                         .itemPadding(10)
                         .build();
-
+                if (userCenterInfoBean != null) {
+                    String  beforeAge =  userCenterInfoBean.getUser_info().getAge_group();
+                    if(beforeAge != null){
+                        agerPicker.setAgar(beforeAge);
+                    }
+                }
                 agerPicker.show();
                 agerPicker.setOnCityItemClickListener(new AgePiker.OnCityItemClickListener() {
                     @Override
@@ -495,6 +500,7 @@ public class MyInfoActivity
                     if (error_code == 0) {
                         CustomProgress.cancelDialog();
                         ToastUtils.showCenter(MyInfoActivity.this, "保存成功");
+                        getUserInfo();
                         Intent intent_result = getIntent();
                         setResult(1, intent_result);
                     } else {
@@ -547,7 +553,7 @@ public class MyInfoActivity
                     .itemPadding(10)
                     .onlyShowProvinceAndCity(true)
                     .build();
-            if(str != null && str.length == 2){
+            if (str != null && str.length == 2) {
                 cityPicker.defaultProvinceName = str[0];
                 cityPicker.defaultCityName = str[1];
             }

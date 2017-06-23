@@ -148,7 +148,12 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
 
         getUserInfo();
         getUnReaderMsg();
-        timer.schedule(task, 0, 60000);
+        try {
+            timer.schedule(task, 1000, 600000);
+        } catch (Exception e) {
+
+        }
+
     }
 
     @Override
