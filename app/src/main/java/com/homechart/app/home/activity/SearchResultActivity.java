@@ -94,9 +94,9 @@ public class SearchResultActivity
     @Override
     protected void initData(Bundle savedInstanceState) {
 
-        if(!TextUtils.isEmpty(search_info)){
+        if (!TextUtils.isEmpty(search_info)) {
             cet_clearedit.setText(search_info);
-        }else {
+        } else {
             cet_clearedit.setText(search_tag);
         }
         cet_clearedit.setSelection(cet_clearedit.getText().length());
@@ -271,6 +271,7 @@ public class SearchResultActivity
                             getHeight(searchDataBean.getItem_list(), state);
                             updateViewFromData(searchDataBean.getItem_list(), state);
                         } else {
+                            ToastUtils.showCenter(SearchResultActivity.this, "暂时没搜到您要的结果，不如换个关键词试试？");
                             updateViewFromData(null, state);
                         }
                     } else {
@@ -289,7 +290,7 @@ public class SearchResultActivity
                 }
             }
         };
-        MyHttpManager.getInstance().getSearchList(null,search_info, search_tag, (page_num - 1) * 20 + "", "20", callBack);
+        MyHttpManager.getInstance().getSearchList(null, search_info, search_tag, (page_num - 1) * 20 + "", "20", callBack);
 
     }
 
@@ -332,9 +333,9 @@ public class SearchResultActivity
 
         if (item_list.size() > 0) {
             for (int i = 0; i < item_list.size(); i++) {
-                if(item_list.get(i).getItem_info().getImage().getRatio() == 0){
+                if (item_list.get(i).getItem_info().getImage().getRatio() == 0) {
                     mListDataHeight.add(width_Pic_Staggered);
-                }else {
+                } else {
                     mListDataHeight.add(Math.round(width_Pic_Staggered / item_list.get(i).getItem_info().getImage().getRatio()));
 
                 }
