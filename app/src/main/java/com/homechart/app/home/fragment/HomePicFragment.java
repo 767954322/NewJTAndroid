@@ -197,7 +197,7 @@ public class HomePicFragment
         buildRecyclerView();
         getTagData();
         getUnReaderMsg();
-        timer.schedule(task, 5 * 60 * 1000, 5 * 60 * 1000);
+        timer.schedule(task, 0, 1 * 60 * 1000);
     }
 
     @Override
