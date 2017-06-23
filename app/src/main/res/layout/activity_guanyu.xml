@@ -29,7 +29,7 @@
                 android:layout_marginLeft="@dimen/font_15"
                 android:text="联系邮箱"
                 android:textColor="@color/case_text_tital_name"
-                android:textSize="@dimen/size_14" />
+                android:textSize="@dimen/size_16" />
 
             <TextView
                 android:id="@+id/tv_guanyu_youxiang_content"
