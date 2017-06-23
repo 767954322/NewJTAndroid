@@ -52,7 +52,7 @@
             android:layout_below="@+id/view_line_name"
             android:layout_marginTop="@dimen/font_40"
             android:background="@drawable/bt_login"
-            android:text="登陆"
+            android:text="登录"
             android:textColor="@color/white"
             android:textSize="@dimen/font_17"
             android:textStyle="bold" />
@@ -69,7 +69,7 @@
                 android:id="@+id/tv_yonghuxieyi_tital"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="登陆即同意"
+                android:text="登录即同意"
                 android:textSize="@dimen/font_13" />
 
             <TextView
