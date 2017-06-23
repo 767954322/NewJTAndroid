@@ -1,5 +1,6 @@
 package com.homechart.app.home.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -274,6 +277,10 @@ public class MyInfoActivity
                 break;
             case R.id.rl_myinfo_location:
 
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(rl_myinfo_header.getWindowToken(), 0);
+                }
                 if (provinceBean == null) {
                     getCitydata(mTag);
                 } else {
