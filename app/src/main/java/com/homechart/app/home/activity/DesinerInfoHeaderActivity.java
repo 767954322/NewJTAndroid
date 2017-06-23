@@ -72,7 +72,6 @@ public class DesinerInfoHeaderActivity extends BaseActivity implements View.OnCl
         tv_lianxi_six = (TextView) findViewById(R.id.tv_lianxi_six);
         sv_scrollview = (MyScrollView) findViewById(R.id.sv_scrollview);
         common_navbar = (RelativeLayout) findViewById(R.id.common_navbar);
-        nav_secondary_imageButton = (ImageButton) findViewById(R.id.nav_secondary_imageButton);
 
 
         iv_header_desiner_center = (RoundImageView) findViewById(R.id.iv_header_desiner_center);
@@ -115,13 +114,11 @@ public class DesinerInfoHeaderActivity extends BaseActivity implements View.OnCl
             public void myOnScrollChanged(int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if (scrollY < 300) {
                     mIBBack.setImageResource(R.drawable.tital_back_wight);
-                    nav_secondary_imageButton.setImageResource(R.drawable.shared_icon_white);
                     float alpha = (float) (300 - scrollY) / 300;
                     common_navbar.setBackgroundResource(R.color.white);
                     common_navbar.getBackground().setAlpha((int) ((1 - alpha) * 255));
                 } else {
                     common_navbar.setBackgroundResource(R.color.white);
-                    nav_secondary_imageButton.setImageResource(R.drawable.shared_icon);
                     mIBBack.setImageResource(R.drawable.tital_back);
                     common_navbar.getBackground().setAlpha(255);
                 }
