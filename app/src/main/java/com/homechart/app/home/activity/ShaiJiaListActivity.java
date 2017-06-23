@@ -318,6 +318,11 @@ public class ShaiJiaListActivity extends BaseActivity
                             if (null != shouCangBean.getItem_list() && 0 != shouCangBean.getItem_list().size()) {
                                 updateViewFromData(shouCangBean.getItem_list(), state);
                             } else {
+                                if (page_num == 1) {
+                                    ToastUtils.showCenter(ShaiJiaListActivity.this, "暂无晒家图片，先去发布一些图片吧!");
+                                }else {
+                                    ToastUtils.showCenter(ShaiJiaListActivity.this, "暂无更多数据!");
+                                }
                                 updateViewFromData(null, state);
                             }
                         } else {

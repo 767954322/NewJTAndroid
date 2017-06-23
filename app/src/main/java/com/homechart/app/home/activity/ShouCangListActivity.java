@@ -320,6 +320,11 @@ public class ShouCangListActivity
                             if (null != shouCangBean.getItem_list() && 0 != shouCangBean.getItem_list().size()) {
                                 updateViewFromData(shouCangBean.getItem_list(), state);
                             } else {
+                                if (page_num == 1) {
+                                    ToastUtils.showCenter(ShouCangListActivity.this, "您还没收藏图片呢，先去收藏一些图片吧!");
+                                }else {
+                                    ToastUtils.showCenter(ShouCangListActivity.this, "暂无更多数据!");
+                                }
                                 updateViewFromData(null, state);
                             }
                         } else {
