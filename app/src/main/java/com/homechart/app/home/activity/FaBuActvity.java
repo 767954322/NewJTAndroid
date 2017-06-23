@@ -194,6 +194,7 @@ public class FaBuActvity
                 message.what = 1;
                 mHandler.sendMessage(message);
             } else {
+                selectTags.clear();
                 Message message = new Message();
                 message.what = 2;
                 mHandler.sendMessage(message);
