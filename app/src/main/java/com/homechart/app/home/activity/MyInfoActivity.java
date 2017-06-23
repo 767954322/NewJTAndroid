@@ -290,6 +290,10 @@ public class MyInfoActivity
                 break;
 
             case R.id.rl_myinfo_age:
+                InputMethodManager imm1 = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm1 != null) {
+                    imm1.hideSoftInputFromWindow(rl_myinfo_header.getWindowToken(), 0);
+                }
                 agerPicker = new AgePiker.Builder(MyInfoActivity.this, provinceBean).textSize(20)
                         .itemPadding(10)
                         .build();
