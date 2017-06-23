@@ -156,13 +156,12 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/font_40"
         android:layout_below="@+id/rl_top"
-        android:layout_marginLeft="@dimen/font_20"
-        android:layout_marginRight="@dimen/font_20"
+        android:layout_marginLeft="@dimen/font_15"
+        android:layout_marginRight="@dimen/font_15"
         android:layout_marginTop="@dimen/font_40"
         android:background="@drawable/bt_login"
         android:text="退出登录"
         android:textColor="@color/white"
-        android:textSize="@dimen/font_17"
-        android:textStyle="bold" />
+        android:textSize="@dimen/font_14" />
 
 </RelativeLayout>
