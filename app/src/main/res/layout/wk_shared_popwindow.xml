@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/tv_tital_sucess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/font_30"
+            android:text="发布成功，分享给朋友们看看吧！"
+            android:textColor="@color/bg_262626"
+            android:textSize="@dimen/size_17" />
+
+        <TextView
+            android:id="@+id/tv_tital_toast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_tital_sucess"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/font_30"
+            android:text="请选择分享平台"
+            android:textColor="@color/bg_8f8f8f"
+            android:textSize="@dimen/size_14" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_tital_toast"
+            android:layout_marginTop="@dimen/font_30"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_shared_weixin_friends"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="@dimen/font_10"
+                android:drawableTop="@drawable/weixin"
+                android:gravity="center_horizontal"
+                android:text="微信好友" />
+
+            <TextView
+                android:id="@+id/tv_shared_weixin_quan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="@dimen/font_10"
+                android:drawableTop="@drawable/weixin"
+                android:gravity="center_horizontal"
+                android:text="微信朋友圈" />
+
+            <TextView
+                android:id="@+id/tv_shared_xinlang"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawablePadding="@dimen/font_10"
+                android:drawableTop="@drawable/weixin"
+                android:gravity="center_horizontal"
+                android:text="新浪微博" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
