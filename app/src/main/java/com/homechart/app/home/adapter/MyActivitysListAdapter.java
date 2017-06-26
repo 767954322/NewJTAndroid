@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
@@ -13,6 +14,7 @@ import com.homechart.app.R;
 import com.homechart.app.home.bean.fabu.ActivityItemDataBean;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by gumenghao on 17/6/21.
@@ -22,11 +24,20 @@ public class MyActivitysListAdapter extends BaseAdapter {
 
     private List<ActivityItemDataBean> activityList;
     private Context context;
+    private CheckStatus mCheckStatus;
+    private Map<Integer, String> mMap;
 
 
-    public MyActivitysListAdapter(List<ActivityItemDataBean> activityList, Context context) {
+    public void notifyData(Map<Integer, String> map) {
+        this.mMap = map;
+        notifyDataSetChanged();
+    }
+
+    public MyActivitysListAdapter(List<ActivityItemDataBean> activityList, Context context, CheckStatus checkStatus, Map<Integer, String> map) {
         this.activityList = activityList;
         this.context = context;
+        this.mCheckStatus = checkStatus;
+        this.mMap = map;
     }
 
     @Override
@@ -45,7 +56,7 @@ public class MyActivitysListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         final MyHolder myHolder;
         if (convertView == null) {
@@ -58,18 +69,47 @@ public class MyActivitysListAdapter extends BaseAdapter {
         } else {
             myHolder = (MyHolder) convertView.getTag();
         }
+
+        if (mMap.containsKey(position)) {
+            myHolder.cb_check_add.setChecked(true);
+        } else {
+            myHolder.cb_check_add.setChecked(false);
+        }
+
         myHolder.tv_tital.setText(activityList.get(position).getActivity_info().getTitle());
         myHolder.tv_tital.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (myHolder.cb_check_add.isChecked()) {
+                    mCheckStatus.checkChange(position, false, activityList.get(position).getActivity_info().getActivity_id());
                     myHolder.cb_check_add.setChecked(false);
                 } else {
+                    mCheckStatus.checkChange(position, true, activityList.get(position).getActivity_info().getActivity_id());
                     myHolder.cb_check_add.setChecked(true);
                 }
             }
         });
 
+        myHolder.cb_check_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (myHolder.cb_check_add.isChecked()) {
+
+                    mCheckStatus.checkChange(position, true, activityList.get(position).getActivity_info().getActivity_id());
+                    myHolder.cb_check_add.setChecked(true);
+                } else {
+
+                    mCheckStatus.checkChange(position, false, activityList.get(position).getActivity_info().getActivity_id());
+                    myHolder.cb_check_add.setChecked(false);
+                }
+            }
+        });
+//        myHolder.cb_check_add.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                mCheckStatus.checkChange(position, isChecked, activityList.get(position).getActivity_info().getActivity_id());
+//            }
+//        });
 
         return convertView;
     }
@@ -79,6 +119,12 @@ public class MyActivitysListAdapter extends BaseAdapter {
         private CheckBox cb_check_add;
         private TextView tv_tital;
         private TextView tv_activity_add;
+
+    }
+
+    public interface CheckStatus {
+
+        void checkChange(int position, boolean status, String activityId);
 
     }
 

@@ -19,22 +19,20 @@ import com.homechart.app.home.bean.fabu.ActivityDataBean;
 import com.homechart.app.home.bean.fabu.ActivityItemDataBean;
 import com.homechart.app.home.bean.pictag.TagItemDataChildBean;
 import com.homechart.app.myview.FlowLayoutFaBu;
-import com.homechart.app.myview.FlowLayoutShaiXuan;
 import com.homechart.app.myview.MyListView;
-import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.myview.SerializableHashMap;
 import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.imageloader.ImageUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
-import com.umeng.socialize.media.Base;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +43,8 @@ import java.util.Map;
 public class FaBuActvity
         extends BaseActivity
         implements View.OnClickListener,
-        FlowLayoutFaBu.OnTagClickListener {
+        FlowLayoutFaBu.OnTagClickListener,
+        MyActivitysListAdapter.CheckStatus {
     private ImageView iv_image_fabu;
     private String urlImage;
     private ImageButton nav_left_imageButton;
@@ -60,6 +59,7 @@ public class FaBuActvity
     private View view_center;
     private Map<String, String> selectTags;
     private List<TagItemDataChildBean> listZiDingSelect;
+    private Map<Integer, String> activityMap = new HashMap<>();
 
     @Override
     protected int getLayoutResId() {
@@ -220,7 +220,7 @@ public class FaBuActvity
                 if (activityList != null && activityList.size() > 0) {
                     tv_zhuti_tital.setVisibility(View.VISIBLE);
                     view_center.setVisibility(View.VISIBLE);
-                    adapter = new MyActivitysListAdapter(activityList, FaBuActvity.this);
+                    adapter = new MyActivitysListAdapter(activityList, FaBuActvity.this, FaBuActvity.this,activityMap);
                     lv_zhuti.setAdapter(adapter);
                 } else {
                     tv_zhuti_tital.setVisibility(View.GONE);
@@ -242,4 +242,17 @@ public class FaBuActvity
 
         }
     };
+
+    @Override
+    public void checkChange(int position, boolean status, String activityId) {
+
+        if (status) {
+            activityMap.clear();
+            activityMap.put(position, activityId);
+        } else {
+            activityMap.clear();
+        }
+        Log.d("test",activityMap.toString());
+        adapter.notifyData(activityMap);
+    }
 }
