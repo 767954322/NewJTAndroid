@@ -1,7 +1,9 @@
 package com.homechart.app.home.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -28,6 +30,7 @@ import com.homechart.app.myview.FlowLayoutFaBu;
 import com.homechart.app.myview.HomeActivityPopWin;
 import com.homechart.app.myview.MyListView;
 import com.homechart.app.myview.SerializableHashMap;
+import com.homechart.app.utils.BitmapUtil;
 import com.homechart.app.utils.CustomProgress;
 import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.Md5Util;
@@ -45,8 +48,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -252,12 +258,23 @@ public class FaBuActvity
             @Override
             public void run() {
                 super.run();
+                SimpleDateFormat timesdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String fileName = timesdf.format(new Date()).toString();//获取系统时间
+                //压缩图片
+                Bitmap bitmap_before = BitmapUtil.getBitmap(urlImage);
+                Bitmap bitmap_compress = BitmapUtil.compressImage(bitmap_before);
+                try {
+                    boolean status = BitmapUtil.saveBitmap(bitmap_compress, Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + fileName + "/");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
 
                 Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
                 String signString = PublicUtils.getSinaString(map);
                 String tabMd5String = Md5Util.getMD5twoTimes(signString);
                 map.put(ClassConstant.PublicKey.SIGN, tabMd5String);
-                FileHttpManager.getInstance().uploadFile(FaBuActvity.this, new File(urlImage),
+                FileHttpManager.getInstance().uploadFile(FaBuActvity.this, new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/fabu/"),
                         UrlConstants.PUT_IMAGE,
                         map,
                         PublicUtils.getPublicHeader(MyApplication.getInstance()));
@@ -265,55 +282,6 @@ public class FaBuActvity
         }.start();
 
     }
-
-    Handler mHandler = new Handler() {
-
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            int code = msg.what;
-            if (code == 0) {
-                String info = (String) msg.obj;
-                ActivityDataBean activityDataBean = GsonUtil.jsonToBean(info, ActivityDataBean.class);
-                activityList = activityDataBean.getActivity_list();
-                if (activityList != null && activityList.size() > 0) {
-                    tv_zhuti_tital.setVisibility(View.VISIBLE);
-                    view_center.setVisibility(View.VISIBLE);
-                    adapter = new MyActivitysListAdapter(activityList, FaBuActvity.this, FaBuActvity.this, activityMap);
-                    lv_zhuti.setAdapter(adapter);
-                } else {
-                    tv_zhuti_tital.setVisibility(View.GONE);
-                    view_center.setVisibility(View.GONE);
-                }
-            } else if (code == 1) {
-                listTag.clear();
-                for (String key : selectTags.keySet()) {
-                    listTag.add(key);
-                }
-                fl_tag_flowLayout.cleanTag();
-                fl_tag_flowLayout.setListData(listTag);
-            } else if (code == 2) {
-                listTag.clear();
-                fl_tag_flowLayout.cleanTag();
-                fl_tag_flowLayout.setListData(listTag);
-            } else if (code == 3) {
-
-                String info = (String) msg.obj;
-                try {
-                    JSONObject jsonObject = new JSONObject(info);
-                    JSONObject jsonObject1 = jsonObject.getJSONObject("item_info");
-                    String item_id = jsonObject1.getString("item_id");
-                    CustomProgress.cancelDialog();
-                    ToastUtils.showCenter(FaBuActvity.this, "发布成功");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-        }
-    };
 
     @Override
     public void checkChange(int position, boolean status, String activityId) {
@@ -437,4 +405,56 @@ public class FaBuActvity
 
 
     }
+
+    Handler mHandler = new Handler() {
+
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int code = msg.what;
+            if (code == 0) {
+                String info = (String) msg.obj;
+                ActivityDataBean activityDataBean = GsonUtil.jsonToBean(info, ActivityDataBean.class);
+                activityList = activityDataBean.getActivity_list();
+                if (activityList != null && activityList.size() > 0) {
+                    tv_zhuti_tital.setVisibility(View.VISIBLE);
+                    view_center.setVisibility(View.VISIBLE);
+                    adapter = new MyActivitysListAdapter(activityList, FaBuActvity.this, FaBuActvity.this, activityMap);
+                    lv_zhuti.setAdapter(adapter);
+                } else {
+                    tv_zhuti_tital.setVisibility(View.GONE);
+                    view_center.setVisibility(View.GONE);
+                }
+            } else if (code == 1) {
+                listTag.clear();
+                for (String key : selectTags.keySet()) {
+                    listTag.add(key);
+                }
+                fl_tag_flowLayout.cleanTag();
+                fl_tag_flowLayout.setListData(listTag);
+            } else if (code == 2) {
+                listTag.clear();
+                fl_tag_flowLayout.cleanTag();
+                fl_tag_flowLayout.setListData(listTag);
+            } else if (code == 3) {
+
+                String info = (String) msg.obj;
+                try {
+                    JSONObject jsonObject = new JSONObject(info);
+                    JSONObject jsonObject1 = jsonObject.getJSONObject("item_info");
+                    String item_id = jsonObject1.getString("item_id");
+                    CustomProgress.cancelDialog();
+                    ToastUtils.showCenter(FaBuActvity.this, "发布成功");
+                    Intent intent = new Intent(FaBuActvity.this, ImageDetailActivity.class);
+                    intent.putExtra("item_id",item_id);
+                    startActivity(intent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+        }
+    };
 }
