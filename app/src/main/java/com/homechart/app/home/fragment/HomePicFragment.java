@@ -14,7 +14,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -120,6 +122,9 @@ public class HomePicFragment
     private ImageView iv_center_msgicon;
     private RelativeLayout rl_tos_choose;
 
+    private float mDownY;
+    private float mMoveY;
+    private boolean move_tag = true;
     public HomePicFragment(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
     }
@@ -127,6 +132,9 @@ public class HomePicFragment
     public HomePicFragment() {
     }
 
+   public void setDownY(float y){
+       mDownY = y;
+    }
     @Override
     protected int getLayoutResId() {
         return R.layout.fragment_home_pic;
@@ -187,6 +195,36 @@ public class HomePicFragment
 //            }
 //
 //        });
+        mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN :
+                        break;
+                    case MotionEvent.ACTION_MOVE :
+                        if(move_tag){
+                            mDownY = event.getY();
+                            move_tag = false;
+                        }
+                        mMoveY = event.getY();
+                        break;
+                    case MotionEvent.ACTION_UP :
+                        move_tag = true;
+                        mMoveY = event.getY();
+                        Log.e("UP", "Y" + mMoveY);
+                        if (Math.abs((mMoveY - mDownY)) > 20) {
+                            if (mMoveY > mDownY) {
+                                rl_tos_choose.setVisibility(View.VISIBLE);
+                            } else {
+                                rl_tos_choose.setVisibility(View.GONE);
+                            }
+                        }
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     @Override

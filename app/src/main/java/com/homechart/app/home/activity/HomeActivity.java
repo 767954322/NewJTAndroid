@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -51,7 +52,6 @@ public class HomeActivity
     private ImageView iv_add_icon;
     private SelectPicPopupWindow menuWindow;
 
-
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_home;
@@ -78,7 +78,6 @@ public class HomeActivity
             if (null == mHomePicFragment) {
                 mHomePicFragment = new HomePicFragment(getSupportFragmentManager());
             }
-            mTagFragment = mHomePicFragment;
             transaction = getSupportFragmentManager().beginTransaction();
             transaction.add(R.id.main_content, mHomePicFragment).commit();
         }
@@ -192,6 +191,17 @@ public class HomeActivity
         }
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        int action = ev.getAction();
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                break;
+
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -204,5 +214,6 @@ public class HomeActivity
 
         }
     };
+
 }
 

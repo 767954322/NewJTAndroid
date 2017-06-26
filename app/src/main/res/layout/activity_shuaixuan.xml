@@ -9,7 +9,6 @@
         android:id="@+id/common_navbar"
         layout="@layout/view_navigation_header" />
 
-
     <com.homechart.app.myview.FlowLayoutShaiXuan
         android:id="@+id/his_flowLayout"
         android:layout_width="match_parent"

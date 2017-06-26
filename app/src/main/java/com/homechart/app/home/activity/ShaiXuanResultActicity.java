@@ -10,6 +10,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -86,6 +87,10 @@ public class ShaiXuanResultActicity
     private RoundImageView riv_round_two;
     private RoundImageView riv_round_three;
 
+    private int mDownY;
+    private float mMoveY;
+    private boolean move_tag = true;
+
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_shuaixuan;
@@ -127,6 +132,42 @@ public class ShaiXuanResultActicity
         riv_round_one.setOnClickListener(this);
         riv_round_two.setOnClickListener(this);
         riv_round_three.setOnClickListener(this);
+
+        mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN :
+//                        mDownY = (int) event.getY();
+                        break;
+                    case MotionEvent.ACTION_MOVE :
+
+                        if(move_tag){
+                            mDownY = (int) event.getY();
+                            move_tag = false;
+                        }
+                        mMoveY = event.getY();
+                        break;
+                    case MotionEvent.ACTION_UP :
+                        mMoveY = event.getY();
+                        move_tag = true;
+                        if (Math.abs((mMoveY - mDownY)) > 20) {
+                            if (mMoveY > mDownY) {
+                                //  gone
+                                his_flowLayout.setVisibility(View.VISIBLE);
+                                view_flowlayout.setVisibility(View.VISIBLE);
+                            } else {
+                                // show
+                                his_flowLayout.setVisibility(View.GONE);
+                                view_flowlayout.setVisibility(View.GONE);
+                            }
+                        }
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
