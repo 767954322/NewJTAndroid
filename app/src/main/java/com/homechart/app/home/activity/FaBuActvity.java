@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -24,6 +25,7 @@ import com.homechart.app.home.bean.fabu.ActivityDataBean;
 import com.homechart.app.home.bean.fabu.ActivityItemDataBean;
 import com.homechart.app.home.bean.pictag.TagItemDataChildBean;
 import com.homechart.app.myview.FlowLayoutFaBu;
+import com.homechart.app.myview.HomeActivityPopWin;
 import com.homechart.app.myview.MyListView;
 import com.homechart.app.myview.SerializableHashMap;
 import com.homechart.app.utils.CustomProgress;
@@ -71,6 +73,8 @@ public class FaBuActvity
     private List<TagItemDataChildBean> listZiDingSelect;
     private Map<Integer, String> activityMap = new HashMap<>();
     private EditText et_fabu_miaosu;
+    private HomeActivityPopWin homeActivityPopWin;
+
 
     @Override
     protected int getLayoutResId() {
@@ -113,6 +117,7 @@ public class FaBuActvity
         fl_tag_flowLayout.setColorful(false);
         fl_tag_flowLayout.setListData(listTag);
         fl_tag_flowLayout.setOnTagClickListener(this);
+        homeActivityPopWin = new HomeActivityPopWin(FaBuActvity.this);
     }
 
     @Override
@@ -308,6 +313,20 @@ public class FaBuActvity
         }
         Log.d("test", activityMap.toString());
         adapter.notifyData(activityMap);
+    }
+
+    @Override
+    public void activityDetail(int position, String activityId) {
+
+        if(homeActivityPopWin.isShowing()){
+            homeActivityPopWin.dismiss();
+        }else {
+            homeActivityPopWin.showAtLocation(FaBuActvity.this.findViewById(R.id.main),
+                    Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
+                    0,
+                    0);
+        }
+
     }
 
     @Override

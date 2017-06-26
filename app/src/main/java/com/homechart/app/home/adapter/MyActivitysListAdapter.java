@@ -104,13 +104,12 @@ public class MyActivitysListAdapter extends BaseAdapter {
                 }
             }
         });
-//        myHolder.cb_check_add.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                mCheckStatus.checkChange(position, isChecked, activityList.get(position).getActivity_info().getActivity_id());
-//            }
-//        });
-
+        myHolder.tv_activity_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCheckStatus.activityDetail(position,activityList.get(position).getActivity_info().getActivity_id());
+            }
+        });
         return convertView;
     }
 
@@ -125,6 +124,7 @@ public class MyActivitysListAdapter extends BaseAdapter {
     public interface CheckStatus {
 
         void checkChange(int position, boolean status, String activityId);
+        void activityDetail(int position, String activityId);
 
     }
 
