@@ -48,8 +48,8 @@ public class HomeActivityPopWin extends PopupWindow {
 
             ImageUtils.displayFilletImage(mActivityItemDataBean.getActivity_info().getImage().getImg0(), iv_activity_image);
             tv_activity_image_tital.setText(mActivityItemDataBean.getActivity_info().getTitle());
-            tv_activity_time_start.setText(start[0] + "~");
-            tv_activity_time_end.setText(end[0]);
+            tv_activity_time_start.setText(start[0].replace("-","/") + "-");
+            tv_activity_time_end.setText(end[0].replace("-","/"));
             tv_activity_detail_content.setText(mActivityItemDataBean.getActivity_info().getDescription());
         }
 

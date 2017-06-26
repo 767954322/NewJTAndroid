@@ -32,6 +32,9 @@ import com.homechart.app.utils.CustomProgress;
 import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.Md5Util;
 import com.homechart.app.utils.ToastUtils;
+import com.homechart.app.utils.UIUtils;
+import com.homechart.app.utils.alertview.AlertView;
+import com.homechart.app.utils.alertview.OnItemClickListener;
 import com.homechart.app.utils.imageloader.ImageUtils;
 import com.homechart.app.utils.volley.FileHttpManager;
 import com.homechart.app.utils.volley.MyHttpManager;
@@ -56,7 +59,9 @@ public class FaBuActvity
         extends BaseActivity
         implements View.OnClickListener,
         FlowLayoutFaBu.OnTagClickListener,
-        MyActivitysListAdapter.CheckStatus, PutFileCallBack {
+        MyActivitysListAdapter.CheckStatus,
+        PutFileCallBack,
+        OnItemClickListener {
     private ImageView iv_image_fabu;
     private String urlImage;
     private ImageButton nav_left_imageButton;
@@ -74,6 +79,7 @@ public class FaBuActvity
     private Map<Integer, String> activityMap = new HashMap<>();
     private EditText et_fabu_miaosu;
     private HomeActivityPopWin homeActivityPopWin;
+    private AlertView mAlertView;
 
 
     @Override
@@ -118,6 +124,7 @@ public class FaBuActvity
         fl_tag_flowLayout.setListData(listTag);
         fl_tag_flowLayout.setOnTagClickListener(this);
         homeActivityPopWin = new HomeActivityPopWin(FaBuActvity.this);
+        showDialog();
     }
 
     @Override
@@ -125,7 +132,13 @@ public class FaBuActvity
 
         switch (v.getId()) {
             case R.id.nav_left_imageButton:
-                FaBuActvity.this.finish();
+                String miaosu1 = et_fabu_miaosu.getText().toString();
+
+                if ((selectTags != null && selectTags.size() > 0) || !TextUtils.isEmpty(miaosu1)) {
+                    mAlertView.show();
+                } else {
+                    FaBuActvity.this.finish();
+                }
                 break;
             case R.id.tv_content_right:
                 String miaosu = et_fabu_miaosu.getText().toString();
@@ -404,4 +417,24 @@ public class FaBuActvity
 
     }
 
+    /***
+     * 提示框
+     */
+    private void showDialog() {
+        mAlertView = new AlertView
+                ("", "是否取消本次发布", UIUtils.getString(R.string.fabu_back_cancle), new String[]{UIUtils.getString(R.string.fabu_back_sure)},
+                        null, this, AlertView.Style.Alert, this);
+    }
+
+    @Override
+    public void onItemClick(Object object, int position) {
+
+        switch (position) {
+            case 0:
+                FaBuActvity.this.finish();
+                break;
+        }
+
+
+    }
 }
