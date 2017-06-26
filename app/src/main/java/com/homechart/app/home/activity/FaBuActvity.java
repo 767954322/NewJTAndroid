@@ -4,15 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.homechart.app.MyApplication;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
+import com.homechart.app.commont.PublicUtils;
+import com.homechart.app.commont.UrlConstants;
 import com.homechart.app.home.adapter.MyActivitysListAdapter;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.fabu.ActivityDataBean;
@@ -21,15 +26,20 @@ import com.homechart.app.home.bean.pictag.TagItemDataChildBean;
 import com.homechart.app.myview.FlowLayoutFaBu;
 import com.homechart.app.myview.MyListView;
 import com.homechart.app.myview.SerializableHashMap;
+import com.homechart.app.utils.CustomProgress;
 import com.homechart.app.utils.GsonUtil;
+import com.homechart.app.utils.Md5Util;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.imageloader.ImageUtils;
+import com.homechart.app.utils.volley.FileHttpManager;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
+import com.homechart.app.utils.volley.PutFileCallBack;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +54,7 @@ public class FaBuActvity
         extends BaseActivity
         implements View.OnClickListener,
         FlowLayoutFaBu.OnTagClickListener,
-        MyActivitysListAdapter.CheckStatus {
+        MyActivitysListAdapter.CheckStatus, PutFileCallBack {
     private ImageView iv_image_fabu;
     private String urlImage;
     private ImageButton nav_left_imageButton;
@@ -60,6 +70,7 @@ public class FaBuActvity
     private Map<String, String> selectTags;
     private List<TagItemDataChildBean> listZiDingSelect;
     private Map<Integer, String> activityMap = new HashMap<>();
+    private EditText et_fabu_miaosu;
 
     @Override
     protected int getLayoutResId() {
@@ -77,6 +88,7 @@ public class FaBuActvity
 
         nav_left_imageButton = (ImageButton) findViewById(R.id.nav_left_imageButton);
         tv_tital_comment = (TextView) findViewById(R.id.tv_tital_comment);
+        et_fabu_miaosu = (EditText) findViewById(R.id.et_fabu_miaosu);
         tv_content_right = (TextView) findViewById(R.id.tv_content_right);
         tv_zhuti_tital = (TextView) findViewById(R.id.tv_zhuti_tital);
         view_center = findViewById(R.id.view_center);
@@ -89,6 +101,7 @@ public class FaBuActvity
     protected void initListener() {
         super.initListener();
         nav_left_imageButton.setOnClickListener(this);
+        tv_content_right.setOnClickListener(this);
     }
 
     @Override
@@ -110,7 +123,19 @@ public class FaBuActvity
                 FaBuActvity.this.finish();
                 break;
             case R.id.tv_content_right:
+                String miaosu = et_fabu_miaosu.getText().toString();
+                if (TextUtils.isEmpty(miaosu)) {
+                    ToastUtils.showCenter(FaBuActvity.this, "请填写图片描述后发布哦");
+                    break;
+                }
+                if (selectTags == null || selectTags.size() == 0) {
+                    ToastUtils.showCenter(FaBuActvity.this, " 需要添加标签后才可发布哦");
+                    break;
+                }
 
+                CustomProgress.show(FaBuActvity.this, "正在发布...", false, null);
+                upLoaderHeader();
+                break;
         }
 
     }
@@ -204,6 +229,25 @@ public class FaBuActvity
 
     }
 
+    private void upLoaderHeader() {
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+
+                Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
+                String signString = PublicUtils.getSinaString(map);
+                String tabMd5String = Md5Util.getMD5twoTimes(signString);
+                map.put(ClassConstant.PublicKey.SIGN, tabMd5String);
+                FileHttpManager.getInstance().uploadFile(FaBuActvity.this, new File(urlImage),
+                        UrlConstants.PUT_IMAGE,
+                        map,
+                        PublicUtils.getPublicHeader(MyApplication.getInstance()));
+            }
+        }.start();
+
+    }
+
     Handler mHandler = new Handler() {
 
 
@@ -214,19 +258,16 @@ public class FaBuActvity
             if (code == 0) {
                 String info = (String) msg.obj;
                 ActivityDataBean activityDataBean = GsonUtil.jsonToBean(info, ActivityDataBean.class);
-
                 activityList = activityDataBean.getActivity_list();
-
                 if (activityList != null && activityList.size() > 0) {
                     tv_zhuti_tital.setVisibility(View.VISIBLE);
                     view_center.setVisibility(View.VISIBLE);
-                    adapter = new MyActivitysListAdapter(activityList, FaBuActvity.this, FaBuActvity.this,activityMap);
+                    adapter = new MyActivitysListAdapter(activityList, FaBuActvity.this, FaBuActvity.this, activityMap);
                     lv_zhuti.setAdapter(adapter);
                 } else {
                     tv_zhuti_tital.setVisibility(View.GONE);
                     view_center.setVisibility(View.GONE);
                 }
-
             } else if (code == 1) {
                 listTag.clear();
                 for (String key : selectTags.keySet()) {
@@ -238,6 +279,19 @@ public class FaBuActvity
                 listTag.clear();
                 fl_tag_flowLayout.cleanTag();
                 fl_tag_flowLayout.setListData(listTag);
+            } else if (code == 3) {
+
+                String info = (String) msg.obj;
+                try {
+                    JSONObject jsonObject = new JSONObject(info);
+                    JSONObject jsonObject1 = jsonObject.getJSONObject("item_info");
+                    String item_id = jsonObject1.getString("item_id");
+                    CustomProgress.cancelDialog();
+                    ToastUtils.showCenter(FaBuActvity.this, "发布成功");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
             }
 
         }
@@ -252,7 +306,81 @@ public class FaBuActvity
         } else {
             activityMap.clear();
         }
-        Log.d("test",activityMap.toString());
+        Log.d("test", activityMap.toString());
         adapter.notifyData(activityMap);
     }
+
+    @Override
+    public void onSucces(String result) {
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            JSONObject jsonObject1 = jsonObject.getJSONObject("data");
+            String image_id = jsonObject1.getString("immage_id");
+            faBu(image_id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            ToastUtils.showCenter(FaBuActvity.this, "发布失败");
+        }
+
+    }
+
+    @Override
+    public void onFails() {
+        CustomProgress.cancelDialog();
+        ToastUtils.showCenter(FaBuActvity.this, "发布失败");
+    }
+
+    private void faBu(String image_id) {
+
+        String activityStr = "";
+        if (activityMap.size() > 0) {
+            StringBuffer sbActivity = new StringBuffer();
+            for (Integer key : activityMap.keySet()) {
+                sbActivity.append(activityMap.get(key));
+            }
+            activityStr = sbActivity.toString();
+        }
+
+        StringBuffer sb = new StringBuffer();
+        for (String key : selectTags.keySet()) {
+            sb.append(key + " ");
+        }
+        String tagStr = sb.toString();
+        String miaosu = et_fabu_miaosu.getText().toString();
+
+
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                CustomProgress.cancelDialog();
+                ToastUtils.showCenter(FaBuActvity.this, "发布失败");
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        Message msg = new Message();
+                        msg.obj = data_msg;
+                        msg.what = 3;
+                        mHandler.sendMessage(msg);
+                    } else {
+                        CustomProgress.cancelDialog();
+                        ToastUtils.showCenter(FaBuActvity.this, error_msg);
+                    }
+                } catch (JSONException e) {
+
+                    CustomProgress.cancelDialog();
+                    ToastUtils.showCenter(FaBuActvity.this, "发布失败");
+                }
+            }
+        };
+        MyHttpManager.getInstance().doFaBu(image_id, miaosu, tagStr, activityStr, callBack);
+
+    }
+
 }
