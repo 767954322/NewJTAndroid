@@ -110,7 +110,7 @@ public class FaBuActvity
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        getColorData();
+        getActivityListData();
         tv_tital_comment.setText("发布图片");
         tv_content_right.setText("发布");
         ImageUtils.displayFilletImage("file://" + urlImage, iv_image_fabu);
@@ -145,7 +145,7 @@ public class FaBuActvity
 
     }
 
-    private void getColorData() {
+    private void getActivityListData() {
         OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
@@ -318,9 +318,11 @@ public class FaBuActvity
     @Override
     public void activityDetail(int position, String activityId) {
 
-        if(homeActivityPopWin.isShowing()){
+        if (homeActivityPopWin.isShowing()) {
             homeActivityPopWin.dismiss();
-        }else {
+        } else {
+
+            homeActivityPopWin.setData(activityList.get(position));
             homeActivityPopWin.showAtLocation(FaBuActvity.this.findViewById(R.id.main),
                     Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
                     0,

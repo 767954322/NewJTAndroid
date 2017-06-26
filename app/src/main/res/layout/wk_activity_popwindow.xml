@@ -19,10 +19,80 @@
         <RelativeLayout
             android:id="@+id/rl_content"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/font_330"
             android:background="@color/white">
 
+            <ImageView
+                android:id="@+id/iv_activity_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/font_175"
+                android:layout_marginBottom="@dimen/font_15"
+                android:layout_marginLeft="@dimen/font_15"
+                android:layout_marginRight="@dimen/font_15"
+                android:layout_marginTop="@dimen/font_15"
+                android:scaleType="centerCrop" />
 
+            <TextView
+                android:id="@+id/tv_activity_image_tital"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/font_15"
+                android:layout_marginRight="@dimen/font_15"
+                android:layout_marginBottom="@dimen/font_15"
+                android:layout_below="@+id/iv_activity_image"
+                android:text="dnjskndsd"
+                android:textColor="@color/bg_262626"
+                android:textSize="@dimen/size_17" />
+
+            <TextView
+                android:id="@+id/tv_activity_time_tital"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_activity_image_tital"
+                android:layout_marginLeft="@dimen/font_15"
+                android:layout_marginBottom="@dimen/font_15"
+                android:text="活动有效期："
+                android:textColor="@color/bg_8f8f8f" />
+
+            <TextView
+                android:id="@+id/tv_activity_time_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_activity_image_tital"
+                android:layout_toRightOf="@+id/tv_activity_time_tital"
+                android:text="1017nian-"
+                android:textColor="@color/bg_8f8f8f" />
+
+
+            <TextView
+                android:id="@+id/tv_activity_time_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_activity_image_tital"
+                android:layout_toRightOf="@+id/tv_activity_time_start"
+                android:text="1017nian"
+                android:textColor="@color/bg_8f8f8f" />
+            <TextView
+                android:id="@+id/tv_activity_detail_tital"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_activity_time_tital"
+                android:layout_marginLeft="@dimen/font_15"
+                android:layout_marginRight="@dimen/font_15"
+                android:layout_marginBottom="@dimen/font_10"
+                android:text="活动介绍："
+                android:textColor="@color/bg_8f8f8f" />
+
+            <TextView
+                android:id="@+id/tv_activity_detail_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_activity_detail_tital"
+                android:layout_marginLeft="@dimen/font_15"
+                android:layout_marginRight="@dimen/font_15"
+                android:text="ojsidfoasemldsd"
+                android:layout_marginBottom="@dimen/font_15"
+                android:textColor="@color/bg_8f8f8f" />
         </RelativeLayout>
     </ScrollView>
 
