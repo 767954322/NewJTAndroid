@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_f2f2f2">
@@ -41,7 +42,6 @@
                 android:layout_marginRight="@dimen/font_10"
                 android:layout_marginTop="@dimen/font_15"
                 android:background="@color/white"
-                android:text="dsdsdsd"
                 android:textSize="@dimen/size_14" />
 
             <TextView
@@ -53,7 +53,6 @@
                 android:layout_marginRight="@dimen/font_10"
                 android:layout_marginTop="@dimen/font_15"
                 android:background="@color/white"
-                android:text="sdsdsd"
                 android:textColor="@color/bg_8f8f8f"
                 android:textSize="@dimen/font_12" />
 
@@ -89,7 +88,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginLeft="@dimen/font_4"
                     android:layout_toRightOf="@+id/iv_bang"
-                    android:text="11"
+                    android:text="0"
                     android:textColor="@color/bg_8f8f8f"
                     android:textSize="@dimen/size_11" />
 
@@ -109,7 +108,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginLeft="@dimen/font_4"
                     android:layout_toRightOf="@+id/iv_xing"
-                    android:text="12"
+                    android:text="0"
                     android:textColor="@color/bg_8f8f8f"
                     android:textSize="@dimen/size_11" />
 
@@ -129,7 +128,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginLeft="@dimen/font_4"
                     android:layout_toRightOf="@+id/iv_ping"
-                    android:text="13"
+                    android:text="0"
                     android:textColor="@color/bg_8f8f8f"
                     android:textSize="@dimen/size_11" />
 
@@ -142,7 +141,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="@dimen/font_10"
-                    android:text="13"
+                    android:text="0"
                     android:layout_marginLeft="@dimen/font_4"
                     android:textSize="@dimen/size_11"/>
 

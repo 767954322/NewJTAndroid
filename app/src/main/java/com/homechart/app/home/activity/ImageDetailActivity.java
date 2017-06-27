@@ -3,6 +3,7 @@ package com.homechart.app.home.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -15,6 +16,7 @@ import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.imagedetail.ImageDetailBean;
+import com.homechart.app.myview.HomeSharedPopWin;
 import com.homechart.app.utils.CustomProgress;
 import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.ToastUtils;
@@ -32,7 +34,8 @@ import org.json.JSONObject;
 
 public class ImageDetailActivity
         extends BaseActivity
-        implements View.OnClickListener {
+        implements View.OnClickListener,
+        HomeSharedPopWin.ClickInter {
     private ImageView iv_details_image;
     private TextView tv_details_tital;
     private TextView tv_details_time;
@@ -49,6 +52,7 @@ public class ImageDetailActivity
     private ImageButton nav_left_imageButton;
     private TextView tv_tital_comment;
     private TextView tv_content_right;
+    private HomeSharedPopWin homeSharedPopWin;
 
     @Override
     protected int getLayoutResId() {
@@ -65,6 +69,7 @@ public class ImageDetailActivity
     @Override
     protected void initView() {
 
+        homeSharedPopWin = new HomeSharedPopWin(ImageDetailActivity.this, ImageDetailActivity.this);
         nav_left_imageButton = (ImageButton) findViewById(R.id.nav_left_imageButton);
         tv_tital_comment = (TextView) findViewById(R.id.tv_tital_comment);
         tv_content_right = (TextView) findViewById(R.id.tv_content_right);
@@ -189,8 +194,30 @@ public class ImageDetailActivity
             tv_xing.setText(imageDetailBean.getCounter().getComment_num() + "");
             tv_ping.setText(imageDetailBean.getCounter().getComment_num() + "");
             tv_shared.setText(imageDetailBean.getCounter().getShare_num() + "");
+
+            homeSharedPopWin.showAtLocation(ImageDetailActivity.this.findViewById(R.id.main),
+                    Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
+                    0,
+                    0); //设置layout在PopupWindow中显示的位置
         }
     };
 
 
+    @Override
+    public void onClickWeiXin() {
+
+        ToastUtils.showCenter(ImageDetailActivity.this,"微信分享");
+    }
+
+    @Override
+    public void onClickPYQ() {
+
+        ToastUtils.showCenter(ImageDetailActivity.this,"朋友圈分享");
+    }
+
+    @Override
+    public void onClickWeiBo() {
+
+        ToastUtils.showCenter(ImageDetailActivity.this,"微博分享");
+    }
 }
