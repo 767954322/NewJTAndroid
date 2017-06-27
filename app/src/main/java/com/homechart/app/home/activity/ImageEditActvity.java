@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.homechart.app.R;
@@ -20,6 +21,7 @@ import com.homechart.app.home.bean.imagedetail.ImageDetailBean;
 import com.homechart.app.home.bean.pictag.TagItemDataChildBean;
 import com.homechart.app.myview.FlowLayoutFaBu;
 import com.homechart.app.myview.HomeActivityPopWin;
+import com.homechart.app.myview.HomeActivityPopWinEdit;
 import com.homechart.app.myview.SerializableHashMap;
 import com.homechart.app.utils.CustomProgress;
 import com.homechart.app.utils.ToastUtils;
@@ -45,7 +47,6 @@ public class ImageEditActvity
         extends BaseActivity
         implements View.OnClickListener,
         FlowLayoutFaBu.OnTagClickListener,
-        MyActivitysListAdapter.CheckStatus,
         OnItemClickListener {
     private ImageView iv_image_fabu;
     private String urlImage;
@@ -62,9 +63,12 @@ public class ImageEditActvity
     private List<TagItemDataChildBean> listZiDingSelect;
     private Map<Integer, String> activityMap = new HashMap<>();
     private EditText et_fabu_miaosu;
-    private HomeActivityPopWin homeActivityPopWin;
+    private HomeActivityPopWinEdit homeActivityPopWin;
     private AlertView mAlertView;
     private ImageDetailBean imageDetailBean;
+    private RelativeLayout rl_activity;
+    private TextView tv_activity_tital;
+    private TextView tv_activity_add;
 
 
     @Override
@@ -86,6 +90,9 @@ public class ImageEditActvity
         et_fabu_miaosu = (EditText) findViewById(R.id.et_fabu_miaosu);
         tv_content_right = (TextView) findViewById(R.id.tv_content_right);
         tv_zhuti_tital = (TextView) findViewById(R.id.tv_zhuti_tital);
+        tv_activity_tital = (TextView) findViewById(R.id.tv_activity_tital);
+        tv_activity_add = (TextView) findViewById(R.id.tv_activity_add);
+        rl_activity = (RelativeLayout) findViewById(R.id.rl_activity);
         view_center = findViewById(R.id.view_center);
         iv_image_fabu = (ImageView) findViewById(R.id.iv_image_fabu);
         fl_tag_flowLayout = (FlowLayoutFaBu) findViewById(R.id.fl_tag_flowLayout);
@@ -96,6 +103,8 @@ public class ImageEditActvity
         super.initListener();
         nav_left_imageButton.setOnClickListener(this);
         tv_content_right.setOnClickListener(this);
+        tv_activity_tital.setOnClickListener(this);
+        tv_activity_add.setOnClickListener(this);
     }
 
     @Override
@@ -108,8 +117,19 @@ public class ImageEditActvity
         fl_tag_flowLayout.setColorful(false);
         fl_tag_flowLayout.setListData(listTag);
         fl_tag_flowLayout.setOnTagClickListener(this);
+
+        if (imageDetailBean.getActivity_info() != null) {
+            view_center.setVisibility(View.VISIBLE);
+            tv_zhuti_tital.setVisibility(View.VISIBLE);
+            rl_activity.setVisibility(View.VISIBLE);
+            tv_activity_tital.setText(imageDetailBean.getActivity_info().getTitle());
+        } else {
+            view_center.setVisibility(View.GONE);
+            tv_zhuti_tital.setVisibility(View.GONE);
+            rl_activity.setVisibility(View.GONE);
+        }
         et_fabu_miaosu.setText(imageDetailBean.getItem_info().getDescription());
-        homeActivityPopWin = new HomeActivityPopWin(ImageEditActvity.this);
+        homeActivityPopWin = new HomeActivityPopWinEdit(ImageEditActvity.this);
         showDialog();
     }
 
@@ -160,6 +180,22 @@ public class ImageEditActvity
                     CustomProgress.show(ImageEditActvity.this, "修改中...", false, null);
                     updataImage();
                 }
+                break;
+
+            case R.id.tv_activity_add:
+
+                if (homeActivityPopWin.isShowing()) {
+                    homeActivityPopWin.dismiss();
+                } else {
+                    if (imageDetailBean.getActivity_info() != null) {
+                        homeActivityPopWin.setData(imageDetailBean.getActivity_info());
+                        homeActivityPopWin.showAtLocation(ImageEditActvity.this.findViewById(R.id.main),
+                                Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
+                                0,
+                                0);
+                    }
+                }
+
                 break;
         }
 
@@ -240,34 +276,6 @@ public class ImageEditActvity
 
     }
 
-    @Override
-    public void checkChange(int position, boolean status, String activityId) {
-
-        if (status) {
-            activityMap.clear();
-            activityMap.put(position, activityId);
-        } else {
-            activityMap.clear();
-        }
-        Log.d("test", activityMap.toString());
-        adapter.notifyData(activityMap);
-    }
-
-    @Override
-    public void activityDetail(int position, String activityId) {
-
-        if (homeActivityPopWin.isShowing()) {
-            homeActivityPopWin.dismiss();
-        } else {
-
-            homeActivityPopWin.setData(activityList.get(position));
-            homeActivityPopWin.showAtLocation(ImageEditActvity.this.findViewById(R.id.main),
-                    Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
-                    0,
-                    0);
-        }
-
-    }
 
     /***
      * 提示框

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/main"
     android:background="@color/white">
 
     <include
@@ -94,9 +94,9 @@
                 android:id="@+id/view_center"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/font_10"
-                android:visibility="gone"
                 android:layout_below="@+id/fl_tag_flowLayout"
-                android:background="@color/bg_eeeeee" />
+                android:background="@color/bg_eeeeee"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_zhuti_tital"
@@ -107,9 +107,40 @@
                 android:layout_marginTop="@dimen/size_20"
                 android:paddingRight="@dimen/size_7"
                 android:text="参与主题"
-                android:visibility="gone"
                 android:textColor="@color/bg_262626"
-                android:textSize="@dimen/size_14" />
+                android:textSize="@dimen/size_14"
+                android:visibility="gone" />
+
+            <RelativeLayout
+                android:id="@+id/rl_activity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_zhuti_tital"
+                android:layout_marginTop="@dimen/font_20"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/tv_activity_tital"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/font_15"
+                    android:textColor="@color/bg_e79056"
+                    android:textSize="@dimen/size_14" />
+
+                <TextView
+                    android:id="@+id/tv_activity_add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="了解活动 >"
+                    android:layout_marginLeft="@dimen/font_15"
+                    android:layout_toRightOf="@+id/tv_activity_tital"
+                    android:textColor="@color/bg_8f8f8f"
+                    android:textSize="@dimen/size_12" />
+
+            </RelativeLayout>
+
 
         </RelativeLayout>
 
