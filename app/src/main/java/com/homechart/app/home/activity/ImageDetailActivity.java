@@ -54,6 +54,13 @@ public class ImageDetailActivity
     private TextView tv_tital_comment;
     private TextView tv_content_right;
     private HomeSharedPopWin homeSharedPopWin;
+    private boolean ifZan = true;
+    private boolean ifShouCang = true;
+    private boolean ifPingLun = true;
+    private int like_num;
+    private int collect_num;
+    private int comment_num;
+    private int share_num;
 
     @Override
     protected int getLayoutResId() {
@@ -120,18 +127,22 @@ public class ImageDetailActivity
                 break;
             case R.id.iv_bang:
             case R.id.tv_bang:
-                if (true) {
+                if (ifZan) {
                     addZan();
+                    ifZan = false;
                 } else {
                     removeZan();
+                    ifZan = true;
                 }
                 break;
             case R.id.iv_xing:
             case R.id.tv_xing:
-                if (true) {
+                if (ifShouCang) {
                     addShouCang();
+                    ifShouCang = false;
                 } else {
                     removeShouCang();
+                    ifShouCang = true;
                 }
                 break;
         }
@@ -319,18 +330,30 @@ public class ImageDetailActivity
                 case 2:
                     ToastUtils.showCenter(ImageDetailActivity.this, "点赞成功");
                     iv_bang.setImageResource(R.drawable.bang1);
+                    like_num++;
+                    tv_bang.setText(like_num + "");
+                    tv_bang.setTextColor(UIUtils.getColor(R.color.bg_e79056));
                     break;
                 case 3:
                     ToastUtils.showCenter(ImageDetailActivity.this, "取消点赞");
                     iv_bang.setImageResource(R.drawable.bang);
+                    like_num--;
+                    tv_bang.setText(like_num + "");
+                    tv_bang.setTextColor(UIUtils.getColor(R.color.bg_8f8f8f));
                     break;
                 case 4:
                     ToastUtils.showCenter(ImageDetailActivity.this, "收藏成功");
                     iv_xing.setImageResource(R.drawable.xing1);
+                    collect_num++;
+                    tv_xing.setText(collect_num + "");
+                    tv_xing.setTextColor(UIUtils.getColor(R.color.bg_e79056));
                     break;
                 case 5:
                     ToastUtils.showCenter(ImageDetailActivity.this, "取消收藏");
                     iv_xing.setImageResource(R.drawable.xing);
+                    collect_num--;
+                    tv_xing.setText(collect_num + "");
+                    tv_xing.setTextColor(UIUtils.getColor(R.color.bg_8f8f8f));
                     break;
             }
         }
@@ -357,10 +380,14 @@ public class ImageDetailActivity
         String[] str = imageDetailBean.getItem_info().getAdd_time().split(" ");
         String fabuTime = str[0].replace("-", "/");
         tv_details_time.setText(fabuTime + " 发布");
-        tv_bang.setText(imageDetailBean.getCounter().getLike_num() + "");
-        tv_xing.setText(imageDetailBean.getCounter().getComment_num() + "");
-        tv_ping.setText(imageDetailBean.getCounter().getComment_num() + "");
-        tv_shared.setText(imageDetailBean.getCounter().getShare_num() + "");
+        like_num = imageDetailBean.getCounter().getLike_num();
+        collect_num = imageDetailBean.getCounter().getCollect_num();
+        comment_num = imageDetailBean.getCounter().getComment_num();
+        share_num = imageDetailBean.getCounter().getShare_num();
+        tv_bang.setText(like_num + "");
+        tv_xing.setText(collect_num + "");
+        tv_ping.setText(comment_num + "");
+        tv_shared.setText(share_num + "");
 
         homeSharedPopWin.showAtLocation(ImageDetailActivity.this.findViewById(R.id.main),
                 Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
