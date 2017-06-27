@@ -136,8 +136,10 @@ public class FileHttpManager {
             }
         } catch (MalformedURLException e) {
             e.printStackTrace();
+            callBack.onFails();
         } catch (IOException e) {
             e.printStackTrace();
+            callBack.onFails();
         }
         return result;
     }

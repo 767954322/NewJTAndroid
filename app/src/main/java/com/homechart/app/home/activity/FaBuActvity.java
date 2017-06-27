@@ -262,13 +262,13 @@ public class FaBuActvity
                 String fileName = timesdf.format(new Date()).toString();//获取系统时间
                 //压缩图片
                 Bitmap bitmap_before = BitmapUtil.getBitmap(urlImage);
-                Bitmap bitmap_compress = BitmapUtil.compressImage(bitmap_before);
+//                Bitmap bitmap_compress = BitmapUtil.ratio(bitmap_before, 400, 800);
+                Bitmap bitmap_compress_press = BitmapUtil.compressImage(bitmap_before);
                 try {
-                    boolean status = BitmapUtil.saveBitmap(bitmap_compress, Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + fileName + "/");
+                    boolean status = BitmapUtil.saveBitmap(bitmap_compress_press, Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + fileName + "/");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
 
                 Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
                 String signString = PublicUtils.getSinaString(map);

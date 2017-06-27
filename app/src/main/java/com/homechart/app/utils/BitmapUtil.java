@@ -94,7 +94,7 @@ public class BitmapUtil {
          * @param pixelH target pixel of height
          * @return
          */
-        public Bitmap ratio(Bitmap image, float pixelW, float pixelH) {
+        public static Bitmap ratio(Bitmap image, float pixelW, float pixelH) {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             image.compress(Bitmap.CompressFormat.JPEG, 100, os);
             if( os.toByteArray().length / 1024>1024) {//判断如果图片大于1M,进行压缩避免在生成图片（BitmapUtil.decodeStream）时溢出
