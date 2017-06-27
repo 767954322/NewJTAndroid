@@ -67,7 +67,6 @@ public class ImageEditActvity
         implements View.OnClickListener,
         FlowLayoutFaBu.OnTagClickListener,
         MyActivitysListAdapter.CheckStatus,
-        PutFileCallBack,
         OnItemClickListener {
     private ImageView iv_image_fabu;
     private String urlImage;
@@ -143,29 +142,54 @@ public class ImageEditActvity
 
         switch (v.getId()) {
             case R.id.nav_left_imageButton:
-                String miaosu1 = et_fabu_miaosu.getText().toString();
 
-                if ((selectTags != null && selectTags.size() > 0) || !TextUtils.isEmpty(miaosu1)) {
-                    mAlertView.show();
-                } else {
+                String miaosu = et_fabu_miaosu.getText().toString();
+                String tagStr = imageDetailBean.getItem_info().getTag().toString();
+                String[] strArray = tagStr.split(" ");
+                if (strArray.length == selectTags.size() && miaosu.trim().equals(imageDetailBean.getItem_info().getDescription().trim())) {
+
                     ImageEditActvity.this.finish();
+
+                } else {
+
+                    mAlertView.show();
+
                 }
+
                 break;
             case R.id.tv_content_right:
-                String miaosu = et_fabu_miaosu.getText().toString();
-                if (TextUtils.isEmpty(miaosu)) {
-                    ToastUtils.showCenter(ImageEditActvity.this, "请填写图片描述后发布哦");
-                    break;
-                }
-                if (selectTags == null || selectTags.size() == 0) {
-                    ToastUtils.showCenter(ImageEditActvity.this, " 需要添加标签后才可发布哦");
-                    break;
-                }
 
-                CustomProgress.show(ImageEditActvity.this, "正在发布...", false, null);
-                upLoaderHeader();
+                String miaosu1 = et_fabu_miaosu.getText().toString().trim();
+                String tagStr1 = imageDetailBean.getItem_info().getTag().toString();
+                String[] strArray1 = tagStr1.split(" ");
+                if (strArray1.length == selectTags.size() && miaosu1.equals(imageDetailBean.getItem_info().getDescription().trim())) {
+                    boolean isChange = false;
+                    //判断是否修改了
+                    for (int i = 0; i < strArray1.length; i++) {
+                        if (!selectTags.containsKey(strArray1[i])) {
+                            //不一样，修改了
+                            isChange = true;
+                        }
+                    }
+                    if (isChange) {
+                        //编辑
+                        CustomProgress.show(ImageEditActvity.this, "修改中...", false, null);
+                        updataImage();
+                    } else {
+                        ToastUtils.showCenter(ImageEditActvity.this, "您未做修改，请先编辑");
+                    }
+
+                } else {
+                    //编辑
+                    CustomProgress.show(ImageEditActvity.this, "修改中...", false, null);
+                    updataImage();
+                }
                 break;
         }
+
+    }
+
+    private void updataImage() {
 
     }
 
@@ -223,11 +247,14 @@ public class ImageEditActvity
         if (selectTags.containsKey(text)) {
             selectTags.remove(text);
         }
-        for (int i = 0; i < listZiDingSelect.size(); i++) {
-            if (text.equals(listZiDingSelect.get(i).getTag_name())) {
-                listZiDingSelect.remove(i);
+        if(listZiDingSelect != null){
+            for (int i = 0; i < listZiDingSelect.size(); i++) {
+                if (text.equals(listZiDingSelect.get(i).getTag_name())) {
+                    listZiDingSelect.remove(i);
+                }
             }
         }
+
     }
 
     @Override
@@ -267,36 +294,6 @@ public class ImageEditActvity
 
     }
 
-    private void upLoaderHeader() {
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                SimpleDateFormat timesdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String fileName = timesdf.format(new Date()).toString();//获取系统时间
-                //压缩图片
-                Bitmap bitmap_before = BitmapUtil.getBitmap(urlImage);
-                Bitmap bitmap_compress = BitmapUtil.compressImage(bitmap_before);
-                try {
-                    boolean status = BitmapUtil.saveBitmap(bitmap_compress, Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + fileName + "/");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-
-                Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
-                String signString = PublicUtils.getSinaString(map);
-                String tabMd5String = Md5Util.getMD5twoTimes(signString);
-                map.put(ClassConstant.PublicKey.SIGN, tabMd5String);
-                FileHttpManager.getInstance().uploadFile(ImageEditActvity.this, new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/fabu/"),
-                        UrlConstants.PUT_IMAGE,
-                        map,
-                        PublicUtils.getPublicHeader(MyApplication.getInstance()));
-            }
-        }.start();
-
-    }
-
     @Override
     public void checkChange(int position, boolean status, String activityId) {
 
@@ -323,79 +320,6 @@ public class ImageEditActvity
                     0,
                     0);
         }
-
-    }
-
-    @Override
-    public void onSucces(String result) {
-        try {
-            JSONObject jsonObject = new JSONObject(result);
-            JSONObject jsonObject1 = jsonObject.getJSONObject("data");
-            String image_id = jsonObject1.getString("immage_id");
-            faBu(image_id);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            ToastUtils.showCenter(ImageEditActvity.this, "发布失败");
-        }
-
-    }
-
-    @Override
-    public void onFails() {
-        CustomProgress.cancelDialog();
-        ToastUtils.showCenter(ImageEditActvity.this, "发布失败");
-    }
-
-    private void faBu(String image_id) {
-
-        String activityStr = "";
-        if (activityMap.size() > 0) {
-            StringBuffer sbActivity = new StringBuffer();
-            for (Integer key : activityMap.keySet()) {
-                sbActivity.append(activityMap.get(key));
-            }
-            activityStr = sbActivity.toString();
-        }
-
-        StringBuffer sb = new StringBuffer();
-        for (String key : selectTags.keySet()) {
-            sb.append(key + " ");
-        }
-        String tagStr = sb.toString();
-        String miaosu = et_fabu_miaosu.getText().toString();
-
-
-        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                CustomProgress.cancelDialog();
-                ToastUtils.showCenter(ImageEditActvity.this, "发布失败");
-            }
-
-            @Override
-            public void onResponse(String s) {
-                try {
-                    JSONObject jsonObject = new JSONObject(s);
-                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
-                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
-                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
-                    if (error_code == 0) {
-                        Message msg = new Message();
-                        msg.obj = data_msg;
-                        msg.what = 3;
-                        mHandler.sendMessage(msg);
-                    } else {
-                        CustomProgress.cancelDialog();
-                        ToastUtils.showCenter(ImageEditActvity.this, error_msg);
-                    }
-                } catch (JSONException e) {
-
-                    CustomProgress.cancelDialog();
-                    ToastUtils.showCenter(ImageEditActvity.this, "发布失败");
-                }
-            }
-        };
-        MyHttpManager.getInstance().doFaBu(image_id, miaosu, tagStr, activityStr, callBack);
 
     }
 

@@ -228,7 +228,7 @@ public class BitmapUtil {
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);// 质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
         int options = 90;
 
-        while (baos.toByteArray().length / 1024 > 3072) { // 循环判断如果压缩后图片是否大于3M,大于继续压缩
+        while (baos.toByteArray().length / 1024 > 1024) { // 循环判断如果压缩后图片是否大于1M,大于继续压缩
             baos.reset(); // 重置baos即清空baos
             if(options <= 0){
                 break;
