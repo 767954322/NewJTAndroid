@@ -62,6 +62,7 @@ public class ImageDetailActivity
     private int collect_num;
     private int comment_num;
     private int share_num;
+    private boolean ifFirst = true;
 
     @Override
     protected int getLayoutResId() {
@@ -128,7 +129,7 @@ public class ImageDetailActivity
                 if (imageDetailBean != null) {
                     Intent intent = new Intent(ImageDetailActivity.this, ImageEditActvity.class);
                     intent.putExtra("image_value", imageDetailBean);
-                    startActivity(intent);
+                    startActivityForResult(intent, 1);
                 }
                 break;
             case R.id.iv_bang:
@@ -394,10 +395,13 @@ public class ImageDetailActivity
         tv_ping.setText(comment_num + "");
         tv_shared.setText(share_num + "");
 
-        homeSharedPopWin.showAtLocation(ImageDetailActivity.this.findViewById(R.id.main),
-                Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
-                0,
-                0); //设置layout在PopupWindow中显示的位置
+        if (ifFirst) {
+            homeSharedPopWin.showAtLocation(ImageDetailActivity.this.findViewById(R.id.main),
+                    Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
+                    0,
+                    0); //设置layout在PopupWindow中显示的位置
+            ifFirst = false;
+        }
     }
 
     @Override
@@ -416,5 +420,15 @@ public class ImageDetailActivity
     public void onClickWeiBo() {
 
         ToastUtils.showCenter(ImageDetailActivity.this, "微博分享");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && requestCode == 1) {
+            getImageDetail();
+        }
+
     }
 }

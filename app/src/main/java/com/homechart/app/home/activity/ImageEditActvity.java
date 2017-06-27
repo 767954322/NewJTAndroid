@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -13,7 +14,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.VolleyError;
 import com.homechart.app.R;
+import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.home.adapter.MyActivitysListAdapter;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.fabu.ActivityItemDataBean;
@@ -29,6 +32,8 @@ import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.alertview.AlertView;
 import com.homechart.app.utils.alertview.OnItemClickListener;
 import com.homechart.app.utils.imageloader.ImageUtils;
+import com.homechart.app.utils.volley.MyHttpManager;
+import com.homechart.app.utils.volley.OkStringRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -156,6 +161,14 @@ public class ImageEditActvity
             case R.id.tv_content_right:
 
                 String miaosu1 = et_fabu_miaosu.getText().toString().trim();
+                if (TextUtils.isEmpty(miaosu1)) {
+                    ToastUtils.showCenter(ImageEditActvity.this, "请填写图片描述后修改哦");
+                    break;
+                }
+                if (selectTags == null || selectTags.size() == 0) {
+                    ToastUtils.showCenter(ImageEditActvity.this, " 请填写图片标签后修改哦");
+                    break;
+                }
                 String tagStr1 = imageDetailBean.getItem_info().getTag().toString();
                 String[] strArray1 = tagStr1.split(" ");
                 if (strArray1.length == selectTags.size() && miaosu1.equals(imageDetailBean.getItem_info().getDescription().trim())) {
@@ -203,6 +216,45 @@ public class ImageEditActvity
 
     //保存修改的资料
     private void updataImage() {
+
+        String str_describe = et_fabu_miaosu.getText().toString().trim();
+        StringBuffer sb = new StringBuffer();
+        for (String key : selectTags.keySet()) {
+            sb.append(key + " ");
+        }
+        String tagStr = sb.toString();
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                CustomProgress.cancelDialog();
+                ToastUtils.showCenter(ImageEditActvity.this, "保存失败");
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        Message msg = new Message();
+                        msg.obj = data_msg;
+                        msg.what = 4;
+                        mHandler.sendMessage(msg);
+                    } else {
+                        CustomProgress.cancelDialog();
+                        ToastUtils.showCenter(ImageEditActvity.this, error_msg);
+                    }
+                } catch (JSONException e) {
+
+                    CustomProgress.cancelDialog();
+                    ToastUtils.showCenter(ImageEditActvity.this, "保存失败");
+                }
+            }
+        };
+        MyHttpManager.getInstance().imageEdit(imageDetailBean.getItem_info().getItem_id(), str_describe, tagStr, callBack);
+
 
     }
 
@@ -334,6 +386,12 @@ public class ImageEditActvity
                     e.printStackTrace();
                 }
 
+            } else if (code == 4) {
+
+                Intent intent = new Intent(ImageEditActvity.this,ImageDetailActivity.class);
+                setResult(1,intent);
+                CustomProgress.cancelDialog();
+                ImageEditActvity.this.finish();
             }
 
         }
