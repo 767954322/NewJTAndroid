@@ -41,5 +41,6 @@ public class UrlConstants {
     public static final String COLOR_LIST = "https://api.idcool.com.cn/base/color/getFilterColor";  //获取颜色列表
     public static final String DOING_ACTIVITY = "https://api.idcool.com.cn/activity/activity/getDoingList";  //进行中的活动列表
     public static final String FABU = "https://api.idcool.com.cn/single/single/publish";  //用户发布晒家图片
+    public static final String ITEM_FABU = "https://api.idcool.com.cn/single/single/getItemInfo";  //发布详情
 
 }

@@ -447,8 +447,9 @@ public class FaBuActvity
                     CustomProgress.cancelDialog();
                     ToastUtils.showCenter(FaBuActvity.this, "发布成功");
                     Intent intent = new Intent(FaBuActvity.this, ImageDetailActivity.class);
-                    intent.putExtra("item_id",item_id);
+                    intent.putExtra("item_id", item_id);
                     startActivity(intent);
+                    FaBuActvity.this.finish();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
