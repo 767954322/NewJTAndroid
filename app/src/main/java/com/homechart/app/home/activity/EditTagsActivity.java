@@ -87,6 +87,7 @@ public class EditTagsActivity
         SerializableHashMap serializableHashMap = (SerializableHashMap) bundle.get("tags_select");
         mSelectMap = serializableHashMap.getMap();
         List<TagItemDataChildBean> list = (List<TagItemDataChildBean>) getIntent().getSerializableExtra("zidingyi");
+        tagDataBean = (TagDataBean) getIntent().getSerializableExtra("tagdata");
         listZiDing.clear();
         listZiDingSelect.clear();
         if (list != null && list.size() > 0) {
@@ -148,7 +149,12 @@ public class EditTagsActivity
 
         tv_tital_comment.setText("添加标签");
         tv_content_right.setText("完成");
-        getTagData();
+
+        if (tagDataBean == null) {
+            getTagData();
+        } else {
+            changeUI();
+        }
     }
 
     @Override

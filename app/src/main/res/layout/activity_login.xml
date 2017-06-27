@@ -114,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/font_57"
-                android:drawableTop="@drawable/weixin"
+                android:drawableTop="@drawable/weixin_1"
                 android:gravity="center"
                 android:text="微信" />
 
@@ -133,7 +133,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/font_57"
-                android:drawableTop="@drawable/weibo"
+                android:drawableTop="@drawable/weibo_1"
                 android:gravity="center"
                 android:text="微博" />
         </RelativeLayout>

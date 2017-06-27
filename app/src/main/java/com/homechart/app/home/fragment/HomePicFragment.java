@@ -125,6 +125,7 @@ public class HomePicFragment
     private float mDownY;
     private float mMoveY;
     private boolean move_tag = true;
+
     public HomePicFragment(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
     }
@@ -132,9 +133,10 @@ public class HomePicFragment
     public HomePicFragment() {
     }
 
-   public void setDownY(float y){
-       mDownY = y;
+    public void setDownY(float y) {
+        mDownY = y;
     }
+
     @Override
     protected int getLayoutResId() {
         return R.layout.fragment_home_pic;
@@ -200,16 +202,16 @@ public class HomePicFragment
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getAction();
                 switch (action) {
-                    case MotionEvent.ACTION_DOWN :
+                    case MotionEvent.ACTION_DOWN:
                         break;
-                    case MotionEvent.ACTION_MOVE :
-                        if(move_tag){
+                    case MotionEvent.ACTION_MOVE:
+                        if (move_tag) {
                             mDownY = event.getY();
                             move_tag = false;
                         }
                         mMoveY = event.getY();
                         break;
-                    case MotionEvent.ACTION_UP :
+                    case MotionEvent.ACTION_UP:
                         move_tag = true;
                         mMoveY = event.getY();
                         Log.e("UP", "Y" + mMoveY);
@@ -252,13 +254,13 @@ public class HomePicFragment
             case R.id.iv_change_frag:
 
                 if (curentListTag) {
-                    mRecyclerView.setPadding(UIUtils.getDimens(R.dimen.font_6),0,UIUtils.getDimens(R.dimen.font_6),0);
+                    mRecyclerView.setPadding(UIUtils.getDimens(R.dimen.font_6), 0, UIUtils.getDimens(R.dimen.font_6), 0);
                     iv_change_frag.setImageResource(R.drawable.changtu);
                     mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
                     curentListTag = false;
 //                    mRecyclerView.scrollToPosition(scroll_position);
                 } else {
-                    mRecyclerView.setPadding(0,0,0,0);
+                    mRecyclerView.setPadding(0, 0, 0, 0);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
                     iv_change_frag.setImageResource(R.drawable.pubuliu);
                     curentListTag = true;
@@ -315,7 +317,7 @@ public class HomePicFragment
                 if (itemType == TYPE_ONE) {
                     return R.layout.item_test_one;
                 } else if (itemType == TYPE_TWO) {
-                   return R.layout.item_test_pic_pubu;
+                    return R.layout.item_test_pic_pubu;
                 } else if (itemType == TYPE_THREE) {
                     //活动(线性)
                     return R.layout.item_test_huodong_list;

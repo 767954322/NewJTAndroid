@@ -21,12 +21,14 @@ import com.homechart.app.home.adapter.MyActivitysListAdapter;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.fabu.ActivityItemDataBean;
 import com.homechart.app.home.bean.imagedetail.ImageDetailBean;
+import com.homechart.app.home.bean.pictag.TagDataBean;
 import com.homechart.app.home.bean.pictag.TagItemDataChildBean;
 import com.homechart.app.myview.FlowLayoutFaBu;
 import com.homechart.app.myview.HomeActivityPopWin;
 import com.homechart.app.myview.HomeActivityPopWinEdit;
 import com.homechart.app.myview.SerializableHashMap;
 import com.homechart.app.utils.CustomProgress;
+import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.alertview.AlertView;
@@ -74,6 +76,7 @@ public class ImageEditActvity
     private RelativeLayout rl_activity;
     private TextView tv_activity_tital;
     private TextView tv_activity_add;
+    public TagDataBean tagDataBean;
 
 
     @Override
@@ -136,6 +139,7 @@ public class ImageEditActvity
         et_fabu_miaosu.setText(imageDetailBean.getItem_info().getDescription());
         homeActivityPopWin = new HomeActivityPopWinEdit(ImageEditActvity.this);
         showDialog();
+        getTagData();
     }
 
     @Override
@@ -300,6 +304,7 @@ public class ImageEditActvity
         bundle.putSerializable("tags_select", myMap);
         intent.putExtras(bundle);
         intent.putExtra("zidingyi", (Serializable) listZiDingSelect);
+        intent.putExtra("tagdata", tagDataBean);
         startActivityForResult(intent, 1);
 
     }
@@ -352,7 +357,6 @@ public class ImageEditActvity
 
     Handler mHandler = new Handler() {
 
-
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -392,8 +396,46 @@ public class ImageEditActvity
                 setResult(1,intent);
                 CustomProgress.cancelDialog();
                 ImageEditActvity.this.finish();
+            }else if(code == 5){
+
+                String info = (String) msg.obj;
+                tagDataBean = GsonUtil.jsonToBean(info, TagDataBean.class);
             }
 
         }
     };
+
+
+    //获取tag信息
+    private void getTagData() {
+
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                ToastUtils.showCenter(ImageEditActvity.this, getString(R.string.fabutags_get_error));
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        data_msg = "{ \"tag_id\": " + data_msg + "}";
+                        Message msg = new Message();
+                        msg.obj = data_msg;
+                        msg.what = 5;
+                        mHandler.sendMessage(msg);
+                    } else {
+                        ToastUtils.showCenter(ImageEditActvity.this, error_msg);
+                    }
+                } catch (JSONException e) {
+                    ToastUtils.showCenter(ImageEditActvity.this, getString(R.string.fabutags_get_error));
+                }
+            }
+        };
+        MyHttpManager.getInstance().getPicTagData(callBack);
+    }
 }

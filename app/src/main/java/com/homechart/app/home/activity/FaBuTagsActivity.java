@@ -22,6 +22,7 @@ import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.pictag.TagDataBean;
 import com.homechart.app.home.bean.pictag.TagItemDataChildBean;
+import com.homechart.app.home.fragment.HomePicFragment;
 import com.homechart.app.myview.FlowLayoutFaBuTags;
 import com.homechart.app.myview.FlowLayoutFaBuTagsDing;
 import com.homechart.app.myview.SerializableHashMap;
@@ -47,7 +48,7 @@ public class FaBuTagsActivity
         extends BaseActivity
         implements View.OnClickListener,
         FlowLayoutFaBuTags.OnTagClickListener,
-FlowLayoutFaBuTagsDing.OnTagClickListener{
+        FlowLayoutFaBuTagsDing.OnTagClickListener {
 
     private ImageButton nav_left_imageButton;
     private TextView tv_tital_comment;
@@ -89,6 +90,7 @@ FlowLayoutFaBuTagsDing.OnTagClickListener{
         SerializableHashMap serializableHashMap = (SerializableHashMap) bundle.get("tags_select");
         mSelectMap = serializableHashMap.getMap();
         List<TagItemDataChildBean> list = (List<TagItemDataChildBean>) getIntent().getSerializableExtra("zidingyi");
+        tagDataBean = (TagDataBean) getIntent().getSerializableExtra("tagdata");
         listZiDing.clear();
         listZiDingSelect.clear();
         if (list != null && list.size() > 0) {
@@ -150,7 +152,14 @@ FlowLayoutFaBuTagsDing.OnTagClickListener{
 
         tv_tital_comment.setText("添加标签");
         tv_content_right.setText("完成");
-        getTagData();
+
+
+        if (tagDataBean == null) {
+            getTagData();
+        } else {
+            changeUI();
+        }
+
     }
 
     @Override
@@ -267,6 +276,7 @@ FlowLayoutFaBuTagsDing.OnTagClickListener{
             mSelectMap.remove(text);
         }
     }
+
     @Override
     public void tagClickDing(String text, int position, Map<String, String> selectMap, String type) {
         if (mSelectMap == null) {
@@ -299,6 +309,7 @@ FlowLayoutFaBuTagsDing.OnTagClickListener{
             fl_tags_zidingyi.setVisibility(View.GONE);
         }
     }
+
     private Handler mHandler = new Handler() {
 
         @Override

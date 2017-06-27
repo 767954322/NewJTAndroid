@@ -186,7 +186,7 @@
                 android:id="@+id/tv_login_weixin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableTop="@drawable/weixin"
+                android:drawableTop="@drawable/weixin_1"
                 android:layout_marginLeft="@dimen/font_57"
                 android:gravity="center"
                 android:text="微信" />
@@ -205,7 +205,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:drawableTop="@drawable/weibo"
+                android:drawableTop="@drawable/weibo_1"
                 android:layout_marginRight="@dimen/font_57"
                 android:gravity="center"
                 android:text="微博" />
