@@ -94,6 +94,10 @@ public class ImageDetailActivity
         super.initListener();
         nav_left_imageButton.setOnClickListener(this);
         tv_content_right.setOnClickListener(this);
+        tv_bang.setOnClickListener(this);
+        iv_bang.setOnClickListener(this);
+        iv_xing.setOnClickListener(this);
+        tv_xing.setOnClickListener(this);
     }
 
     @Override
@@ -114,7 +118,154 @@ public class ImageDetailActivity
                 break;
             case R.id.tv_content_right:
                 break;
+            case R.id.iv_bang:
+            case R.id.tv_bang:
+                if (true) {
+                    addZan();
+                } else {
+                    removeZan();
+                }
+                break;
+            case R.id.iv_xing:
+            case R.id.tv_xing:
+                if (true) {
+                    addShouCang();
+                } else {
+                    removeShouCang();
+                }
+                break;
         }
+    }
+
+    //取消收藏
+    private void removeShouCang() {
+
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                CustomProgress.cancelDialog();
+                ToastUtils.showCenter(ImageDetailActivity.this, "取消收藏失败");
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        Message msg = new Message();
+                        msg.what = 5;
+                        mHandler.sendMessage(msg);
+                    } else {
+                        ToastUtils.showCenter(ImageDetailActivity.this, error_msg);
+                    }
+                } catch (JSONException e) {
+                    ToastUtils.showCenter(ImageDetailActivity.this, "取消收藏失败");
+                }
+            }
+        };
+        MyHttpManager.getInstance().removeShouCang(item_id, callBack);
+    }
+
+    //收藏
+    private void addShouCang() {
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                CustomProgress.cancelDialog();
+                ToastUtils.showCenter(ImageDetailActivity.this, "收藏成功");
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        Message msg = new Message();
+                        msg.what = 4;
+                        mHandler.sendMessage(msg);
+                    } else {
+                        ToastUtils.showCenter(ImageDetailActivity.this, error_msg);
+                    }
+                } catch (JSONException e) {
+                    ToastUtils.showCenter(ImageDetailActivity.this, "收藏失败");
+                }
+            }
+        };
+        MyHttpManager.getInstance().addShouCang(item_id, callBack);
+    }
+
+    //取消点赞
+    private void removeZan() {
+
+
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                CustomProgress.cancelDialog();
+                ToastUtils.showCenter(ImageDetailActivity.this, "取消点赞失败");
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        Message msg = new Message();
+                        msg.what = 3;
+                        mHandler.sendMessage(msg);
+                    } else {
+                        ToastUtils.showCenter(ImageDetailActivity.this, error_msg);
+                    }
+                } catch (JSONException e) {
+                    ToastUtils.showCenter(ImageDetailActivity.this, "取消点赞失败");
+                }
+            }
+        };
+        MyHttpManager.getInstance().removeZan(item_id, callBack);
+
+
+    }
+
+    //点赞
+    private void addZan() {
+
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                CustomProgress.cancelDialog();
+                ToastUtils.showCenter(ImageDetailActivity.this, "点赞失败");
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        Message msg = new Message();
+                        msg.what = 2;
+                        mHandler.sendMessage(msg);
+                    } else {
+                        ToastUtils.showCenter(ImageDetailActivity.this, error_msg);
+                    }
+                } catch (JSONException e) {
+                    ToastUtils.showCenter(ImageDetailActivity.this, "点赞失败");
+                }
+            }
+        };
+        MyHttpManager.getInstance().addZan(item_id, callBack);
+
     }
 
     private void getImageDetail() {
@@ -165,43 +316,57 @@ public class ImageDetailActivity
                     imageDetailBean = GsonUtil.jsonToBean(data, ImageDetailBean.class);
                     changeUI(imageDetailBean);
                     break;
+                case 2:
+                    ToastUtils.showCenter(ImageDetailActivity.this, "点赞成功");
+                    iv_bang.setImageResource(R.drawable.bang1);
+                    break;
+                case 3:
+                    ToastUtils.showCenter(ImageDetailActivity.this, "取消点赞");
+                    iv_bang.setImageResource(R.drawable.bang);
+                    break;
+                case 4:
+                    ToastUtils.showCenter(ImageDetailActivity.this, "收藏成功");
+                    iv_xing.setImageResource(R.drawable.xing1);
+                    break;
+                case 5:
+                    ToastUtils.showCenter(ImageDetailActivity.this, "取消收藏");
+                    iv_xing.setImageResource(R.drawable.xing);
+                    break;
             }
-
-        }
-
-        private void changeUI(ImageDetailBean imageDetailBean) {
-            int wide_num = PublicUtils.getScreenWidth(ImageDetailActivity.this) - UIUtils.getDimens(R.dimen.font_20);
-            ViewGroup.LayoutParams layoutParams = iv_details_image.getLayoutParams();
-            layoutParams.width = wide_num;
-            layoutParams.height = (int) (wide_num / imageDetailBean.getItem_info().getImage().getRatio());
-            iv_details_image.setLayoutParams(layoutParams);
-            ImageUtils.displayFilletImage(imageDetailBean.getItem_info().getImage().getImg0(), iv_details_image);
-
-
-            String tag = imageDetailBean.getItem_info().getTag().toString();
-            if (tag.contains(" ")) {
-                tag = tag.replace(" ", " #");
-            }
-            tag = " #" + tag + " ";
-            String detail_tital = "<font color='#e79056'>" + tag + "</font>" + imageDetailBean.getItem_info().getDescription();
-            tv_details_tital.setText(Html.fromHtml(detail_tital));
-
-            //处理时间
-            String[] str = imageDetailBean.getItem_info().getAdd_time().split(" ");
-            String fabuTime = str[0].replace("-", "/");
-            tv_details_time.setText(fabuTime + " 发布");
-            tv_bang.setText(imageDetailBean.getCounter().getLike_num() + "");
-            tv_xing.setText(imageDetailBean.getCounter().getComment_num() + "");
-            tv_ping.setText(imageDetailBean.getCounter().getComment_num() + "");
-            tv_shared.setText(imageDetailBean.getCounter().getShare_num() + "");
-
-            homeSharedPopWin.showAtLocation(ImageDetailActivity.this.findViewById(R.id.main),
-                    Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
-                    0,
-                    0); //设置layout在PopupWindow中显示的位置
         }
     };
 
+    private void changeUI(ImageDetailBean imageDetailBean) {
+        int wide_num = PublicUtils.getScreenWidth(ImageDetailActivity.this) - UIUtils.getDimens(R.dimen.font_20);
+        ViewGroup.LayoutParams layoutParams = iv_details_image.getLayoutParams();
+        layoutParams.width = wide_num;
+        layoutParams.height = (int) (wide_num / imageDetailBean.getItem_info().getImage().getRatio());
+        iv_details_image.setLayoutParams(layoutParams);
+        ImageUtils.displayFilletImage(imageDetailBean.getItem_info().getImage().getImg0(), iv_details_image);
+
+
+        String tag = imageDetailBean.getItem_info().getTag().toString();
+        if (tag.contains(" ")) {
+            tag = tag.replace(" ", " #");
+        }
+        tag = " #" + tag + " ";
+        String detail_tital = "<font color='#e79056'>" + tag + "</font>" + imageDetailBean.getItem_info().getDescription();
+        tv_details_tital.setText(Html.fromHtml(detail_tital));
+
+        //处理时间
+        String[] str = imageDetailBean.getItem_info().getAdd_time().split(" ");
+        String fabuTime = str[0].replace("-", "/");
+        tv_details_time.setText(fabuTime + " 发布");
+        tv_bang.setText(imageDetailBean.getCounter().getLike_num() + "");
+        tv_xing.setText(imageDetailBean.getCounter().getComment_num() + "");
+        tv_ping.setText(imageDetailBean.getCounter().getComment_num() + "");
+        tv_shared.setText(imageDetailBean.getCounter().getShare_num() + "");
+
+        homeSharedPopWin.showAtLocation(ImageDetailActivity.this.findViewById(R.id.main),
+                Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
+                0,
+                0); //设置layout在PopupWindow中显示的位置
+    }
 
     @Override
     public void onClickWeiXin() {
