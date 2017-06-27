@@ -1,5 +1,6 @@
 package com.homechart.app.home.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -95,7 +96,6 @@ public class ImageDetailActivity
 
     }
 
-
     @Override
     protected void initListener() {
         super.initListener();
@@ -124,6 +124,12 @@ public class ImageDetailActivity
                 ImageDetailActivity.this.finish();
                 break;
             case R.id.tv_content_right:
+
+                if (imageDetailBean != null) {
+                    Intent intent = new Intent(ImageDetailActivity.this, ImageEditActvity.class);
+                    intent.putExtra("image_value", imageDetailBean);
+                    startActivity(intent);
+                }
                 break;
             case R.id.iv_bang:
             case R.id.tv_bang:
@@ -320,7 +326,6 @@ public class ImageDetailActivity
             super.handleMessage(msg);
 
             int code = msg.what;
-
             switch (code) {
                 case 1:
                     String data = (String) msg.obj;
