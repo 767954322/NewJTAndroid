@@ -1,12 +1,9 @@
 package com.homechart.app.home.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -15,45 +12,27 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
-import com.homechart.app.MyApplication;
 import com.homechart.app.R;
-import com.homechart.app.commont.ClassConstant;
-import com.homechart.app.commont.PublicUtils;
-import com.homechart.app.commont.UrlConstants;
 import com.homechart.app.home.adapter.MyActivitysListAdapter;
 import com.homechart.app.home.base.BaseActivity;
-import com.homechart.app.home.bean.fabu.ActivityDataBean;
 import com.homechart.app.home.bean.fabu.ActivityItemDataBean;
 import com.homechart.app.home.bean.imagedetail.ImageDetailBean;
 import com.homechart.app.home.bean.pictag.TagItemDataChildBean;
 import com.homechart.app.myview.FlowLayoutFaBu;
 import com.homechart.app.myview.HomeActivityPopWin;
-import com.homechart.app.myview.MyListView;
 import com.homechart.app.myview.SerializableHashMap;
-import com.homechart.app.utils.BitmapUtil;
 import com.homechart.app.utils.CustomProgress;
-import com.homechart.app.utils.GsonUtil;
-import com.homechart.app.utils.Md5Util;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.alertview.AlertView;
 import com.homechart.app.utils.alertview.OnItemClickListener;
 import com.homechart.app.utils.imageloader.ImageUtils;
-import com.homechart.app.utils.volley.FileHttpManager;
-import com.homechart.app.utils.volley.MyHttpManager;
-import com.homechart.app.utils.volley.OkStringRequest;
-import com.homechart.app.utils.volley.PutFileCallBack;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +54,6 @@ public class ImageEditActvity
     private TextView tv_content_right;
     private FlowLayoutFaBu fl_tag_flowLayout;
     private List<String> listTag = new ArrayList<>();
-    private MyListView lv_zhuti;
     public MyActivitysListAdapter adapter;
     public List<ActivityItemDataBean> activityList;
     private TextView tv_zhuti_tital;
@@ -111,7 +89,6 @@ public class ImageEditActvity
         view_center = findViewById(R.id.view_center);
         iv_image_fabu = (ImageView) findViewById(R.id.iv_image_fabu);
         fl_tag_flowLayout = (FlowLayoutFaBu) findViewById(R.id.fl_tag_flowLayout);
-        lv_zhuti = (MyListView) findViewById(R.id.lv_zhuti);
     }
 
     @Override
@@ -123,7 +100,6 @@ public class ImageEditActvity
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        getActivityListData();
 
         buildListTag();
         tv_tital_comment.setText("图片编辑");
@@ -189,6 +165,7 @@ public class ImageEditActvity
 
     }
 
+    //保存修改的资料
     private void updataImage() {
 
     }
@@ -200,37 +177,6 @@ public class ImageEditActvity
             listTag.add(strArray[i]);
             selectTags.put(strArray[i], strArray[i]);
         }
-    }
-
-    private void getActivityListData() {
-        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                ToastUtils.showCenter(ImageEditActvity.this, getString(R.string.activitylist_get_error));
-            }
-
-            @Override
-            public void onResponse(String s) {
-                try {
-                    JSONObject jsonObject = new JSONObject(s);
-                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
-                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
-                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
-                    if (error_code == 0) {
-                        Message msg = new Message();
-                        msg.obj = data_msg;
-                        msg.what = 0;
-                        mHandler.sendMessage(msg);
-                    } else {
-                        ToastUtils.showCenter(ImageEditActvity.this, error_msg);
-                    }
-                } catch (JSONException e) {
-                    ToastUtils.showCenter(ImageEditActvity.this, getString(R.string.color_get_error));
-                }
-            }
-        };
-        MyHttpManager.getInstance().getDoingActivityData(callBack);
-
     }
 
     @Override
@@ -247,7 +193,7 @@ public class ImageEditActvity
         if (selectTags.containsKey(text)) {
             selectTags.remove(text);
         }
-        if(listZiDingSelect != null){
+        if (listZiDingSelect != null) {
             for (int i = 0; i < listZiDingSelect.size(); i++) {
                 if (text.equals(listZiDingSelect.get(i).getTag_name())) {
                     listZiDingSelect.remove(i);
@@ -352,18 +298,6 @@ public class ImageEditActvity
             super.handleMessage(msg);
             int code = msg.what;
             if (code == 0) {
-                String info = (String) msg.obj;
-                ActivityDataBean activityDataBean = GsonUtil.jsonToBean(info, ActivityDataBean.class);
-                activityList = activityDataBean.getActivity_list();
-                if (activityList != null && activityList.size() > 0) {
-                    tv_zhuti_tital.setVisibility(View.VISIBLE);
-                    view_center.setVisibility(View.VISIBLE);
-                    adapter = new MyActivitysListAdapter(activityList, ImageEditActvity.this, ImageEditActvity.this, activityMap);
-                    lv_zhuti.setAdapter(adapter);
-                } else {
-                    tv_zhuti_tital.setVisibility(View.GONE);
-                    view_center.setVisibility(View.GONE);
-                }
             } else if (code == 1) {
                 listTag.clear();
                 for (String key : selectTags.keySet()) {

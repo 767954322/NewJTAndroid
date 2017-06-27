@@ -111,15 +111,6 @@
                 android:textColor="@color/bg_262626"
                 android:textSize="@dimen/size_14" />
 
-
-            <com.homechart.app.myview.MyListView
-                android:id="@+id/lv_zhuti"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_zhuti_tital"
-                android:divider="@null"
-                android:layout_marginTop="@dimen/font_20" />
-
         </RelativeLayout>
 
 

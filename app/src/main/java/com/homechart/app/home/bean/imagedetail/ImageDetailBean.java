@@ -1,16 +1,27 @@
 package com.homechart.app.home.bean.imagedetail;
 
+import com.homechart.app.home.bean.fabu.ActivityItemInfoDataBean;
+
 import java.io.Serializable;
 
 /**
  * Created by gumenghao on 17/6/27.
  */
 
-public class ImageDetailBean implements Serializable{
+public class ImageDetailBean implements Serializable {
 
     private ItemInfoBean item_info;
     private CounterBean counter;
     private UserInfoBean user_info;
+    private ActivityItemInfoDataBean activity_info;
+
+
+    public ImageDetailBean(ItemInfoBean item_info, CounterBean counter, UserInfoBean user_info, ActivityItemInfoDataBean activity_info) {
+        this.item_info = item_info;
+        this.counter = counter;
+        this.user_info = user_info;
+        this.activity_info = activity_info;
+    }
 
     public ImageDetailBean(ItemInfoBean item_info, CounterBean counter, UserInfoBean user_info) {
         this.item_info = item_info;
@@ -42,12 +53,21 @@ public class ImageDetailBean implements Serializable{
         this.user_info = user_info;
     }
 
+    public ActivityItemInfoDataBean getActivity_info() {
+        return activity_info;
+    }
+
+    public void setActivity_info(ActivityItemInfoDataBean activity_info) {
+        this.activity_info = activity_info;
+    }
+
     @Override
     public String toString() {
         return "ImageDetailBean{" +
                 "item_info=" + item_info +
                 ", counter=" + counter +
                 ", user_info=" + user_info +
+                ", activity_info=" + activity_info +
                 '}';
     }
 }
