@@ -81,7 +81,7 @@ public class ImageEditActvity
     public List<ActivityItemDataBean> activityList;
     private TextView tv_zhuti_tital;
     private View view_center;
-    private Map<String, String> selectTags;
+    private Map<String, String> selectTags = new HashMap<>();
     private List<TagItemDataChildBean> listZiDingSelect;
     private Map<Integer, String> activityMap = new HashMap<>();
     private EditText et_fabu_miaosu;
@@ -125,12 +125,15 @@ public class ImageEditActvity
     @Override
     protected void initData(Bundle savedInstanceState) {
         getActivityListData();
+
+        buildListTag();
         tv_tital_comment.setText("图片编辑");
         tv_content_right.setText("完成");
         ImageUtils.displayFilletImage(imageDetailBean.getItem_info().getImage().getImg0(), iv_image_fabu);
         fl_tag_flowLayout.setColorful(false);
         fl_tag_flowLayout.setListData(listTag);
         fl_tag_flowLayout.setOnTagClickListener(this);
+        et_fabu_miaosu.setText(imageDetailBean.getItem_info().getDescription());
         homeActivityPopWin = new HomeActivityPopWin(ImageEditActvity.this);
         showDialog();
     }
@@ -164,6 +167,15 @@ public class ImageEditActvity
                 break;
         }
 
+    }
+
+    private void buildListTag() {
+        String tagStr = imageDetailBean.getItem_info().getTag().toString();
+        String[] strArray = tagStr.split(" ");
+        for (int i = 0; i < strArray.length; i++) {
+            listTag.add(strArray[i]);
+            selectTags.put(strArray[i], strArray[i]);
+        }
     }
 
     private void getActivityListData() {
@@ -220,7 +232,7 @@ public class ImageEditActvity
 
     @Override
     public void AddTag(String text, int position) {
-        Intent intent = new Intent(ImageEditActvity.this, FaBuTagsActivity.class);
+        Intent intent = new Intent(ImageEditActvity.this, EditTagsActivity.class);
         SerializableHashMap myMap = new SerializableHashMap();
         myMap.setMap(selectTags);
         Bundle bundle = new Bundle();
@@ -392,7 +404,7 @@ public class ImageEditActvity
      */
     private void showDialog() {
         mAlertView = new AlertView
-                ("", "是否取消本次发布", UIUtils.getString(R.string.fabu_back_cancle), new String[]{UIUtils.getString(R.string.fabu_back_sure)},
+                ("", "是否取消本次编辑", UIUtils.getString(R.string.fabu_back_cancle), new String[]{UIUtils.getString(R.string.fabu_back_sure)},
                         null, this, AlertView.Style.Alert, this);
     }
 
