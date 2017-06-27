@@ -42,6 +42,7 @@
                 android:layout_marginRight="@dimen/font_10"
                 android:layout_marginTop="@dimen/font_15"
                 android:background="@color/white"
+                android:textColor="@color/bg_262626"
                 android:textSize="@dimen/size_14" />
 
             <TextView

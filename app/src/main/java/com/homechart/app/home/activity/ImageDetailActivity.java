@@ -3,6 +3,7 @@ package com.homechart.app.home.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -179,14 +180,13 @@ public class ImageDetailActivity
 
             String tag = imageDetailBean.getItem_info().getTag().toString();
             if (tag.contains(" ")) {
-                tag = tag.replace(" ", " # ");
+                tag = tag.replace(" ", " #");
             }
-            tag = " # " + tag + " ";
-
-            tv_details_tital.setText(tag + imageDetailBean.getItem_info().getDescription());
+            tag = " #" + tag + " ";
+            String detail_tital = "<font color='#e79056'>" + tag + "</font>" + imageDetailBean.getItem_info().getDescription();
+            tv_details_tital.setText(Html.fromHtml(detail_tital));
 
             //处理时间
-
             String[] str = imageDetailBean.getItem_info().getAdd_time().split(" ");
             String fabuTime = str[0].replace("-", "/");
             tv_details_time.setText(fabuTime + " 发布");
@@ -206,18 +206,18 @@ public class ImageDetailActivity
     @Override
     public void onClickWeiXin() {
 
-        ToastUtils.showCenter(ImageDetailActivity.this,"微信分享");
+        ToastUtils.showCenter(ImageDetailActivity.this, "微信分享");
     }
 
     @Override
     public void onClickPYQ() {
 
-        ToastUtils.showCenter(ImageDetailActivity.this,"朋友圈分享");
+        ToastUtils.showCenter(ImageDetailActivity.this, "朋友圈分享");
     }
 
     @Override
     public void onClickWeiBo() {
 
-        ToastUtils.showCenter(ImageDetailActivity.this,"微博分享");
+        ToastUtils.showCenter(ImageDetailActivity.this, "微博分享");
     }
 }
