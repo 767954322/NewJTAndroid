@@ -19,7 +19,7 @@ import java.util.UUID;
 
 public class FileHttpManager {
 
-    private static final int TIME_OUT = 10 * 1000;   //超时时间
+    private static final int TIME_OUT = 100 * 1000;   //超时时间
     private static final String CHARSET = "utf-8"; //设置编码
 
 
