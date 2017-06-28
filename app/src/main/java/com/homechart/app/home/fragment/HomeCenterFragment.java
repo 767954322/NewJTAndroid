@@ -156,6 +156,7 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
 
     }
 
+
     @Override
     public void onClick(View v) {
 
@@ -343,10 +344,10 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
     @Override
     public void onResume() {
         super.onResume();
-
-        if (null == userCenterInfoBean) {
-            getUserInfo();
-        }
+        getUserInfo();
+//        if (null == userCenterInfoBean) {
+//            getUserInfo();
+//        }
 
     }
 

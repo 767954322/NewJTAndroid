@@ -390,8 +390,28 @@ public class ImageDetailActivity
         collect_num = imageDetailBean.getCounter().getCollect_num();
         comment_num = imageDetailBean.getCounter().getComment_num();
         share_num = imageDetailBean.getCounter().getShare_num();
+
         tv_bang.setText(like_num + "");
+        if (imageDetailBean.getItem_info().getIs_liked().equals(1)) {//已赞
+            iv_bang.setImageResource(R.drawable.bang1);
+            tv_bang.setTextColor(UIUtils.getColor(R.color.bg_e79056));
+            ifZan = false;
+
+        } else {//未赞
+            iv_bang.setImageResource(R.drawable.bang);
+            tv_bang.setTextColor(UIUtils.getColor(R.color.bg_8f8f8f));
+            ifZan = true;
+        }
         tv_xing.setText(collect_num + "");
+        if (imageDetailBean.getItem_info().getIs_collected().equals(1)) {//已收藏
+            iv_xing.setImageResource(R.drawable.xing1);
+            tv_xing.setTextColor(UIUtils.getColor(R.color.bg_e79056));
+            ifShouCang = false;
+        } else {//未收藏
+
+            ifShouCang = true;
+        }
+
         tv_ping.setText(comment_num + "");
         tv_shared.setText(share_num + "");
 
