@@ -278,7 +278,7 @@ public class FaBuActvity
                 String signString = PublicUtils.getSinaString(map);
                 String tabMd5String = Md5Util.getMD5twoTimes(signString);
                 map.put(ClassConstant.PublicKey.SIGN, tabMd5String);
-                FileHttpManager.getInstance().uploadFile(FaBuActvity.this, new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/fabu/"),
+                FileHttpManager.getInstance().uploadFile(FaBuActvity.this, new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/"+fileName+"/"),
                         UrlConstants.PUT_IMAGE,
                         map,
                         PublicUtils.getPublicHeader(MyApplication.getInstance()));
