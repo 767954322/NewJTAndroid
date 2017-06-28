@@ -15,9 +15,11 @@ import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.message.ItemMessageBean;
+import com.homechart.app.home.bean.pinglun.CommentInfoBean;
 import com.homechart.app.home.bean.pinglun.CommentListBean;
 import com.homechart.app.home.bean.pinglun.PingBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
+import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
 import com.homechart.app.recyclerlibrary.anims.animators.LandingAnimator;
 import com.homechart.app.recyclerlibrary.holder.BaseViewHolder;
@@ -118,7 +120,19 @@ public class PingListActivity
         mAdapter = new MultiItemCommonAdapter<CommentListBean>(this, mListData, support) {
             @Override
             public void convert(BaseViewHolder holder, int position) {
+                CommentInfoBean commentInfoBean =  mListData.get(position).getComment_info();
+                ((TextView)holder.getView(R.id.tv_name_one)).setText(commentInfoBean.getUser_info().getNickname());
+                ((TextView)holder.getView(R.id.tv_time_one)).setText(commentInfoBean.getAdd_time());
+                ((TextView)holder.getView(R.id.tv_content_one)).setText(commentInfoBean.getContent());
+                ImageUtils.displayRoundImage(commentInfoBean.getUser_info().getAvatar().getThumb(),(RoundImageView)holder.getView(R.id.riv_one));
 
+                if(commentInfoBean.getReply_comment() == null){
+                    holder.getView(R.id.rl_huifu_content).setVisibility(View.GONE);
+                }else {
+                    holder.getView(R.id.rl_huifu_content).setVisibility(View.VISIBLE);
+                    ((TextView) holder.getView(R.id.tv_huifu_content_two1)).setText(commentInfoBean.getReply_comment().getUser_info().getNickname());
+                    ((TextView) holder.getView(R.id.tv_huifu_content_four1)).setText(commentInfoBean.getReply_comment().getContent());
+                }
 
 
             }
@@ -179,6 +193,8 @@ public class PingListActivity
                         if (list != null && list.size() > 0) {//有数据
                             updateViewFromData(list, state);
                         } else {//没更多数据
+                            mRecyclerView.setRefreshing(false);//刷新完毕
+                            mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
                             ToastUtils.showCenter(PingListActivity.this, "暂无更多数据");
                         }
                     } else {
