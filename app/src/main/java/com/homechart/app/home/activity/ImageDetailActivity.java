@@ -18,6 +18,8 @@ import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.imagedetail.ImageDetailBean;
+import com.homechart.app.myview.FlowLayoutBiaoQian;
+import com.homechart.app.myview.FlowLayoutShaiXuan;
 import com.homechart.app.myview.HomeSharedPopWin;
 import com.homechart.app.utils.CustomProgress;
 import com.homechart.app.utils.GsonUtil;
@@ -63,6 +65,7 @@ public class ImageDetailActivity
     private int comment_num;
     private int share_num;
     private boolean ifFirst = true;
+    private FlowLayoutBiaoQian fl_tags_jubu;
 
     @Override
     protected int getLayoutResId() {
@@ -94,6 +97,7 @@ public class ImageDetailActivity
         tv_xing = (TextView) findViewById(R.id.tv_xing);
         tv_ping = (TextView) findViewById(R.id.tv_ping);
         tv_shared = (TextView) findViewById(R.id.tv_shared);
+        fl_tags_jubu = (FlowLayoutBiaoQian) findViewById(R.id.fl_tags_jubu);
 
     }
 
@@ -375,13 +379,21 @@ public class ImageDetailActivity
 
 
         String tag = imageDetailBean.getItem_info().getTag().toString();
-        if (tag.contains(" ")) {
-            tag = tag.replace(" ", " #");
-        }
-        tag = " #" + tag + " ";
-        String detail_tital = "<font color='#e79056'>" + tag + "</font>" + imageDetailBean.getItem_info().getDescription();
-        tv_details_tital.setText(Html.fromHtml(detail_tital));
+        String[] str_tag = tag.split(" ");
+        fl_tags_jubu.setColorful(false);
+        fl_tags_jubu.setData(str_tag);
+        fl_tags_jubu.setOnTagClickListener(new FlowLayoutBiaoQian.OnTagClickListener() {
+            @Override
+            public void TagClick(String text) {
+                // 跳转搜索结果页
+                Intent intent = new Intent(ImageDetailActivity.this, ShaiXuanResultActicity.class);
+                intent.putExtra("shaixuan_tag", text);
+                startActivity(intent);
+            }
+        });
 
+
+        tv_details_tital.setText(imageDetailBean.getItem_info().getDescription());
         //处理时间
         String[] str = imageDetailBean.getItem_info().getAdd_time().split(" ");
         String fabuTime = str[0].replace("-", "/");

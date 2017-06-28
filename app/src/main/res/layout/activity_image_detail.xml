@@ -13,15 +13,16 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/common_navbar"
         android:background="@color/white"
-        android:scrollbars="none"
-        android:layout_below="@+id/common_navbar">
+        android:scrollbars="none">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
+            android:layout_alignParentStart="true"
+            android:background="@color/white">
 
             <ImageView
                 android:id="@+id/iv_details_image"
@@ -42,17 +43,25 @@
                 android:layout_marginRight="@dimen/font_10"
                 android:layout_marginTop="@dimen/font_15"
                 android:background="@color/white"
+                android:lineSpacingExtra="@dimen/font_9"
                 android:textColor="@color/bg_262626"
                 android:textSize="@dimen/size_14" />
+
+            <com.homechart.app.myview.FlowLayoutBiaoQian
+                android:id="@+id/fl_tags_jubu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_details_tital"
+                android:layout_marginTop="@dimen/font_13"
+                android:background="@color/white" />
 
             <TextView
                 android:id="@+id/tv_details_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_details_tital"
+                android:layout_below="@+id/fl_tags_jubu"
                 android:layout_marginLeft="@dimen/font_10"
                 android:layout_marginRight="@dimen/font_10"
-                android:layout_marginTop="@dimen/font_15"
                 android:background="@color/white"
                 android:textColor="@color/bg_8f8f8f"
                 android:textSize="@dimen/font_12" />
@@ -138,20 +147,20 @@
                     android:id="@+id/tv_shared"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/bg_8f8f8f"
-                    android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="@dimen/font_4"
                     android:layout_marginRight="@dimen/font_10"
                     android:text="0"
-                    android:layout_marginLeft="@dimen/font_4"
-                    android:textSize="@dimen/size_11"/>
+                    android:textColor="@color/bg_8f8f8f"
+                    android:textSize="@dimen/size_11" />
 
                 <ImageView
                     android:id="@+id/iv_shared"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/tv_shared"
                     android:layout_marginRight="@dimen/font_4"
+                    android:layout_toLeftOf="@+id/tv_shared"
                     android:src="@drawable/zhuan" />
             </RelativeLayout>
 
