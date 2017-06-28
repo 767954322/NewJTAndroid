@@ -1,5 +1,6 @@
 package com.homechart.app.home.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -151,7 +152,7 @@ public class ShaiJiaListActivity extends BaseActivity
                     public void onClick(View v) {
 
                         if (guanli_tag == 0) {//未打开管理
-
+                            jumpImageDetail(mListData.get(position).getItem_info().getItem_id());
                         } else {
                             if (((CheckBox) holder.getView(R.id.cb_check)).isChecked()) {
                                 ((CheckBox) holder.getView(R.id.cb_check)).setChecked(false);
@@ -386,6 +387,14 @@ public class ShaiJiaListActivity extends BaseActivity
         Log.d("test", "个数：" + map_delete.size());
         Log.d("test", "数据：" + map_delete.toString());
     }
+    //查看图片详情
+    private void jumpImageDetail(String item_id) {
 
+        Intent intent = new Intent(ShaiJiaListActivity.this, ImageDetailLongActivity.class);
+        intent.putExtra("item_id", item_id);
+        startActivity(intent);
+
+
+    }
     private int position;
 }

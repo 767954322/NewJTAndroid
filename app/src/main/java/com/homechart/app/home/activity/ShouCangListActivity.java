@@ -1,5 +1,6 @@
 package com.homechart.app.home.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Message;
@@ -151,6 +152,8 @@ public class ShouCangListActivity
 
                         if (guanli_tag == 0) {//未打开管理
 
+                            jumpImageDetail(mListData.get(position).getItem_info().getItem_id());
+
                         } else {
                             if (((CheckBox) holder.getView(R.id.cb_check)).isChecked()) {
                                 ((CheckBox) holder.getView(R.id.cb_check)).setChecked(false);
@@ -160,6 +163,7 @@ public class ShouCangListActivity
                         }
 
                     }
+
                 });
 
                 if (map_delete.containsKey(item_id)) {
@@ -322,7 +326,7 @@ public class ShouCangListActivity
                             } else {
                                 if (page_num == 1) {
                                     ToastUtils.showCenter(ShouCangListActivity.this, "您还没收藏图片呢，先去收藏一些图片吧!");
-                                }else {
+                                } else {
                                     ToastUtils.showCenter(ShouCangListActivity.this, "暂无更多数据!");
                                 }
                                 updateViewFromData(null, state);
@@ -390,9 +394,20 @@ public class ShouCangListActivity
 
     private List<ShouCangItemBean> mListData = new ArrayList<>();
 
+    //点击图片选择后，更新地步ui
     public void upCheckedStatus() {
         tv_shoucang_two.setText(map_delete.size() + "");
         Log.d("test", "个数：" + map_delete.size());
         Log.d("test", "数据：" + map_delete.toString());
+    }
+
+    //查看图片详情
+    private void jumpImageDetail(String item_id) {
+
+        Intent intent = new Intent(ShouCangListActivity.this, ImageDetailLongActivity.class);
+        intent.putExtra("item_id", item_id);
+        startActivity(intent);
+
+
     }
 }
