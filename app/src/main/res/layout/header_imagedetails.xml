@@ -62,9 +62,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/font_10"
         android:layout_marginTop="@dimen/font_18"
-        android:background="@drawable/tv_guanzhu_no"
         android:gravity="center"
-        android:text="关注"
         android:textColor="@color/bg_e79056"
         android:textSize="@dimen/font_12" />
 

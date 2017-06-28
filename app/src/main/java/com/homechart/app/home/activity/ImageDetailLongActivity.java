@@ -549,18 +549,19 @@ public class ImageDetailLongActivity
             nav_secondary_imageButton.setImageResource(R.drawable.shared_icon);
             if (imageDetailBean.getUser_info().getRelation().equals("0")) {//未关注
                 guanzhuTag = 1;
-                tv_people_guanzhu.setTextColor(R.color.bg_e79056);
                 tv_people_guanzhu.setText("关注");
                 tv_people_guanzhu.setBackgroundResource(R.drawable.tv_guanzhu_no);
+                tv_people_guanzhu.setTextColor(UIUtils.getColor(R.color.bg_e79056));
 
             } else if (imageDetailBean.getUser_info().getRelation().equals("1")) {//已关注
                 guanzhuTag = 2;
-                tv_people_guanzhu.setTextColor(R.color.bg_8f8f8f);
+
+                tv_people_guanzhu.setTextColor(UIUtils.getColor(R.color.bg_8f8f8f));
                 tv_people_guanzhu.setText("已关注");
                 tv_people_guanzhu.setBackgroundResource(R.drawable.tv_guanzhu_has);
             } else if (imageDetailBean.getUser_info().getRelation().equals("2")) {//相互关注
                 guanzhuTag = 3;
-                tv_people_guanzhu.setTextColor(R.color.bg_8f8f8f);
+                tv_people_guanzhu.setTextColor(UIUtils.getColor(R.color.bg_8f8f8f));
                 tv_people_guanzhu.setText("相互关注");
                 tv_people_guanzhu.setBackgroundResource(R.drawable.tv_guanzhu_xianghu);
             }
@@ -583,20 +584,26 @@ public class ImageDetailLongActivity
             }
         }
 
-        fl_tags_jubu.setColorful(false);
-        fl_tags_jubu.setData(list);
-        fl_tags_jubu.setOnTagClickListener(new FlowLayoutBiaoQian.OnTagClickListener() {
-            @Override
-            public void TagClick(String text) {
-                // 跳转搜索结果页
-                Intent intent = new Intent(ImageDetailLongActivity.this, ShaiXuanResultActicity.class);
-                intent.putExtra("shaixuan_tag", text);
-                startActivity(intent);
-            }
-        });
-        if(TextUtils.isEmpty(imageDetailBean.getItem_info().getDescription().trim())){
+        if (ifFirst) {
+            fl_tags_jubu.cleanTag();
+            fl_tags_jubu.setColorful(false);
+            fl_tags_jubu.setData(list);
+            fl_tags_jubu.setOnTagClickListener(new FlowLayoutBiaoQian.OnTagClickListener() {
+                @Override
+                public void TagClick(String text) {
+                    // 跳转搜索结果页
+                    Intent intent = new Intent(ImageDetailLongActivity.this, ShaiXuanResultActicity.class);
+                    String tag = text.replace("#", "");
+                    intent.putExtra("shaixuan_tag", tag.trim());
+                    startActivity(intent);
+                }
+            });
+            ifFirst = false;
+        }
+
+        if (TextUtils.isEmpty(imageDetailBean.getItem_info().getDescription().trim())) {
             tv_details_tital.setVisibility(View.GONE);
-        }else {
+        } else {
             tv_details_tital.setVisibility(View.VISIBLE);
             tv_details_tital.setText(imageDetailBean.getItem_info().getDescription().trim());
         }
