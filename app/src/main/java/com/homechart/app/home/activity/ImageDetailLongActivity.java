@@ -316,6 +316,9 @@ public class ImageDetailLongActivity
 
                 break;
             case R.id.ll_huifu_one:
+
+
+
                 break;
             case R.id.ll_huifu_two:
                 break;

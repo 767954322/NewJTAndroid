@@ -48,5 +48,6 @@ public class UrlConstants {
     public static final String REMOVE_SHOUCANG = "https://api.idcool.com.cn/collect/single/remove";  //删除收藏的单图
     public static final String IMAGE_EDIT = "https://api.idcool.com.cn/single/single/modify";  //编辑晒家图片
     public static final String PING_LIST = "https://api.idcool.com.cn/comment/single/list";  //获取单图评论列表
+    public static final String PING_REPLY = "https://api.idcool.com.cn/comment/single/reply";  //回复单图评论
 
 }
