@@ -1,11 +1,15 @@
 package com.homechart.app.home.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Html;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -18,6 +22,15 @@ import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.imagedetail.ImageDetailBean;
+import com.homechart.app.home.bean.search.SearchDataColorBean;
+import com.homechart.app.home.bean.search.SearchItemDataBean;
+import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
+import com.homechart.app.myview.RoundImageView;
+import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
+import com.homechart.app.recyclerlibrary.holder.BaseViewHolder;
+import com.homechart.app.recyclerlibrary.recyclerview.HRecyclerView;
+import com.homechart.app.recyclerlibrary.recyclerview.OnLoadMoreListener;
+import com.homechart.app.recyclerlibrary.support.MultiItemTypeSupport;
 import com.homechart.app.utils.CustomProgress;
 import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.ToastUtils;
@@ -29,13 +42,17 @@ import com.homechart.app.utils.volley.OkStringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by gumenghao on 17/6/26.
  */
 
 public class ImageDetailLongActivity
         extends BaseActivity
-        implements View.OnClickListener {
+        implements View.OnClickListener,
+        OnLoadMoreListener{
     private ImageView iv_details_image;
     private TextView tv_details_tital;
     private TextView tv_details_time;
@@ -60,10 +77,17 @@ public class ImageDetailLongActivity
     private int comment_num;
     private int share_num;
     private boolean ifFirst = true;
+    private View view;
+    private HRecyclerView mRecyclerView;
+    private int TYPE_ONE = 1;
+
+    private List<SearchItemDataBean> mListData = new ArrayList<>();
+    private MultiItemCommonAdapter<SearchItemDataBean> mAdapter;
+    private LoadMoreFooterView mLoadMoreFooterView;
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.activity_image_detail;
+        return R.layout.activity_image_detail_long;
     }
 
 
@@ -75,20 +99,24 @@ public class ImageDetailLongActivity
 
     @Override
     protected void initView() {
+
+
+        view = LayoutInflater.from(ImageDetailLongActivity.this).inflate(R.layout.header_imagedetails, null);
+        mRecyclerView = (HRecyclerView) findViewById(R.id.rcy_recyclerview_info);
         nav_left_imageButton = (ImageButton) findViewById(R.id.nav_left_imageButton);
         tv_tital_comment = (TextView) findViewById(R.id.tv_tital_comment);
         tv_content_right = (TextView) findViewById(R.id.tv_content_right);
-        iv_details_image = (ImageView) findViewById(R.id.iv_details_image);
-        tv_details_tital = (TextView) findViewById(R.id.tv_details_tital);
-        tv_details_time = (TextView) findViewById(R.id.tv_details_time);
-        iv_bang = (ImageView) findViewById(R.id.iv_bang);
-        iv_xing = (ImageView) findViewById(R.id.iv_xing);
-        iv_ping = (ImageView) findViewById(R.id.iv_ping);
-        iv_shared = (ImageView) findViewById(R.id.iv_shared);
-        tv_bang = (TextView) findViewById(R.id.tv_bang);
-        tv_xing = (TextView) findViewById(R.id.tv_xing);
-        tv_ping = (TextView) findViewById(R.id.tv_ping);
-        tv_shared = (TextView) findViewById(R.id.tv_shared);
+        iv_details_image = (ImageView) view.findViewById(R.id.iv_details_image);
+        tv_details_tital = (TextView) view.findViewById(R.id.tv_details_tital);
+        tv_details_time = (TextView) view.findViewById(R.id.tv_details_time);
+        iv_bang = (ImageView) view.findViewById(R.id.iv_bang);
+        iv_xing = (ImageView) view.findViewById(R.id.iv_xing);
+        iv_ping = (ImageView) view.findViewById(R.id.iv_ping);
+        iv_shared = (ImageView) view.findViewById(R.id.iv_shared);
+        tv_bang = (TextView) view.findViewById(R.id.tv_bang);
+        tv_xing = (TextView) view.findViewById(R.id.tv_xing);
+        tv_ping = (TextView) view.findViewById(R.id.tv_ping);
+        tv_shared = (TextView) view.findViewById(R.id.tv_shared);
 
     }
 
@@ -109,7 +137,7 @@ public class ImageDetailLongActivity
         tv_tital_comment.setText("图片详情");
         tv_content_right.setText("编辑");
         getImageDetail();
-
+        buildRecyclerView();
     }
 
     @Override
@@ -149,7 +177,37 @@ public class ImageDetailLongActivity
                 break;
         }
     }
+    private void buildRecyclerView() {
 
+        MultiItemTypeSupport<SearchItemDataBean> support = new MultiItemTypeSupport<SearchItemDataBean>() {
+            @Override
+            public int getLayoutId(int itemType) {
+                if (itemType == TYPE_ONE) {
+                    return R.layout.item_search_one;
+                } else {
+                    return R.layout.item_search_two;
+                }
+            }
+
+            @Override
+            public int getItemViewType(int position, SearchItemDataBean s) {
+                return TYPE_ONE;
+            }
+        };
+
+        mAdapter = new MultiItemCommonAdapter<SearchItemDataBean>(ImageDetailLongActivity.this, mListData, support) {
+            @Override
+            public void convert(BaseViewHolder holder, int position) {
+
+            }
+        };
+        mRecyclerView.addHeaderView(view);
+        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        mRecyclerView.setItemAnimator(null);
+        mRecyclerView.setOnLoadMoreListener(this);
+        mLoadMoreFooterView = (LoadMoreFooterView) mRecyclerView.getLoadMoreFooterView();
+        mRecyclerView.setAdapter(mAdapter);
+    }
     //取消收藏
     private void removeShouCang() {
 
@@ -418,6 +476,11 @@ public class ImageDetailLongActivity
         if (requestCode == 1 && requestCode == 1) {
             getImageDetail();
         }
+
+    }
+
+    @Override
+    public void onLoadMore() {
 
     }
 }
