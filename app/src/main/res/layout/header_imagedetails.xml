@@ -84,6 +84,60 @@
             android:background="@color/white"
             android:scaleType="centerCrop" />
 
+
+        <RelativeLayout
+            android:id="@+id/rl_image_color"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_details_image"
+            android:layout_marginBottom="@dimen/font_12"
+            android:layout_marginTop="@dimen/font_12"
+            android:background="@drawable/relativity_round"
+            android:visibility="gone">
+
+            <com.homechart.app.myview.RoundImageView
+                android:id="@+id/riv_color_image_details_one"
+                android:layout_width="@dimen/font_30"
+                android:layout_height="@dimen/font_30"
+                android:layout_marginLeft="@dimen/font_10" />
+
+            <com.homechart.app.myview.RoundImageView
+                android:id="@+id/riv_color_image_details_two"
+                android:layout_width="@dimen/font_30"
+                android:layout_height="@dimen/font_30"
+                android:layout_marginLeft="@dimen/font_5"
+                android:layout_toRightOf="@+id/riv_color_image_details_one" />
+
+            <com.homechart.app.myview.RoundImageView
+                android:id="@+id/riv_color_image_details_three"
+                android:layout_width="@dimen/font_30"
+                android:layout_height="@dimen/font_30"
+                android:layout_marginLeft="@dimen/font_5"
+                android:layout_toRightOf="@+id/riv_color_image_details_two" />
+
+
+            <ImageView
+                android:id="@+id/iv_imagedetails_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/font_10"
+                android:src="@drawable/next" />
+
+            <TextView
+                android:id="@+id/tv_imagedetails_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/font_6"
+                android:layout_toLeftOf="@+id/iv_imagedetails_next"
+                android:text="更多相似配色"
+                android:textColor="@color/bg_8f8f8f"
+                android:textSize="@dimen/font_12" />
+
+        </RelativeLayout>
+
     </RelativeLayout>
 
 

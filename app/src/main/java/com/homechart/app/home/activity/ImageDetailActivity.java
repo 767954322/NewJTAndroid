@@ -391,21 +391,19 @@ public class ImageDetailActivity
             }
         }
 
-        if(ifFirst){
-            fl_tags_jubu.cleanTag();
-            fl_tags_jubu.setColorful(false);
-            fl_tags_jubu.setData(list);
-            fl_tags_jubu.setOnTagClickListener(new FlowLayoutBiaoQian.OnTagClickListener() {
-                @Override
-                public void TagClick(String text) {
-                    // 跳转搜索结果页
-                    Intent intent = new Intent(ImageDetailActivity.this, ShaiXuanResultActicity.class);
-                    String tag = text.replace("#", "");
-                    intent.putExtra("shaixuan_tag", tag.trim());
-                    startActivity(intent);
-                }
-            });
-        }
+        fl_tags_jubu.cleanTag();
+        fl_tags_jubu.setColorful(false);
+        fl_tags_jubu.setData(list);
+        fl_tags_jubu.setOnTagClickListener(new FlowLayoutBiaoQian.OnTagClickListener() {
+            @Override
+            public void TagClick(String text) {
+                // 跳转搜索结果页
+                Intent intent = new Intent(ImageDetailActivity.this, ShaiXuanResultActicity.class);
+                String tag = text.replace("#", "");
+                intent.putExtra("shaixuan_tag", tag.trim());
+                startActivity(intent);
+            }
+        });
 
         tv_details_tital.setText(imageDetailBean.getItem_info().getDescription());
         //处理时间

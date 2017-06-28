@@ -3,6 +3,7 @@ package com.homechart.app.home.bean.imagedetail;
 import com.homechart.app.home.bean.fabu.ActivityItemInfoDataBean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by gumenghao on 17/6/27.
@@ -13,20 +14,15 @@ public class ImageDetailBean implements Serializable {
     private ItemInfoBean item_info;
     private CounterBean counter;
     private UserInfoBean user_info;
+    private List<ColorInfoBean> color_info;
     private ActivityItemInfoDataBean activity_info;
 
-
-    public ImageDetailBean(ItemInfoBean item_info, CounterBean counter, UserInfoBean user_info, ActivityItemInfoDataBean activity_info) {
+    public ImageDetailBean(ItemInfoBean item_info, CounterBean counter, UserInfoBean user_info, List<ColorInfoBean> color_info, ActivityItemInfoDataBean activity_info) {
         this.item_info = item_info;
         this.counter = counter;
         this.user_info = user_info;
+        this.color_info = color_info;
         this.activity_info = activity_info;
-    }
-
-    public ImageDetailBean(ItemInfoBean item_info, CounterBean counter, UserInfoBean user_info) {
-        this.item_info = item_info;
-        this.counter = counter;
-        this.user_info = user_info;
     }
 
     public ItemInfoBean getItem_info() {
@@ -53,6 +49,14 @@ public class ImageDetailBean implements Serializable {
         this.user_info = user_info;
     }
 
+    public List<ColorInfoBean> getColor_info() {
+        return color_info;
+    }
+
+    public void setColor_info(List<ColorInfoBean> color_info) {
+        this.color_info = color_info;
+    }
+
     public ActivityItemInfoDataBean getActivity_info() {
         return activity_info;
     }
@@ -67,6 +71,7 @@ public class ImageDetailBean implements Serializable {
                 "item_info=" + item_info +
                 ", counter=" + counter +
                 ", user_info=" + user_info +
+                ", color_info=" + color_info +
                 ", activity_info=" + activity_info +
                 '}';
     }

@@ -24,6 +24,7 @@ import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.color.ColorBean;
 import com.homechart.app.home.bean.color.ColorItemBean;
+import com.homechart.app.home.bean.imagedetail.ColorInfoBean;
 import com.homechart.app.home.bean.search.SearchDataBean;
 import com.homechart.app.home.bean.search.SearchDataColorBean;
 import com.homechart.app.home.bean.search.SearchItemDataBean;
@@ -49,6 +50,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -77,7 +79,7 @@ public class ShaiXuanResultActicity
     private final String LOADMORE_STATUS = "loadmore";
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
     private ImageView iv_change_frag;
-//    private View view;
+    //    private View view;
     private View view_flowlayout;
     private ImageView iv_color_icon;
     private TextView iv_color_tital;
@@ -90,6 +92,7 @@ public class ShaiXuanResultActicity
     private int mDownY;
     private float mMoveY;
     private boolean move_tag = true;
+    private List<ColorInfoBean> listcolor;
 
     @Override
     protected int getLayoutResId() {
@@ -99,8 +102,8 @@ public class ShaiXuanResultActicity
     @Override
     protected void initExtraBundle() {
         super.initExtraBundle();
-
         shaixuan_tag = getIntent().getStringExtra("shaixuan_tag");
+        listcolor = (List<ColorInfoBean>) getIntent().getSerializableExtra("colorlist");
 
     }
 
@@ -138,18 +141,18 @@ public class ShaiXuanResultActicity
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getAction();
                 switch (action) {
-                    case MotionEvent.ACTION_DOWN :
+                    case MotionEvent.ACTION_DOWN:
 //                        mDownY = (int) event.getY();
                         break;
-                    case MotionEvent.ACTION_MOVE :
+                    case MotionEvent.ACTION_MOVE:
 
-                        if(move_tag){
+                        if (move_tag) {
                             mDownY = (int) event.getY();
                             move_tag = false;
                         }
                         mMoveY = event.getY();
                         break;
-                    case MotionEvent.ACTION_UP :
+                    case MotionEvent.ACTION_UP:
                         mMoveY = event.getY();
                         move_tag = true;
                         if (Math.abs((mMoveY - mDownY)) > 20) {
@@ -179,6 +182,19 @@ public class ShaiXuanResultActicity
         getSearchData();
         buildRecyclerView();
         getColorData();
+        if (listcolor != null && listcolor.size() > 0) {
+            if (mSelectListData == null) {
+                mSelectListData = new HashMap<>();
+            }
+            for (int i = 0; i < listcolor.size(); i++) {
+                mSelectListData.put(i, new ColorItemBean(listcolor.get(i).getColor_id(),
+                        listcolor.get(i).getColor_value(),
+                        listcolor.get(i).getColor_value(),
+                        listcolor.get(i).getColor_value()));
+            }
+            changeColorRound();
+        }
+
     }
 
     @Override

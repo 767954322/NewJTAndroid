@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -22,6 +23,7 @@ import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
+import com.homechart.app.home.bean.imagedetail.ColorInfoBean;
 import com.homechart.app.home.bean.imagedetail.ImageDetailBean;
 import com.homechart.app.home.bean.search.SearchDataColorBean;
 import com.homechart.app.home.bean.search.SearchItemDataBean;
@@ -45,6 +47,7 @@ import com.homechart.app.utils.volley.OkStringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,12 +100,19 @@ public class ImageDetailLongActivity
     private int guanzhuTag = 0;//1:未关注  2:关注   3:相互关注
     private boolean imageFirstTag = true;
     private FlowLayoutBiaoQian fl_tags_jubu;
+    private RelativeLayout rl_image_color;
+    private RoundImageView riv_color_image_details_one;
+    private RoundImageView riv_color_image_details_two;
+    private RoundImageView riv_color_image_details_three;
+    private ImageView iv_imagedetails_next;
+    private TextView tv_imagedetails_next;
+    private List<ColorInfoBean> listColor;
+    private List<String> list = new ArrayList<>();
 
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_image_detail_long;
     }
-
 
     @Override
     protected void initExtraBundle() {
@@ -128,6 +138,12 @@ public class ImageDetailLongActivity
         iv_people_tag = (ImageView) view.findViewById(R.id.iv_people_tag);
         tv_people_details = (TextView) view.findViewById(R.id.tv_people_details);
         fl_tags_jubu = (FlowLayoutBiaoQian) view.findViewById(R.id.fl_tags_jubu);
+        rl_image_color = (RelativeLayout) view.findViewById(R.id.rl_image_color);
+        riv_color_image_details_one = (RoundImageView) view.findViewById(R.id.riv_color_image_details_one);
+        riv_color_image_details_two = (RoundImageView) view.findViewById(R.id.riv_color_image_details_two);
+        riv_color_image_details_three = (RoundImageView) view.findViewById(R.id.riv_color_image_details_three);
+        iv_imagedetails_next = (ImageView) view.findViewById(R.id.iv_imagedetails_next);
+        tv_imagedetails_next = (TextView) view.findViewById(R.id.tv_imagedetails_next);
 
         iv_details_image = (ImageView) view.findViewById(R.id.iv_details_image);
         tv_details_tital = (TextView) view.findViewById(R.id.tv_details_tital);
@@ -151,6 +167,8 @@ public class ImageDetailLongActivity
         tv_bang.setOnClickListener(this);
         iv_bang.setOnClickListener(this);
         iv_xing.setOnClickListener(this);
+        tv_imagedetails_next.setOnClickListener(this);
+        iv_imagedetails_next.setOnClickListener(this);
         tv_xing.setOnClickListener(this);
         tv_people_guanzhu.setOnClickListener(this);
     }
@@ -213,6 +231,18 @@ public class ImageDetailLongActivity
                             getQuXiao();
                             break;
                     }
+                }
+
+                break;
+            case R.id.tv_imagedetails_next:
+            case R.id.iv_imagedetails_next:
+
+                if (list.size() > 0 && listColor != null && listColor.size() > 0) {
+
+                    Intent intent = new Intent(ImageDetailLongActivity.this, ShaiXuanResultActicity.class);
+                    intent.putExtra("shaixuan_tag", list.get(0));
+                    intent.putExtra("colorlist", (Serializable) listColor);
+                    startActivity(intent);
                 }
 
                 break;
@@ -482,51 +512,6 @@ public class ImageDetailLongActivity
 
     }
 
-    Handler mHandler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-
-            int code = msg.what;
-            switch (code) {
-                case 1:
-                    String data = (String) msg.obj;
-                    imageDetailBean = GsonUtil.jsonToBean(data, ImageDetailBean.class);
-                    changeUI(imageDetailBean);
-                    break;
-                case 2:
-                    ToastUtils.showCenter(ImageDetailLongActivity.this, "点赞成功");
-                    iv_bang.setImageResource(R.drawable.bang1);
-                    like_num++;
-                    tv_bang.setText(like_num + "");
-                    tv_bang.setTextColor(UIUtils.getColor(R.color.bg_e79056));
-                    break;
-                case 3:
-                    ToastUtils.showCenter(ImageDetailLongActivity.this, "取消点赞");
-                    iv_bang.setImageResource(R.drawable.bang);
-                    like_num--;
-                    tv_bang.setText(like_num + "");
-                    tv_bang.setTextColor(UIUtils.getColor(R.color.bg_8f8f8f));
-                    break;
-                case 4:
-                    ToastUtils.showCenter(ImageDetailLongActivity.this, "收藏成功");
-                    iv_xing.setImageResource(R.drawable.xing1);
-                    collect_num++;
-                    tv_xing.setText(collect_num + "");
-                    tv_xing.setTextColor(UIUtils.getColor(R.color.bg_e79056));
-                    break;
-                case 5:
-                    ToastUtils.showCenter(ImageDetailLongActivity.this, "取消收藏");
-                    iv_xing.setImageResource(R.drawable.xing);
-                    collect_num--;
-                    tv_xing.setText(collect_num + "");
-                    tv_xing.setTextColor(UIUtils.getColor(R.color.bg_8f8f8f));
-                    break;
-            }
-        }
-    };
-
     private void changeUI(ImageDetailBean imageDetailBean) {
         int wide_num = PublicUtils.getScreenWidth(ImageDetailLongActivity.this) - UIUtils.getDimens(R.dimen.font_20);
         ViewGroup.LayoutParams layoutParams = iv_details_image.getLayoutParams();
@@ -575,31 +560,50 @@ public class ImageDetailLongActivity
             ImageUtils.displayFilletImage(imageDetailBean.getItem_info().getImage().getImg0(), iv_details_image);
             imageFirstTag = false;
         }
+
+        if (ifFirst) {
+            if (imageDetailBean.getColor_info() != null && imageDetailBean.getColor_info().size() > 0) {
+                rl_image_color.setVisibility(View.VISIBLE);
+                listColor = imageDetailBean.getColor_info();
+                if (listColor.size() == 1) {
+                    riv_color_image_details_one.setBackgroundColor(Color.parseColor("#" + listColor.get(0).getColor_value()));
+                } else if (listColor.size() == 2) {
+                    riv_color_image_details_one.setBackgroundColor(Color.parseColor("#" + listColor.get(0).getColor_value()));
+                    riv_color_image_details_two.setBackgroundColor(Color.parseColor("#" + listColor.get(1).getColor_value()));
+                } else if (listColor.size() == 3) {
+                    riv_color_image_details_one.setBackgroundColor(Color.parseColor("#" + listColor.get(0).getColor_value()));
+                    riv_color_image_details_two.setBackgroundColor(Color.parseColor("#" + listColor.get(1).getColor_value()));
+                    riv_color_image_details_three.setBackgroundColor(Color.parseColor("#" + listColor.get(2).getColor_value()));
+                }
+            } else {
+                rl_image_color.setVisibility(View.GONE);
+            }
+            ifFirst = false;
+        }
+
+
         String tag = imageDetailBean.getItem_info().getTag().toString();
         String[] str_tag = tag.split(" ");
-        List<String> list = new ArrayList<>();
+        list.clear();
         for (int i = 0; i < str_tag.length; i++) {
             if (!TextUtils.isEmpty(str_tag[i].trim())) {
                 list.add(str_tag[i]);
             }
         }
 
-        if (ifFirst) {
-            fl_tags_jubu.cleanTag();
-            fl_tags_jubu.setColorful(false);
-            fl_tags_jubu.setData(list);
-            fl_tags_jubu.setOnTagClickListener(new FlowLayoutBiaoQian.OnTagClickListener() {
-                @Override
-                public void TagClick(String text) {
-                    // 跳转搜索结果页
-                    Intent intent = new Intent(ImageDetailLongActivity.this, ShaiXuanResultActicity.class);
-                    String tag = text.replace("#", "");
-                    intent.putExtra("shaixuan_tag", tag.trim());
-                    startActivity(intent);
-                }
-            });
-            ifFirst = false;
-        }
+        fl_tags_jubu.cleanTag();
+        fl_tags_jubu.setColorful(false);
+        fl_tags_jubu.setData(list);
+        fl_tags_jubu.setOnTagClickListener(new FlowLayoutBiaoQian.OnTagClickListener() {
+            @Override
+            public void TagClick(String text) {
+                // 跳转搜索结果页
+                Intent intent = new Intent(ImageDetailLongActivity.this, ShaiXuanResultActicity.class);
+                String tag = text.replace("#", "");
+                intent.putExtra("shaixuan_tag", tag.trim());
+                startActivity(intent);
+            }
+        });
 
         if (TextUtils.isEmpty(imageDetailBean.getItem_info().getDescription().trim())) {
             tv_details_tital.setVisibility(View.GONE);
@@ -656,4 +660,51 @@ public class ImageDetailLongActivity
     public void onLoadMore() {
 
     }
+
+
+    Handler mHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            int code = msg.what;
+            switch (code) {
+                case 1:
+                    String data = (String) msg.obj;
+                    imageDetailBean = GsonUtil.jsonToBean(data, ImageDetailBean.class);
+                    changeUI(imageDetailBean);
+                    break;
+                case 2:
+                    ToastUtils.showCenter(ImageDetailLongActivity.this, "点赞成功");
+                    iv_bang.setImageResource(R.drawable.bang1);
+                    like_num++;
+                    tv_bang.setText(like_num + "");
+                    tv_bang.setTextColor(UIUtils.getColor(R.color.bg_e79056));
+                    break;
+                case 3:
+                    ToastUtils.showCenter(ImageDetailLongActivity.this, "取消点赞");
+                    iv_bang.setImageResource(R.drawable.bang);
+                    like_num--;
+                    tv_bang.setText(like_num + "");
+                    tv_bang.setTextColor(UIUtils.getColor(R.color.bg_8f8f8f));
+                    break;
+                case 4:
+                    ToastUtils.showCenter(ImageDetailLongActivity.this, "收藏成功");
+                    iv_xing.setImageResource(R.drawable.xing1);
+                    collect_num++;
+                    tv_xing.setText(collect_num + "");
+                    tv_xing.setTextColor(UIUtils.getColor(R.color.bg_e79056));
+                    break;
+                case 5:
+                    ToastUtils.showCenter(ImageDetailLongActivity.this, "取消收藏");
+                    iv_xing.setImageResource(R.drawable.xing);
+                    collect_num--;
+                    tv_xing.setText(collect_num + "");
+                    tv_xing.setTextColor(UIUtils.getColor(R.color.bg_8f8f8f));
+                    break;
+            }
+        }
+    };
+
 }
