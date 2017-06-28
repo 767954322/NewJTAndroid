@@ -33,6 +33,7 @@ import com.homechart.app.recyclerlibrary.recyclerview.OnLoadMoreListener;
 import com.homechart.app.recyclerlibrary.support.MultiItemTypeSupport;
 import com.homechart.app.utils.CustomProgress;
 import com.homechart.app.utils.GsonUtil;
+import com.homechart.app.utils.SharedPreferencesUtils;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.imageloader.ImageUtils;
@@ -52,7 +53,7 @@ import java.util.List;
 public class ImageDetailLongActivity
         extends BaseActivity
         implements View.OnClickListener,
-        OnLoadMoreListener{
+        OnLoadMoreListener {
     private ImageView iv_details_image;
     private TextView tv_details_tital;
     private TextView tv_details_time;
@@ -84,6 +85,15 @@ public class ImageDetailLongActivity
     private List<SearchItemDataBean> mListData = new ArrayList<>();
     private MultiItemCommonAdapter<SearchItemDataBean> mAdapter;
     private LoadMoreFooterView mLoadMoreFooterView;
+    private RoundImageView riv_people_header;
+    private TextView tv_people_name;
+    private ImageView iv_people_tag;
+    private TextView tv_people_details;
+    private TextView tv_people_guanzhu;
+    private String mUserId;
+    private ImageButton nav_secondary_imageButton;
+    private int guanzhuTag = 0;//1:未关注  2:关注   3:相互关注
+    private boolean imageFirstTag = true;
 
     @Override
     protected int getLayoutResId() {
@@ -95,6 +105,7 @@ public class ImageDetailLongActivity
     protected void initExtraBundle() {
         super.initExtraBundle();
         item_id = getIntent().getStringExtra("item_id");
+        mUserId = SharedPreferencesUtils.readString(ClassConstant.LoginSucces.USER_ID);
     }
 
     @Override
@@ -106,6 +117,14 @@ public class ImageDetailLongActivity
         nav_left_imageButton = (ImageButton) findViewById(R.id.nav_left_imageButton);
         tv_tital_comment = (TextView) findViewById(R.id.tv_tital_comment);
         tv_content_right = (TextView) findViewById(R.id.tv_content_right);
+        nav_secondary_imageButton = (ImageButton) findViewById(R.id.nav_secondary_imageButton);
+
+        riv_people_header = (RoundImageView) view.findViewById(R.id.riv_people_header);
+        tv_people_guanzhu = (TextView) view.findViewById(R.id.tv_people_guanzhu);
+        tv_people_name = (TextView) view.findViewById(R.id.tv_people_name);
+        iv_people_tag = (ImageView) view.findViewById(R.id.iv_people_tag);
+        tv_people_details = (TextView) view.findViewById(R.id.tv_people_details);
+
         iv_details_image = (ImageView) view.findViewById(R.id.iv_details_image);
         tv_details_tital = (TextView) view.findViewById(R.id.tv_details_tital);
         tv_details_time = (TextView) view.findViewById(R.id.tv_details_time);
@@ -129,6 +148,7 @@ public class ImageDetailLongActivity
         iv_bang.setOnClickListener(this);
         iv_xing.setOnClickListener(this);
         tv_xing.setOnClickListener(this);
+        tv_people_guanzhu.setOnClickListener(this);
     }
 
     @Override
@@ -175,8 +195,92 @@ public class ImageDetailLongActivity
                     ifShouCang = true;
                 }
                 break;
+            case R.id.tv_people_guanzhu:
+
+                if (null != imageDetailBean) {
+                    switch (guanzhuTag) {
+                        case 1:
+                            getGuanZhu();
+                            break;
+                        case 2:
+                            getQuXiao();
+                            break;
+                        case 3:
+                            getQuXiao();
+                            break;
+                    }
+                }
+
+                break;
         }
     }
+
+    //关注用户
+    private void getGuanZhu() {
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                if (guanzhuTag == 1) {//未关注（去关注）
+                    ToastUtils.showCenter(ImageDetailLongActivity.this, "关注失败");
+                } else if (guanzhuTag == 2) {//已关注
+                    ToastUtils.showCenter(ImageDetailLongActivity.this, "取消关注失败");
+                } else if (guanzhuTag == 3) {//相互关注
+                    ToastUtils.showCenter(ImageDetailLongActivity.this, "取消关注失败");
+                }
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        ToastUtils.showCenter(ImageDetailLongActivity.this, "关注成功");
+                        getImageDetail();
+                    } else {
+                        ToastUtils.showCenter(ImageDetailLongActivity.this, error_msg);
+
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        };
+        MyHttpManager.getInstance().goGuanZhu(imageDetailBean.getUser_info().getUser_id(), callBack);
+
+    }
+
+    //取消关注用户
+    private void getQuXiao() {
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+
+                ToastUtils.showCenter(ImageDetailLongActivity.this, getString(R.string.userinfo_get_error));
+
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        ToastUtils.showCenter(ImageDetailLongActivity.this, "取消关注成功");
+                        getImageDetail();
+                    } else {
+                        ToastUtils.showCenter(ImageDetailLongActivity.this, error_msg);
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        };
+        MyHttpManager.getInstance().goQuXiaoGuanZhu(imageDetailBean.getUser_info().getUser_id(), callBack);
+    }
+
     private void buildRecyclerView() {
 
         MultiItemTypeSupport<SearchItemDataBean> support = new MultiItemTypeSupport<SearchItemDataBean>() {
@@ -208,6 +312,7 @@ public class ImageDetailLongActivity
         mLoadMoreFooterView = (LoadMoreFooterView) mRecyclerView.getLoadMoreFooterView();
         mRecyclerView.setAdapter(mAdapter);
     }
+
     //取消收藏
     private void removeShouCang() {
 
@@ -424,9 +529,47 @@ public class ImageDetailLongActivity
         layoutParams.width = wide_num;
         layoutParams.height = (int) (wide_num / imageDetailBean.getItem_info().getImage().getRatio());
         iv_details_image.setLayoutParams(layoutParams);
-        ImageUtils.displayFilletImage(imageDetailBean.getItem_info().getImage().getImg0(), iv_details_image);
+        ImageUtils.displayRoundImage(imageDetailBean.getUser_info().getAvatar().getThumb(), riv_people_header);
+        tv_people_name.setText(imageDetailBean.getUser_info().getNickname());
+        if (!imageDetailBean.getUser_info().getProfession().equals("0")) {
+            iv_people_tag.setVisibility(View.VISIBLE);
+        } else {
+            iv_people_tag.setVisibility(View.GONE);
+        }
+        tv_people_details.setText(imageDetailBean.getUser_info().getSlogan());
 
+        if (!imageDetailBean.getUser_info().getUser_id().trim().equals(mUserId.trim())) {
+            tv_content_right.setVisibility(View.GONE);
+            tv_people_guanzhu.setVisibility(View.VISIBLE);
+            nav_secondary_imageButton.setVisibility(View.VISIBLE);
+            nav_secondary_imageButton.setImageResource(R.drawable.shared_icon);
+            if (imageDetailBean.getUser_info().getRelation().equals("0")) {//未关注
+                guanzhuTag = 1;
+                tv_people_guanzhu.setTextColor(R.color.bg_e79056);
+                tv_people_guanzhu.setText("关注");
+                tv_people_guanzhu.setBackgroundResource(R.drawable.tv_guanzhu_no);
 
+            } else if (imageDetailBean.getUser_info().getRelation().equals("1")) {//已关注
+                guanzhuTag = 2;
+                tv_people_guanzhu.setTextColor(R.color.bg_8f8f8f);
+                tv_people_guanzhu.setText("已关注");
+                tv_people_guanzhu.setBackgroundResource(R.drawable.tv_guanzhu_has);
+            } else if (imageDetailBean.getUser_info().getRelation().equals("2")) {//相互关注
+                guanzhuTag = 3;
+                tv_people_guanzhu.setTextColor(R.color.bg_8f8f8f);
+                tv_people_guanzhu.setText("相互关注");
+                tv_people_guanzhu.setBackgroundResource(R.drawable.tv_guanzhu_xianghu);
+            }
+        } else {
+            tv_content_right.setVisibility(View.VISIBLE);
+            tv_people_guanzhu.setVisibility(View.GONE);
+            nav_secondary_imageButton.setVisibility(View.GONE);
+        }
+
+        if (imageFirstTag) {
+            ImageUtils.displayFilletImage(imageDetailBean.getItem_info().getImage().getImg0(), iv_details_image);
+            imageFirstTag = false;
+        }
         String tag = imageDetailBean.getItem_info().getTag().toString();
         if (tag.contains(" ")) {
             tag = tag.replace(" ", " #");
@@ -445,7 +588,7 @@ public class ImageDetailLongActivity
         share_num = imageDetailBean.getCounter().getShare_num();
 
         tv_bang.setText(like_num + "");
-        if (imageDetailBean.getItem_info().getIs_liked().equals(1)) {//已赞
+        if (imageDetailBean.getItem_info().getIs_liked().equals("1")) {//已赞
             iv_bang.setImageResource(R.drawable.bang1);
             tv_bang.setTextColor(UIUtils.getColor(R.color.bg_e79056));
             ifZan = false;
@@ -456,7 +599,7 @@ public class ImageDetailLongActivity
             ifZan = true;
         }
         tv_xing.setText(collect_num + "");
-        if (imageDetailBean.getItem_info().getIs_collected().equals(1)) {//已收藏
+        if (imageDetailBean.getItem_info().getIs_collected().equals("1")) {//已收藏
             iv_xing.setImageResource(R.drawable.xing1);
             tv_xing.setTextColor(UIUtils.getColor(R.color.bg_e79056));
             ifShouCang = false;

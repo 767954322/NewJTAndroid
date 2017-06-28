@@ -12,14 +12,16 @@ public class UserInfoBean implements Serializable{
     private String nickname;
     private String profession;
     private String relation;
+    private String slogan;
     private AvatarBean avatar;
 
 
-    public UserInfoBean(String user_id, String nickname, String profession, String relation, AvatarBean avatar) {
+    public UserInfoBean(String user_id, String nickname, String profession, String relation, String slogan, AvatarBean avatar) {
         this.user_id = user_id;
         this.nickname = nickname;
         this.profession = profession;
         this.relation = relation;
+        this.slogan = slogan;
         this.avatar = avatar;
     }
 
@@ -55,6 +57,14 @@ public class UserInfoBean implements Serializable{
         this.relation = relation;
     }
 
+    public String getSlogan() {
+        return slogan;
+    }
+
+    public void setSlogan(String slogan) {
+        this.slogan = slogan;
+    }
+
     public AvatarBean getAvatar() {
         return avatar;
     }
@@ -70,6 +80,7 @@ public class UserInfoBean implements Serializable{
                 ", nickname='" + nickname + '\'' +
                 ", profession='" + profession + '\'' +
                 ", relation='" + relation + '\'' +
+                ", slogan='" + slogan + '\'' +
                 ", avatar=" + avatar +
                 '}';
     }

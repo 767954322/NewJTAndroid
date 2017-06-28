@@ -30,6 +30,7 @@ import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.activity.FenSiListActivity;
+import com.homechart.app.home.activity.ImageDetailLongActivity;
 import com.homechart.app.home.activity.MessagesListActivity;
 import com.homechart.app.home.activity.SearchActivity;
 import com.homechart.app.home.activity.ShaiXuanResultActicity;
@@ -296,24 +297,6 @@ public class HomePicFragment
         MultiItemTypeSupport<SYDataBean> support = new MultiItemTypeSupport<SYDataBean>() {
             @Override
             public int getLayoutId(int itemType) {
-//                if (curentListTag) {//List
-//                    if (itemType == TYPE_ONE) {
-//                        return R.layout.item_test_one;
-//                    } else if (itemType == TYPE_TWO) {
-//                        return R.layout.item_test_one;
-//                    } else {
-//                        return R.layout.item_test_one;
-//                    }
-//                } else {
-//                    if (itemType == TYPE_ONE) {
-//                        return R.layout.item_test_pic_pubu;
-//                    } else if (itemType == TYPE_TWO) {
-//                        return R.layout.item_test_pic_pubu;
-//                    } else {
-//                        return R.layout.item_test_pic_pubu;
-//                    }
-//                }
-
                 if (itemType == TYPE_ONE) {
                     return R.layout.item_test_one;
                 } else if (itemType == TYPE_TWO) {
@@ -330,15 +313,7 @@ public class HomePicFragment
 
             @Override
             public int getItemViewType(int position, SYDataBean s) {
-//                if (s.getObject_info().getType().equals(ClassConstant.PicListType.SINGLE)) {
-//                    return TYPE_ONE;
-//                } else if (s.getObject_info().getType().equals(ClassConstant.PicListType.PROJECT)) {
-//                    return TYPE_TWO;
-//                } else {
-//                    return TYPE_THREE;
-//                }
                 if (s.getObject_info().getType().equals("活动")) {
-
                     if (curentListTag) {
                         return TYPE_THREE;
                     } else {
@@ -440,6 +415,19 @@ public class HomePicFragment
                             Intent intent = new Intent(activity, UserInfoActivity.class);
                             intent.putExtra(ClassConstant.LoginSucces.USER_ID, mListData.get(position).getUser_info().getUser_id());
                             startActivity(intent);
+                        }
+                    });
+                    holder.getView(R.id.iv_imageview_one).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            if (mListData.get(position).getObject_info().getType().equals("single")) {
+                                //查看单图详情
+                                Intent intent = new Intent(activity, ImageDetailLongActivity.class);
+                                intent.putExtra("item_id", mListData.get(position).getObject_info().getObject_id());
+                                startActivity(intent);
+                            }
+
                         }
                     });
                 }
