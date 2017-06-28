@@ -248,6 +248,9 @@ public class ImageDetailLongActivity
         ll_huifu_one.setOnClickListener(this);
         ll_huifu_two.setOnClickListener(this);
         ll_huifu_three.setOnClickListener(this);
+        rl_ping_four.setOnClickListener(this);
+        iv_ping.setOnClickListener(this);
+        tv_ping.setOnClickListener(this);
         cet_clearedit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
             @Override
@@ -376,6 +379,15 @@ public class ImageDetailLongActivity
                 cet_clearedit.requestFocus();
                 InputMethodManager imm2 = (InputMethodManager) cet_clearedit.getContext().getSystemService(ImageDetailLongActivity.this.INPUT_METHOD_SERVICE);
                 imm2.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
+                break;
+            case R.id.rl_ping_four:
+            case R.id.iv_ping:
+            case R.id.tv_ping:
+
+                Intent intent = new Intent(ImageDetailLongActivity.this,PingListActivity.class);
+                intent.putExtra("item_id",item_id);
+                startActivity(intent);
+
                 break;
         }
     }
