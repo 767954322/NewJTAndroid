@@ -427,6 +427,7 @@ public class ImageDetailLongActivity
                     String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
                     String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
                     if (error_code == 0) {
+                        handler.sendEmptyMessage(0);
                         ToastUtils.showCenter(ImageDetailLongActivity.this, "评论单图成功");
                         getPingList();
                     } else {
@@ -450,6 +451,7 @@ public class ImageDetailLongActivity
 
             @Override
             public void onResponse(String s) {
+
                 huifuTag = "";
                 try {
                     JSONObject jsonObject = new JSONObject(s);
@@ -457,6 +459,7 @@ public class ImageDetailLongActivity
                     String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
                     String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
                     if (error_code == 0) {
+                        handler.sendEmptyMessage(0);
                         ToastUtils.showCenter(ImageDetailLongActivity.this, "评论回复成功");
                         getPingList();
                     } else {
@@ -895,59 +898,8 @@ public class ImageDetailLongActivity
 
     }
 
-
-    Handler mHandler = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-
-            int code = msg.what;
-            switch (code) {
-                case 1:
-                    String data = (String) msg.obj;
-                    imageDetailBean = GsonUtil.jsonToBean(data, ImageDetailBean.class);
-                    changeUI(imageDetailBean);
-                    break;
-                case 2:
-                    ToastUtils.showCenter(ImageDetailLongActivity.this, "点赞成功");
-                    iv_bang.setImageResource(R.drawable.bang1);
-                    like_num++;
-                    tv_bang.setText(like_num + "");
-                    tv_bang.setTextColor(UIUtils.getColor(R.color.bg_e79056));
-                    break;
-                case 3:
-                    ToastUtils.showCenter(ImageDetailLongActivity.this, "取消点赞");
-                    iv_bang.setImageResource(R.drawable.bang);
-                    like_num--;
-                    tv_bang.setText(like_num + "");
-                    tv_bang.setTextColor(UIUtils.getColor(R.color.bg_8f8f8f));
-                    break;
-                case 4:
-                    ToastUtils.showCenter(ImageDetailLongActivity.this, "收藏成功");
-                    iv_xing.setImageResource(R.drawable.xing1);
-                    collect_num++;
-                    tv_xing.setText(collect_num + "");
-                    tv_xing.setTextColor(UIUtils.getColor(R.color.bg_e79056));
-                    break;
-                case 5:
-                    ToastUtils.showCenter(ImageDetailLongActivity.this, "取消收藏");
-                    iv_xing.setImageResource(R.drawable.xing);
-                    collect_num--;
-                    tv_xing.setText(collect_num + "");
-                    tv_xing.setTextColor(UIUtils.getColor(R.color.bg_8f8f8f));
-                    break;
-                case 6:
-                    String pinglist = "{\"data\": " + (String) msg.obj + "}";
-                    pingBean = GsonUtil.jsonToBean(pinglist, PingBean.class);
-                    changePingUI();
-                    break;
-            }
-        }
-    };
-
     private void changePingUI() {
-
+        getImageDetail();
         if (pingBean.getData() != null && pingBean.getData().getComment_list() != null && pingBean.getData().getComment_list().size() > 0) {
             if (pingBean.getData().getComment_list().size() >= 3) {
                 rl_ping_one.setVisibility(View.VISIBLE);
@@ -1061,5 +1013,66 @@ public class ImageDetailLongActivity
         }
 
     }
+
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            comment_num++;
+            tv_ping.setText(comment_num + "");
+        }
+    };
+
+    Handler mHandler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            int code = msg.what;
+            switch (code) {
+                case 1:
+                    String data = (String) msg.obj;
+                    imageDetailBean = GsonUtil.jsonToBean(data, ImageDetailBean.class);
+                    changeUI(imageDetailBean);
+                    break;
+                case 2:
+                    ToastUtils.showCenter(ImageDetailLongActivity.this, "点赞成功");
+                    iv_bang.setImageResource(R.drawable.bang1);
+                    like_num++;
+                    tv_bang.setText(like_num + "");
+                    tv_bang.setTextColor(UIUtils.getColor(R.color.bg_e79056));
+                    break;
+                case 3:
+                    ToastUtils.showCenter(ImageDetailLongActivity.this, "取消点赞");
+                    iv_bang.setImageResource(R.drawable.bang);
+                    like_num--;
+                    tv_bang.setText(like_num + "");
+                    tv_bang.setTextColor(UIUtils.getColor(R.color.bg_8f8f8f));
+                    break;
+                case 4:
+                    ToastUtils.showCenter(ImageDetailLongActivity.this, "收藏成功");
+                    iv_xing.setImageResource(R.drawable.xing1);
+                    collect_num++;
+                    tv_xing.setText(collect_num + "");
+                    tv_xing.setTextColor(UIUtils.getColor(R.color.bg_e79056));
+                    break;
+                case 5:
+                    ToastUtils.showCenter(ImageDetailLongActivity.this, "取消收藏");
+                    iv_xing.setImageResource(R.drawable.xing);
+                    collect_num--;
+                    tv_xing.setText(collect_num + "");
+                    tv_xing.setTextColor(UIUtils.getColor(R.color.bg_8f8f8f));
+                    break;
+                case 6:
+                    String pinglist = "{\"data\": " + (String) msg.obj + "}";
+                    pingBean = GsonUtil.jsonToBean(pinglist, PingBean.class);
+                    changePingUI();
+                    break;
+            }
+        }
+    };
+
 
 }

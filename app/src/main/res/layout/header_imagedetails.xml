@@ -187,9 +187,11 @@
         android:id="@+id/rl_iamgedetails_cound"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/view_line"
         android:paddingBottom="@dimen/font_15"
-        android:paddingTop="@dimen/font_15">
+        android:paddingTop="@dimen/font_15"
+        android:layout_below="@+id/view_line"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
         <ImageView
             android:id="@+id/iv_bang"
