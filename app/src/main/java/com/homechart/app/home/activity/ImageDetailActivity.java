@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,9 @@ import com.homechart.app.utils.volley.OkStringRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by gumenghao on 17/6/26.
@@ -380,8 +384,14 @@ public class ImageDetailActivity
 
         String tag = imageDetailBean.getItem_info().getTag().toString();
         String[] str_tag = tag.split(" ");
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < str_tag.length; i++) {
+            if (!TextUtils.isEmpty(str_tag[i].trim())) {
+                list.add(str_tag[i]);
+            }
+        }
         fl_tags_jubu.setColorful(false);
-        fl_tags_jubu.setData(str_tag);
+        fl_tags_jubu.setData(list);
         fl_tags_jubu.setOnTagClickListener(new FlowLayoutBiaoQian.OnTagClickListener() {
             @Override
             public void TagClick(String text) {

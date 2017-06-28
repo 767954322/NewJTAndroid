@@ -101,14 +101,21 @@
         android:textColor="@color/bg_262626"
         android:textSize="@dimen/size_14" />
 
+    <com.homechart.app.myview.FlowLayoutBiaoQian
+        android:id="@+id/fl_tags_jubu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_details_tital"
+        android:layout_marginTop="@dimen/font_13"
+        android:background="@color/white" />
+
     <TextView
         android:id="@+id/tv_details_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_details_tital"
+        android:layout_below="@+id/fl_tags_jubu"
         android:layout_marginLeft="@dimen/font_10"
         android:layout_marginRight="@dimen/font_10"
-        android:layout_marginTop="@dimen/font_15"
         android:background="@color/white"
         android:textColor="@color/bg_8f8f8f"
         android:textSize="@dimen/font_12" />

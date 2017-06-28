@@ -8,6 +8,7 @@ import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Html;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.homechart.app.home.bean.imagedetail.ImageDetailBean;
 import com.homechart.app.home.bean.search.SearchDataColorBean;
 import com.homechart.app.home.bean.search.SearchItemDataBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
+import com.homechart.app.myview.FlowLayoutBiaoQian;
 import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
 import com.homechart.app.recyclerlibrary.holder.BaseViewHolder;
@@ -94,6 +96,7 @@ public class ImageDetailLongActivity
     private ImageButton nav_secondary_imageButton;
     private int guanzhuTag = 0;//1:未关注  2:关注   3:相互关注
     private boolean imageFirstTag = true;
+    private FlowLayoutBiaoQian fl_tags_jubu;
 
     @Override
     protected int getLayoutResId() {
@@ -124,6 +127,7 @@ public class ImageDetailLongActivity
         tv_people_name = (TextView) view.findViewById(R.id.tv_people_name);
         iv_people_tag = (ImageView) view.findViewById(R.id.iv_people_tag);
         tv_people_details = (TextView) view.findViewById(R.id.tv_people_details);
+        fl_tags_jubu = (FlowLayoutBiaoQian) view.findViewById(R.id.fl_tags_jubu);
 
         iv_details_image = (ImageView) view.findViewById(R.id.iv_details_image);
         tv_details_tital = (TextView) view.findViewById(R.id.tv_details_tital);
@@ -571,12 +575,31 @@ public class ImageDetailLongActivity
             imageFirstTag = false;
         }
         String tag = imageDetailBean.getItem_info().getTag().toString();
-        if (tag.contains(" ")) {
-            tag = tag.replace(" ", " #");
+        String[] str_tag = tag.split(" ");
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < str_tag.length; i++) {
+            if (!TextUtils.isEmpty(str_tag[i].trim())) {
+                list.add(str_tag[i]);
+            }
         }
-        tag = " #" + tag + " ";
-        String detail_tital = "<font color='#e79056'>" + tag + "</font>" + imageDetailBean.getItem_info().getDescription();
-        tv_details_tital.setText(Html.fromHtml(detail_tital));
+
+        fl_tags_jubu.setColorful(false);
+        fl_tags_jubu.setData(list);
+        fl_tags_jubu.setOnTagClickListener(new FlowLayoutBiaoQian.OnTagClickListener() {
+            @Override
+            public void TagClick(String text) {
+                // 跳转搜索结果页
+                Intent intent = new Intent(ImageDetailLongActivity.this, ShaiXuanResultActicity.class);
+                intent.putExtra("shaixuan_tag", text);
+                startActivity(intent);
+            }
+        });
+        if(TextUtils.isEmpty(imageDetailBean.getItem_info().getDescription().trim())){
+            tv_details_tital.setVisibility(View.GONE);
+        }else {
+            tv_details_tital.setVisibility(View.VISIBLE);
+            tv_details_tital.setText(imageDetailBean.getItem_info().getDescription().trim());
+        }
 
         //处理时间
         String[] str = imageDetailBean.getItem_info().getAdd_time().split(" ");
