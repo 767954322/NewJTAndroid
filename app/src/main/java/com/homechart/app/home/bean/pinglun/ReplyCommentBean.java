@@ -6,20 +6,18 @@ import java.io.Serializable;
  * Created by gumenghao on 17/6/28.
  */
 
-public class CommentInfoBean implements Serializable{
+public class ReplyCommentBean implements Serializable{
 
     private String comment_id;
     private String content;
     private String add_time;
-    private PingUserInfoBean user_info;
-    private ReplyCommentBean reply_comment;
+    private ReplyUserInfoBean user_info;
 
-    public CommentInfoBean(String comment_id, String content, String add_time, PingUserInfoBean user_info, ReplyCommentBean reply_comment) {
+    public ReplyCommentBean(String comment_id, String content, String add_time, ReplyUserInfoBean user_info) {
         this.comment_id = comment_id;
         this.content = content;
         this.add_time = add_time;
         this.user_info = user_info;
-        this.reply_comment = reply_comment;
     }
 
     public String getComment_id() {
@@ -46,30 +44,21 @@ public class CommentInfoBean implements Serializable{
         this.add_time = add_time;
     }
 
-    public PingUserInfoBean getUser_info() {
+    public ReplyUserInfoBean getUser_info() {
         return user_info;
     }
 
-    public void setUser_info(PingUserInfoBean user_info) {
+    public void setUser_info(ReplyUserInfoBean user_info) {
         this.user_info = user_info;
-    }
-
-    public ReplyCommentBean getReply_comment() {
-        return reply_comment;
-    }
-
-    public void setReply_comment(ReplyCommentBean reply_comment) {
-        this.reply_comment = reply_comment;
     }
 
     @Override
     public String toString() {
-        return "CommentInfoBean{" +
+        return "ReplyCommentBean{" +
                 "comment_id='" + comment_id + '\'' +
                 ", content='" + content + '\'' +
                 ", add_time='" + add_time + '\'' +
                 ", user_info=" + user_info +
-                ", reply_comment=" + reply_comment +
                 '}';
     }
 }

@@ -11,9 +11,12 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,11 +30,13 @@ import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.imagedetail.ColorInfoBean;
 import com.homechart.app.home.bean.imagedetail.ImageDetailBean;
+import com.homechart.app.home.bean.pictag.TagItemDataChildBean;
 import com.homechart.app.home.bean.pinglun.CommentListBean;
 import com.homechart.app.home.bean.pinglun.PingBean;
 import com.homechart.app.home.bean.search.SearchDataColorBean;
 import com.homechart.app.home.bean.search.SearchItemDataBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
+import com.homechart.app.myview.ClearEditText;
 import com.homechart.app.myview.FlowLayoutBiaoQian;
 import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
@@ -53,6 +58,7 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -143,6 +149,9 @@ public class ImageDetailLongActivity
     private LinearLayout ll_huifu_one;
     private LinearLayout ll_huifu_two;
     private LinearLayout ll_huifu_three;
+    private ClearEditText cet_clearedit;
+
+    private String huifuTag = "";
 
     @Override
     protected int getLayoutResId() {
@@ -159,9 +168,9 @@ public class ImageDetailLongActivity
     @Override
     protected void initView() {
 
-
         view = LayoutInflater.from(ImageDetailLongActivity.this).inflate(R.layout.header_imagedetails, null);
         mRecyclerView = (HRecyclerView) findViewById(R.id.rcy_recyclerview_info);
+        cet_clearedit = (ClearEditText) findViewById(R.id.cet_clearedit);
         nav_left_imageButton = (ImageButton) findViewById(R.id.nav_left_imageButton);
         tv_tital_comment = (TextView) findViewById(R.id.tv_tital_comment);
         tv_content_right = (TextView) findViewById(R.id.tv_content_right);
@@ -239,6 +248,43 @@ public class ImageDetailLongActivity
         ll_huifu_one.setOnClickListener(this);
         ll_huifu_two.setOnClickListener(this);
         ll_huifu_three.setOnClickListener(this);
+        cet_clearedit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    // 先隐藏键盘
+                    ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(ImageDetailLongActivity.this.getCurrentFocus()
+                                    .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    //进行搜索操作的方法，在该方法中可以加入mEditSearchUser的非空判断
+                    String searchContext = cet_clearedit.getText().toString().trim();
+                    if (TextUtils.isEmpty(searchContext.trim())) {
+                        ToastUtils.showCenter(ImageDetailLongActivity.this, "请添加回复内容");
+                    } else {
+                        cet_clearedit.setText("");
+                        if (TextUtils.isEmpty(huifuTag)) {
+                            //回复图片
+                            pingImage(searchContext);
+                        } else if (huifuTag.equals("one")) {
+                            //回复第一条评论
+                            pingHuiFu(searchContext);
+                        } else if (huifuTag.equals("two")) {
+                            //回复第二条评论
+                            pingHuiFu(searchContext);
+                        } else if (huifuTag.equals("three")) {
+                            //回复第三条评论
+                            pingHuiFu(searchContext);
+                        }
+                    }
+
+                    return true;
+                }
+
+                return false;
+            }
+        });
     }
 
     @Override
@@ -307,22 +353,29 @@ public class ImageDetailLongActivity
             case R.id.iv_imagedetails_next:
 
                 if (list.size() > 0 && listColor != null && listColor.size() > 0) {
-
                     Intent intent = new Intent(ImageDetailLongActivity.this, ShaiXuanResultActicity.class);
                     intent.putExtra("shaixuan_tag", list.get(0));
                     intent.putExtra("colorlist", (Serializable) listColor);
                     startActivity(intent);
                 }
-
                 break;
             case R.id.ll_huifu_one:
-
-
-
+                huifuTag = "one";
+                cet_clearedit.requestFocus();
+                InputMethodManager imm = (InputMethodManager) cet_clearedit.getContext().getSystemService(ImageDetailLongActivity.this.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
                 break;
             case R.id.ll_huifu_two:
+                huifuTag = "two";
+                cet_clearedit.requestFocus();
+                InputMethodManager imm1 = (InputMethodManager) cet_clearedit.getContext().getSystemService(ImageDetailLongActivity.this.INPUT_METHOD_SERVICE);
+                imm1.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
                 break;
             case R.id.ll_huifu_three:
+                huifuTag = "three";
+                cet_clearedit.requestFocus();
+                InputMethodManager imm2 = (InputMethodManager) cet_clearedit.getContext().getSystemService(ImageDetailLongActivity.this.INPUT_METHOD_SERVICE);
+                imm2.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
                 break;
         }
     }
@@ -357,6 +410,77 @@ public class ImageDetailLongActivity
             }
         };
         MyHttpManager.getInstance().getPingList(item_id, "0", "3", callBack);
+    }
+
+    private void pingImage(String content) {
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                ToastUtils.showCenter(ImageDetailLongActivity.this, "评论失败");
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        ToastUtils.showCenter(ImageDetailLongActivity.this, "评论单图成功");
+                        getPingList();
+                    } else {
+                        ToastUtils.showCenter(ImageDetailLongActivity.this, error_msg);
+
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        };
+        MyHttpManager.getInstance().pingImage(item_id, content, callBack);
+    }
+
+    private void pingHuiFu(String content) {
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                huifuTag = "";
+                ToastUtils.showCenter(ImageDetailLongActivity.this, "评论回复失败");
+            }
+
+            @Override
+            public void onResponse(String s) {
+                huifuTag = "";
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        ToastUtils.showCenter(ImageDetailLongActivity.this, "评论回复成功");
+                        getPingList();
+                    } else {
+                        ToastUtils.showCenter(ImageDetailLongActivity.this, error_msg);
+
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        };
+        String reply_id = "";
+        switch (huifuTag) {
+            case "one":
+                reply_id = pingBean.getData().getComment_list().get(0).getComment_info().getComment_id();
+                break;
+            case "two":
+                reply_id = pingBean.getData().getComment_list().get(1).getComment_info().getComment_id();
+                break;
+            case "three":
+                reply_id = pingBean.getData().getComment_list().get(2).getComment_info().getComment_id();
+                break;
+        }
+
+        MyHttpManager.getInstance().pingReply(reply_id, content, callBack);
     }
 
     //关注用户
@@ -834,10 +958,10 @@ public class ImageDetailLongActivity
                 view_more_like.setVisibility(View.VISIBLE);
                 //........
                 CommentListBean commentListBean = pingBean.getData().getComment_list().get(0);
-                if (null != commentListBean.getReply_comment()) {
+                if (null != commentListBean.getComment_info().getReply_comment()) {
                     rl_huifu_content.setVisibility(View.VISIBLE);
-                    tv_huifu_content_two1.setText(commentListBean.getReply_comment().getUser_info().getNickname());
-                    tv_huifu_content_four1.setText(commentListBean.getReply_comment().getContent());
+                    tv_huifu_content_two1.setText(commentListBean.getComment_info().getReply_comment().getUser_info().getNickname());
+                    tv_huifu_content_four1.setText(commentListBean.getComment_info().getReply_comment().getContent());
                 } else {
                     rl_huifu_content.setVisibility(View.GONE);
                 }
@@ -847,10 +971,10 @@ public class ImageDetailLongActivity
                 ImageUtils.displayRoundImage(commentListBean.getComment_info().getUser_info().getAvatar().getThumb(), riv_one);
                 //........
                 CommentListBean commentListBean1 = pingBean.getData().getComment_list().get(1);
-                if (null != commentListBean1.getReply_comment()) {
+                if (null != commentListBean1.getComment_info().getReply_comment()) {
                     rl_huifu_content_two.setVisibility(View.VISIBLE);
-                    tv_huifu_content_two2.setText(commentListBean1.getReply_comment().getUser_info().getNickname());
-                    tv_huifu_content_four2.setText(commentListBean1.getReply_comment().getContent());
+                    tv_huifu_content_two2.setText(commentListBean1.getComment_info().getReply_comment().getUser_info().getNickname());
+                    tv_huifu_content_four2.setText(commentListBean1.getComment_info().getReply_comment().getContent());
                 } else {
                     rl_huifu_content_two.setVisibility(View.GONE);
                 }
@@ -859,11 +983,11 @@ public class ImageDetailLongActivity
                 tv_time_two.setText(commentListBean1.getComment_info().getAdd_time());
                 ImageUtils.displayRoundImage(commentListBean1.getComment_info().getUser_info().getAvatar().getThumb(), riv_two);
                 //........
-                CommentListBean commentListBean2 = pingBean.getData().getComment_list().get(1);
-                if (null != commentListBean2.getReply_comment()) {
+                CommentListBean commentListBean2 = pingBean.getData().getComment_list().get(2);
+                if (null != commentListBean2.getComment_info().getReply_comment()) {
                     rl_huifu_content_three.setVisibility(View.VISIBLE);
-                    tv_huifu_content_two3.setText(commentListBean2.getReply_comment().getUser_info().getNickname());
-                    tv_huifu_content_four3.setText(commentListBean2.getReply_comment().getContent());
+                    tv_huifu_content_two3.setText(commentListBean2.getComment_info().getReply_comment().getUser_info().getNickname());
+                    tv_huifu_content_four3.setText(commentListBean2.getComment_info().getReply_comment().getContent());
                 } else {
                     rl_huifu_content_three.setVisibility(View.GONE);
                 }
@@ -881,10 +1005,10 @@ public class ImageDetailLongActivity
                 view_more_like.setVisibility(View.VISIBLE);
                 //........
                 CommentListBean commentListBean = pingBean.getData().getComment_list().get(0);
-                if (null != commentListBean.getReply_comment()) {
+                if (null != commentListBean.getComment_info().getReply_comment()) {
                     rl_huifu_content.setVisibility(View.VISIBLE);
-                    tv_huifu_content_two1.setText(commentListBean.getReply_comment().getUser_info().getNickname());
-                    tv_huifu_content_four1.setText(commentListBean.getReply_comment().getContent());
+                    tv_huifu_content_two1.setText(commentListBean.getComment_info().getReply_comment().getUser_info().getNickname());
+                    tv_huifu_content_four1.setText(commentListBean.getComment_info().getReply_comment().getContent());
                 } else {
                     rl_huifu_content.setVisibility(View.GONE);
                 }
@@ -894,10 +1018,10 @@ public class ImageDetailLongActivity
                 ImageUtils.displayRoundImage(commentListBean.getComment_info().getUser_info().getAvatar().getThumb(), riv_one);
                 //........
                 CommentListBean commentListBean1 = pingBean.getData().getComment_list().get(1);
-                if (null != commentListBean1.getReply_comment()) {
+                if (null != commentListBean1.getComment_info().getReply_comment()) {
                     rl_huifu_content_two.setVisibility(View.VISIBLE);
-                    tv_huifu_content_two2.setText(commentListBean1.getReply_comment().getUser_info().getNickname());
-                    tv_huifu_content_four2.setText(commentListBean1.getReply_comment().getContent());
+                    tv_huifu_content_two2.setText(commentListBean1.getComment_info().getReply_comment().getUser_info().getNickname());
+                    tv_huifu_content_four2.setText(commentListBean1.getComment_info().getReply_comment().getContent());
                 } else {
                     rl_huifu_content_two.setVisibility(View.GONE);
                 }
@@ -915,10 +1039,10 @@ public class ImageDetailLongActivity
                 tv_ping_tital.setVisibility(View.VISIBLE);
                 view_more_like.setVisibility(View.VISIBLE);
                 CommentListBean commentListBean = pingBean.getData().getComment_list().get(0);
-                if (null != commentListBean.getReply_comment()) {
+                if (null != commentListBean.getComment_info().getReply_comment()) {
                     rl_huifu_content.setVisibility(View.VISIBLE);
-                    tv_huifu_content_two1.setText(commentListBean.getReply_comment().getUser_info().getNickname());
-                    tv_huifu_content_four1.setText(commentListBean.getReply_comment().getContent());
+                    tv_huifu_content_two1.setText(commentListBean.getComment_info().getReply_comment().getUser_info().getNickname());
+                    tv_huifu_content_four1.setText(commentListBean.getComment_info().getReply_comment().getContent());
                 } else {
                     rl_huifu_content.setVisibility(View.GONE);
                 }
