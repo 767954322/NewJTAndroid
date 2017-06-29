@@ -594,7 +594,7 @@ public class ImageDetailLongActivity
 
         mAdapter = new MultiItemCommonAdapter<ImageLikeItemBean>(ImageDetailLongActivity.this, mListData, support) {
             @Override
-            public void convert(BaseViewHolder holder, int position) {
+            public void convert(BaseViewHolder holder, final int position) {
 
                 ViewGroup.LayoutParams layoutParams = holder.getView(R.id.iv_imageview_one).getLayoutParams();
                 layoutParams.width = width_Pic;
@@ -630,7 +630,24 @@ public class ImageDetailLongActivity
                     holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
                     holder.getView(R.id.iv_color_center).setVisibility(View.GONE);
                 }
+                holder.getView(R.id.iv_imageview_one).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //查看单图详情
+                        Intent intent = new Intent(ImageDetailLongActivity.this, ImageDetailLongActivity.class);
+                        intent.putExtra("item_id", mListData.get(position).getItem_info().getItem_id());
+                        startActivity(intent);
 
+                    }
+                });
+                holder.getView(R.id.iv_header_pic).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(ImageDetailLongActivity.this, UserInfoActivity.class);
+                        intent.putExtra(ClassConstant.LoginSucces.USER_ID, mListData.get(position).getUser_info().getUser_id());
+                        startActivity(intent);
+                    }
+                });
 
             }
         };
@@ -665,7 +682,6 @@ public class ImageDetailLongActivity
                         getHeight(likeDataBean.getData().getItem_list());
                         updateViewFromData(likeDataBean.getData().getItem_list());
                     } else {
-
                         mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
                         ToastUtils.showCenter(ImageDetailLongActivity.this, error_msg);
                     }
@@ -1114,8 +1130,8 @@ public class ImageDetailLongActivity
 
         if (item_list == null || item_list.size() == 0) {
             mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
-            ToastUtils.showCenter(ImageDetailLongActivity.this,"暂无更多数据");
-        }else {
+            ToastUtils.showCenter(ImageDetailLongActivity.this, "暂无更多数据");
+        } else {
             page++;
             position = mListData.size();
             mListData.addAll(item_list);
