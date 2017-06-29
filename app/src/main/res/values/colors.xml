@@ -75,7 +75,9 @@
     <color name="bg_fcfcfc">#fcfcfc</color>
 
     <color name="black">#000000</color>
+    <color name="bg_4d000000">#4D000000</color>//30%透明度
     <color name="white">#ffffff</color>
+    <color name="bg_f2ffffff">#F2ffffff</color>
     <color name="white1">#00ffffff</color>
     <color name="red">#FFC93437</color>
     <color name="yellow">#FFF7D23E</color>

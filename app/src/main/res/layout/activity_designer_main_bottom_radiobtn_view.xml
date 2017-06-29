@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@color/bg_f2ffffff"
     android:layout_height="@dimen/size_49">
 
 
@@ -8,6 +9,7 @@
         android:id="@+id/rg_home_radio_group"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/size_49"
+        android:background="@color/bg_f2ffffff"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
