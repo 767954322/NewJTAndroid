@@ -33,6 +33,7 @@ import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -434,5 +435,29 @@ public class PublicUtils {
         BigDecimal b1 = new BigDecimal(Double.toString(v1));
         BigDecimal b2 = new BigDecimal(Double.toString(v2));
         return b1.divide(b2, scale, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
+
+    /**
+     * 取两个指定时间的日期差值
+     *
+     * @param begin  比较大的日期
+     * @param end    比较小的日期
+     * @param format 格式
+     * @return
+     */
+    public static long diffDay(String begin, String end, String format) {
+        long rday = 0l;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(format.toString());
+            Date cbegin = sdf.parse(begin);
+            Date cend = sdf.parse(end);
+            long l = cbegin.getTime() - cend.getTime();
+            rday = l / (24 * 60 * 60 * 1000);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return rday;
+
     }
 }

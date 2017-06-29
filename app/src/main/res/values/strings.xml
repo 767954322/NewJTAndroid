@@ -101,4 +101,5 @@
     <!-- HuoDongDetailsActivity -->
 
     <string name="huodong_get_error">数据加载失败</string>
+    <string name="info_get_error">活动信息获取失败</string>
 </resources>
