@@ -1,31 +1,46 @@
 package com.homechart.app.home.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
+import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
+import com.homechart.app.home.bean.huodong.ColorInfoBean;
+import com.homechart.app.home.bean.huodong.HuoDongDataBean;
+import com.homechart.app.home.bean.huodong.ItemActivityDataBean;
+import com.homechart.app.home.bean.shaijia.ShaiJiaItemBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.SelectPicPopupWindow;
+import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
+import com.homechart.app.recyclerlibrary.holder.BaseViewHolder;
 import com.homechart.app.recyclerlibrary.recyclerview.HRecyclerView;
 import com.homechart.app.recyclerlibrary.recyclerview.OnLoadMoreListener;
+import com.homechart.app.recyclerlibrary.support.MultiItemTypeSupport;
+import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.ToastUtils;
+import com.homechart.app.utils.UIUtils;
+import com.homechart.app.utils.imageloader.ImageUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.finalteam.galleryfinal.GalleryFinal;
@@ -46,6 +61,7 @@ public class HuoDongDetailsActivity
     private HRecyclerView mRecyclerView;
     private LoadMoreFooterView mLoadMoreFooterView;
     private StaggeredGridLayoutManager staggeredGridLayoutManager;
+    private List<Integer> mListDataHeight = new ArrayList<>();
 
     private String activity_id;
     private int n = 20;
@@ -53,6 +69,10 @@ public class HuoDongDetailsActivity
     private String sort = "hot";// hot：热度 new:最新
     private TextView tv_add_activity;
     private SelectPicPopupWindow menuWindow;
+    private List<ItemActivityDataBean> mListData = new ArrayList<>();
+    private MultiItemCommonAdapter<ItemActivityDataBean> mAdapter;
+    private int width_Pic;
+    private int position;
 
     @Override
     protected int getLayoutResId() {
@@ -87,7 +107,7 @@ public class HuoDongDetailsActivity
     protected void initData(Bundle savedInstanceState) {
         tv_tital_comment.setText("主题活动");
         nav_secondary_imageButton.setImageResource(R.drawable.shared_icon);
-
+        width_Pic = PublicUtils.getScreenWidth(HuoDongDetailsActivity.this) / 2 - UIUtils.getDimens(R.dimen.font_14);
         menuWindow = new SelectPicPopupWindow(HuoDongDetailsActivity.this, HuoDongDetailsActivity.this);
         buildRecycler();
     }
@@ -156,13 +176,75 @@ public class HuoDongDetailsActivity
     }
 
     private void buildRecycler() {
+
+        MultiItemTypeSupport<ItemActivityDataBean> support = new MultiItemTypeSupport<ItemActivityDataBean>() {
+            @Override
+            public int getLayoutId(int itemType) {
+                if (itemType == 0) {
+                    return R.layout.item_huodong_image;
+                } else {
+                    return R.layout.item_huodong_image;
+                }
+            }
+
+            @Override
+            public int getItemViewType(int position, ItemActivityDataBean itemMessageBean) {
+                return 0;
+
+            }
+        };
+
+        mAdapter = new MultiItemCommonAdapter<ItemActivityDataBean>(this, mListData, support) {
+            @Override
+            public void convert(BaseViewHolder holder, int position) {
+
+                ItemActivityDataBean itemData = mListData.get(position);
+                ViewGroup.LayoutParams layoutParams = holder.getView(R.id.iv_imageview_one).getLayoutParams();
+                layoutParams.width = width_Pic;
+                layoutParams.height = mListDataHeight.get(position);
+                holder.getView(R.id.iv_imageview_one).setLayoutParams(layoutParams);
+
+                ((TextView) holder.getView(R.id.tv_name_pic)).setText(itemData.getUser_info().getNickname());
+                ImageUtils.displayFilletImage(itemData.getItem_info().getImage().getImg1(),
+                        (ImageView) holder.getView(R.id.iv_imageview_one));
+                ImageUtils.displayFilletImage(mListData.get(position).getUser_info().getAvatar().getThumb(),
+                        (ImageView) holder.getView(R.id.iv_header_pic));
+
+                List<ColorInfoBean> list_color = itemData.getColor_info();
+                if (null != list_color && list_color.size() == 1) {
+                    holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
+                    holder.getView(R.id.iv_color_center).setVisibility(View.GONE);
+                    holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
+                } else if (null != list_color && list_color.size() == 2) {
+
+                    holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
+                    holder.getView(R.id.iv_color_center).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(1).getColor_value()));
+                    holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
+                } else if (null != list_color && list_color.size() == 3) {
+                    holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_left).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_center).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(2).getColor_value()));
+                    holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color.get(1).getColor_value()));
+                    holder.getView(R.id.iv_color_left).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
+                } else {
+                    holder.getView(R.id.iv_color_right).setVisibility(View.GONE);
+                    holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
+                    holder.getView(R.id.iv_color_center).setVisibility(View.GONE);
+                }
+            }
+        };
+
         mLoadMoreFooterView = (LoadMoreFooterView) mRecyclerView.getLoadMoreFooterView();
         staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
         mRecyclerView.setItemAnimator(null);
         mRecyclerView.setOnLoadMoreListener(this);
 //        mRecyclerView.addHeaderView(headerView);
-//        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(mAdapter);
         getListData();
     }
 
@@ -183,10 +265,11 @@ public class HuoDongDetailsActivity
                     String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
                     String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
                     if (error_code == 0) {
-                        Message msg = new Message();
-//                        msg.obj = data_msg;
-//                        msg.what = 1;
-//                        mHandler.sendMessage(msg);
+                        String strData = "{\"data\":" + data_msg + "}";
+                        HuoDongDataBean huoDongDataBean = GsonUtil.jsonToBean(strData, HuoDongDataBean.class);
+                        List<ItemActivityDataBean> list = huoDongDataBean.getData().getItem_list();
+                        getHeight(list);
+                        updateViewFromData(list);
                     } else {
                         ToastUtils.showCenter(HuoDongDetailsActivity.this, error_msg);
                     }
@@ -202,6 +285,23 @@ public class HuoDongDetailsActivity
     @Override
     public void onLoadMore() {
 
+    }
+
+    private void updateViewFromData(List<ItemActivityDataBean> item_list) {
+
+        position = mListData.size();
+        mListData.addAll(item_list);
+        mAdapter.notifyItem(position, mListData, item_list);
+        mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
+    }
+
+    private void getHeight(List<ItemActivityDataBean> item_list) {
+
+        if (item_list.size() > 0) {
+            for (int i = 0; i < item_list.size(); i++) {
+                mListDataHeight.add(Math.round(width_Pic / item_list.get(i).getItem_info().getImage().getRatio()));
+            }
+        }
     }
 
     Handler handler = new Handler() {
