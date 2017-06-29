@@ -98,4 +98,7 @@
     <string name="fabu_back_cancle">取消</string>
     <!-- FaBuTagsActivity -->
     <string name="fabutags_get_error">标签获取失败</string>
+    <!-- HuoDongDetailsActivity -->
+
+    <string name="huodong_get_error">数据加载失败</string>
 </resources>

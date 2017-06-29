@@ -51,5 +51,6 @@ public class UrlConstants {
     public static final String PING_REPLY = "https://api.idcool.com.cn/comment/single/reply";  //回复单图评论
     public static final String PING_IMAGE = "https://api.idcool.com.cn/comment/single/add";  //单图评论
     public static final String LIKE_CAI = "https://api.idcool.com.cn/single/single/recommend";  //猜你喜欢
+    public static final String ACTIVITY_IMAGE = "https://api.idcool.com.cn/activity/activity/getSingleList";  //猜你喜欢
 
 }
