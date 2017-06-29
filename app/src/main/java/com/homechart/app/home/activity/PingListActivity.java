@@ -8,11 +8,13 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -67,6 +69,8 @@ public class PingListActivity
     private final String LOADMORE_STATUS = "loadmore";
     private ClearEditText cet_clearedit;
     private String huifuTag = "";
+    private RelativeLayout rl_none;
+    private View view;
 
     @Override
     protected int getLayoutResId() {
@@ -82,7 +86,8 @@ public class PingListActivity
 
     @Override
     protected void initView() {
-
+        view = LayoutInflater.from(PingListActivity.this).inflate(R.layout.footer_huifulist, null);
+        rl_none = (RelativeLayout) view.findViewById(R.id.rl_none);
         nav_left_imageButton = (ImageButton) findViewById(R.id.nav_left_imageButton);
         tv_tital_comment = (TextView) findViewById(R.id.tv_tital_comment);
         mRecyclerView = (HRecyclerView) findViewById(R.id.rcy_recyclerview_pic);
@@ -194,6 +199,7 @@ public class PingListActivity
 
         mRecyclerView.setOnRefreshListener(this);
         mRecyclerView.setOnLoadMoreListener(this);
+        mRecyclerView.addFooterView(view);
         mRecyclerView.setAdapter(mAdapter);
         onRefresh();
     }
@@ -246,8 +252,11 @@ public class PingListActivity
                         PingBean pingBean = GsonUtil.jsonToBean(pinglist, PingBean.class);
                         List<CommentListBean> list = pingBean.getData().getComment_list();
                         if (list != null && list.size() > 0) {//有数据
+
+                            changeNone(0);
                             updateViewFromData(list, state);
                         } else {//没更多数据
+                            changeNone(1);
                             mRecyclerView.setRefreshing(false);//刷新完毕
                             mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
                             ToastUtils.showCenter(PingListActivity.this, "暂无更多数据");
@@ -265,6 +274,14 @@ public class PingListActivity
         MyHttpManager.getInstance().getPingList(item_id, lastItemId, "20", callBack);
     }
 
+    private void changeNone(int i) {
+        if (i == 0) {
+            rl_none.setVisibility(View.GONE);
+        } else if (i == 1) {
+            rl_none.setVisibility(View.VISIBLE);
+        }
+    }
+
     private void updateViewFromData(List<CommentListBean> listData, String state) {
 
         switch (state) {
@@ -278,7 +295,7 @@ public class PingListActivity
                 }
                 mAdapter.notifyDataSetChanged();
                 mRecyclerView.setRefreshing(false);//刷新完毕
-                if(mListData.size()>0){
+                if (mListData.size() > 0) {
                     mRecyclerView.scrollToPosition(0);
                 }
                 break;
@@ -362,10 +379,6 @@ public class PingListActivity
             super.handleMessage(msg);
             int code = msg.what;
             switch (code) {
-                case 0:
-
-
-                    break;
             }
 
         }

@@ -14,24 +14,35 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/common_navbar"
+        android:layout_above="@+id/rl_edit"
         app:loadMoreEnabled="true"
         app:loadMoreFooterLayout="@layout/layout_hrecyclerview_load_more_footer"
         app:refreshEnabled="true"
         app:refreshHeaderLayout="@layout/layout_hrecyclerview_refresh_header" />
+
+
     <RelativeLayout
+        android:id="@+id/rl_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/white">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/view_line" />
+
         <com.homechart.app.myview.ClearEditText
             android:id="@+id/cet_clearedit"
             android:layout_width="match_parent"
             android:layout_height="@dimen/font_35"
+            android:layout_marginBottom="@dimen/font_8"
             android:layout_marginLeft="@dimen/font_10"
             android:layout_marginRight="@dimen/font_10"
-            android:layout_toLeftOf="@+id/tv_quxiao"
-            android:layout_marginBottom="@dimen/font_8"
             android:layout_marginTop="@dimen/font_8"
+            android:layout_toLeftOf="@+id/tv_quxiao"
             android:background="@drawable/bg_huifu"
             android:drawableLeft="@drawable/xie"
             android:drawablePadding="@dimen/font_10"

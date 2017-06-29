@@ -26,6 +26,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/white">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_alignParentTop="true"
+            android:background="@color/view_line" />
         <com.homechart.app.myview.ClearEditText
             android:id="@+id/cet_clearedit"
             android:layout_width="match_parent"

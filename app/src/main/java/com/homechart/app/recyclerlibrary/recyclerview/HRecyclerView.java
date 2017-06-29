@@ -286,7 +286,7 @@ public class HRecyclerView extends RecyclerView {
         }
     }
 
-    private void removeLoadMoreFooterView() {
+    public void removeLoadMoreFooterView() {
         if (mLoadMoreFooterContainer != null) {
             mLoadMoreFooterContainer.removeView(mLoadMoreFooterView);
         }
