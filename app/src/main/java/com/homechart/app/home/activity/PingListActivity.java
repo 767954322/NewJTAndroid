@@ -5,7 +5,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +24,7 @@ import com.homechart.app.home.bean.pinglun.CommentInfoBean;
 import com.homechart.app.home.bean.pinglun.CommentListBean;
 import com.homechart.app.home.bean.pinglun.PingBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
+import com.homechart.app.myview.ClearEditText;
 import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
 import com.homechart.app.recyclerlibrary.anims.animators.LandingAnimator;
@@ -59,6 +65,8 @@ public class PingListActivity
     private LoadMoreFooterView mLoadMoreFooterView;
     private final String REFRESH_STATUS = "refresh";
     private final String LOADMORE_STATUS = "loadmore";
+    private ClearEditText cet_clearedit;
+    private String huifuTag = "";
 
     @Override
     protected int getLayoutResId() {
@@ -78,6 +86,7 @@ public class PingListActivity
         nav_left_imageButton = (ImageButton) findViewById(R.id.nav_left_imageButton);
         tv_tital_comment = (TextView) findViewById(R.id.tv_tital_comment);
         mRecyclerView = (HRecyclerView) findViewById(R.id.rcy_recyclerview_pic);
+        cet_clearedit = (ClearEditText) findViewById(R.id.cet_clearedit);
 
     }
 
@@ -85,6 +94,36 @@ public class PingListActivity
     protected void initListener() {
         super.initListener();
         nav_left_imageButton.setOnClickListener(this);
+        cet_clearedit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    // 先隐藏键盘
+                    ((InputMethodManager) getSystemService(INPUT_METHOD_SERVICE))
+                            .hideSoftInputFromWindow(PingListActivity.this.getCurrentFocus()
+                                    .getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    //进行搜索操作的方法，在该方法中可以加入mEditSearchUser的非空判断
+                    String searchContext = cet_clearedit.getText().toString().trim();
+                    if (TextUtils.isEmpty(searchContext.trim())) {
+                        ToastUtils.showCenter(PingListActivity.this, "请添加回复内容");
+                    } else {
+                        cet_clearedit.setText("");
+                        if (TextUtils.isEmpty(huifuTag)) {
+                            //回复图片
+                            pingImage(searchContext);
+                        } else {
+
+                            pingHuiFu(searchContext);
+                        }
+                    }
+                    return true;
+                }
+
+                return false;
+            }
+        });
     }
 
     @Override
@@ -119,21 +158,29 @@ public class PingListActivity
 
         mAdapter = new MultiItemCommonAdapter<CommentListBean>(this, mListData, support) {
             @Override
-            public void convert(BaseViewHolder holder, int position) {
-                CommentInfoBean commentInfoBean =  mListData.get(position).getComment_info();
-                ((TextView)holder.getView(R.id.tv_name_one)).setText(commentInfoBean.getUser_info().getNickname());
-                ((TextView)holder.getView(R.id.tv_time_one)).setText(commentInfoBean.getAdd_time());
-                ((TextView)holder.getView(R.id.tv_content_one)).setText(commentInfoBean.getContent());
-                ImageUtils.displayRoundImage(commentInfoBean.getUser_info().getAvatar().getThumb(),(RoundImageView)holder.getView(R.id.riv_one));
+            public void convert(BaseViewHolder holder, final int position) {
+                CommentInfoBean commentInfoBean = mListData.get(position).getComment_info();
+                ((TextView) holder.getView(R.id.tv_name_one)).setText(commentInfoBean.getUser_info().getNickname());
+                ((TextView) holder.getView(R.id.tv_time_one)).setText(commentInfoBean.getAdd_time());
+                ((TextView) holder.getView(R.id.tv_content_one)).setText(commentInfoBean.getContent());
+                ImageUtils.displayRoundImage(commentInfoBean.getUser_info().getAvatar().getThumb(), (RoundImageView) holder.getView(R.id.riv_one));
 
-                if(commentInfoBean.getReply_comment() == null){
+                if (commentInfoBean.getReply_comment() == null) {
                     holder.getView(R.id.rl_huifu_content).setVisibility(View.GONE);
-                }else {
+                } else {
                     holder.getView(R.id.rl_huifu_content).setVisibility(View.VISIBLE);
                     ((TextView) holder.getView(R.id.tv_huifu_content_two1)).setText(commentInfoBean.getReply_comment().getUser_info().getNickname());
                     ((TextView) holder.getView(R.id.tv_huifu_content_four1)).setText(commentInfoBean.getReply_comment().getContent());
                 }
 
+                holder.getView(R.id.ll_huifu_one).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        huiFuPing(mListData.get(position).getComment_info().getComment_id());
+
+                    }
+                });
 
             }
         };
@@ -149,6 +196,14 @@ public class PingListActivity
         mRecyclerView.setOnLoadMoreListener(this);
         mRecyclerView.setAdapter(mAdapter);
         onRefresh();
+    }
+
+    // 评论回复
+    private void huiFuPing(String comment_id) {
+        huifuTag = comment_id;
+        cet_clearedit.requestFocus();
+        InputMethodManager imm2 = (InputMethodManager) cet_clearedit.getContext().getSystemService(PingListActivity.this.INPUT_METHOD_SERVICE);
+        imm2.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
     }
 
     @Override
@@ -223,6 +278,9 @@ public class PingListActivity
                 }
                 mAdapter.notifyDataSetChanged();
                 mRecyclerView.setRefreshing(false);//刷新完毕
+                if(mListData.size()>0){
+                    mRecyclerView.scrollToPosition(0);
+                }
                 break;
 
             case LOADMORE_STATUS:
@@ -239,6 +297,64 @@ public class PingListActivity
 
     }
 
+    private void pingImage(String content) {
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                ToastUtils.showCenter(PingListActivity.this, "评论失败");
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        getPingList(REFRESH_STATUS);
+                        ToastUtils.showCenter(PingListActivity.this, "评论单图成功");
+                    } else {
+                        ToastUtils.showCenter(PingListActivity.this, error_msg);
+
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        };
+        MyHttpManager.getInstance().pingImage(item_id, content, callBack);
+    }
+
+    private void pingHuiFu(String content) {
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                huifuTag = "";
+                ToastUtils.showCenter(PingListActivity.this, "评论回复失败");
+            }
+
+            @Override
+            public void onResponse(String s) {
+
+                huifuTag = "";
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        getPingList(REFRESH_STATUS);
+                        ToastUtils.showCenter(PingListActivity.this, "评论回复成功");
+                    } else {
+                        ToastUtils.showCenter(PingListActivity.this, error_msg);
+
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        };
+        MyHttpManager.getInstance().pingReply(huifuTag, content, callBack);
+    }
 
     Handler mHandler = new Handler() {
         @Override

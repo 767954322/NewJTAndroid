@@ -18,5 +18,31 @@
         app:loadMoreFooterLayout="@layout/layout_hrecyclerview_load_more_footer"
         app:refreshEnabled="true"
         app:refreshHeaderLayout="@layout/layout_hrecyclerview_refresh_header" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white">
+        <com.homechart.app.myview.ClearEditText
+            android:id="@+id/cet_clearedit"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/font_35"
+            android:layout_marginLeft="@dimen/font_10"
+            android:layout_marginRight="@dimen/font_10"
+            android:layout_toLeftOf="@+id/tv_quxiao"
+            android:layout_marginBottom="@dimen/font_8"
+            android:layout_marginTop="@dimen/font_8"
+            android:background="@drawable/bg_huifu"
+            android:drawableLeft="@drawable/xie"
+            android:drawablePadding="@dimen/font_10"
+            android:gravity="center_vertical"
+            android:hint="评论"
+            android:imeOptions="actionSend"
+            android:paddingLeft="@dimen/font_10"
+            android:singleLine="true"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:textSize="@dimen/size_14" />
 
+
+    </RelativeLayout>
 </RelativeLayout>
