@@ -88,6 +88,7 @@ public class FaBuActvity
     private HomeActivityPopWin homeActivityPopWin;
     private AlertView mAlertView;
     public TagDataBean tagDataBean;
+    private String activity_id;
 
 
     @Override
@@ -99,6 +100,10 @@ public class FaBuActvity
     protected void initExtraBundle() {
         super.initExtraBundle();
         urlImage = getIntent().getStringExtra("image_path");
+        activity_id = getIntent().getStringExtra("activity_id");
+        if (!TextUtils.isEmpty(activity_id)) {
+            activityMap.put(-1, activity_id);
+        }
     }
 
     @Override
@@ -278,7 +283,7 @@ public class FaBuActvity
                 String signString = PublicUtils.getSinaString(map);
                 String tabMd5String = Md5Util.getMD5twoTimes(signString);
                 map.put(ClassConstant.PublicKey.SIGN, tabMd5String);
-                FileHttpManager.getInstance().uploadFile(FaBuActvity.this, new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/"+fileName+"/"),
+                FileHttpManager.getInstance().uploadFile(FaBuActvity.this, new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + fileName + "/"),
                         UrlConstants.PUT_IMAGE,
                         map,
                         PublicUtils.getPublicHeader(MyApplication.getInstance()));
@@ -459,11 +464,11 @@ public class FaBuActvity
                     e.printStackTrace();
                 }
 
-            }else if(code == 4){
+            } else if (code == 4) {
 
                 CustomProgress.cancelDialog();
                 ToastUtils.showCenter(FaBuActvity.this, "发布失败");
-            }else if(code == 5){
+            } else if (code == 5) {
 
                 String info = (String) msg.obj;
                 tagDataBean = GsonUtil.jsonToBean(info, TagDataBean.class);

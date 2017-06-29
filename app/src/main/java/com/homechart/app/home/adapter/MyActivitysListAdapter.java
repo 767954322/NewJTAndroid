@@ -70,7 +70,7 @@ public class MyActivitysListAdapter extends BaseAdapter {
             myHolder = (MyHolder) convertView.getTag();
         }
 
-        if (mMap.containsKey(position)) {
+        if (mMap.containsKey(position)|| mMap.containsValue(activityList.get(position).getActivity_info().getActivity_id()) ) {
             myHolder.cb_check_add.setChecked(true);
         } else {
             myHolder.cb_check_add.setChecked(false);
