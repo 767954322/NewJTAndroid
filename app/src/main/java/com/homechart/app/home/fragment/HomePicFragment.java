@@ -366,6 +366,7 @@ public class HomePicFragment
                         public void onClick(View v) {
                             //查看活动详情
                             Intent intent = new Intent(activity, HuoDongDetailsActivity.class);
+                            intent.putExtra("activity_id", mListData.get(position).getObject_info().getObject_id());
                             startActivity(intent);
                         }
                     });
