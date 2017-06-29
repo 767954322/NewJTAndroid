@@ -30,6 +30,7 @@ import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.activity.FenSiListActivity;
+import com.homechart.app.home.activity.HuoDongDetailsActivity;
 import com.homechart.app.home.activity.ImageDetailLongActivity;
 import com.homechart.app.home.activity.MessagesListActivity;
 import com.homechart.app.home.activity.SearchActivity;
@@ -343,11 +344,9 @@ public class HomePicFragment
                     nikeName = mListData.get(position).getObject_info().getTag();
                 } else {
                     nikeName = mListData.get(position).getUser_info().getNickname();
-                }
-
-
-                if (nikeName != null && !curentListTag && nikeName.length() > 6) {
-                    nikeName = nikeName.substring(0, 6) + "...";
+                    if (nikeName != null && !curentListTag && nikeName.length() > 6) {
+                        nikeName = nikeName.substring(0, 6) + "...";
+                    }
                 }
 
                 ((TextView) holder.getView(R.id.tv_name_pic)).setText(nikeName);
@@ -361,6 +360,15 @@ public class HomePicFragment
                 if (!mListData.get(position).getObject_info().getType().equals("活动")) {
                     ImageUtils.displayFilletImage(mListData.get(position).getUser_info().getAvatar().getBig(),
                             (ImageView) holder.getView(R.id.iv_header_pic));
+                } else {
+                    holder.getView(R.id.iv_imageview_one).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //查看活动详情
+                            Intent intent = new Intent(activity, HuoDongDetailsActivity.class);
+                            startActivity(intent);
+                        }
+                    });
                 }
 
                 if (!mListData.get(position).getObject_info().getType().equals("活动")) {
