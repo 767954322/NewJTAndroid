@@ -1237,4 +1237,35 @@ public class MyHttpManager {
         queue.add(okStringRequest);
     }
 
+    /**
+     * 猜你喜欢
+     * @param item_id
+     * @param s
+     * @param n
+     * @param callback
+     */
+    public void caiLikeImage(final String item_id, final String s,final String n, OkStringRequest.OKResponseCallback callback) {
+        OkStringRequest okStringRequest = new OkStringRequest(Request.Method.POST, UrlConstants.LIKE_CAI, callback) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> map = PublicUtils.getPublicMap(MyApplication.getInstance());
+                map.put("item_id", item_id);
+                map.put("s", s);
+                map.put("n", n);
+                String signString = PublicUtils.getSinaString(map);
+                String tabMd5String = Md5Util.getMD5twoTimes(signString);
+                map.put(ClassConstant.PublicKey.SIGN, tabMd5String);
+                return map;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                return PublicUtils.getPublicHeader(MyApplication.getInstance());
+            }
+
+        };
+        queue.add(okStringRequest);
+    }
+
 }

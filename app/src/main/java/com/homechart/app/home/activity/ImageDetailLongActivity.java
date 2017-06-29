@@ -28,6 +28,8 @@ import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
+import com.homechart.app.home.bean.cailike.ImageLikeItemBean;
+import com.homechart.app.home.bean.cailike.LikeDataBean;
 import com.homechart.app.home.bean.imagedetail.ColorInfoBean;
 import com.homechart.app.home.bean.imagedetail.ImageDetailBean;
 import com.homechart.app.home.bean.pictag.TagItemDataChildBean;
@@ -35,6 +37,8 @@ import com.homechart.app.home.bean.pinglun.CommentListBean;
 import com.homechart.app.home.bean.pinglun.PingBean;
 import com.homechart.app.home.bean.search.SearchDataColorBean;
 import com.homechart.app.home.bean.search.SearchItemDataBean;
+import com.homechart.app.home.bean.shaijia.ShaiJiaItemBean;
+import com.homechart.app.home.bean.shouye.SYDataColorBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.ClearEditText;
 import com.homechart.app.myview.FlowLayoutBiaoQian;
@@ -97,8 +101,8 @@ public class ImageDetailLongActivity
     private HRecyclerView mRecyclerView;
     private int TYPE_ONE = 1;
 
-    private List<SearchItemDataBean> mListData = new ArrayList<>();
-    private MultiItemCommonAdapter<SearchItemDataBean> mAdapter;
+    private List<ImageLikeItemBean> mListData = new ArrayList<>();
+    private MultiItemCommonAdapter<ImageLikeItemBean> mAdapter;
     private LoadMoreFooterView mLoadMoreFooterView;
     private RoundImageView riv_people_header;
     private TextView tv_people_name;
@@ -150,8 +154,12 @@ public class ImageDetailLongActivity
     private LinearLayout ll_huifu_two;
     private LinearLayout ll_huifu_three;
     private ClearEditText cet_clearedit;
+    private int page = 1;
 
     private String huifuTag = "";
+    private List<Integer> mListDataHeight = new ArrayList<>();
+    private int width_Pic;
+    private int position;
 
     @Override
     protected int getLayoutResId() {
@@ -295,6 +303,8 @@ public class ImageDetailLongActivity
 
         tv_tital_comment.setText("图片详情");
         tv_content_right.setText("编辑");
+
+        width_Pic = PublicUtils.getScreenWidth(ImageDetailLongActivity.this) / 2 - UIUtils.getDimens(R.dimen.font_14);
         getImageDetail();
         getPingList();
         buildRecyclerView();
@@ -384,8 +394,8 @@ public class ImageDetailLongActivity
             case R.id.iv_ping:
             case R.id.tv_ping:
 
-                Intent intent = new Intent(ImageDetailLongActivity.this,PingListActivity.class);
-                intent.putExtra("item_id",item_id);
+                Intent intent = new Intent(ImageDetailLongActivity.this, PingListActivity.class);
+                intent.putExtra("item_id", item_id);
                 startActivity(intent);
 
                 break;
@@ -566,25 +576,61 @@ public class ImageDetailLongActivity
 
     private void buildRecyclerView() {
 
-        MultiItemTypeSupport<SearchItemDataBean> support = new MultiItemTypeSupport<SearchItemDataBean>() {
+        MultiItemTypeSupport<ImageLikeItemBean> support = new MultiItemTypeSupport<ImageLikeItemBean>() {
             @Override
             public int getLayoutId(int itemType) {
                 if (itemType == TYPE_ONE) {
-                    return R.layout.item_search_one;
+                    return R.layout.item_like_pic;
                 } else {
-                    return R.layout.item_search_two;
+                    return R.layout.item_like_pic;
                 }
             }
 
             @Override
-            public int getItemViewType(int position, SearchItemDataBean s) {
+            public int getItemViewType(int position, ImageLikeItemBean s) {
                 return TYPE_ONE;
             }
         };
 
-        mAdapter = new MultiItemCommonAdapter<SearchItemDataBean>(ImageDetailLongActivity.this, mListData, support) {
+        mAdapter = new MultiItemCommonAdapter<ImageLikeItemBean>(ImageDetailLongActivity.this, mListData, support) {
             @Override
             public void convert(BaseViewHolder holder, int position) {
+
+                ViewGroup.LayoutParams layoutParams = holder.getView(R.id.iv_imageview_one).getLayoutParams();
+                layoutParams.width = width_Pic;
+                layoutParams.height = mListDataHeight.get(position);
+                holder.getView(R.id.iv_imageview_one).setLayoutParams(layoutParams);
+                ImageUtils.displayFilletImage(mListData.get(position).getItem_info().getImage().getImg1(),
+                        (ImageView) holder.getView(R.id.iv_imageview_one));
+                ImageUtils.displayFilletImage(mListData.get(position).getUser_info().getAvatar().getBig(),
+                        (ImageView) holder.getView(R.id.iv_header_pic));
+
+                List<com.homechart.app.home.bean.cailike.ColorInfoBean> list_color1 = mListData.get(position).getColor_info();
+                if (null != list_color1 && list_color1.size() == 1) {
+                    holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
+                    holder.getView(R.id.iv_color_center).setVisibility(View.GONE);
+                    holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color1.get(0).getColor_value()));
+                } else if (null != list_color1 && list_color1.size() == 2) {
+
+                    holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
+                    holder.getView(R.id.iv_color_center).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color1.get(1).getColor_value()));
+                    holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color1.get(0).getColor_value()));
+                } else if (null != list_color1 && list_color1.size() == 3) {
+                    holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_left).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_center).setVisibility(View.VISIBLE);
+                    holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color1.get(2).getColor_value()));
+                    holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color1.get(1).getColor_value()));
+                    holder.getView(R.id.iv_color_left).setBackgroundColor(Color.parseColor("#" + list_color1.get(0).getColor_value()));
+                } else {
+                    holder.getView(R.id.iv_color_right).setVisibility(View.GONE);
+                    holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
+                    holder.getView(R.id.iv_color_center).setVisibility(View.GONE);
+                }
+
 
             }
         };
@@ -594,6 +640,38 @@ public class ImageDetailLongActivity
         mRecyclerView.setOnLoadMoreListener(this);
         mLoadMoreFooterView = (LoadMoreFooterView) mRecyclerView.getLoadMoreFooterView();
         mRecyclerView.setAdapter(mAdapter);
+        getImageListData();
+    }
+
+    private void getImageListData() {
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                CustomProgress.cancelDialog();
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        page++;
+                        String data = "{\"data\": " + data_msg + "}";
+                        LikeDataBean likeDataBean = GsonUtil.jsonToBean(data, LikeDataBean.class);
+                        getHeight(likeDataBean.getData().getItem_list());
+                        updateViewFromData(likeDataBean.getData().getItem_list());
+                    } else {
+                        ToastUtils.showCenter(ImageDetailLongActivity.this, error_msg);
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        };
+        MyHttpManager.getInstance().caiLikeImage(item_id, (page - 1) * 20 + "", 20 + "", callBack);
+
     }
 
     //取消收藏
@@ -1026,6 +1104,20 @@ public class ImageDetailLongActivity
 
     }
 
+    private void updateViewFromData(List<ImageLikeItemBean> item_list) {
+        position = mListData.size();
+        mListData.addAll(item_list);
+        mAdapter.notifyItem(position, mListData, item_list);
+        mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
+    }
+
+    private void getHeight(List<ImageLikeItemBean> item_list) {
+        if (item_list.size() > 0) {
+            for (int i = 0; i < item_list.size(); i++) {
+                mListDataHeight.add(Math.round(width_Pic / item_list.get(i).getItem_info().getImage().getRatio()));
+            }
+        }
+    }
 
     Handler handler = new Handler() {
         @Override
@@ -1081,6 +1173,8 @@ public class ImageDetailLongActivity
                     String pinglist = "{\"data\": " + (String) msg.obj + "}";
                     pingBean = GsonUtil.jsonToBean(pinglist, PingBean.class);
                     changePingUI();
+                    break;
+                case 7:
                     break;
             }
         }
