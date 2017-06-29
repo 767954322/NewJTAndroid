@@ -647,6 +647,8 @@ public class ImageDetailLongActivity
         OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+
+                mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
                 CustomProgress.cancelDialog();
             }
 
@@ -658,12 +660,13 @@ public class ImageDetailLongActivity
                     String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
                     String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
                     if (error_code == 0) {
-                        page++;
                         String data = "{\"data\": " + data_msg + "}";
                         LikeDataBean likeDataBean = GsonUtil.jsonToBean(data, LikeDataBean.class);
                         getHeight(likeDataBean.getData().getItem_list());
                         updateViewFromData(likeDataBean.getData().getItem_list());
                     } else {
+
+                        mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
                         ToastUtils.showCenter(ImageDetailLongActivity.this, error_msg);
                     }
                 } catch (JSONException e) {
@@ -986,6 +989,9 @@ public class ImageDetailLongActivity
     @Override
     public void onLoadMore() {
 
+        mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.LOADING);
+        getImageListData();
+
     }
 
     private void changePingUI() {
@@ -1105,10 +1111,17 @@ public class ImageDetailLongActivity
     }
 
     private void updateViewFromData(List<ImageLikeItemBean> item_list) {
-        position = mListData.size();
-        mListData.addAll(item_list);
-        mAdapter.notifyItem(position, mListData, item_list);
-        mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
+
+        if (item_list == null || item_list.size() == 0) {
+            mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
+            ToastUtils.showCenter(ImageDetailLongActivity.this,"暂无更多数据");
+        }else {
+            page++;
+            position = mListData.size();
+            mListData.addAll(item_list);
+            mAdapter.notifyItem(position, mListData, item_list);
+            mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
+        }
     }
 
     private void getHeight(List<ImageLikeItemBean> item_list) {
