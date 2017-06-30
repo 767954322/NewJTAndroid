@@ -28,6 +28,7 @@ import com.homechart.app.home.bean.pinglun.ItemInfoBean;
 import com.homechart.app.home.bean.pinglun.PingBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.ClearEditText;
+import com.homechart.app.myview.ResizeRelativeLayout;
 import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
 import com.homechart.app.recyclerlibrary.anims.animators.LandingAnimator;
@@ -75,6 +76,9 @@ public class PingListActivity
     private View view;
     private String mUserId;
     private ItemInfoBean itemInfoBean;
+    private ResizeRelativeLayout menu_layout;
+    private boolean mIsKeyboardOpened = false;
+    private int mMenuOpenedHeight = 0;
 
     @Override
     protected int getLayoutResId() {
@@ -98,6 +102,7 @@ public class PingListActivity
         tv_tital_comment = (TextView) findViewById(R.id.tv_tital_comment);
         mRecyclerView = (HRecyclerView) findViewById(R.id.rcy_recyclerview_pic);
         cet_clearedit = (ClearEditText) findViewById(R.id.cet_clearedit);
+        menu_layout = (ResizeRelativeLayout) findViewById(R.id.menu_layout);
 
     }
 
@@ -133,6 +138,31 @@ public class PingListActivity
                 }
 
                 return false;
+            }
+        });
+
+        menu_layout.setOnResizeRelativeListener(new ResizeRelativeLayout.OnResizeRelativeListener() {
+            @Override
+            public void OnResizeRelative(int w, int h, int oldw, int oldh) {
+                mIsKeyboardOpened = false;
+                //记录第一次打开输入法时的布局高度
+                if (h < oldh && oldh > 0 && mMenuOpenedHeight == 0) {
+                    mMenuOpenedHeight = h;
+                }
+
+                // 布局的高度小于之前的高度
+                if (h < oldh) {
+                    mIsKeyboardOpened = true;
+                }
+                //或者输入法打开情况下, 输入字符后再清除(三星输入法软键盘在输入后，软键盘高度增加一行，清除输入后，高度变小，但是软键盘仍是打开状态)
+                else if ((h <= mMenuOpenedHeight) && (mMenuOpenedHeight != 0)) {
+                    mIsKeyboardOpened = true;
+                }
+
+                if(!mIsKeyboardOpened){
+                    huifuTag = "";
+                }
+
             }
         });
     }
@@ -184,9 +214,9 @@ public class PingListActivity
                     ((TextView) holder.getView(R.id.tv_huifu_content_four1)).setText(commentInfoBean.getReply_comment().getContent());
                 }
 
-                if(itemInfoBean.getUser_id().equals(commentInfoBean.getUser_info().getUser_id())){
+                if (itemInfoBean.getUser_id().equals(commentInfoBean.getUser_info().getUser_id())) {
                     holder.getView(R.id.tv_if_zuozhe).setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     holder.getView(R.id.tv_if_zuozhe).setVisibility(View.GONE);
                 }
 
@@ -262,7 +292,7 @@ public class PingListActivity
                     if (error_code == 0) {
                         String pinglist = "{\"data\": " + data_msg + "}";
                         PingBean pingBean = GsonUtil.jsonToBean(pinglist, PingBean.class);
-                        itemInfoBean =  pingBean.getData().getItem_info();
+                        itemInfoBean = pingBean.getData().getItem_info();
                         List<CommentListBean> list = pingBean.getData().getComment_list();
                         if (list != null && list.size() > 0) {//有数据
 
