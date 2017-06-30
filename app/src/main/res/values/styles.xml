@@ -54,4 +54,8 @@
     <style name="ShouCangRadioButtonStyles">
         <item name="android:button">@drawable/shoucang_checkbox_style</item>
     </style>
+
+    <style name="TabLayOutTextSize">
+        <item name="android:textSize">@dimen/size_14</item>
+    </style>
 </resources>

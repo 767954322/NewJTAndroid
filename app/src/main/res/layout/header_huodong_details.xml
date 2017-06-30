@@ -242,6 +242,9 @@
             android:id="@+id/tl_tab"
             android:layout_width="match_parent"
             android:layout_height="@dimen/font_49"
+            app:tabTextColor="@color/bg_8f8f8f"
+            app:tabSelectedTextColor="@color/bg_262626"
+            app:tabTextAppearance="@style/TabLayOutTextSize"
             android:background="@color/white" />
 
     </RelativeLayout>
