@@ -402,7 +402,7 @@ public class ImageDetailLongActivity
 
                 Intent intent = new Intent(ImageDetailLongActivity.this, PingListActivity.class);
                 intent.putExtra("item_id", item_id);
-                startActivity(intent);
+                startActivityForResult(intent, 2);
 
                 break;
         }
@@ -1002,8 +1002,11 @@ public class ImageDetailLongActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1 && requestCode == 1) {
+        if (requestCode == 1 ) {
             getImageDetail();
+        } else if (requestCode == 2 ) {
+            getImageDetail();
+            getPingList();
         }
 
     }
@@ -1035,9 +1038,9 @@ public class ImageDetailLongActivity
                 } else {
                     rl_huifu_content.setVisibility(View.GONE);
                 }
-                if(pingBean.getData().getItem_info().getUser_id().equals(commentListBean.getComment_info().getUser_info().getUser_id())){
+                if (pingBean.getData().getItem_info().getUser_id().equals(commentListBean.getComment_info().getUser_info().getUser_id())) {
                     tv_if_zuozhe_one.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     tv_if_zuozhe_one.setVisibility(View.GONE);
                 }
                 tv_content_one.setText(commentListBean.getComment_info().getContent());
@@ -1053,9 +1056,9 @@ public class ImageDetailLongActivity
                 } else {
                     rl_huifu_content_two.setVisibility(View.GONE);
                 }
-                if(pingBean.getData().getItem_info().getUser_id().equals(commentListBean1.getComment_info().getUser_info().getUser_id())){
+                if (pingBean.getData().getItem_info().getUser_id().equals(commentListBean1.getComment_info().getUser_info().getUser_id())) {
                     tv_if_zuozhe_two.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     tv_if_zuozhe_two.setVisibility(View.GONE);
                 }
                 tv_content_two.setText(commentListBean1.getComment_info().getContent());
@@ -1071,9 +1074,9 @@ public class ImageDetailLongActivity
                 } else {
                     rl_huifu_content_three.setVisibility(View.GONE);
                 }
-                if(pingBean.getData().getItem_info().getUser_id().equals(commentListBean2.getComment_info().getUser_info().getUser_id())){
+                if (pingBean.getData().getItem_info().getUser_id().equals(commentListBean2.getComment_info().getUser_info().getUser_id())) {
                     tv_if_zuozhe_three.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     tv_if_zuozhe_three.setVisibility(View.GONE);
                 }
                 tv_content_three.setText(commentListBean2.getComment_info().getContent());
@@ -1097,9 +1100,9 @@ public class ImageDetailLongActivity
                 } else {
                     rl_huifu_content.setVisibility(View.GONE);
                 }
-                if(pingBean.getData().getItem_info().getUser_id().equals(commentListBean.getComment_info().getUser_info().getUser_id())){
+                if (pingBean.getData().getItem_info().getUser_id().equals(commentListBean.getComment_info().getUser_info().getUser_id())) {
                     tv_if_zuozhe_one.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     tv_if_zuozhe_one.setVisibility(View.GONE);
                 }
                 tv_content_one.setText(commentListBean.getComment_info().getContent());
@@ -1115,9 +1118,9 @@ public class ImageDetailLongActivity
                 } else {
                     rl_huifu_content_two.setVisibility(View.GONE);
                 }
-                if(pingBean.getData().getItem_info().getUser_id().equals(commentListBean1.getComment_info().getUser_info().getUser_id())){
+                if (pingBean.getData().getItem_info().getUser_id().equals(commentListBean1.getComment_info().getUser_info().getUser_id())) {
                     tv_if_zuozhe_two.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     tv_if_zuozhe_two.setVisibility(View.GONE);
                 }
                 tv_content_two.setText(commentListBean1.getComment_info().getContent());
@@ -1141,9 +1144,9 @@ public class ImageDetailLongActivity
                 } else {
                     rl_huifu_content.setVisibility(View.GONE);
                 }
-                if(pingBean.getData().getItem_info().getUser_id().equals(commentListBean.getComment_info().getUser_info().getUser_id())){
+                if (pingBean.getData().getItem_info().getUser_id().equals(commentListBean.getComment_info().getUser_info().getUser_id())) {
                     tv_if_zuozhe_one.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     tv_if_zuozhe_one.setVisibility(View.GONE);
                 }
                 tv_name_one.setText(commentListBean.getComment_info().getUser_info().getNickname());
