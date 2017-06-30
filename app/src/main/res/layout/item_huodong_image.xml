@@ -5,6 +5,7 @@
     android:background="@color/white">
 
     <ImageView
+        android:layout_marginTop="@dimen/font_15"
         android:id="@+id/iv_imageview_one"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,7 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv_imageview_one"
-        android:layout_marginBottom="@dimen/font_15"
         android:layout_marginTop="@dimen/font_10">
 
         <com.homechart.app.myview.RoundImageView

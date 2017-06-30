@@ -156,6 +156,30 @@ public class HuoDongDetailsActivity
         super.initListener();
         nav_left_imageButton.setOnClickListener(this);
         tv_add_activity.setOnClickListener(this);
+        tl_tab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                page = 1;
+                mListData.clear();
+                mListDataHeight.clear();
+                if (tab.getText().equals("最新")) {
+                    sort = "new";
+                } else if (tab.getText().equals("最热")) {
+                    sort = "hot";
+                }
+                getListData();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     @Override
@@ -170,31 +194,9 @@ public class HuoDongDetailsActivity
         tl_tab.setTabMode(TabLayout.MODE_FIXED);
         tl_tab.setSelectedTabIndicatorHeight(UIUtils.getDimens(R.dimen.font_3));
         tl_tab.setSelectedTabIndicatorColor(UIUtils.getColor(R.color.bg_e79056));
-        tl_tab.addTab(tl_tab.newTab().setText("最新"));
         tl_tab.addTab(tl_tab.newTab().setText("最热"));
+        tl_tab.addTab(tl_tab.newTab().setText("最新"));
         PublicUtils.setIndicator(tl_tab, UIUtils.getDimens(R.dimen.font_15), UIUtils.getDimens(R.dimen.font_15));
-        tl_tab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-
-                if (tab.getText().equals("最新")) {
-                    ToastUtils.showCenter(HuoDongDetailsActivity.this, "最新");
-                } else if (tab.getText().equals("最热")) {
-                    ToastUtils.showCenter(HuoDongDetailsActivity.this, "最热");
-                }
-
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
     }
 
     @Override
@@ -446,10 +448,10 @@ public class HuoDongDetailsActivity
 
     //获取热图片／最新
     private void getListData() {
-
         OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
                 ToastUtils.showCenter(HuoDongDetailsActivity.this, getString(R.string.huodong_get_error));
             }
 
@@ -464,12 +466,19 @@ public class HuoDongDetailsActivity
                         String strData = "{\"data\":" + data_msg + "}";
                         HuoDongDataBean huoDongDataBean = GsonUtil.jsonToBean(strData, HuoDongDataBean.class);
                         List<ItemActivityDataBean> list = huoDongDataBean.getData().getItem_list();
-                        getHeight(list);
-                        updateViewFromData(list);
+                        if (list != null && list.size() > 0) {
+                            getHeight(list);
+                            updateViewFromData(list);
+                        } else {
+                            mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
+                            ToastUtils.showCenter(HuoDongDetailsActivity.this, getString(R.string.info_get_no));
+                        }
                     } else {
+                        mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
                         ToastUtils.showCenter(HuoDongDetailsActivity.this, error_msg);
                     }
                 } catch (JSONException e) {
+                    mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
                     ToastUtils.showCenter(HuoDongDetailsActivity.this, getString(R.string.huodong_get_error));
                 }
             }
@@ -480,14 +489,16 @@ public class HuoDongDetailsActivity
 
     @Override
     public void onLoadMore() {
-
+        mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.LOADING);
+        getListData();
     }
 
     private void updateViewFromData(List<ItemActivityDataBean> item_list) {
-
+        page++;
         position = mListData.size();
         mListData.addAll(item_list);
-        mAdapter.notifyItem(position, mListData, item_list);
+        mAdapter.notifyData(mListData);
+//        mAdapter.notifyItem(position, mListData, item_list);
         mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
     }
 
