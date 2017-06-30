@@ -321,16 +321,23 @@
                 android:layout_marginLeft="@dimen/font_15"
                 android:layout_marginTop="@dimen/font_15" />
 
-            <TextView
-                android:id="@+id/tv_name_one"
+
+            <RelativeLayout
+                android:id="@+id/rl_name_one"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/font_15"
                 android:layout_marginTop="@dimen/font_20"
-                android:layout_toRightOf="@+id/riv_one"
-                android:includeFontPadding="false"
-                android:textColor="@color/bg_707070"
-                android:textSize="@dimen/font_14" />
+                android:layout_toRightOf="@+id/riv_one">
+
+                <TextView
+                    android:id="@+id/tv_name_one"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/bg_707070"
+                    android:textSize="@dimen/font_14" />
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/ll_huifu_one"
@@ -366,8 +373,8 @@
                 android:id="@+id/tv_time_one"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/tv_name_one"
-                android:layout_below="@+id/tv_name_one"
+                android:layout_alignLeft="@+id/rl_name_one"
+                android:layout_below="@+id/rl_name_one"
                 android:layout_marginTop="@dimen/font_5"
                 android:includeFontPadding="false"
                 android:textColor="@color/bg_8f8f8f"
@@ -466,17 +473,23 @@
                 android:layout_marginLeft="@dimen/font_15"
                 android:layout_marginTop="@dimen/font_15" />
 
-            <TextView
-                android:id="@+id/tv_name_two"
+
+            <RelativeLayout
+                android:id="@+id/rl_name_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/font_15"
                 android:layout_marginTop="@dimen/font_20"
-                android:layout_toRightOf="@+id/riv_two"
-                android:includeFontPadding="false"
-                android:textColor="@color/bg_707070"
-                android:textSize="@dimen/font_14" />
+                android:layout_toRightOf="@+id/riv_two">
 
+                <TextView
+                    android:id="@+id/tv_name_two"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/bg_707070"
+                    android:textSize="@dimen/font_14" />
+            </RelativeLayout>
             <LinearLayout
                 android:id="@+id/ll_huifu_two"
                 android:layout_width="wrap_content"
@@ -511,8 +524,8 @@
                 android:id="@+id/tv_time_two"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/tv_name_two"
-                android:layout_below="@+id/tv_name_two"
+                android:layout_alignLeft="@+id/rl_name_two"
+                android:layout_below="@+id/rl_name_two"
                 android:layout_marginTop="@dimen/font_5"
                 android:includeFontPadding="false"
                 android:textColor="@color/bg_8f8f8f"
@@ -610,17 +623,23 @@
                 android:layout_below="@+id/view_three"
                 android:layout_marginLeft="@dimen/font_15"
                 android:layout_marginTop="@dimen/font_15" />
-
-            <TextView
-                android:id="@+id/tv_name_three"
+            <RelativeLayout
+                android:id="@+id/rl_name_three"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/font_15"
                 android:layout_marginTop="@dimen/font_20"
-                android:layout_toRightOf="@+id/riv_three"
-                android:includeFontPadding="false"
-                android:textColor="@color/bg_707070"
-                android:textSize="@dimen/font_14" />
+                android:layout_toRightOf="@+id/riv_three">
+
+                <TextView
+                    android:id="@+id/tv_name_three"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:textColor="@color/bg_707070"
+                    android:textSize="@dimen/font_14" />
+            </RelativeLayout>
+
 
             <LinearLayout
                 android:id="@+id/ll_huifu_three"
@@ -656,8 +675,8 @@
                 android:id="@+id/tv_time_three"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignLeft="@+id/tv_name_three"
-                android:layout_below="@+id/tv_name_three"
+                android:layout_alignLeft="@+id/rl_name_three"
+                android:layout_below="@+id/rl_name_three"
                 android:layout_marginTop="@dimen/font_5"
                 android:includeFontPadding="false"
                 android:textColor="@color/bg_8f8f8f"
