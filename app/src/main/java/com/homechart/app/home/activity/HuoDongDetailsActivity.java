@@ -2,9 +2,16 @@ package com.homechart.app.home.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.Gravity;
@@ -28,7 +35,6 @@ import com.homechart.app.home.bean.hddetails.ItemUserBean;
 import com.homechart.app.home.bean.huodong.ColorInfoBean;
 import com.homechart.app.home.bean.huodong.HuoDongDataBean;
 import com.homechart.app.home.bean.huodong.ItemActivityDataBean;
-import com.homechart.app.home.bean.shaijia.ShaiJiaItemBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.myview.SelectPicPopupWindow;
@@ -101,6 +107,7 @@ public class HuoDongDetailsActivity
     private RoundImageView riv_two;
     private RoundImageView riv_one;
     private TextView tv_show_num_people;
+    private TabLayout tl_tab;
 
     @Override
     protected int getLayoutResId() {
@@ -134,6 +141,7 @@ public class HuoDongDetailsActivity
         riv_two = (RoundImageView) headerView.findViewById(R.id.riv_two);
         riv_one = (RoundImageView) headerView.findViewById(R.id.riv_one);
         tv_show_num_people = (TextView) headerView.findViewById(R.id.tv_show_num_people);
+        tl_tab = (TabLayout) headerView.findViewById(R.id.tl_tab);
 
         tv_tital_comment = (TextView) findViewById(R.id.tv_tital_comment);
         tv_add_activity = (TextView) findViewById(R.id.tv_add_activity);
@@ -159,6 +167,34 @@ public class HuoDongDetailsActivity
         menuWindow = new SelectPicPopupWindow(HuoDongDetailsActivity.this, HuoDongDetailsActivity.this);
         buildRecycler();
         getHuoDongData();
+        tl_tab.setTabMode(TabLayout.MODE_FIXED);
+        tl_tab.setSelectedTabIndicatorHeight(UIUtils.getDimens(R.dimen.font_3));
+        tl_tab.setSelectedTabIndicatorColor(UIUtils.getColor(R.color.bg_e79056));
+        tl_tab.addTab(tl_tab.newTab().setText("最新"));
+        tl_tab.addTab(tl_tab.newTab().setText("最热"));
+        PublicUtils.setIndicator(tl_tab, UIUtils.getDimens(R.dimen.font_15), UIUtils.getDimens(R.dimen.font_15));
+        tl_tab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+                if (tab.getText().equals("最新")) {
+                    ToastUtils.showCenter(HuoDongDetailsActivity.this, "最新");
+                } else if (tab.getText().equals("最热")) {
+                    ToastUtils.showCenter(HuoDongDetailsActivity.this, "最热");
+                }
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     @Override
@@ -476,4 +512,5 @@ public class HuoDongDetailsActivity
 
         }
     };
+
 }
