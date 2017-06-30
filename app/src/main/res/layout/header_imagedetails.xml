@@ -337,6 +337,21 @@
                     android:includeFontPadding="false"
                     android:textColor="@color/bg_707070"
                     android:textSize="@dimen/font_14" />
+
+                <TextView
+                    android:id="@+id/tv_if_zuozhe_one"
+                    android:layout_width="@dimen/font_29"
+                    android:layout_height="@dimen/font_13"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/font_9"
+                    android:layout_toRightOf="@+id/tv_name_one"
+                    android:background="@drawable/text_zuozhe"
+                    android:gravity="center"
+                    android:text="作者"
+                    android:visibility="gone"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_10" />
+
             </RelativeLayout>
 
             <LinearLayout
@@ -489,6 +504,20 @@
                     android:includeFontPadding="false"
                     android:textColor="@color/bg_707070"
                     android:textSize="@dimen/font_14" />
+
+                <TextView
+                    android:id="@+id/tv_if_zuozhe_two"
+                    android:layout_width="@dimen/font_29"
+                    android:layout_height="@dimen/font_13"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/font_9"
+                    android:layout_toRightOf="@+id/tv_name_two"
+                    android:background="@drawable/text_zuozhe"
+                    android:gravity="center"
+                    android:text="作者"
+                    android:visibility="gone"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_10" />
             </RelativeLayout>
 
             <LinearLayout
@@ -640,6 +669,20 @@
                     android:includeFontPadding="false"
                     android:textColor="@color/bg_707070"
                     android:textSize="@dimen/font_14" />
+
+                <TextView
+                    android:id="@+id/tv_if_zuozhe_three"
+                    android:layout_width="@dimen/font_29"
+                    android:layout_height="@dimen/font_13"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/font_9"
+                    android:layout_toRightOf="@+id/tv_name_three"
+                    android:background="@drawable/text_zuozhe"
+                    android:gravity="center"
+                    android:text="作者"
+                    android:visibility="gone"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/font_10" />
             </RelativeLayout>
 
 

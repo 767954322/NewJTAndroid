@@ -38,6 +38,7 @@
             android:background="@drawable/text_zuozhe"
             android:gravity="center"
             android:text="作者"
+            android:visibility="gone"
             android:textColor="@color/white"
             android:textSize="@dimen/font_10" />
     </RelativeLayout>

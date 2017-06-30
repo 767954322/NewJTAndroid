@@ -160,6 +160,9 @@ public class ImageDetailLongActivity
     private List<Integer> mListDataHeight = new ArrayList<>();
     private int width_Pic;
     private int position;
+    private TextView tv_if_zuozhe_one;
+    private TextView tv_if_zuozhe_two;
+    private TextView tv_if_zuozhe_three;
 
     @Override
     protected int getLayoutResId() {
@@ -226,6 +229,9 @@ public class ImageDetailLongActivity
         ll_huifu_one = (LinearLayout) view.findViewById(R.id.ll_huifu_one);
         ll_huifu_two = (LinearLayout) view.findViewById(R.id.ll_huifu_two);
         ll_huifu_three = (LinearLayout) view.findViewById(R.id.ll_huifu_three);
+        tv_if_zuozhe_one = (TextView) view.findViewById(R.id.tv_if_zuozhe_one);
+        tv_if_zuozhe_two = (TextView) view.findViewById(R.id.tv_if_zuozhe_two);
+        tv_if_zuozhe_three = (TextView) view.findViewById(R.id.tv_if_zuozhe_three);
 
         iv_details_image = (ImageView) view.findViewById(R.id.iv_details_image);
         tv_details_tital = (TextView) view.findViewById(R.id.tv_details_tital);
@@ -1029,6 +1035,11 @@ public class ImageDetailLongActivity
                 } else {
                     rl_huifu_content.setVisibility(View.GONE);
                 }
+                if(pingBean.getData().getItem_info().getUser_id().equals(commentListBean.getComment_info().getUser_info().getUser_id())){
+                    tv_if_zuozhe_one.setVisibility(View.VISIBLE);
+                }else {
+                    tv_if_zuozhe_one.setVisibility(View.GONE);
+                }
                 tv_content_one.setText(commentListBean.getComment_info().getContent());
                 tv_name_one.setText(commentListBean.getComment_info().getUser_info().getNickname());
                 tv_time_one.setText(commentListBean.getComment_info().getAdd_time());
@@ -1042,6 +1053,11 @@ public class ImageDetailLongActivity
                 } else {
                     rl_huifu_content_two.setVisibility(View.GONE);
                 }
+                if(pingBean.getData().getItem_info().getUser_id().equals(commentListBean1.getComment_info().getUser_info().getUser_id())){
+                    tv_if_zuozhe_two.setVisibility(View.VISIBLE);
+                }else {
+                    tv_if_zuozhe_two.setVisibility(View.GONE);
+                }
                 tv_content_two.setText(commentListBean1.getComment_info().getContent());
                 tv_name_two.setText(commentListBean1.getComment_info().getUser_info().getNickname());
                 tv_time_two.setText(commentListBean1.getComment_info().getAdd_time());
@@ -1054,6 +1070,11 @@ public class ImageDetailLongActivity
                     tv_huifu_content_four3.setText(commentListBean2.getComment_info().getReply_comment().getContent());
                 } else {
                     rl_huifu_content_three.setVisibility(View.GONE);
+                }
+                if(pingBean.getData().getItem_info().getUser_id().equals(commentListBean2.getComment_info().getUser_info().getUser_id())){
+                    tv_if_zuozhe_three.setVisibility(View.VISIBLE);
+                }else {
+                    tv_if_zuozhe_three.setVisibility(View.GONE);
                 }
                 tv_content_three.setText(commentListBean2.getComment_info().getContent());
                 tv_name_three.setText(commentListBean2.getComment_info().getUser_info().getNickname());
@@ -1076,6 +1097,11 @@ public class ImageDetailLongActivity
                 } else {
                     rl_huifu_content.setVisibility(View.GONE);
                 }
+                if(pingBean.getData().getItem_info().getUser_id().equals(commentListBean.getComment_info().getUser_info().getUser_id())){
+                    tv_if_zuozhe_one.setVisibility(View.VISIBLE);
+                }else {
+                    tv_if_zuozhe_one.setVisibility(View.GONE);
+                }
                 tv_content_one.setText(commentListBean.getComment_info().getContent());
                 tv_name_one.setText(commentListBean.getComment_info().getUser_info().getNickname());
                 tv_time_one.setText(commentListBean.getComment_info().getAdd_time());
@@ -1088,6 +1114,11 @@ public class ImageDetailLongActivity
                     tv_huifu_content_four2.setText(commentListBean1.getComment_info().getReply_comment().getContent());
                 } else {
                     rl_huifu_content_two.setVisibility(View.GONE);
+                }
+                if(pingBean.getData().getItem_info().getUser_id().equals(commentListBean1.getComment_info().getUser_info().getUser_id())){
+                    tv_if_zuozhe_two.setVisibility(View.VISIBLE);
+                }else {
+                    tv_if_zuozhe_two.setVisibility(View.GONE);
                 }
                 tv_content_two.setText(commentListBean1.getComment_info().getContent());
                 tv_name_two.setText(commentListBean1.getComment_info().getUser_info().getNickname());
@@ -1109,6 +1140,11 @@ public class ImageDetailLongActivity
                     tv_huifu_content_four1.setText(commentListBean.getComment_info().getReply_comment().getContent());
                 } else {
                     rl_huifu_content.setVisibility(View.GONE);
+                }
+                if(pingBean.getData().getItem_info().getUser_id().equals(commentListBean.getComment_info().getUser_info().getUser_id())){
+                    tv_if_zuozhe_one.setVisibility(View.VISIBLE);
+                }else {
+                    tv_if_zuozhe_one.setVisibility(View.GONE);
                 }
                 tv_name_one.setText(commentListBean.getComment_info().getUser_info().getNickname());
                 tv_time_one.setText(commentListBean.getComment_info().getAdd_time());
