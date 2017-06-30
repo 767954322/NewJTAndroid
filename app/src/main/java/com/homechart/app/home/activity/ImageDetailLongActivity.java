@@ -42,6 +42,7 @@ import com.homechart.app.home.bean.shouye.SYDataColorBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.ClearEditText;
 import com.homechart.app.myview.FlowLayoutBiaoQian;
+import com.homechart.app.myview.ResizeRelativeLayout;
 import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
 import com.homechart.app.recyclerlibrary.holder.BaseViewHolder;
@@ -163,6 +164,9 @@ public class ImageDetailLongActivity
     private TextView tv_if_zuozhe_one;
     private TextView tv_if_zuozhe_two;
     private TextView tv_if_zuozhe_three;
+    private ResizeRelativeLayout menu_layout;
+    private boolean mIsKeyboardOpened = false;
+    private int mMenuOpenedHeight = 0;
 
     @Override
     protected int getLayoutResId() {
@@ -186,6 +190,7 @@ public class ImageDetailLongActivity
         tv_tital_comment = (TextView) findViewById(R.id.tv_tital_comment);
         tv_content_right = (TextView) findViewById(R.id.tv_content_right);
         nav_secondary_imageButton = (ImageButton) findViewById(R.id.nav_secondary_imageButton);
+        menu_layout = (ResizeRelativeLayout) findViewById(R.id.menu_layout);
 
         riv_people_header = (RoundImageView) view.findViewById(R.id.riv_people_header);
         tv_ping_tital = (TextView) view.findViewById(R.id.tv_ping_tital);
@@ -302,6 +307,32 @@ public class ImageDetailLongActivity
                 return false;
             }
         });
+
+        menu_layout.setOnResizeRelativeListener(new ResizeRelativeLayout.OnResizeRelativeListener() {
+            @Override
+            public void OnResizeRelative(int w, int h, int oldw, int oldh) {
+                mIsKeyboardOpened = false;
+                //记录第一次打开输入法时的布局高度
+                if (h < oldh && oldh > 0 && mMenuOpenedHeight == 0) {
+                    mMenuOpenedHeight = h;
+                }
+
+                // 布局的高度小于之前的高度
+                if (h < oldh) {
+                    mIsKeyboardOpened = true;
+                }
+                //或者输入法打开情况下, 输入字符后再清除(三星输入法软键盘在输入后，软键盘高度增加一行，清除输入后，高度变小，但是软键盘仍是打开状态)
+                else if ((h <= mMenuOpenedHeight) && (mMenuOpenedHeight != 0)) {
+                    mIsKeyboardOpened = true;
+                }
+
+                if(!mIsKeyboardOpened){
+                    huifuTag = "";
+                }
+
+            }
+        });
+
     }
 
     @Override
