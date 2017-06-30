@@ -283,7 +283,7 @@ public class HuoDongDetailsActivity
 
         mAdapter = new MultiItemCommonAdapter<ItemActivityDataBean>(this, mListData, support) {
             @Override
-            public void convert(BaseViewHolder holder, int position) {
+            public void convert(BaseViewHolder holder, final int position) {
 
                 ItemActivityDataBean itemData = mListData.get(position);
                 ViewGroup.LayoutParams layoutParams = holder.getView(R.id.iv_imageview_one).getLayoutParams();
@@ -296,7 +296,23 @@ public class HuoDongDetailsActivity
                         (ImageView) holder.getView(R.id.iv_imageview_one));
                 ImageUtils.displayFilletImage(mListData.get(position).getUser_info().getAvatar().getThumb(),
                         (ImageView) holder.getView(R.id.iv_header_pic));
-
+                holder.getView(R.id.iv_imageview_one).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //查看单图详情
+                        Intent intent = new Intent(HuoDongDetailsActivity.this, ImageDetailLongActivity.class);
+                        intent.putExtra("item_id", mListData.get(position).getItem_info().getItem_id());
+                        startActivity(intent);
+                    }
+                });
+                holder.getView(R.id.iv_header_pic).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(HuoDongDetailsActivity.this, UserInfoActivity.class);
+                        intent.putExtra(ClassConstant.LoginSucces.USER_ID, mListData.get(position).getUser_info().getUser_id());
+                        startActivity(intent);
+                    }
+                });
                 List<ColorInfoBean> list_color = itemData.getColor_info();
                 if (null != list_color && list_color.size() == 1) {
                     holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
@@ -452,6 +468,7 @@ public class HuoDongDetailsActivity
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
+                mAdapter.notifyData(mListData);
                 ToastUtils.showCenter(HuoDongDetailsActivity.this, getString(R.string.huodong_get_error));
             }
 
