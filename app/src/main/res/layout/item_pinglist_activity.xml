@@ -23,9 +23,21 @@
             android:id="@+id/tv_name_one"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:includeFontPadding="false"
             android:textColor="@color/bg_707070"
             android:textSize="@dimen/font_14" />
+
+        <TextView
+            android:id="@+id/tv_if_zuozhe"
+            android:layout_width="@dimen/font_29"
+            android:layout_height="@dimen/font_23"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/font_9"
+            android:layout_toRightOf="@+id/tv_name_one"
+            android:text="作者"
+            android:textColor="@color/white"
+            android:textSize="@dimen/font_10" />
     </RelativeLayout>
 
 

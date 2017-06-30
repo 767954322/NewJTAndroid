@@ -187,11 +187,11 @@
         android:id="@+id/rl_iamgedetails_cound"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/font_15"
-        android:paddingTop="@dimen/font_15"
-        android:layout_below="@+id/view_line"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/view_line"
+        android:paddingBottom="@dimen/font_15"
+        android:paddingTop="@dimen/font_15">
 
         <ImageView
             android:id="@+id/iv_bang"
@@ -294,16 +294,16 @@
             android:layout_marginLeft="@dimen/font_10"
             android:layout_marginTop="@dimen/font_15"
             android:text="评论"
-            android:visibility="gone"
             android:textColor="@color/bg_262626"
-            android:textSize="@dimen/font_14" />
+            android:textSize="@dimen/font_14"
+            android:visibility="gone" />
 
         <RelativeLayout
             android:id="@+id/rl_ping_one"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_ping_tital">
+            android:layout_below="@+id/tv_ping_tital"
+            android:visibility="gone">
 
             <View
                 android:id="@+id/view_one"
@@ -442,9 +442,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/rl_huifu_content"
-                android:layout_marginRight="@dimen/font_20"
                 android:layout_below="@+id/rl_huifu_content"
                 android:layout_marginBottom="@dimen/font_15"
+                android:layout_marginRight="@dimen/font_20"
                 android:layout_marginTop="@dimen/font_15"
                 android:includeFontPadding="false" />
 
@@ -452,10 +452,10 @@
 
         <RelativeLayout
             android:id="@+id/rl_ping_two"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_ping_one">
+            android:layout_below="@+id/rl_ping_one"
+            android:visibility="gone">
 
             <View
                 android:id="@+id/view_two"
@@ -490,6 +490,7 @@
                     android:textColor="@color/bg_707070"
                     android:textSize="@dimen/font_14" />
             </RelativeLayout>
+
             <LinearLayout
                 android:id="@+id/ll_huifu_two"
                 android:layout_width="wrap_content"
@@ -593,9 +594,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/rl_huifu_content_two"
-                android:layout_marginRight="@dimen/font_20"
                 android:layout_below="@+id/rl_huifu_content_two"
                 android:layout_marginBottom="@dimen/font_15"
+                android:layout_marginRight="@dimen/font_20"
                 android:layout_marginTop="@dimen/font_15"
                 android:includeFontPadding="false" />
 
@@ -603,10 +604,10 @@
 
         <RelativeLayout
             android:id="@+id/rl_ping_three"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rl_ping_two">
+            android:layout_below="@+id/rl_ping_two"
+            android:visibility="gone">
 
             <View
                 android:id="@+id/view_three"
@@ -623,6 +624,7 @@
                 android:layout_below="@+id/view_three"
                 android:layout_marginLeft="@dimen/font_15"
                 android:layout_marginTop="@dimen/font_15" />
+
             <RelativeLayout
                 android:id="@+id/rl_name_three"
                 android:layout_width="wrap_content"
@@ -746,9 +748,9 @@
                 android:layout_alignLeft="@+id/rl_huifu_content_three"
                 android:layout_below="@+id/rl_huifu_content_three"
                 android:layout_marginBottom="@dimen/font_15"
+                android:layout_marginRight="@dimen/font_20"
                 android:layout_marginTop="@dimen/font_15"
-                android:includeFontPadding="false"
-                android:layout_marginRight="@dimen/font_20" />
+                android:includeFontPadding="false" />
 
         </RelativeLayout>
 
@@ -756,8 +758,8 @@
             android:id="@+id/rl_ping_four"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_below="@+id/rl_ping_three">
+            android:layout_below="@+id/rl_ping_three"
+            android:visibility="gone">
 
             <View
                 android:id="@+id/view_four"
@@ -781,19 +783,19 @@
 
         <View
             android:id="@+id/view_more_like"
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="@dimen/font_10"
             android:layout_below="@+id/rl_ping_four"
-            android:background="@color/bg_eeeeee" />
+            android:background="@color/bg_eeeeee"
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/view_more_like"
             android:layout_marginBottom="@dimen/font_15"
             android:layout_marginLeft="@dimen/font_10"
             android:layout_marginTop="@dimen/font_15"
-            android:layout_below="@+id/view_more_like"
             android:text="你可能还喜欢"
             android:textColor="@color/bg_262626"
             android:textSize="@dimen/size_14" />

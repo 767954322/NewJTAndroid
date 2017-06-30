@@ -24,6 +24,7 @@ import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.message.ItemMessageBean;
 import com.homechart.app.home.bean.pinglun.CommentInfoBean;
 import com.homechart.app.home.bean.pinglun.CommentListBean;
+import com.homechart.app.home.bean.pinglun.ItemInfoBean;
 import com.homechart.app.home.bean.pinglun.PingBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.ClearEditText;
@@ -37,6 +38,7 @@ import com.homechart.app.recyclerlibrary.recyclerview.OnRefreshListener;
 import com.homechart.app.recyclerlibrary.support.MultiItemTypeSupport;
 import com.homechart.app.utils.CustomProgress;
 import com.homechart.app.utils.GsonUtil;
+import com.homechart.app.utils.SharedPreferencesUtils;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.imageloader.ImageUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
@@ -71,6 +73,8 @@ public class PingListActivity
     private String huifuTag = "";
     private RelativeLayout rl_none;
     private View view;
+    private String mUserId;
+    private ItemInfoBean itemInfoBean;
 
     @Override
     protected int getLayoutResId() {
@@ -82,6 +86,8 @@ public class PingListActivity
         super.initExtraBundle();
 
         item_id = getIntent().getStringExtra("item_id");
+
+        mUserId = SharedPreferencesUtils.readString(ClassConstant.LoginSucces.USER_ID);
     }
 
     @Override
@@ -178,6 +184,12 @@ public class PingListActivity
                     ((TextView) holder.getView(R.id.tv_huifu_content_four1)).setText(commentInfoBean.getReply_comment().getContent());
                 }
 
+                if(itemInfoBean.getUser_id().equals(commentInfoBean.getUser_info().getUser_id())){
+                    holder.getView(R.id.tv_if_zuozhe).setVisibility(View.VISIBLE);
+                }else {
+                    holder.getView(R.id.tv_if_zuozhe).setVisibility(View.GONE);
+                }
+
                 holder.getView(R.id.ll_huifu_one).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -250,6 +262,7 @@ public class PingListActivity
                     if (error_code == 0) {
                         String pinglist = "{\"data\": " + data_msg + "}";
                         PingBean pingBean = GsonUtil.jsonToBean(pinglist, PingBean.class);
+                        itemInfoBean =  pingBean.getData().getItem_info();
                         List<CommentListBean> list = pingBean.getData().getComment_list();
                         if (list != null && list.size() > 0) {//有数据
 
