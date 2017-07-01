@@ -248,15 +248,18 @@ public class PublicUtils {
             switch (platform.toString()) {
                 case "SINA":
                     plat = "weibo";
+//                    PublicUtils.clearUMengOauth(mActivity);
                     break;
                 case "QQ":
                     plat = "qq";
+                    PublicUtils.clearUMengOauth(mActivity);
                     break;
                 case "WEIXIN":
                     plat = "weixin";
+                    PublicUtils.clearUMengOauth(mActivity);
                     break;
             }
-            PublicUtils.clearUMengOauth(mActivity);
+//            PublicUtils.clearUMengOauth(mActivity);
             mILoginUmeng.loginUmengBack(openid, token, plat, name, iconurl);
         }
 
