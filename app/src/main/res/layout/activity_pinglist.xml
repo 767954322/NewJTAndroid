@@ -23,6 +23,42 @@
 
 
     <RelativeLayout
+        android:id="@+id/rl_no_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_none"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="暂无数据" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/font_20"
+            android:layout_marginRight="@dimen/font_28"
+            android:layout_toLeftOf="@+id/tv_none"
+            android:background="@color/bg_eeeeee" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/font_28"
+            android:layout_marginRight="@dimen/font_20"
+            android:layout_toRightOf="@+id/tv_none"
+            android:background="@color/bg_eeeeee" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/rl_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

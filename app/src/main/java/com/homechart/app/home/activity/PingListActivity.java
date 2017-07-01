@@ -79,6 +79,7 @@ public class PingListActivity
     private ResizeRelativeLayout menu_layout;
     private boolean mIsKeyboardOpened = false;
     private int mMenuOpenedHeight = 0;
+    private RelativeLayout rl_no_data;
 
     @Override
     protected int getLayoutResId() {
@@ -103,6 +104,7 @@ public class PingListActivity
         mRecyclerView = (HRecyclerView) findViewById(R.id.rcy_recyclerview_pic);
         cet_clearedit = (ClearEditText) findViewById(R.id.cet_clearedit);
         menu_layout = (ResizeRelativeLayout) findViewById(R.id.menu_layout);
+        rl_no_data = (RelativeLayout) findViewById(R.id.rl_no_data);
 
     }
 
@@ -159,7 +161,7 @@ public class PingListActivity
                     mIsKeyboardOpened = true;
                 }
 
-                if(!mIsKeyboardOpened){
+                if (!mIsKeyboardOpened) {
                     huifuTag = "";
                 }
 
@@ -302,7 +304,7 @@ public class PingListActivity
                             changeNone(1);
                             mRecyclerView.setRefreshing(false);//刷新完毕
                             mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
-                            ToastUtils.showCenter(PingListActivity.this, "暂无更多数据");
+//                            ToastUtils.showCenter(PingListActivity.this, "暂无更多数据");
                         }
                     } else {
                         CustomProgress.cancelDialog();
@@ -321,7 +323,11 @@ public class PingListActivity
         if (i == 0) {
             rl_none.setVisibility(View.GONE);
         } else if (i == 1) {
-            rl_none.setVisibility(View.VISIBLE);
+            if (mListData.size() > 0) {
+                rl_none.setVisibility(View.VISIBLE);
+            } else {
+            }
+
         }
     }
 
