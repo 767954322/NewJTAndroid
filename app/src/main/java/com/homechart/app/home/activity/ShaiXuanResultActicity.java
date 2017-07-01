@@ -400,7 +400,7 @@ public class ShaiXuanResultActicity
 
         mAdapter = new MultiItemCommonAdapter<SearchItemDataBean>(ShaiXuanResultActicity.this, mListData, support) {
             @Override
-            public void convert(BaseViewHolder holder, int position) {
+            public void convert(BaseViewHolder holder, final int position) {
                 scroll_position = position;
                 ViewGroup.LayoutParams layoutParams = holder.getView(R.id.iv_imageview_one).getLayoutParams();
 
@@ -463,7 +463,24 @@ public class ShaiXuanResultActicity
                         holder.getView(R.id.tv_color_tital).setVisibility(View.GONE);
                     }
                 }
+                holder.getView(R.id.iv_header_pic).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(ShaiXuanResultActicity.this, UserInfoActivity.class);
+                        intent.putExtra(ClassConstant.LoginSucces.USER_ID, mListData.get(position).getUser_info().getUser_id());
+                        startActivity(intent);
+                    }
+                });
 
+                holder.getView(R.id.iv_imageview_one).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //查看单图详情
+                        Intent intent = new Intent(ShaiXuanResultActicity.this, ImageDetailLongActivity.class);
+                        intent.putExtra("item_id", mListData.get(position).getItem_info().getItem_id());
+                        startActivity(intent);
+                    }
+                });
 
             }
         };

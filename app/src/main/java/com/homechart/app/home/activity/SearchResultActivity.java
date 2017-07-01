@@ -157,7 +157,7 @@ public class SearchResultActivity
 
         mAdapter = new MultiItemCommonAdapter<SearchItemDataBean>(SearchResultActivity.this, mListData, support) {
             @Override
-            public void convert(BaseViewHolder holder, int position) {
+            public void convert(BaseViewHolder holder, final int position) {
 
 
                 ViewGroup.LayoutParams layoutParams = holder.getView(R.id.iv_imageview_search_one).getLayoutParams();
@@ -173,6 +173,24 @@ public class SearchResultActivity
                         (ImageView) holder.getView(R.id.iv_imageview_search_one));
                 ImageUtils.displayFilletImage(mListData.get(position).getUser_info().getAvatar().getBig(),
                         (RoundImageView) holder.getView(R.id.iv_header_search));
+                holder.getView(R.id.iv_header_search).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(SearchResultActivity.this, UserInfoActivity.class);
+                        intent.putExtra(ClassConstant.LoginSucces.USER_ID, mListData.get(position).getUser_info().getUser_id());
+                        startActivity(intent);
+                    }
+                });
+
+                holder.getView(R.id.iv_imageview_search_one).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //查看单图详情
+                        Intent intent = new Intent(SearchResultActivity.this, ImageDetailLongActivity.class);
+                        intent.putExtra("item_id", mListData.get(position).getItem_info().getItem_id());
+                        startActivity(intent);
+                    }
+                });
                 List<SearchDataColorBean> list_color = mListData.get(position).getColor_info();
                 if (null != list_color && list_color.size() == 1) {
                     holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
