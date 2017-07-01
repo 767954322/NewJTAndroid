@@ -205,8 +205,8 @@ public class FenSiListActivity
                 }
             }
         };
-//        MyHttpManager.getInstance().getFensiList(user_id, last_id, n, callback);
-        MyHttpManager.getInstance().getFensiList("100050", last_id, n, callback);
+        MyHttpManager.getInstance().getFensiList(user_id, last_id, n, callback);
+//        MyHttpManager.getInstance().getFensiList("100050", last_id, n, callback);
 
     }
 

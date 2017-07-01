@@ -204,8 +204,8 @@ public class GuanZuListActivity
                 }
             }
         };
-//        MyHttpManager.getInstance().getFensiList(user_id, last_id, n, callback);
-        MyHttpManager.getInstance().getGuanZuList("100050", last_id, n, callback);
+        MyHttpManager.getInstance().getGuanZuList(user_id, last_id, n, callback);
+//        MyHttpManager.getInstance().getGuanZuList("100050", last_id, n, callback);
 
     }
 
