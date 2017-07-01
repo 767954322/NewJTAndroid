@@ -202,6 +202,7 @@ public class ShaiXuanResultActicity
         switch (v.getId()) {
             case R.id.nav_left_imageButton:
                 ShaiXuanResultActicity.this.finish();
+                break;
             case R.id.iv_change_frag:
                 if (curentListTag) {
                     mRecyclerView.setPadding(UIUtils.getDimens(R.dimen.font_6), 0, UIUtils.getDimens(R.dimen.font_6), 0);
