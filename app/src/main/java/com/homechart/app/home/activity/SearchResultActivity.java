@@ -165,8 +165,8 @@ public class SearchResultActivity
                 layoutParams.height = mListDataHeight.get(position);
                 holder.getView(R.id.iv_imageview_search_one).setLayoutParams(layoutParams);
                 String nikeName = mListData.get(position).getUser_info().getNickname();
-                if (nikeName.length() > 6) {
-                    nikeName = nikeName.substring(0, 6) + "...";
+                if (nikeName.length() > 5) {
+                    nikeName = nikeName.substring(0, 5) + "...";
                 }
                 ((TextView) holder.getView(R.id.tv_nikename_search)).setText(nikeName);
                 ImageUtils.displayFilletImage(mListData.get(position).getItem_info().getImage().getImg1(),

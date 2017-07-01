@@ -344,8 +344,11 @@ public class HomePicFragment
                     nikeName = mListData.get(position).getObject_info().getTag();
                 } else {
                     nikeName = mListData.get(position).getUser_info().getNickname();
-                    if (nikeName != null && !curentListTag && nikeName.length() > 6) {
-                        nikeName = nikeName.substring(0, 6) + "...";
+                    if (nikeName != null && curentListTag && nikeName.length() > 8) {
+                        nikeName = nikeName.substring(0, 8) + "...";
+                    }
+                    if (nikeName != null && !curentListTag && nikeName.length() > 5) {
+                        nikeName = nikeName.substring(0, 5) + "...";
                     }
                 }
 
