@@ -548,8 +548,6 @@ public class HomePicFragment
                         ToastUtils.showCenter(activity, error_msg);
                     }
                 } catch (JSONException e) {
-
-                    ToastUtils.showCenter(activity, getString(R.string.unreader_msg_get_error));
                 }
             }
         };
