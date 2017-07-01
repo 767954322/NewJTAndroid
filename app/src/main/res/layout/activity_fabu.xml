@@ -29,8 +29,8 @@
 
                 <ImageView
                     android:id="@+id/iv_image_fabu"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="@dimen/font_100"
+                    android:layout_height="@dimen/font_100"
                     android:layout_marginLeft="@dimen/font_15"
                     android:scaleType="centerCrop" />
 
@@ -40,6 +40,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/font_10"
                     android:layout_marginRight="@dimen/font_15"
+                    android:minHeight="@dimen/font_100"
+                    android:gravity="top"
                     android:layout_marginTop="@dimen/font_5"
                     android:layout_toRightOf="@+id/iv_image_fabu"
                     android:background="@null"
