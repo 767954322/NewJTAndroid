@@ -110,6 +110,8 @@ public class MyInfoActivity
     private int sex = 0;//1:男  2:女
     private String header_id = "";//上传头像的id
     private String[] str;
+    private View view_nikename;
+    private View view_jianjie;
 
     @Override
     protected int getLayoutResId() {
@@ -146,6 +148,8 @@ public class MyInfoActivity
         rg_sex = (RadioGroup) findViewById(R.id.rg_sex);
         rb_nan = (RadioButton) findViewById(R.id.rb_nan);
         rb_nv = (RadioButton) findViewById(R.id.rb_nv);
+        view_nikename = findViewById(R.id.view_nikename);
+        view_jianjie = findViewById(R.id.view_jianjie);
     }
 
     @Override
@@ -159,6 +163,8 @@ public class MyInfoActivity
         rl_myinfo_age.setOnClickListener(this);
         rl_myinfo_mobile.setOnClickListener(this);
         rl_myinfo_shiming.setOnClickListener(this);
+        view_jianjie.setOnClickListener(this);
+        view_nikename.setOnClickListener(this);
         rg_sex.setOnCheckedChangeListener(this);
 //        et_myinfo_jianjie.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -301,8 +307,8 @@ public class MyInfoActivity
                         .itemPadding(10)
                         .build();
                 if (userCenterInfoBean != null) {
-                    String  beforeAge =  userCenterInfoBean.getUser_info().getAge_group();
-                    if(beforeAge != null){
+                    String beforeAge = userCenterInfoBean.getUser_info().getAge_group();
+                    if (beforeAge != null) {
                         agerPicker.setAgar(beforeAge);
                     }
                 }
@@ -345,6 +351,21 @@ public class MyInfoActivity
 
                 }
 
+                break;
+
+            case R.id.view_nikename:
+
+                et_myinfo_nikename.requestFocus();
+                InputMethodManager imm2 = (InputMethodManager) et_myinfo_nikename.getContext().getSystemService(MyInfoActivity.this.INPUT_METHOD_SERVICE);
+                imm2.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
+                et_myinfo_nikename.setSelection(et_myinfo_nikename.getText().length());
+                break;
+            case R.id.view_jianjie:
+
+                et_myinfo_jianjie.requestFocus();
+                InputMethodManager imm3 = (InputMethodManager) et_myinfo_jianjie.getContext().getSystemService(MyInfoActivity.this.INPUT_METHOD_SERVICE);
+                imm3.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
+                et_myinfo_jianjie.setSelection(et_myinfo_jianjie.getText().length());
                 break;
         }
     }

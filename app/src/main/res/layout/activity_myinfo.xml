@@ -76,20 +76,29 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/font_15"
+                    android:paddingBottom="@dimen/font_7"
+                    android:paddingTop="@dimen/font_7"
                     android:text="昵称"
                     android:textColor="@color/bg_262626"
                     android:textSize="@dimen/size_14" />
 
 
+                <View
+                    android:id="@+id/view_nikename"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@+id/et_myinfo_nikename"
+                    android:layout_toRightOf="@+id/tv_myinfo_nikename_tital" />
+
                 <EditText
                     android:id="@+id/et_myinfo_nikename"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/font_25"
-                    android:layout_toRightOf="@+id/tv_myinfo_nikename_tital"
                     android:background="@null"
                     android:gravity="right"
+                    android:paddingRight="@dimen/font_25"
                     android:singleLine="true"
                     android:textColor="@color/bg_262626"
                     android:textColorHint="@color/bg_b2b2b2"
@@ -276,16 +285,25 @@
                     android:textColor="@color/bg_262626"
                     android:textSize="@dimen/size_14" />
 
+                <View
+                    android:id="@+id/view_jianjie"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@+id/et_myinfo_jianjie"
+                    android:layout_toRightOf="@+id/tv_jianjie_tital"/>
+
                 <EditText
                     android:id="@+id/et_myinfo_jianjie"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/font_25"
-                    android:layout_toRightOf="@+id/tv_jianjie_tital"
                     android:background="@null"
                     android:gravity="right"
                     android:hint="一句话介绍15个字以内～"
+                    android:paddingBottom="@dimen/font_7"
+                    android:paddingRight="@dimen/font_25"
+                    android:paddingTop="@dimen/font_7"
                     android:singleLine="true"
                     android:textColor="@color/bg_262626"
                     android:textColorHint="@color/bg_b2b2b2"
@@ -365,8 +383,8 @@
                 android:layout_height="@dimen/font_58"
                 android:layout_below="@+id/view_below_mobile"
                 android:layout_marginTop="@dimen/font_10"
-                android:visibility="gone"
-                android:background="@color/white">
+                android:background="@color/white"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
