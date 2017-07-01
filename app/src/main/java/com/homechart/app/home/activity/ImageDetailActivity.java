@@ -114,6 +114,8 @@ public class ImageDetailActivity
         iv_bang.setOnClickListener(this);
         iv_xing.setOnClickListener(this);
         tv_xing.setOnClickListener(this);
+        iv_ping.setOnClickListener(this);
+        tv_ping.setOnClickListener(this);
     }
 
     @Override
@@ -159,6 +161,14 @@ public class ImageDetailActivity
                     removeShouCang();
                     ifShouCang = true;
                 }
+                break;
+            case R.id.iv_ping:
+            case R.id.tv_ping:
+
+                Intent intent = new Intent(ImageDetailActivity.this, PingListActivity.class);
+                intent.putExtra("item_id", item_id);
+                startActivityForResult(intent, 2);
+
                 break;
         }
     }
@@ -471,6 +481,8 @@ public class ImageDetailActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 1 && requestCode == 1) {
+            getImageDetail();
+        }else if (requestCode == 2) {
             getImageDetail();
         }
 
