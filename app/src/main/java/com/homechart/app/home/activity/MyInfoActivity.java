@@ -45,6 +45,8 @@ import com.homechart.app.utils.SharedPreferencesUtils;
 import com.homechart.app.utils.StringUtils;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.UIUtils;
+import com.homechart.app.utils.alertview.AlertView;
+import com.homechart.app.utils.alertview.OnItemClickListener;
 import com.homechart.app.utils.imageloader.ImageUtils;
 import com.homechart.app.utils.volley.FileHttpManager;
 import com.homechart.app.utils.volley.MyHttpManager;
@@ -72,7 +74,7 @@ public class MyInfoActivity
         implements View.OnClickListener,
         PutFileCallBack,
         RadioGroup.OnCheckedChangeListener,
-        TextWatcher {
+        TextWatcher, OnItemClickListener {
 
     private ProvinceBean provinceBean;
     private ImageButton mIBBack;
@@ -112,6 +114,15 @@ public class MyInfoActivity
     private String[] str;
     private View view_nikename;
     private View view_jianjie;
+
+    private boolean imageChange = false;
+    private String nikeChange = "";
+    private String sexChange = "";
+    private String locationChange = "";
+    private String ageChange = "";
+    private String jianjieChange = "";
+    private AlertView mAlertView;
+
 
     @Override
     protected int getLayoutResId() {
@@ -225,7 +236,7 @@ public class MyInfoActivity
     protected void initData(Bundle savedInstanceState) {
         mTVTital.setText(R.string.myinfoactivity_tital);
         mTVBaoCun.setText(R.string.setactivity_baocun);
-
+        showDialog();
         getCitydata(mTag);
         if (userCenterInfoBean != null) {
             changeUI();
@@ -240,12 +251,36 @@ public class MyInfoActivity
 
         switch (v.getId()) {
             case R.id.nav_left_imageButton:
-                MyInfoActivity.this.finish();
+                String nikename = et_myinfo_nikename.getText().toString().trim();
+                boolean nikeB = nikename.equals(nikeChange);
+                boolean sexB = true;
+                if (sex == 0) {
+                    sexB = true;
+                } else {
+                    sexB = sexChange.equals(sex);
+                }
+                boolean locationB = locationChange.equals((province_id + city_id).trim());
+                boolean ageB = ageChange.equals(age_select);
+                String jianjie = et_myinfo_jianjie.getText().toString().trim();
+                boolean jianjieB = jianjieChange.trim().equals(jianjie);
+                if (!imageChange &&
+                        nikeB &&
+                        sexB &&
+                        locationB &&
+                        ageB &&
+                        jianjieB
+                        ) {//没更改
+                    MyInfoActivity.this.finish();
+                } else {
+                    mAlertView.show();
+                }
+
+
                 break;
             case R.id.tv_content_right:
 
-                String nikename = et_myinfo_nikename.getText().toString();
-                if (nikename.length() < 2) {
+                String nikename1 = et_myinfo_nikename.getText().toString();
+                if (nikename1.length() < 2) {
                     ToastUtils.showCenter(MyInfoActivity.this, "请输入长度2-15个字的昵称");
                     return;
                 }
@@ -374,14 +409,16 @@ public class MyInfoActivity
 
         if (null != userCenterInfoBean && null != userCenterInfoBean.getUser_info()) {
             ImageUtils.displayRoundImage(userCenterInfoBean.getUser_info().getAvatar().getBig(), iv_myinfo_header);
+            nikeChange = userCenterInfoBean.getUser_info().getNickname();
             et_myinfo_nikename.setText(userCenterInfoBean.getUser_info().getNickname());
 
             if (TextUtils.isEmpty(userCenterInfoBean.getUser_info().getLocation())) {
+                locationChange = "";
                 tv_myinfo_location.setText("未设置");
                 tv_myinfo_location.setTextColor(UIUtils.getColor(R.color.bg_b2b2b2));
             } else {
-
                 String str_location = userCenterInfoBean.getUser_info().getLocation();
+                locationChange = (userCenterInfoBean.getUser_info().getProvince() + userCenterInfoBean.getUser_info().getCity()).trim();
                 str = str_location.split(" ");
                 tv_myinfo_location.setText(userCenterInfoBean.getUser_info().getLocation());
                 tv_myinfo_location.setTextColor(UIUtils.getColor(R.color.bg_262626));
@@ -420,21 +457,28 @@ public class MyInfoActivity
             if (!gender.trim().equals("")) {
 
                 if (gender.trim().equals("m")) {
+                    sexChange = "1";
                     rb_nan.setChecked(true);
                 } else if (gender.trim().equals("f")) {
+                    sexChange = "2";
                     rb_nv.setChecked(true);
                 }
 
+            } else {
+                sexChange = "";
             }
 
             if (!TextUtils.isEmpty(userCenterInfoBean.getUser_info().getSlogan())) {
                 et_myinfo_jianjie.setText(userCenterInfoBean.getUser_info().getSlogan());
+                jianjieChange = userCenterInfoBean.getUser_info().getSlogan();
             }
 
             if (!TextUtils.isEmpty(userCenterInfoBean.getUser_info().getAge_group())) {
+                ageChange = userCenterInfoBean.getUser_info().getAge_group();
                 tv_myinfo_age.setTextColor(UIUtils.getColor(R.color.bg_262626));
                 tv_myinfo_age.setText(userCenterInfoBean.getUser_info().getAge_group());
             } else {
+                ageChange = "";
                 tv_myinfo_age.setTextColor(UIUtils.getColor(R.color.bg_b2b2b2));
                 tv_myinfo_age.setText("未设置");
             }
@@ -654,6 +698,7 @@ public class MyInfoActivity
                 //TODO 打开省市区
                 openCity();
             } else if (tag == 2) {//拍照回调
+                imageChange = true;
                 path = (String) msg.obj;
                 ImageUtils.displayRoundImage("file://" + path, iv_myinfo_header);
             } else if (tag == 3) { //获取个人资料的返回
@@ -749,6 +794,27 @@ public class MyInfoActivity
         if (null == userCenterInfoBean) {
             getUserInfo();
         }
+
+    }
+
+    /***
+     * 提示框
+     */
+    private void showDialog() {
+        mAlertView = new AlertView
+                ("", "是否取消本次修改", UIUtils.getString(R.string.fabu_back_cancle), new String[]{UIUtils.getString(R.string.fabu_back_sure)},
+                        null, this, AlertView.Style.Alert, this);
+    }
+
+    @Override
+    public void onItemClick(Object object, int position) {
+
+        switch (position) {
+            case 0:
+                MyInfoActivity.this.finish();
+                break;
+        }
+
 
     }
 }
