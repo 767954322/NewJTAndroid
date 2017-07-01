@@ -165,7 +165,7 @@ public class UserInfoActivity
               String[] str =   mListData.get(position).getItem_info().getAdd_time().split(" ");
                 if(str.length >0 ){
                     ((TextView) holder.getView(R.id.item_info_time)).
-                            setText(str[0] + "   发版");
+                            setText(str[0] + "   发布");
                 }
 
 
