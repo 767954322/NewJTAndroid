@@ -58,7 +58,7 @@
             <View
                 android:id="@+id/view_below_header"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="0.5dp"
                 android:layout_below="@+id/rl_myinfo_header"
                 android:layout_marginLeft="@dimen/font_15"
                 android:background="@color/navbar_bottom_border_color" />
@@ -103,7 +103,7 @@
             <View
                 android:id="@+id/view_below_nikename"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="0.5dp"
                 android:layout_below="@+id/rl_myinfo_nikename"
                 android:layout_marginLeft="@dimen/font_15"
                 android:background="@color/navbar_bottom_border_color" />
@@ -163,7 +163,7 @@
             <View
                 android:id="@+id/view_below_sex"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="0.5dp"
                 android:layout_below="@+id/rl_myinfo_sex"
                 android:layout_marginLeft="@dimen/font_15"
                 android:background="@color/navbar_bottom_border_color" />
@@ -208,7 +208,7 @@
             <View
                 android:id="@+id/view_below_location"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="0.5dp"
                 android:layout_below="@+id/rl_myinfo_location"
                 android:layout_marginLeft="@dimen/font_15"
                 android:background="@color/navbar_bottom_border_color" />
@@ -254,7 +254,7 @@
             <View
                 android:id="@+id/view_below_age"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="0.5dp"
                 android:layout_below="@+id/rl_myinfo_age"
                 android:layout_marginLeft="@dimen/font_15"
                 android:background="@color/navbar_bottom_border_color" />
@@ -354,7 +354,7 @@
             <View
                 android:id="@+id/view_below_mobile"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="0.5dp"
                 android:layout_below="@+id/rl_myinfo_mobile"
                 android:layout_marginLeft="@dimen/font_15"
                 android:background="@color/navbar_bottom_border_color" />

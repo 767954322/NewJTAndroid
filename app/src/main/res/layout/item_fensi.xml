@@ -55,7 +55,7 @@
         android:textSize="@dimen/size_12" />
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/font_1"
+        android:layout_height="0.5dp"
         android:layout_alignParentBottom="true"
         android:layout_alignLeft="@+id/tv_fensi_detail"
         android:layout_marginTop="@dimen/font_27"
