@@ -473,7 +473,6 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
-            android:src="@drawable/shared_icon_white"
             android:background="@drawable/transparent"
             android:padding="@dimen/size_8"
             android:scaleType="centerInside" />
