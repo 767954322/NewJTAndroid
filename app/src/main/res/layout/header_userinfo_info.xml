@@ -17,8 +17,8 @@
 
             <com.homechart.app.myview.RoundImageView
                 android:id="@+id/iv_header_desiner_center_white"
-                android:layout_width="@dimen/font_82"
-                android:layout_height="@dimen/font_82"
+                android:layout_width="@dimen/font_83"
+                android:layout_height="@dimen/font_83"
                 android:layout_centerInParent="true"
                 android:background="@color/white" />
 
@@ -94,6 +94,7 @@
                     android:layout_below="@+id/tv_info_guanzhu_num"
                     android:layout_marginTop="@dimen/font_10"
                     android:text="关注"
+                    android:layout_centerHorizontal="true"
                     android:textColor="@color/bg_8f8f8f"
                     android:textSize="@dimen/size_11"
                     android:textStyle="bold" />
@@ -125,6 +126,7 @@
                     android:layout_below="@+id/tv_info_shaijia_num"
                     android:layout_marginTop="@dimen/font_10"
                     android:text="晒家"
+                    android:layout_centerHorizontal="true"
                     android:textColor="@color/bg_8f8f8f"
                     android:textSize="@dimen/size_11"
                     android:textStyle="bold" />
@@ -155,6 +157,7 @@
                     android:layout_below="@+id/tv_info_fensi_num"
                     android:layout_marginTop="@dimen/font_10"
                     android:text="粉丝"
+                    android:layout_centerHorizontal="true"
                     android:textColor="@color/bg_8f8f8f"
                     android:textSize="@dimen/size_11"
                     android:textStyle="bold" />
