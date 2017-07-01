@@ -206,7 +206,7 @@ public class FaBuActvity
     @Override
     public void TagClick(String text, int position) {
 
-        ToastUtils.showCenter(FaBuActvity.this, "点击" + position + text);
+//        ToastUtils.showCenter(FaBuActvity.this, "点击" + position + text);
     }
 
     @Override
