@@ -265,6 +265,7 @@ public class ImageDetailLongActivity
         tv_xing.setOnClickListener(this);
         tv_people_guanzhu.setOnClickListener(this);
         ll_huifu_one.setOnClickListener(this);
+        riv_people_header.setOnClickListener(this);
         ll_huifu_two.setOnClickListener(this);
         ll_huifu_three.setOnClickListener(this);
         rl_ping_four.setOnClickListener(this);
@@ -326,7 +327,7 @@ public class ImageDetailLongActivity
                     mIsKeyboardOpened = true;
                 }
 
-                if(!mIsKeyboardOpened){
+                if (!mIsKeyboardOpened) {
                     huifuTag = "";
                 }
 
@@ -351,6 +352,14 @@ public class ImageDetailLongActivity
     public void onClick(View v) {
 
         switch (v.getId()) {
+            case R.id.riv_people_header:
+
+                if(imageDetailBean != null){
+                    Intent intent_info = new Intent(ImageDetailLongActivity.this, UserInfoActivity.class);
+                    intent_info.putExtra(ClassConstant.LoginSucces.USER_ID,imageDetailBean.getUser_info().getUser_id() );
+                    startActivity(intent_info);
+                }
+                break;
             case R.id.nav_left_imageButton:
                 ImageDetailLongActivity.this.finish();
                 break;
