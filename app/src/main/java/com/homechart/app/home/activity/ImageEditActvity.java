@@ -189,7 +189,8 @@ public class ImageEditActvity
                         CustomProgress.show(ImageEditActvity.this, "修改中...", false, null);
                         updataImage();
                     } else {
-                        ToastUtils.showCenter(ImageEditActvity.this, "您未做修改，请先编辑");
+//                        ToastUtils.showCenter(ImageEditActvity.this, "您未做修改，请先编辑");
+                        ImageEditActvity.this.finish();
                     }
 
                 } else {
