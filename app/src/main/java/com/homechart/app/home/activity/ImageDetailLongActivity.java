@@ -1079,7 +1079,7 @@ public class ImageDetailLongActivity
         UMImage image = new UMImage(ImageDetailLongActivity.this, imageDetailBean.getItem_info().getImage().getImg0());
         image.compressStyle = UMImage.CompressStyle.SCALE;//大小压缩，默认为大小压缩，适合普通很大的图
         UMWeb web = new UMWeb("http://h5.idcool.com.cn/photo/" + imageDetailBean.getItem_info().getItem_id());
-        web.setTitle("「" + imageDetailBean.getUser_info().getNickname() + "」在晒家 ｜ 家图APP");//标题
+        web.setTitle("「" + imageDetailBean.getUser_info().getNickname() + "」在晒家｜家图APP");//标题
         web.setThumb(image);  //缩略图
         String desi = imageDetailBean.getItem_info().getDescription() + imageDetailBean.getItem_info().getTag();
         if (desi.length() > 160) {
