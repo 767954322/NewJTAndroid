@@ -934,7 +934,11 @@ public class ImageDetailLongActivity
         layoutParams.height = (int) (wide_num / imageDetailBean.getItem_info().getImage().getRatio());
         iv_details_image.setLayoutParams(layoutParams);
         ImageUtils.displayRoundImage(imageDetailBean.getUser_info().getAvatar().getThumb(), riv_people_header);
-        tv_people_name.setText(imageDetailBean.getUser_info().getNickname());
+       String nikeName =  imageDetailBean.getUser_info().getNickname();
+        if(nikeName.length() >8){
+            nikeName = nikeName.substring(0,8)+"...";
+        }
+        tv_people_name.setText(nikeName);
         if (!imageDetailBean.getUser_info().getProfession().equals("0")) {
             iv_people_tag.setVisibility(View.VISIBLE);
         } else {
