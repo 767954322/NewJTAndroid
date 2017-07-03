@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebResourceError;
@@ -22,6 +23,7 @@ import com.homechart.app.R;
 import com.homechart.app.commont.KeyConstans;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
+import com.homechart.app.utils.ToastUtils;
 
 /**
  * @author Allen.Gu .
@@ -157,5 +159,29 @@ public class AdvertisementActivity extends BaseActivity implements View.OnClickL
             }
         }
     };
+
+    //退出时的时间
+    private long mExitTime;
+    //对返回键进行监听
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+
+            exit();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void exit() {
+        if ((System.currentTimeMillis() - mExitTime) > 3000) {
+            ToastUtils.showCenter(AdvertisementActivity.this,"再次点击返回键退出");
+            mExitTime = System.currentTimeMillis();
+        } else {
+            AdvertisementActivity.this.finish();
+            System.exit(0);
+        }
+    }
 }
 

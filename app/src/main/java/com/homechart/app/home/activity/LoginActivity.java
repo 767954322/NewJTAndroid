@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -307,6 +308,32 @@ public class LoginActivity extends BaseActivity
             LoginActivity.this.finish();
         }
 
+    }
+
+
+
+    //退出时的时间
+    private long mExitTime;
+    //对返回键进行监听
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+
+            exit();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void exit() {
+        if ((System.currentTimeMillis() - mExitTime) > 3000) {
+            ToastUtils.showCenter(LoginActivity.this,"再次点击返回键退出");
+            mExitTime = System.currentTimeMillis();
+        } else {
+            LoginActivity.this.finish();
+            System.exit(0);
+        }
     }
 
     private TextView mTVToRegister;

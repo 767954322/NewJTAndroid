@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -16,6 +17,7 @@ import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.adapter.WelcomePagerAdapter;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.utils.SharedPreferencesUtils;
+import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.widget.SwipeViewPager;
 
 import java.util.ArrayList;
@@ -97,6 +99,29 @@ public class WelcomeActivity extends BaseActivity {
                 break;
             case 2:
                 //TODO 最后的权限回调
+        }
+    }
+    //退出时的时间
+    private long mExitTime;
+    //对返回键进行监听
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+
+            exit();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void exit() {
+        if ((System.currentTimeMillis() - mExitTime) > 3000) {
+            ToastUtils.showCenter(WelcomeActivity.this,"再次点击返回键退出");
+            mExitTime = System.currentTimeMillis();
+        } else {
+            WelcomeActivity.this.finish();
+            System.exit(0);
         }
     }
 }
