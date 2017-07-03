@@ -257,9 +257,14 @@ public class MyInfoActivity
                 if (sex == 0) {
                     sexB = true;
                 } else {
-                    sexB = sexChange.equals(sex);
+                    sexB = sexChange.equals(sex + "");
                 }
-                boolean locationB = locationChange.equals((province_id + city_id).trim());
+                boolean locationB = true;
+                if (TextUtils.isEmpty(province_id) && TextUtils.isEmpty(city_id)) {
+                    locationB = true;
+                } else {
+                    locationB = locationChange.equals((province_id + city_id).trim());
+                }
                 boolean ageB = ageChange.equals(age_select);
                 String jianjie = et_myinfo_jianjie.getText().toString().trim();
                 boolean jianjieB = jianjieChange.trim().equals(jianjie);
@@ -420,7 +425,7 @@ public class MyInfoActivity
                 String str_location = userCenterInfoBean.getUser_info().getLocation();
                 locationChange = (userCenterInfoBean.getUser_info().getProvince() + userCenterInfoBean.getUser_info().getCity()).trim();
                 str = str_location.split(" ");
-                tv_myinfo_location.setText(userCenterInfoBean.getUser_info().getLocation());
+                tv_myinfo_location.setText(userCenterInfoBean.getUser_info().getLocation() + "区");
                 tv_myinfo_location.setTextColor(UIUtils.getColor(R.color.bg_262626));
             }
 
@@ -475,6 +480,7 @@ public class MyInfoActivity
 
             if (!TextUtils.isEmpty(userCenterInfoBean.getUser_info().getAge_group())) {
                 ageChange = userCenterInfoBean.getUser_info().getAge_group();
+                age_select = userCenterInfoBean.getUser_info().getAge_group();
                 tv_myinfo_age.setTextColor(UIUtils.getColor(R.color.bg_262626));
                 tv_myinfo_age.setText(userCenterInfoBean.getUser_info().getAge_group());
             } else {
@@ -563,6 +569,7 @@ public class MyInfoActivity
                     String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
                     String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
                     if (error_code == 0) {
+                        getUserInfo();
                         CustomProgress.cancelDialog();
                         ToastUtils.showCenter(MyInfoActivity.this, "保存成功");
                         getUserInfo();
