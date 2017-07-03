@@ -15,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -127,6 +128,8 @@ public class HomePicFragment
     private float mDownY;
     private float mMoveY;
     private boolean move_tag = true;
+    private RelativeLayout id_main;
+    private View view_line_back;
 
     public HomePicFragment(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;
@@ -166,6 +169,8 @@ public class HomePicFragment
         rl_zhuangshi = (RelativeLayout) rootView.findViewById(R.id.rl_zhuangshi);
         rl_shouna = (RelativeLayout) rootView.findViewById(R.id.rl_shouna);
         rl_tos_choose = (RelativeLayout) rootView.findViewById(R.id.rl_tos_choose);
+        id_main = (RelativeLayout) rootView.findViewById(R.id.id_main);
+        view_line_back = rootView.findViewById(R.id.view_line_back);
 
     }
 
@@ -749,7 +754,17 @@ public class HomePicFragment
 
                 homeTabPopWin.setPagePosition(position);
                 last_id = id;
-                homeTabPopWin.showAsDropDown(ll_pic_choose);
+                if (Build.VERSION.SDK_INT < 24) {
+                    homeTabPopWin.showAsDropDown(ll_pic_choose);
+                } else {
+                    // 获取控件的位置，安卓系统>7.0
+                    int[] location = new int[2];
+                    view_line_back.getLocationOnScreen(location);
+                    int screenHeight = PublicUtils.getScreenHeight(activity);
+                    homeTabPopWin.setHeight(screenHeight - location[1]);
+                    homeTabPopWin.showAtLocation(ll_pic_choose, Gravity.NO_GRAVITY, 0, location[1]);
+                }
+
 
                 switch (id) {
                     case R.id.rl_kongjian:
