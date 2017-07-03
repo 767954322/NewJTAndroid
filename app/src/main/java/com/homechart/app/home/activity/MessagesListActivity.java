@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -59,6 +60,7 @@ public class MessagesListActivity extends BaseActivity
     private String user_id;
     private int TYPE_ACTIVITY = 1;
     private int TYPE_TIPS = 2;
+    private RelativeLayout rl_no_data;
 
     @Override
     protected int getLayoutResId() {
@@ -69,6 +71,7 @@ public class MessagesListActivity extends BaseActivity
     protected void initView() {
         mIBBack = (ImageButton) findViewById(R.id.nav_left_imageButton);
         mTVTital = (TextView) findViewById(R.id.tv_tital_comment);
+        rl_no_data = (RelativeLayout) findViewById(R.id.rl_no_data);
         mRecyclerView = (HRecyclerView) findViewById(R.id.rcy_recyclerview_pic);
     }
 
@@ -195,8 +198,10 @@ public class MessagesListActivity extends BaseActivity
                         MessageBean messageBean = GsonUtil.jsonToBean(data_msg, MessageBean.class);
                         List<ItemMessageBean> list = messageBean.getNotice_list();
                         if (null != list && 0 != list.size()) {
+                            changeNone(0);
                             updateViewFromData(list, state);
                         } else {
+                            changeNone(1);
                             ToastUtils.showCenter(MessagesListActivity.this, "暂无消息");
                             updateViewFromData(null, state);
                         }
@@ -242,4 +247,16 @@ public class MessagesListActivity extends BaseActivity
         }
     }
 
+    private void changeNone(int i) {
+        if (i == 0) {
+            rl_no_data.setVisibility(View.GONE);
+        } else if (i == 1) {
+            if (mListData.size() > 0) {
+                rl_no_data.setVisibility(View.GONE);
+            } else {
+                rl_no_data.setVisibility(View.VISIBLE);
+            }
+
+        }
+    }
 }
