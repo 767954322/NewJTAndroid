@@ -275,7 +275,7 @@ public class ImageEditActvity
     @Override
     public void TagClick(String text, int position) {
 
-        ToastUtils.showCenter(ImageEditActvity.this, "点击" + position + text);
+//        ToastUtils.showCenter(ImageEditActvity.this, "点击" + position + text);
     }
 
     @Override
