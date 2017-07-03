@@ -49,6 +49,11 @@ import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.imageloader.ImageUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -108,6 +113,7 @@ public class HuoDongDetailsActivity
     private RoundImageView riv_one;
     private TextView tv_show_num_people;
     private TabLayout tl_tab;
+    private HDDetailsBean hdDetailsBean;
 
     @Override
     protected int getLayoutResId() {
@@ -155,6 +161,7 @@ public class HuoDongDetailsActivity
     protected void initListener() {
         super.initListener();
         nav_left_imageButton.setOnClickListener(this);
+        nav_secondary_imageButton.setOnClickListener(this);
         tv_add_activity.setOnClickListener(this);
         tl_tab.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -257,6 +264,13 @@ public class HuoDongDetailsActivity
                 break;
             case R.id.iv_bufabu:
                 menuWindow.dismiss();
+                break;
+            case R.id.nav_secondary_imageButton:
+
+                if (hdDetailsBean != null) {
+                    sharedItemOpen();
+                }
+
                 break;
         }
 
@@ -368,7 +382,7 @@ public class HuoDongDetailsActivity
                     String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
                     if (error_code == 0) {
                         String strData = "{\"data\":" + data_msg + "}";
-                        HDDetailsBean hdDetailsBean = GsonUtil.jsonToBean(strData, HDDetailsBean.class);
+                        hdDetailsBean = GsonUtil.jsonToBean(strData, HDDetailsBean.class);
                         changeTopUI(hdDetailsBean);
                     } else {
                         ToastUtils.showCenter(HuoDongDetailsActivity.this, error_msg);
@@ -541,4 +555,68 @@ public class HuoDongDetailsActivity
         }
     };
 
+    private void sharedItemOpen() {
+
+        UMImage image = new UMImage(HuoDongDetailsActivity.this, hdDetailsBean.getData().getActivity_info().getImage().getImg0());
+        image.compressStyle = UMImage.CompressStyle.SCALE;//大小压缩，默认为大小压缩，适合普通很大的图
+        UMWeb web = new UMWeb("http://h5.idcool.com.cn/" + hdDetailsBean.getData().getActivity_info().getActivity_id());
+        web.setTitle("家图APP");//标题
+        web.setThumb(image);  //缩略图
+        String desi = hdDetailsBean.getData().getActivity_info().getDescription();
+        if (desi.length() > 160) {
+            desi = desi.substring(0, 160) + "...";
+        }
+        web.setDescription(desi);//描述
+        new ShareAction(HuoDongDetailsActivity.this).
+                setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA).
+                withMedia(web).
+                setCallback(umShareListener).open();
+    }
+
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+            //分享开始的回调
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            addShared();
+            ToastUtils.showCenter(HuoDongDetailsActivity.this, "分享成功啦");
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            ToastUtils.showCenter(HuoDongDetailsActivity.this, "分享失败啦");
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            ToastUtils.showCenter(HuoDongDetailsActivity.this, "分享取消了");
+        }
+    };
+
+    private void addShared() {
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        getHuoDongData();
+                    } else {
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        };
+        MyHttpManager.getInstance().addShared(hdDetailsBean.getData().getActivity_info().getActivity_id(), "activity", callBack);
+    }
 }
