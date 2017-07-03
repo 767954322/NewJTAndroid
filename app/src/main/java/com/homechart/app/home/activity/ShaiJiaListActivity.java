@@ -71,6 +71,7 @@ public class ShaiJiaListActivity extends BaseActivity
     private Map<String, ShouCangItemBean> map_delete = new HashMap<>();//选择的唯一标示
     private ImageView iv_delete_icon;
     private String user_id;
+    private RelativeLayout rl_no_data;
 
     @Override
     protected int getLayoutResId() {
@@ -83,6 +84,7 @@ public class ShaiJiaListActivity extends BaseActivity
         iv_delete_icon = (ImageView) findViewById(R.id.iv_delete_icon);
         mTVTital = (TextView) findViewById(R.id.tv_tital_comment);
         rl_below = (RelativeLayout) findViewById(R.id.rl_below);
+        rl_no_data = (RelativeLayout) findViewById(R.id.rl_no_data);
         tv_content_right = (TextView) findViewById(R.id.tv_content_right);
         tv_shoucang_two = (TextView) findViewById(R.id.tv_shoucang_two);
         mRecyclerView = (HRecyclerView) findViewById(R.id.rcy_recyclerview_shoucang);
@@ -317,10 +319,12 @@ public class ShaiJiaListActivity extends BaseActivity
                         if (error_code == 0) {
                             ShouCangBean shouCangBean = GsonUtil.jsonToBean(data_msg, ShouCangBean.class);
                             if (null != shouCangBean.getItem_list() && 0 != shouCangBean.getItem_list().size()) {
+                                changeNone(0);
                                 updateViewFromData(shouCangBean.getItem_list(), state);
                             } else {
+                                changeNone(1);
                                 if (page_num == 1) {
-                                    ToastUtils.showCenter(ShaiJiaListActivity.this, "暂无晒家图片，先去发布一些图片吧!");
+//                                    ToastUtils.showCenter(ShaiJiaListActivity.this, "暂无晒家图片，先去发布一些图片吧!");
                                 }else {
                                     ToastUtils.showCenter(ShaiJiaListActivity.this, "暂无更多数据!");
                                 }
@@ -394,7 +398,19 @@ public class ShaiJiaListActivity extends BaseActivity
         intent.putExtra("item_id", item_id);
         startActivity(intent);
 
+    }
 
+    private void changeNone(int i) {
+        if (i == 0) {
+            rl_no_data.setVisibility(View.GONE);
+        } else if (i == 1) {
+            if (mListData.size() > 0) {
+                rl_no_data.setVisibility(View.GONE);
+            } else {
+                rl_no_data.setVisibility(View.VISIBLE);
+            }
+
+        }
     }
     private int position;
 }
