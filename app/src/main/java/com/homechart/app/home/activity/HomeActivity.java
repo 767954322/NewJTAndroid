@@ -232,8 +232,8 @@ public class HomeActivity
     }
 
     public void exit() {
-        if ((System.currentTimeMillis() - mExitTime) > 2000) {
-            ToastUtils.showCenter(HomeActivity.this,"再按一次退出家图");
+        if ((System.currentTimeMillis() - mExitTime) > 3000) {
+            ToastUtils.showCenter(HomeActivity.this,"再次点击返回键退出");
             mExitTime = System.currentTimeMillis();
         } else {
             HomeActivity.this.finish();
