@@ -325,6 +325,7 @@ public class PingListActivity
             rl_none.setVisibility(View.GONE);
         } else if (i == 1) {
             if (mListData.size() > 0) {
+                rl_no_data.setVisibility(View.GONE);
                 rl_none.setVisibility(View.VISIBLE);
             } else {
                 rl_none.setVisibility(View.GONE);

@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -62,6 +63,7 @@ public class GuanZuListActivity
     private String last_id = "0";//上一页最后一条数据id,第一次传0值
     private String n = "20";//返回数据条数，默认20
     private String user_id;
+    private RelativeLayout rl_no_data;
 
     @Override
     protected int getLayoutResId() {
@@ -74,6 +76,7 @@ public class GuanZuListActivity
         mRecyclerView = (HRecyclerView) findViewById(R.id.rcy_recyclerview_pic);
         mIBBack = (ImageButton) findViewById(R.id.nav_left_imageButton);
         mTVTital = (TextView) findViewById(R.id.tv_tital_comment);
+        rl_no_data = (RelativeLayout) findViewById(R.id.rl_no_data);
     }
 
     @Override
@@ -192,8 +195,10 @@ public class GuanZuListActivity
                     if (error_code == 0) {
                         GuanZhuBean fenSiBean = GsonUtil.jsonToBean(data_msg, GuanZhuBean.class);
                         if (null != fenSiBean.getUser_list() && 0 != fenSiBean.getUser_list().size()) {
+                            changeNone(0);
                             updateViewFromData(fenSiBean.getUser_list(), state);
                         } else {
+                            changeNone(1);
                             updateViewFromData(null, state);
                         }
                     } else {
@@ -248,6 +253,17 @@ public class GuanZuListActivity
                 break;
         }
     }
+    private void changeNone(int i) {
+        if (i == 0) {
+            rl_no_data.setVisibility(View.GONE);
+        } else if (i == 1) {
+            if (mListData.size() > 0) {
+                rl_no_data.setVisibility(View.GONE);
+            } else {
+                rl_no_data.setVisibility(View.VISIBLE);
+            }
 
+        }
+    }
     private int position;
 }
