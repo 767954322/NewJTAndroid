@@ -321,11 +321,14 @@ public class PingListActivity
 
     private void changeNone(int i) {
         if (i == 0) {
+            rl_no_data.setVisibility(View.GONE);
             rl_none.setVisibility(View.GONE);
         } else if (i == 1) {
             if (mListData.size() > 0) {
                 rl_none.setVisibility(View.VISIBLE);
             } else {
+                rl_none.setVisibility(View.GONE);
+                rl_no_data.setVisibility(View.VISIBLE);
             }
 
         }
