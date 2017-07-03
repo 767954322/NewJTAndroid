@@ -365,7 +365,7 @@ public class ImageDetailLongActivity
                 if (imageDetailBean != null) {
                     Intent intent_info = new Intent(ImageDetailLongActivity.this, UserInfoActivity.class);
                     intent_info.putExtra(ClassConstant.LoginSucces.USER_ID, imageDetailBean.getUser_info().getUser_id());
-                    startActivity(intent_info);
+                    startActivityForResult(intent_info,3);
                 }
                 break;
             case R.id.nav_left_imageButton:
@@ -1074,6 +1074,8 @@ public class ImageDetailLongActivity
         } else if (requestCode == 2) {
             getImageDetail();
             getPingList();
+        }else if(requestCode == 3){
+            getImageDetail();
         }
 
     }
