@@ -288,16 +288,24 @@ public class BundleMobileActivity
         final String phone = mETPhone.getText().toString();
         String yzCode = mETYanZheng.getText().toString();
         String passWord = mETPassWord.getText().toString();
-        if (TextUtils.isEmpty(phone) || !phone.matches(RegexUtil.PHONE_REGEX)) {
+        if (TextUtils.isEmpty(phone)) {
             ToastUtils.showCenter(BundleMobileActivity.this, UIUtils.getString(R.string.phonenum_error));
             return;
         }
         if (TextUtils.isEmpty(yzCode)) {
-            ToastUtils.showCenter(BundleMobileActivity.this, UIUtils.getString(R.string.yanzhengma_error));
+            ToastUtils.showCenter(BundleMobileActivity.this, "请输入验证码");
             return;
         }
-        if (TextUtils.isEmpty(passWord) || !passWord.matches(RegexUtil.ADDRESS_REGEX_PASS)) {
-            ToastUtils.showCenter(BundleMobileActivity.this, UIUtils.getString(R.string.password_error));
+        if (TextUtils.isEmpty(passWord)) {
+            ToastUtils.showCenter(BundleMobileActivity.this, "请输入登陆密码");
+            return;
+        }
+        if (!phone.matches(RegexUtil.PHONE_REGEX)) {
+            ToastUtils.showCenter(BundleMobileActivity.this, "请输入正确的手机号码");
+            return;
+        }
+        if (!passWord.matches(RegexUtil.ADDRESS_REGEX_PASS)) {
+            ToastUtils.showCenter(BundleMobileActivity.this, " 请输入正确的登陆密码");
             return;
         }
 
@@ -317,7 +325,7 @@ public class BundleMobileActivity
                     if (error_code == 0) {
                         ToastUtils.showCenter(BundleMobileActivity.this, UIUtils.getString(R.string.bundle_succes));
                         Intent intent_result = getIntent();
-                        intent_result.putExtra("mobile",phone);
+                        intent_result.putExtra("mobile", phone);
                         setResult(1, intent_result);
                         BundleMobileActivity.this.finish();
                     } else {
