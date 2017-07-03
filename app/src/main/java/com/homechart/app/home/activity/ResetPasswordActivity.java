@@ -294,16 +294,26 @@ public class ResetPasswordActivity
         String phone = mETPhone.getText().toString();
         String yzCode = mETYanZheng.getText().toString();
         String passWord = mETPassWord.getText().toString();
-        if (TextUtils.isEmpty(phone) || !phone.matches(RegexUtil.PHONE_REGEX)) {
+        if (TextUtils.isEmpty(phone)  ) {
             ToastUtils.showCenter(ResetPasswordActivity.this, UIUtils.getString(R.string.phonenum_error));
             return;
         }
         if (TextUtils.isEmpty(yzCode)) {
-            ToastUtils.showCenter(ResetPasswordActivity.this, UIUtils.getString(R.string.yanzhengma_error));
+            ToastUtils.showCenter(ResetPasswordActivity.this, "请输入验证码");
             return;
         }
-        if (TextUtils.isEmpty(passWord) || !passWord.matches(RegexUtil.ADDRESS_REGEX_PASS)) {
-            ToastUtils.showCenter(ResetPasswordActivity.this, UIUtils.getString(R.string.password_error));
+        if (TextUtils.isEmpty(passWord)) {
+            ToastUtils.showCenter(ResetPasswordActivity.this, "请输入重置密码");
+            return;
+        }
+
+        if(!phone.matches(RegexUtil.PHONE_REGEX)){
+            ToastUtils.showCenter(ResetPasswordActivity.this, "请输入正确的手机号码");
+            return;
+        }
+
+        if (!passWord.matches(RegexUtil.ADDRESS_REGEX_PASS)) {
+            ToastUtils.showCenter(ResetPasswordActivity.this, " 请输入正确的登陆密码");
             return;
         }
 
