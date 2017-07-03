@@ -29,6 +29,13 @@ import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.imageloader.ImageUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.ShareContent;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.SinaShareContent;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -116,6 +123,8 @@ public class ImageDetailActivity
         tv_xing.setOnClickListener(this);
         iv_ping.setOnClickListener(this);
         tv_ping.setOnClickListener(this);
+        iv_shared.setOnClickListener(this);
+        tv_shared.setOnClickListener(this);
     }
 
     @Override
@@ -169,6 +178,11 @@ public class ImageDetailActivity
                 intent.putExtra("item_id", item_id);
                 startActivityForResult(intent, 2);
 
+                break;
+            case R.id.iv_shared:
+            case R.id.tv_shared:
+
+                sharedItemOpen();
                 break;
         }
     }
@@ -461,19 +475,22 @@ public class ImageDetailActivity
     @Override
     public void onClickWeiXin() {
 
-        ToastUtils.showCenter(ImageDetailActivity.this, "微信分享");
+        sharedItemFaBu(SHARE_MEDIA.WEIXIN);
+//        ToastUtils.showCenter(ImageDetailActivity.this, "微信分享");
     }
 
     @Override
     public void onClickPYQ() {
 
-        ToastUtils.showCenter(ImageDetailActivity.this, "朋友圈分享");
+        sharedItemFaBu(SHARE_MEDIA.WEIXIN_CIRCLE);
+//        ToastUtils.showCenter(ImageDetailActivity.this, "朋友圈分享");
     }
 
     @Override
     public void onClickWeiBo() {
 
-        ToastUtils.showCenter(ImageDetailActivity.this, "微博分享");
+        sharedItemFaBu(SHARE_MEDIA.SINA);
+//        ToastUtils.showCenter(ImageDetailActivity.this, "微博分享");
     }
 
     @Override
@@ -482,9 +499,67 @@ public class ImageDetailActivity
 
         if (requestCode == 1 && requestCode == 1) {
             getImageDetail();
-        }else if (requestCode == 2) {
+        } else if (requestCode == 2) {
             getImageDetail();
         }
 
     }
+
+    private void sharedItemFaBu(SHARE_MEDIA share_media) {
+
+        UMImage image = new UMImage(ImageDetailActivity.this, imageDetailBean.getItem_info().getImage().getImg0());
+        image.compressStyle = UMImage.CompressStyle.SCALE;//大小压缩，默认为大小压缩，适合普通很大的图
+        UMWeb web = new UMWeb("http://h5.idcool.com.cn/photo/" + imageDetailBean.getItem_info().getItem_id());
+        web.setTitle(imageDetailBean.getItem_info().getTag());//标题
+        web.setThumb(image);  //缩略图
+        String desi = imageDetailBean.getItem_info().getDescription();
+        if (desi.length() > 160) {
+            desi = desi.substring(0, 160) + "...";
+        }
+        web.setDescription(desi);//描述
+        new ShareAction(ImageDetailActivity.this).
+                setPlatform(share_media).
+                withMedia(web).
+                setCallback(umShareListener).share();
+    }
+
+    private void sharedItemOpen() {
+
+        UMImage image = new UMImage(ImageDetailActivity.this, imageDetailBean.getItem_info().getImage().getImg0());
+        image.compressStyle = UMImage.CompressStyle.SCALE;//大小压缩，默认为大小压缩，适合普通很大的图
+        UMWeb web = new UMWeb("http://h5.idcool.com.cn/photo/" + imageDetailBean.getItem_info().getItem_id());
+        web.setTitle(imageDetailBean.getItem_info().getTag());//标题
+        web.setThumb(image);  //缩略图
+        String desi = imageDetailBean.getItem_info().getDescription();
+        if (desi.length() > 160) {
+            desi = desi.substring(0, 160) + "...";
+        }
+        web.setDescription(desi);//描述
+        new ShareAction(ImageDetailActivity.this).
+                setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA).
+                withMedia(web).
+                setCallback(umShareListener).open();
+    }
+
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+            //分享开始的回调
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            ToastUtils.showCenter(ImageDetailActivity.this, "分享成功啦");
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            ToastUtils.showCenter(ImageDetailActivity.this, "分享失败啦");
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            ToastUtils.showCenter(ImageDetailActivity.this, "分享取消了");
+        }
+    };
 }
