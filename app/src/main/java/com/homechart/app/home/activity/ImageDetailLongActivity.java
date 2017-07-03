@@ -455,6 +455,7 @@ public class ImageDetailLongActivity
 
             case R.id.iv_shared:
             case R.id.tv_shared:
+            case R.id.nav_secondary_imageButton:
 
                 if (imageDetailBean != null) {
                     sharedItemOpen();
