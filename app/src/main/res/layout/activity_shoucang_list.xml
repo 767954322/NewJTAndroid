@@ -73,31 +73,31 @@
             android:paddingRight="@dimen/font_15"
             android:paddingLeft="@dimen/font_15"
             android:src="@drawable/litter" />
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/rl_no_data"
-        android:layout_width="match_parent"
+    </RelativeLayout> <RelativeLayout
+    android:id="@+id/rl_no_data"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:visibility="gone">
+
+    <ImageView
+        android:id="@+id/iv_empty"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="gone">
+        android:src="@drawable/empty" />
 
-        <ImageView
-            android:id="@+id/iv_empty"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@drawable/empty" />
+    <TextView
+        android:id="@+id/tv_none"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_empty"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/font_20"
+        android:text="快去收藏你喜欢的图片呀！"
+        android:textColor="@color/bg_8f8f8f"
+        android:textSize="@dimen/font_14" />
 
-        <TextView
-            android:id="@+id/tv_none"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_empty"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/font_20"
-            android:text="快去收藏你喜欢的图片呀！"
-            android:textColor="@color/bg_8f8f8f"
-            android:textSize="@dimen/font_14" />
+</RelativeLayout>
 
-    </RelativeLayout>
 </RelativeLayout>

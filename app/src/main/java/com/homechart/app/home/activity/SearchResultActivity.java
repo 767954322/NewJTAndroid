@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
@@ -70,6 +71,7 @@ public class SearchResultActivity
     private String search_tag;
     private ClearEditText cet_clearedit;
     private TextView tv_quxiao;
+    private RelativeLayout rl_no_data;
 
     @Override
     protected int getLayoutResId() {
@@ -89,6 +91,7 @@ public class SearchResultActivity
         mRecyclerView = (HRecyclerView) findViewById(R.id.rcy_recyclerview_info);
         cet_clearedit = (ClearEditText) findViewById(R.id.cet_clearedit);
         tv_quxiao = (TextView) findViewById(R.id.tv_quxiao);
+        rl_no_data = (RelativeLayout) findViewById(R.id.rl_no_data);
     }
 
     @Override
@@ -287,9 +290,11 @@ public class SearchResultActivity
                     if (error_code == 0) {
                         SearchDataBean searchDataBean = GsonUtil.jsonToBean(data_msg, SearchDataBean.class);
                         if (null != searchDataBean.getItem_list() && 0 != searchDataBean.getItem_list().size()) {
+                            changeNone(0);
                             getHeight(searchDataBean.getItem_list(), state);
                             updateViewFromData(searchDataBean.getItem_list(), state);
                         } else {
+                            changeNone(1);
                             ToastUtils.showCenter(SearchResultActivity.this, "暂时没搜到您要的结果，不如换个关键词试试？");
                             updateViewFromData(null, state);
                         }
@@ -364,7 +369,18 @@ public class SearchResultActivity
             }
         }
     }
+    private void changeNone(int i) {
+        if (i == 0) {
+            rl_no_data.setVisibility(View.GONE);
+        } else if (i == 1) {
+            if (mListData.size() > 0) {
+                rl_no_data.setVisibility(View.GONE);
+            } else {
+                rl_no_data.setVisibility(View.VISIBLE);
+            }
 
+        }
+    }
     private int position;
     private List<Integer> mListDataHeight = new ArrayList<>();
 }
