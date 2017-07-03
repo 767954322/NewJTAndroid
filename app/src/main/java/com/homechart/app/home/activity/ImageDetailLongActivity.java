@@ -651,6 +651,11 @@ public class ImageDetailLongActivity
                 ImageUtils.displayFilletImage(mListData.get(position).getUser_info().getAvatar().getBig(),
                         (ImageView) holder.getView(R.id.iv_header_pic));
 
+                String nikeName = mListData.get(position).getUser_info().getNickname();
+                if(nikeName.length() > 5){
+                    nikeName = nikeName.substring(0,5)+"...";
+                }
+                ((TextView)holder.getView(R.id.tv_name_pic)).setText(nikeName);
                 List<com.homechart.app.home.bean.cailike.ColorInfoBean> list_color1 = mListData.get(position).getColor_info();
                 if (null != list_color1 && list_color1.size() == 1) {
                     holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
