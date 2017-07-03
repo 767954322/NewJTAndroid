@@ -367,14 +367,14 @@ public class ImageDetailActivity
                     changeUI(imageDetailBean);
                     break;
                 case 2:
-                    ToastUtils.showCenter(ImageDetailActivity.this, "点赞成功");
+                    ToastUtils.showCenter(ImageDetailActivity.this, "你很棒棒哦");
                     iv_bang.setImageResource(R.drawable.bang1);
                     like_num++;
                     tv_bang.setText(like_num + "");
                     tv_bang.setTextColor(UIUtils.getColor(R.color.bg_e79056));
                     break;
                 case 3:
-                    ToastUtils.showCenter(ImageDetailActivity.this, "取消点赞");
+                    ToastUtils.showCenter(ImageDetailActivity.this, "还是收回我的家图棒吧");
                     iv_bang.setImageResource(R.drawable.bang);
                     like_num--;
                     tv_bang.setText(like_num + "");
