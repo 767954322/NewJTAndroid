@@ -57,6 +57,11 @@ import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.imageloader.ImageUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -263,6 +268,8 @@ public class ImageDetailLongActivity
         tv_imagedetails_next.setOnClickListener(this);
         iv_imagedetails_next.setOnClickListener(this);
         tv_xing.setOnClickListener(this);
+        iv_shared.setOnClickListener(this);
+        tv_shared.setOnClickListener(this);
         tv_people_guanzhu.setOnClickListener(this);
         ll_huifu_one.setOnClickListener(this);
         riv_people_header.setOnClickListener(this);
@@ -354,9 +361,9 @@ public class ImageDetailLongActivity
         switch (v.getId()) {
             case R.id.riv_people_header:
 
-                if(imageDetailBean != null){
+                if (imageDetailBean != null) {
                     Intent intent_info = new Intent(ImageDetailLongActivity.this, UserInfoActivity.class);
-                    intent_info.putExtra(ClassConstant.LoginSucces.USER_ID,imageDetailBean.getUser_info().getUser_id() );
+                    intent_info.putExtra(ClassConstant.LoginSucces.USER_ID, imageDetailBean.getUser_info().getUser_id());
                     startActivity(intent_info);
                 }
                 break;
@@ -443,6 +450,15 @@ public class ImageDetailLongActivity
                 Intent intent = new Intent(ImageDetailLongActivity.this, PingListActivity.class);
                 intent.putExtra("item_id", item_id);
                 startActivityForResult(intent, 2);
+
+                break;
+
+            case R.id.iv_shared:
+            case R.id.tv_shared:
+
+                if (imageDetailBean != null) {
+                    sharedItemOpen();
+                }
 
                 break;
         }
@@ -652,10 +668,10 @@ public class ImageDetailLongActivity
                         (ImageView) holder.getView(R.id.iv_header_pic));
 
                 String nikeName = mListData.get(position).getUser_info().getNickname();
-                if(nikeName.length() > 5){
-                    nikeName = nikeName.substring(0,5)+"...";
+                if (nikeName.length() > 5) {
+                    nikeName = nikeName.substring(0, 5) + "...";
                 }
-                ((TextView)holder.getView(R.id.tv_name_pic)).setText(nikeName);
+                ((TextView) holder.getView(R.id.tv_name_pic)).setText(nikeName);
                 List<com.homechart.app.home.bean.cailike.ColorInfoBean> list_color1 = mListData.get(position).getColor_info();
                 if (null != list_color1 && list_color1.size() == 1) {
                     holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
@@ -1056,6 +1072,24 @@ public class ImageDetailLongActivity
 
     }
 
+    private void sharedItemOpen() {
+
+        UMImage image = new UMImage(ImageDetailLongActivity.this, imageDetailBean.getItem_info().getImage().getImg0());
+        image.compressStyle = UMImage.CompressStyle.SCALE;//大小压缩，默认为大小压缩，适合普通很大的图
+        UMWeb web = new UMWeb("http://h5.idcool.com.cn/photo/" + imageDetailBean.getItem_info().getItem_id());
+        web.setTitle(imageDetailBean.getItem_info().getTag());//标题
+        web.setThumb(image);  //缩略图
+        String desi = imageDetailBean.getItem_info().getDescription();
+        if (desi.length() > 160) {
+            desi = desi.substring(0, 160) + "...";
+        }
+        web.setDescription(desi);//描述
+        new ShareAction(ImageDetailLongActivity.this).
+                setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA).
+                withMedia(web).
+                setCallback(umShareListener).open();
+    }
+
     @Override
     public void onLoadMore() {
 
@@ -1293,5 +1327,26 @@ public class ImageDetailLongActivity
         }
     };
 
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+            //分享开始的回调
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            ToastUtils.showCenter(ImageDetailLongActivity.this, "分享成功啦");
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            ToastUtils.showCenter(ImageDetailLongActivity.this, "分享失败啦");
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            ToastUtils.showCenter(ImageDetailLongActivity.this, "分享取消了");
+        }
+    };
 
 }
