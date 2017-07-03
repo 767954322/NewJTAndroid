@@ -80,15 +80,15 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/view_line"
-                android:paddingBottom="@dimen/font_15"
-                android:paddingTop="@dimen/font_15">
+                android:layout_below="@+id/view_line">
 
                 <ImageView
                     android:id="@+id/iv_bang"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/font_15"
+                    android:paddingBottom="@dimen/font_15"
+                    android:paddingTop="@dimen/font_15"
                     android:src="@drawable/bang" />
 
                 <TextView
@@ -96,7 +96,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_marginLeft="@dimen/font_4"
+                    android:paddingLeft="@dimen/font_4"
+                    android:layout_centerVertical="true"
+                    android:paddingBottom="@dimen/font_15"
+                    android:paddingTop="@dimen/font_15"
                     android:layout_toRightOf="@+id/iv_bang"
                     android:text="0"
                     android:textColor="@color/bg_8f8f8f"
@@ -107,6 +110,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/font_50"
+                    android:paddingBottom="@dimen/font_15"
+                    android:paddingTop="@dimen/font_15"
                     android:layout_toRightOf="@+id/iv_bang"
                     android:src="@drawable/xing" />
 
@@ -116,7 +121,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_marginLeft="@dimen/font_4"
+                    android:paddingLeft="@dimen/font_4"
+                    android:layout_centerVertical="true"
+                    android:paddingBottom="@dimen/font_15"
+                    android:paddingTop="@dimen/font_15"
                     android:layout_toRightOf="@+id/iv_xing"
                     android:text="0"
                     android:textColor="@color/bg_8f8f8f"
@@ -127,6 +135,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/font_50"
+                    android:paddingBottom="@dimen/font_15"
+                    android:paddingTop="@dimen/font_15"
                     android:layout_toRightOf="@+id/iv_xing"
                     android:src="@drawable/ping" />
 
@@ -136,7 +146,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
-                    android:layout_marginLeft="@dimen/font_4"
+                    android:paddingLeft="@dimen/font_4"
+                    android:layout_centerVertical="true"
+                    android:paddingBottom="@dimen/font_15"
+                    android:paddingTop="@dimen/font_15"
                     android:layout_toRightOf="@+id/iv_ping"
                     android:text="0"
                     android:textColor="@color/bg_8f8f8f"
@@ -149,9 +162,12 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
-                    android:layout_marginLeft="@dimen/font_4"
+                    android:paddingLeft="@dimen/font_4"
                     android:layout_marginRight="@dimen/font_10"
                     android:text="0"
+                    android:paddingBottom="@dimen/font_15"
+                    android:paddingTop="@dimen/font_15"
+                    android:layout_centerVertical="true"
                     android:textColor="@color/bg_8f8f8f"
                     android:textSize="@dimen/size_11" />
 
@@ -159,7 +175,10 @@
                     android:id="@+id/iv_shared"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/font_4"
+                    android:paddingRight="@dimen/font_4"
+                    android:paddingLeft="@dimen/font_4"
+                    android:paddingBottom="@dimen/font_15"
+                    android:paddingTop="@dimen/font_15"
                     android:layout_toLeftOf="@+id/tv_shared"
                     android:src="@drawable/zhuan" />
             </RelativeLayout>

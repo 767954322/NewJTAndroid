@@ -53,5 +53,6 @@ public class UrlConstants {
     public static final String LIKE_CAI = "https://api.idcool.com.cn/single/single/recommend";  //猜你喜欢
     public static final String ACTIVITY_IMAGE = "https://api.idcool.com.cn/activity/activity/getSingleList";  //参与活动的图片列表
     public static final String ACTIVITY_DETAILS = "https://api.idcool.com.cn/activity/activity/getInfo";  //获取活动详情
+    public static final String ADD_SHARED = "https://api.idcool.com.cn/base/share/updateShareNum";  //增加分享数
 
 }

@@ -181,8 +181,9 @@ public class ImageDetailActivity
                 break;
             case R.id.iv_shared:
             case R.id.tv_shared:
-
-                sharedItemOpen();
+                if (imageDetailBean != null) {
+                    sharedItemOpen();
+                }
                 break;
         }
     }
@@ -549,6 +550,8 @@ public class ImageDetailActivity
 
         @Override
         public void onResult(SHARE_MEDIA platform) {
+
+            addShared();
             ToastUtils.showCenter(ImageDetailActivity.this, "分享成功啦");
         }
 
@@ -562,4 +565,28 @@ public class ImageDetailActivity
             ToastUtils.showCenter(ImageDetailActivity.this, "分享取消了");
         }
     };
+
+    private void addShared() {
+        OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+            }
+
+            @Override
+            public void onResponse(String s) {
+                try {
+                    JSONObject jsonObject = new JSONObject(s);
+                    int error_code = jsonObject.getInt(ClassConstant.Parame.ERROR_CODE);
+                    String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
+                    String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
+                    if (error_code == 0) {
+                        getImageDetail();
+                    } else {
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        };
+        MyHttpManager.getInstance().addShared(imageDetailBean.getItem_info().getItem_id(), "item", callBack);
+    }
 }
