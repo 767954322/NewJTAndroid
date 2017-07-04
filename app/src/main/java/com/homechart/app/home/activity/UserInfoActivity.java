@@ -207,7 +207,7 @@ public class UserInfoActivity
                         getGuanZhu();
                     } else if (userCenterInfoBean.getUser_info().getRelation().equals("1")) {//已关注
                         getQuXiao();
-                    } else if (userCenterInfoBean.getUser_info().getRelation().equals("0")) {//相互关注
+                    } else if (userCenterInfoBean.getUser_info().getRelation().equals("2")) {//相互关注
                         getQuXiao();
                     }
                 } else {
