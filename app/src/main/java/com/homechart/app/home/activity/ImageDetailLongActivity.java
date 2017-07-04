@@ -1016,17 +1016,25 @@ public class ImageDetailLongActivity
             imageFirstTag = false;
         }
         listColor = imageDetailBean.getColor_info();
-        int width = ll_color_lines.getLayoutParams().width;
+        int width = iv_details_image.getLayoutParams().width;
         if (ifFirst) {
             if (listColor != null && listColor.size() > 0) {
+                ll_color_lines.setVisibility(View.VISIBLE);
+                float float_talte = 0;
+                for (int i = 0; i < listColor.size(); i++) {
+                    float wid = Float.parseFloat(listColor.get(i).getColor_percent().trim());
+                    float_talte = float_talte + wid;
+                }
 
-//                for (int i = 0; i < listColor.size(); i++) {
-//                    TextView textView = new TextView(this);
-//                    textView.setWidth(width*listColor.get(i).getColor_percent());
-//                    textView.setHeight(UIUtils.getDimens(R.dimen.font_30));
-//                    textView.setBackgroundColor(Color.parseColor("#" + listColor.get(i).getColor_value()));
-//                    ll_color_lines.addView(textView);
-//                }
+                for (int i = 0; i < listColor.size(); i++) {
+                    TextView textView = new TextView(this);
+                    float wid = Float.parseFloat(listColor.get(i).getColor_percent().trim());
+                    float per = wid / float_talte;
+                    textView.setWidth((int) (width * per));
+                    textView.setHeight(UIUtils.getDimens(R.dimen.font_30));
+                    textView.setBackgroundColor(Color.parseColor("#" + listColor.get(i).getColor_value()));
+                    ll_color_lines.addView(textView);
+                }
                 rl_imagedetails_next.setVisibility(View.VISIBLE);
                 iv_ifshow_color.setVisibility(View.VISIBLE);
                 dgv_colorlist.setVisibility(View.GONE);
