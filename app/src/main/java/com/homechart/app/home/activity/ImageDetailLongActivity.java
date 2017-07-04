@@ -27,6 +27,7 @@ import com.android.volley.VolleyError;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
+import com.homechart.app.home.adapter.MyColorGridAdapter;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.cailike.ImageLikeItemBean;
 import com.homechart.app.home.bean.cailike.LikeDataBean;
@@ -41,7 +42,9 @@ import com.homechart.app.home.bean.shaijia.ShaiJiaItemBean;
 import com.homechart.app.home.bean.shouye.SYDataColorBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.ClearEditText;
+import com.homechart.app.myview.CustomGridView;
 import com.homechart.app.myview.FlowLayoutBiaoQian;
+import com.homechart.app.myview.MyListView;
 import com.homechart.app.myview.ResizeRelativeLayout;
 import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
@@ -120,10 +123,10 @@ public class ImageDetailLongActivity
     private int guanzhuTag = 0;//1:未关注  2:关注   3:相互关注
     private boolean imageFirstTag = true;
     private FlowLayoutBiaoQian fl_tags_jubu;
-    private RelativeLayout rl_image_color;
-    private RoundImageView riv_color_image_details_one;
-    private RoundImageView riv_color_image_details_two;
-    private RoundImageView riv_color_image_details_three;
+    //    private RelativeLayout rl_image_color;
+//    private RoundImageView riv_color_image_details_one;
+//    private RoundImageView riv_color_image_details_two;
+//    private RoundImageView riv_color_image_details_three;
     private ImageView iv_imagedetails_next;
     private TextView tv_imagedetails_next;
     private List<ColorInfoBean> listColor;
@@ -172,6 +175,12 @@ public class ImageDetailLongActivity
     private ResizeRelativeLayout menu_layout;
     private boolean mIsKeyboardOpened = false;
     private int mMenuOpenedHeight = 0;
+    private MyListView dgv_colorlist;
+    private TextView tv_color_tips;
+    private RelativeLayout rl_color_location;
+    private ImageView iv_ifshow_color;
+    private RelativeLayout rl_imagedetails_next;
+    private LinearLayout ll_color_lines;
 
     @Override
     protected int getLayoutResId() {
@@ -205,10 +214,11 @@ public class ImageDetailLongActivity
         iv_people_tag = (ImageView) view.findViewById(R.id.iv_people_tag);
         tv_people_details = (TextView) view.findViewById(R.id.tv_people_details);
         fl_tags_jubu = (FlowLayoutBiaoQian) view.findViewById(R.id.fl_tags_jubu);
-        rl_image_color = (RelativeLayout) view.findViewById(R.id.rl_image_color);
-        riv_color_image_details_one = (RoundImageView) view.findViewById(R.id.riv_color_image_details_one);
-        riv_color_image_details_two = (RoundImageView) view.findViewById(R.id.riv_color_image_details_two);
-        riv_color_image_details_three = (RoundImageView) view.findViewById(R.id.riv_color_image_details_three);
+        dgv_colorlist = (MyListView) view.findViewById(R.id.dgv_colorlist);
+        tv_color_tips = (TextView) view.findViewById(R.id.tv_color_tips);
+        iv_ifshow_color = (ImageView) view.findViewById(R.id.iv_ifshow_color);
+        rl_imagedetails_next = (RelativeLayout) view.findViewById(R.id.rl_imagedetails_next);
+        rl_color_location = (RelativeLayout) view.findViewById(R.id.rl_color_location);
         iv_imagedetails_next = (ImageView) view.findViewById(R.id.iv_imagedetails_next);
         tv_imagedetails_next = (TextView) view.findViewById(R.id.tv_imagedetails_next);
         rl_ping_one = (RelativeLayout) view.findViewById(R.id.rl_ping_one);
@@ -254,6 +264,7 @@ public class ImageDetailLongActivity
         tv_xing = (TextView) view.findViewById(R.id.tv_xing);
         tv_ping = (TextView) view.findViewById(R.id.tv_ping);
         tv_shared = (TextView) view.findViewById(R.id.tv_shared);
+        ll_color_lines = (LinearLayout) view.findViewById(R.id.ll_color_lines);
 
     }
 
@@ -278,6 +289,7 @@ public class ImageDetailLongActivity
         rl_ping_four.setOnClickListener(this);
         iv_ping.setOnClickListener(this);
         tv_ping.setOnClickListener(this);
+        iv_ifshow_color.setOnClickListener(this);
         nav_secondary_imageButton.setOnClickListener(this);
         cet_clearedit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
@@ -365,7 +377,7 @@ public class ImageDetailLongActivity
                 if (imageDetailBean != null) {
                     Intent intent_info = new Intent(ImageDetailLongActivity.this, UserInfoActivity.class);
                     intent_info.putExtra(ClassConstant.LoginSucces.USER_ID, imageDetailBean.getUser_info().getUser_id());
-                    startActivityForResult(intent_info,3);
+                    startActivityForResult(intent_info, 3);
                 }
                 break;
             case R.id.nav_left_imageButton:
@@ -460,6 +472,30 @@ public class ImageDetailLongActivity
 
                 if (imageDetailBean != null) {
                     sharedItemOpen();
+                }
+
+                break;
+            case R.id.iv_ifshow_color:
+
+                if (ifShowColorList) {
+                    //隐藏
+                    ifShowColorList = false;
+
+                    iv_ifshow_color.setVisibility(View.VISIBLE);
+                    iv_ifshow_color.setImageResource(R.drawable.zhankai);
+                    dgv_colorlist.setVisibility(View.GONE);
+                    tv_color_tips.setVisibility(View.GONE);
+                    rl_color_location.setVisibility(View.GONE);
+                } else {
+                    //显示
+                    ifShowColorList = true;
+
+                    iv_ifshow_color.setImageResource(R.drawable.shouqi);
+                    iv_ifshow_color.setVisibility(View.VISIBLE);
+                    dgv_colorlist.setVisibility(View.VISIBLE);
+                    tv_color_tips.setVisibility(View.VISIBLE);
+                    rl_color_location.setVisibility(View.VISIBLE);
+
                 }
 
                 break;
@@ -934,9 +970,9 @@ public class ImageDetailLongActivity
         layoutParams.height = (int) (wide_num / imageDetailBean.getItem_info().getImage().getRatio());
         iv_details_image.setLayoutParams(layoutParams);
         ImageUtils.displayRoundImage(imageDetailBean.getUser_info().getAvatar().getThumb(), riv_people_header);
-       String nikeName =  imageDetailBean.getUser_info().getNickname();
-        if(nikeName.length() >8){
-            nikeName = nikeName.substring(0,8)+"...";
+        String nikeName = imageDetailBean.getUser_info().getNickname();
+        if (nikeName.length() > 8) {
+            nikeName = nikeName.substring(0, 8) + "...";
         }
         tv_people_name.setText(nikeName);
         if (!imageDetailBean.getUser_info().getProfession().equals("0")) {
@@ -979,23 +1015,27 @@ public class ImageDetailLongActivity
             ImageUtils.displayFilletImage(imageDetailBean.getItem_info().getImage().getImg0(), iv_details_image);
             imageFirstTag = false;
         }
-
+        listColor = imageDetailBean.getColor_info();
+        int width = ll_color_lines.getLayoutParams().width;
         if (ifFirst) {
-            if (imageDetailBean.getColor_info() != null && imageDetailBean.getColor_info().size() > 0) {
-                rl_image_color.setVisibility(View.VISIBLE);
-                listColor = imageDetailBean.getColor_info();
-                if (listColor.size() == 1) {
-                    riv_color_image_details_one.setBackgroundColor(Color.parseColor("#" + listColor.get(0).getColor_value()));
-                } else if (listColor.size() == 2) {
-                    riv_color_image_details_one.setBackgroundColor(Color.parseColor("#" + listColor.get(0).getColor_value()));
-                    riv_color_image_details_two.setBackgroundColor(Color.parseColor("#" + listColor.get(1).getColor_value()));
-                } else if (listColor.size() == 3) {
-                    riv_color_image_details_one.setBackgroundColor(Color.parseColor("#" + listColor.get(0).getColor_value()));
-                    riv_color_image_details_two.setBackgroundColor(Color.parseColor("#" + listColor.get(1).getColor_value()));
-                    riv_color_image_details_three.setBackgroundColor(Color.parseColor("#" + listColor.get(2).getColor_value()));
-                }
+            if (listColor != null && listColor.size() > 0) {
+
+//                for (int i = 0; i < listColor.size(); i++) {
+//                    TextView textView = new TextView(this);
+//                    textView.setWidth(width*listColor.get(i).getColor_percent());
+//                    textView.setHeight(UIUtils.getDimens(R.dimen.font_30));
+//                    textView.setBackgroundColor(Color.parseColor("#" + listColor.get(i).getColor_value()));
+//                    ll_color_lines.addView(textView);
+//                }
+                rl_imagedetails_next.setVisibility(View.VISIBLE);
+                iv_ifshow_color.setVisibility(View.VISIBLE);
+                dgv_colorlist.setVisibility(View.GONE);
+                tv_color_tips.setVisibility(View.GONE);
+                rl_color_location.setVisibility(View.GONE);
+                dgv_colorlist.setAdapter(new MyColorGridAdapter(listColor, ImageDetailLongActivity.this));
             } else {
-                rl_image_color.setVisibility(View.GONE);
+                rl_imagedetails_next.setVisibility(View.GONE);
+                iv_ifshow_color.setVisibility(View.GONE);
             }
             ifFirst = false;
         }
@@ -1065,6 +1105,11 @@ public class ImageDetailLongActivity
         tv_shared.setText(share_num + "");
     }
 
+
+    private void showColorList() {
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -1074,7 +1119,7 @@ public class ImageDetailLongActivity
         } else if (requestCode == 2) {
             getImageDetail();
             getPingList();
-        }else if(requestCode == 3){
+        } else if (requestCode == 3) {
             getImageDetail();
         }
 
@@ -1381,4 +1426,6 @@ public class ImageDetailLongActivity
         };
         MyHttpManager.getInstance().addShared(imageDetailBean.getItem_info().getItem_id(), "item", callBack);
     }
+
+    private boolean ifShowColorList = false;
 }

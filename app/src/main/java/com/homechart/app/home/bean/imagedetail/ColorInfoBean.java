@@ -12,12 +12,14 @@ public class ColorInfoBean implements Serializable {
     private String color_value;
     private String color_percent;
     private String color_class;
+    private String color_name;
 
-    public ColorInfoBean(int color_id, String color_value, String color_percent, String color_class) {
+    public ColorInfoBean(int color_id, String color_value, String color_percent, String color_class, String color_name) {
         this.color_id = color_id;
         this.color_value = color_value;
         this.color_percent = color_percent;
         this.color_class = color_class;
+        this.color_name = color_name;
     }
 
     public int getColor_id() {
@@ -52,6 +54,15 @@ public class ColorInfoBean implements Serializable {
         this.color_class = color_class;
     }
 
+    public String getColor_name() {
+        return color_name;
+    }
+
+    public void setColor_name(String color_name) {
+        this.color_name = color_name;
+    }
+
+
     @Override
     public String toString() {
         return "ColorInfoBean{" +
@@ -59,6 +70,7 @@ public class ColorInfoBean implements Serializable {
                 ", color_value='" + color_value + '\'' +
                 ", color_percent='" + color_percent + '\'' +
                 ", color_class='" + color_class + '\'' +
+                ", color_name='" + color_name + '\'' +
                 '}';
     }
 }

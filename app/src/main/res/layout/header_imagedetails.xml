@@ -84,71 +84,129 @@
             android:background="@color/white"
             android:scaleType="centerCrop" />
 
+        <LinearLayout
+            android:id="@+id/ll_color_lines"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/font_30"
+            android:layout_below="@+id/iv_details_image"
+            android:layout_marginTop="@dimen/font_3"
+            android:visibility="gone"
+            android:orientation="horizontal"/>
 
-        <RelativeLayout
-            android:id="@+id/rl_image_color"
+        <com.homechart.app.myview.MyListView
+            android:id="@+id/dgv_colorlist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_details_image"
-            android:layout_marginBottom="@dimen/font_12"
-            android:layout_marginTop="@dimen/font_12"
-            android:background="@drawable/relativity_round"
+            android:layout_below="@+id/ll_color_lines"
+            android:layout_marginTop="@dimen/font_25"
+            android:divider="@null"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_color_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dgv_colorlist"
+            android:layout_marginLeft="@dimen/font_10"
+            android:layout_marginRight="@dimen/font_10"
+            android:lineSpacingExtra="@dimen/font_4"
+            android:text="Tips:因光线和显示原因，图中色彩可能与实际色彩有所偏差。"
+            android:textColor="@color/bg_8f8f8f"
+            android:textSize="@dimen/size_12"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:id="@+id/rl_color_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tv_color_tips"
+            android:layout_marginTop="@dimen/font_25"
             android:visibility="gone">
 
-            <com.homechart.app.myview.RoundImageView
-                android:id="@+id/riv_color_image_details_one"
-                android:layout_width="@dimen/font_30"
-                android:layout_height="@dimen/font_30"
-                android:layout_marginLeft="@dimen/font_10" />
-
-            <com.homechart.app.myview.RoundImageView
-                android:id="@+id/riv_color_image_details_two"
-                android:layout_width="@dimen/font_30"
-                android:layout_height="@dimen/font_30"
-                android:layout_marginLeft="@dimen/font_5"
-                android:layout_toRightOf="@+id/riv_color_image_details_one" />
-
-            <com.homechart.app.myview.RoundImageView
-                android:id="@+id/riv_color_image_details_three"
-                android:layout_width="@dimen/font_30"
-                android:layout_height="@dimen/font_30"
-                android:layout_marginLeft="@dimen/font_5"
-                android:layout_toRightOf="@+id/riv_color_image_details_two" />
-
+            <TextView
+                android:id="@+id/tv_color_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="power by 码隆科技 "
+                android:textColor="@color/bg_8f8f8f"
+                android:textSize="@dimen/size_12" />
 
             <ImageView
-                android:id="@+id/iv_imagedetails_next"
+                android:id="@+id/iv_colot_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/font_10"
-                android:src="@drawable/next" />
+                android:layout_toRightOf="@+id/tv_color_start"
+                android:src="@drawable/productai" />
 
             <TextView
-                android:id="@+id/tv_imagedetails_next"
+                android:id="@+id/tv_color_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/font_6"
-                android:layout_toLeftOf="@+id/iv_imagedetails_next"
-                android:text="更多相似配色"
+                android:layout_marginRight="@dimen/font_10"
+                android:layout_toRightOf="@+id/iv_colot_icon"
+                android:text="@string/color_end"
                 android:textColor="@color/bg_8f8f8f"
-                android:textSize="@dimen/font_12" />
+                android:textSize="@dimen/size_12" />
+
 
         </RelativeLayout>
 
+        <ImageView
+            android:id="@+id/iv_ifshow_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl_color_location"
+            android:layout_centerHorizontal="true"
+            android:paddingBottom="@dimen/font_10"
+            android:paddingLeft="@dimen/font_20"
+            android:paddingRight="@dimen/font_20"
+            android:paddingTop="@dimen/font_15"
+            android:src="@drawable/zhankai"
+            android:visibility="gone" />
+
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/rl_imagedetails_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_details_image"
+        android:layout_marginTop="@dimen/font_15">
+
+        <ImageView
+            android:id="@+id/iv_imagedetails_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/font_10"
+            android:src="@drawable/next" />
+
+        <TextView
+            android:id="@+id/tv_imagedetails_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/font_6"
+            android:layout_toLeftOf="@+id/iv_imagedetails_next"
+            android:text="更多相似配色"
+            android:textColor="@color/bg_8f8f8f"
+            android:textSize="@dimen/font_12" />
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_details_tital"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rl_details_image"
+        android:layout_below="@+id/rl_imagedetails_next"
         android:layout_marginLeft="@dimen/font_10"
         android:layout_marginRight="@dimen/font_10"
-        android:layout_marginTop="@dimen/font_15"
+        android:layout_marginTop="@dimen/font_20"
         android:background="@color/white"
         android:textColor="@color/bg_262626"
         android:textSize="@dimen/size_14" />
@@ -205,12 +263,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:paddingLeft="@dimen/font_4"
+            android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/iv_bang"
             android:paddingBottom="@dimen/font_15"
+            android:paddingLeft="@dimen/font_4"
             android:paddingTop="@dimen/font_15"
             android:text="0"
-            android:layout_centerVertical="true"
             android:textColor="@color/bg_8f8f8f"
             android:textSize="@dimen/size_11" />
 
@@ -230,12 +288,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:paddingLeft="@dimen/font_4"
+            android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/iv_xing"
             android:paddingBottom="@dimen/font_15"
+            android:paddingLeft="@dimen/font_4"
             android:paddingTop="@dimen/font_15"
             android:text="0"
-            android:layout_centerVertical="true"
             android:textColor="@color/bg_8f8f8f"
             android:textSize="@dimen/size_11" />
 
@@ -255,12 +313,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:paddingLeft="@dimen/font_4"
+            android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/iv_ping"
             android:paddingBottom="@dimen/font_15"
+            android:paddingLeft="@dimen/font_4"
             android:paddingTop="@dimen/font_15"
             android:text="0"
-            android:layout_centerVertical="true"
             android:textColor="@color/bg_8f8f8f"
             android:textSize="@dimen/size_11" />
 
@@ -271,12 +329,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/font_4"
+            android:layout_marginRight="@dimen/font_10"
             android:paddingBottom="@dimen/font_15"
             android:paddingTop="@dimen/font_15"
-            android:layout_marginRight="@dimen/font_10"
             android:text="0"
-            android:layout_centerVertical="true"
             android:textColor="@color/bg_8f8f8f"
             android:textSize="@dimen/size_11" />
 
@@ -284,9 +342,9 @@
             android:id="@+id/iv_shared"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="@dimen/font_4"
             android:layout_toLeftOf="@+id/tv_shared"
             android:paddingBottom="@dimen/font_15"
+            android:paddingRight="@dimen/font_4"
             android:paddingTop="@dimen/font_15"
             android:src="@drawable/zhuan" />
     </RelativeLayout>
@@ -366,9 +424,9 @@
                     android:background="@drawable/text_zuozhe"
                     android:gravity="center"
                     android:text="作者"
-                    android:visibility="gone"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/font_10" />
+                    android:textSize="@dimen/font_10"
+                    android:visibility="gone" />
 
             </RelativeLayout>
 
@@ -533,9 +591,9 @@
                     android:background="@drawable/text_zuozhe"
                     android:gravity="center"
                     android:text="作者"
-                    android:visibility="gone"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/font_10" />
+                    android:textSize="@dimen/font_10"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <LinearLayout
@@ -698,9 +756,9 @@
                     android:background="@drawable/text_zuozhe"
                     android:gravity="center"
                     android:text="作者"
-                    android:visibility="gone"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/font_10" />
+                    android:textSize="@dimen/font_10"
+                    android:visibility="gone" />
             </RelativeLayout>
 
 
