@@ -1,6 +1,7 @@
 package com.homechart.app.home.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,17 +12,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
+import com.homechart.app.home.adapter.MyColorGridAdapter;
 import com.homechart.app.home.base.BaseActivity;
+import com.homechart.app.home.bean.imagedetail.ColorInfoBean;
 import com.homechart.app.home.bean.imagedetail.ImageDetailBean;
 import com.homechart.app.myview.FlowLayoutBiaoQian;
 import com.homechart.app.myview.FlowLayoutShaiXuan;
 import com.homechart.app.myview.HomeSharedPopWin;
+import com.homechart.app.myview.MyListView;
 import com.homechart.app.utils.CustomProgress;
 import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.ToastUtils;
@@ -40,6 +46,7 @@ import com.umeng.socialize.media.UMWeb;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +84,17 @@ public class ImageDetailActivity
     private int share_num;
     private boolean ifFirst = true;
     private FlowLayoutBiaoQian fl_tags_jubu;
-
+    private LinearLayout ll_color_lines;
+    private MyListView dgv_colorlist;
+    private TextView tv_color_tips;
+    private ImageView iv_ifshow_color;
+    private RelativeLayout rl_imagedetails_next;
+    private RelativeLayout rl_color_location;
+    private ImageView iv_imagedetails_next;
+    private TextView tv_imagedetails_next;
+    private List<ColorInfoBean> listColor;
+    private boolean ifShowColorList = false;
+    private List<String> list = new ArrayList<>();
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_image_detail;
@@ -109,6 +126,15 @@ public class ImageDetailActivity
         tv_ping = (TextView) findViewById(R.id.tv_ping);
         tv_shared = (TextView) findViewById(R.id.tv_shared);
         fl_tags_jubu = (FlowLayoutBiaoQian) findViewById(R.id.fl_tags_jubu);
+        ll_color_lines = (LinearLayout) findViewById(R.id.ll_color_lines);
+        dgv_colorlist = (MyListView)findViewById(R.id.dgv_colorlist);
+        tv_color_tips = (TextView) findViewById(R.id.tv_color_tips);
+        iv_ifshow_color = (ImageView) findViewById(R.id.iv_ifshow_color);
+        rl_imagedetails_next = (RelativeLayout) findViewById(R.id.rl_imagedetails_next);
+        rl_color_location = (RelativeLayout) findViewById(R.id.rl_color_location);
+        iv_imagedetails_next = (ImageView) findViewById(R.id.iv_imagedetails_next);
+        tv_imagedetails_next = (TextView) findViewById(R.id.tv_imagedetails_next);
+
 
     }
 
@@ -125,6 +151,9 @@ public class ImageDetailActivity
         tv_ping.setOnClickListener(this);
         iv_shared.setOnClickListener(this);
         tv_shared.setOnClickListener(this);
+        iv_ifshow_color.setOnClickListener(this);
+        iv_imagedetails_next.setOnClickListener(this);
+        tv_imagedetails_next.setOnClickListener(this);
     }
 
     @Override
@@ -183,6 +212,40 @@ public class ImageDetailActivity
             case R.id.tv_shared:
                 if (imageDetailBean != null) {
                     sharedItemOpen();
+                }
+                break;
+            case R.id.iv_ifshow_color:
+
+                if (ifShowColorList) {
+                    //隐藏
+                    ifShowColorList = false;
+
+                    iv_ifshow_color.setVisibility(View.VISIBLE);
+                    iv_ifshow_color.setImageResource(R.drawable.zhankai);
+                    dgv_colorlist.setVisibility(View.GONE);
+                    tv_color_tips.setVisibility(View.GONE);
+                    rl_color_location.setVisibility(View.GONE);
+                } else {
+                    //显示
+                    ifShowColorList = true;
+
+                    iv_ifshow_color.setImageResource(R.drawable.shouqi);
+                    iv_ifshow_color.setVisibility(View.VISIBLE);
+                    dgv_colorlist.setVisibility(View.VISIBLE);
+                    tv_color_tips.setVisibility(View.VISIBLE);
+                    rl_color_location.setVisibility(View.VISIBLE);
+
+                }
+
+                break;
+            case R.id.tv_imagedetails_next:
+            case R.id.iv_imagedetails_next:
+
+                if (list.size() > 0 && listColor != null && listColor.size() > 0) {
+                    Intent intent2 = new Intent(ImageDetailActivity.this, ShaiXuanResultActicity.class);
+                    intent2.putExtra("shaixuan_tag", list.get(0));
+                    intent2.putExtra("colorlist", (Serializable) listColor);
+                    startActivity(intent2);
                 }
                 break;
         }
@@ -407,9 +470,42 @@ public class ImageDetailActivity
         ImageUtils.displayFilletImage(imageDetailBean.getItem_info().getImage().getImg0(), iv_details_image);
 
 
+        listColor = imageDetailBean.getColor_info();
+//        listColor.add(new ColorInfoBean(1,"eeeeee","0.3","","name1"));
+//        listColor.add(new ColorInfoBean(1,"f8f8f8","0.7","","name2"));
+        int width = iv_details_image.getLayoutParams().width;
+            if (listColor != null && listColor.size() > 0) {
+                ll_color_lines.setVisibility(View.VISIBLE);
+                float float_talte = 0;
+                for (int i = 0; i < listColor.size(); i++) {
+                    float wid = Float.parseFloat(listColor.get(i).getColor_percent().trim());
+                    float_talte = float_talte + wid;
+                }
+
+                for (int i = 0; i < listColor.size(); i++) {
+                    TextView textView = new TextView(this);
+                    float wid = Float.parseFloat(listColor.get(i).getColor_percent().trim());
+                    float per = wid / float_talte;
+                    textView.setWidth((int) (width * per));
+                    textView.setHeight(UIUtils.getDimens(R.dimen.font_30));
+                    textView.setBackgroundColor(Color.parseColor("#" + listColor.get(i).getColor_value()));
+                    ll_color_lines.addView(textView);
+                }
+                rl_imagedetails_next.setVisibility(View.VISIBLE);
+                iv_ifshow_color.setVisibility(View.VISIBLE);
+                dgv_colorlist.setVisibility(View.GONE);
+                tv_color_tips.setVisibility(View.GONE);
+                rl_color_location.setVisibility(View.GONE);
+                dgv_colorlist.setAdapter(new MyColorGridAdapter(listColor, ImageDetailActivity.this));
+            } else {
+                rl_imagedetails_next.setVisibility(View.GONE);
+                iv_ifshow_color.setVisibility(View.GONE);
+            }
+
+
         String tag = imageDetailBean.getItem_info().getTag().toString();
         String[] str_tag = tag.split(" ");
-        List<String> list = new ArrayList<>();
+        list.clear();
         for (int i = 0; i < str_tag.length; i++) {
             if (!TextUtils.isEmpty(str_tag[i].trim())) {
                 list.add(str_tag[i]);
