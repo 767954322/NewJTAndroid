@@ -11,7 +11,9 @@ import com.homechart.app.R;
 import com.homechart.app.home.activity.HomeActivity;
 import com.homechart.app.home.activity.LoginActivity;
 import com.homechart.app.utils.SharedPreferencesUtils;
+import com.umeng.analytics.MobclickAgent;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -46,6 +48,10 @@ public class WelcomePagerAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 if (position == 2) {
+                    HashMap<String, String> map = new HashMap<String, String>();
+                    map.put("evenname", "离开启动页");
+                    map.put("even", "离开启动页");
+                    MobclickAgent.onEvent(context, "test", map);
                     SharedPreferencesUtils.writeBoolean(ISFIRST, true);
                     Intent intent = new Intent(context, LoginActivity.class);
                     context.startActivity(intent);

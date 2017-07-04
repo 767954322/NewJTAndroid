@@ -19,6 +19,7 @@ import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.utils.SharedPreferencesUtils;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.widget.SwipeViewPager;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,9 +70,9 @@ public class WelcomeActivity extends BaseActivity {
 
     public List<Integer> getAdData() {
         List<Integer> adList = new ArrayList<>();
-        adList.add(R.drawable.addpic);
-        adList.add(R.drawable.addpic);
-        adList.add(R.drawable.addpic);
+        adList.add(R.drawable.a1);
+        adList.add(R.drawable.a2);
+        adList.add(R.drawable.a3);
         return adList;
     }
 
@@ -101,8 +102,10 @@ public class WelcomeActivity extends BaseActivity {
                 //TODO 最后的权限回调
         }
     }
+
     //退出时的时间
     private long mExitTime;
+
     //对返回键进行监听
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -117,11 +120,26 @@ public class WelcomeActivity extends BaseActivity {
 
     public void exit() {
         if ((System.currentTimeMillis() - mExitTime) > 3000) {
-            ToastUtils.showCenter(WelcomeActivity.this,"再次点击返回键退出");
+            ToastUtils.showCenter(WelcomeActivity.this, "再次点击返回键退出");
             mExitTime = System.currentTimeMillis();
         } else {
             WelcomeActivity.this.finish();
             System.exit(0);
         }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("引导页");
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("引导页");
+        MobclickAgent.onPause(this);
     }
 }

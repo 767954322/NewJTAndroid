@@ -24,6 +24,7 @@ import com.homechart.app.commont.KeyConstans;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.utils.ToastUtils;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * @author Allen.Gu .
@@ -162,6 +163,7 @@ public class AdvertisementActivity extends BaseActivity implements View.OnClickL
 
     //退出时的时间
     private long mExitTime;
+
     //对返回键进行监听
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -176,12 +178,26 @@ public class AdvertisementActivity extends BaseActivity implements View.OnClickL
 
     public void exit() {
         if ((System.currentTimeMillis() - mExitTime) > 3000) {
-            ToastUtils.showCenter(AdvertisementActivity.this,"再次点击返回键退出");
+            ToastUtils.showCenter(AdvertisementActivity.this, "再次点击返回键退出");
             mExitTime = System.currentTimeMillis();
         } else {
             AdvertisementActivity.this.finish();
             System.exit(0);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("广告页");
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("广告页");
+        MobclickAgent.onPause(this);
     }
 }
 
