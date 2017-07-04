@@ -471,8 +471,6 @@ public class ImageDetailActivity
 
 
         listColor = imageDetailBean.getColor_info();
-//        listColor.add(new ColorInfoBean(1,"eeeeee","0.3","","name1"));
-//        listColor.add(new ColorInfoBean(1,"f8f8f8","0.7","","name2"));
         int width = iv_details_image.getLayoutParams().width;
             if (listColor != null && listColor.size() > 0) {
                 ll_color_lines.setVisibility(View.VISIBLE);

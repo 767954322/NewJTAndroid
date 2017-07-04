@@ -656,7 +656,7 @@ public class ShaiXuanResultActicity
             }
 
             riv_round_three.setVisibility(View.GONE);
-        } else if (colorList.size() == 3) {
+        } else if (colorList.size() >= 3) {
             riv_round_one.setVisibility(View.VISIBLE);
             if (colorList.get(0).equalsIgnoreCase("FFFFFF")) {
                 riv_round_one.setBackgroundResource(R.drawable.color_line_white);
