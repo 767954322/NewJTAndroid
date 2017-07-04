@@ -342,7 +342,13 @@ public class HomePicFragment
                 scroll_position = position;
                 ViewGroup.LayoutParams layoutParams = holder.getView(R.id.iv_imageview_one).getLayoutParams();
                 layoutParams.width = width_Pic_List;
-                layoutParams.height = (curentListTag ? mLListDataHeight.get(position) : mSListDataHeight.get(position));
+                if(mListData.get(position).getObject_info().getType().equals("活动")){
+
+                    layoutParams.height = (curentListTag ? (int) (width_Pic_List*0.42) : (int) (width_Pic_Staggered*0.42));
+
+                }else {
+                    layoutParams.height = (curentListTag ? mLListDataHeight.get(position) : mSListDataHeight.get(position));
+                }
                 holder.getView(R.id.iv_imageview_one).setLayoutParams(layoutParams);
                 String nikeName = "";
                 if (mListData.get(position).getObject_info().getType().equals("活动")) {
