@@ -382,8 +382,10 @@ public class HomePicFragment
 
                 if (!mListData.get(position).getObject_info().getType().equals("活动")) {
                     if (curentListTag) {
-                        if (mListData.get(position).getUser_info().getProfession() != "0") {
+                        if (!mListData.get(position).getUser_info().getProfession().equals("0")) {
                             holder.getView(R.id.iv_desiner_icon).setVisibility(View.VISIBLE);
+                        }else {
+                            holder.getView(R.id.iv_desiner_icon).setVisibility(View.GONE);
                         }
                     }
                     List<SYDataColorBean> list_color = mListData.get(position).getColor_info();
