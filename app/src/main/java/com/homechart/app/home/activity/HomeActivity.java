@@ -80,7 +80,7 @@ public class HomeActivity
                 mHomePicFragment = new HomePicFragment(getSupportFragmentManager());
             }
             transaction = getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.main_content, mHomePicFragment).commit();
+            transaction.add(R.id.main_content, mHomePicFragment).commitAllowingStateLoss();
         }
         mRadioGroup.check(R.id.radio_btn_pic);
         mRadioGroup.setAlpha(0.96f);
