@@ -259,13 +259,13 @@ public class HomePicFragment
 
                 //友盟统计
                 HashMap<String, String> map = new HashMap<String, String>();
-                map.put("evenname", "搜索框单击首页顶部搜索框");
-                map.put("even", "搜索框关键词搜索");
+                map.put("evenname", "单击首页顶部搜索框");
+                map.put("even", "关键词搜索");
                 MobclickAgent.onEvent(activity, "搜索框", map);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
-                        .setCategory("搜索框关键词搜索")  //事件类别
-                        .setAction("搜索框单击首页顶部搜索框")      //事件操作
+                        .setCategory("关键词搜索")  //事件类别
+                        .setAction("单击首页顶部搜索框")      //事件操作
                         .build());
 
                 onDismiss();
@@ -728,6 +728,34 @@ public class HomePicFragment
         }
     }
 
+    private void  closeTagTongJi(){
+        //友盟统计
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("evenname", "首页图片取消筛选");
+        map.put("even", "首页图片取消筛选");
+        MobclickAgent.onEvent(activity, "筛选", map);
+        //ga统计
+        MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                .setCategory("首页图片取消筛选")  //事件类别
+                .setAction("首页图片取消筛选")      //事件操作
+                .build());
+    }
+
+    private void openTagTongJi(String name) {
+        //友盟统计
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("evenname", "点开" + name + "筛选项");
+        map.put("even", "筛选-" + name);
+        MobclickAgent.onEvent(activity, "筛选", map);
+        //ga统计
+        MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                .setCategory("筛选-" + name)  //事件类别
+                .setAction("点开" + name + "筛选项")      //事件操作
+                .build());
+
+
+    }
+
     private void showPopwindow(int id, int position) {
         if (tagDataBean != null) {
             if (null == homeTabPopWin) {
@@ -736,6 +764,7 @@ public class HomePicFragment
             if (homeTabPopWin.isShowing()) {
                 if (last_id != 0 && last_id == id) {
                     last_id = 0;
+                    closeTagTongJi();
                     homeTabPopWin.dismiss();
                     iv_kongjian.setImageResource(R.drawable.kongjian1);
                     iv_jubu.setImageResource(R.drawable.jubu1);
@@ -791,24 +820,28 @@ public class HomePicFragment
 
                 switch (id) {
                     case R.id.rl_kongjian:
+                        openTagTongJi("空间");
                         iv_kongjian.setImageResource(R.drawable.kongjian);
                         iv_jubu.setImageResource(R.drawable.jubu1);
                         iv_zhuangshi.setImageResource(R.drawable.zhuangshi1);
                         iv_shouna.setImageResource(R.drawable.shouna1);
                         break;
                     case R.id.rl_jubu:
+                        openTagTongJi("局部");
                         iv_kongjian.setImageResource(R.drawable.kongjian1);
                         iv_jubu.setImageResource(R.drawable.jubu);
                         iv_zhuangshi.setImageResource(R.drawable.zhuangshi1);
                         iv_shouna.setImageResource(R.drawable.shouna1);
                         break;
                     case R.id.rl_zhuangshi:
+                        openTagTongJi("装饰");
                         iv_kongjian.setImageResource(R.drawable.kongjian1);
                         iv_jubu.setImageResource(R.drawable.jubu1);
                         iv_zhuangshi.setImageResource(R.drawable.zhuangshi);
                         iv_shouna.setImageResource(R.drawable.shouna1);
                         break;
                     case R.id.rl_shouna:
+                        openTagTongJi("收纳");
                         iv_kongjian.setImageResource(R.drawable.kongjian1);
                         iv_jubu.setImageResource(R.drawable.jubu1);
                         iv_zhuangshi.setImageResource(R.drawable.zhuangshi1);
@@ -867,6 +900,7 @@ public class HomePicFragment
     @Override
     public void onDismiss() {
         if (homeTabPopWin != null) {
+            closeTagTongJi();
             homeTabPopWin.dismiss();
             iv_kongjian.setImageResource(R.drawable.kongjian1);
             iv_jubu.setImageResource(R.drawable.jubu1);
