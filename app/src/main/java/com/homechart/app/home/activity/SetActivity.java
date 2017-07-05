@@ -27,9 +27,13 @@ import com.homechart.app.utils.alertview.OnItemClickListener;
 import com.homechart.app.utils.imageloader.ImageUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
+import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.media.UMWeb;
 
 import java.io.File;
 import java.util.HashMap;
@@ -123,7 +127,7 @@ public class SetActivity
 
                 break;
             case R.id.rl_set_clear:
-                if(!ifClear){
+                if (!ifClear) {
                     //友盟统计
                     HashMap<String, String> map = new HashMap<String, String>();
                     map.put("evenname", "清除缓存");
@@ -173,8 +177,9 @@ public class SetActivity
                         .setCategory("点击推荐家图")  //事件类别
                         .setAction("推荐家图")      //事件操作
                         .build());
-                Intent intent2 = new Intent(SetActivity.this,TuiJianFriendsActivity.class);
-                startActivity(intent2);
+//                Intent intent2 = new Intent(SetActivity.this,TuiJianFriendsActivity.class);
+//                startActivity(intent2);
+                sharedItemOpen();
 
                 break;
             case R.id.btn_outlogin:
@@ -293,4 +298,48 @@ public class SetActivity
         super.onPause();
         MobclickAgent.onPause(this);
     }
+
+    private void sharedItemOpen() {
+        UMImage image = new UMImage(SetActivity.this, R.drawable.icon_app);
+        image.compressStyle = UMImage.CompressStyle.SCALE;//大小压缩，默认为大小压缩，适合普通很大的图
+        UMWeb web = new UMWeb("https://h5.idcool.com.cn/appdownload");
+        web.setTitle("分析生活之美，分享生活之美，就在家图");//标题
+        web.setThumb(image);  //缩略图
+        String desi = "家图app丨帮你实现舒适生活";
+        web.setDescription(desi);//描述
+        new ShareAction(SetActivity.this).
+                setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA).
+                withMedia(web).
+                setCallback(umShareListener).open();
+    }
+
+    private UMShareListener umShareListener = new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA platform) {
+            //分享开始的回调
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA platform) {
+            if (platform == SHARE_MEDIA.WEIXIN) {
+                ToastUtils.showCenter(SetActivity.this, "微信好友分享成功啦");
+            } else if (platform == SHARE_MEDIA.WEIXIN_CIRCLE) {
+                ToastUtils.showCenter(SetActivity.this, "微信朋友圈分享成功啦");
+            } else if (platform == SHARE_MEDIA.SINA) {
+                ToastUtils.showCenter(SetActivity.this, "新浪微博分享成功啦");
+            }
+
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA platform, Throwable t) {
+            ToastUtils.showCenter(SetActivity.this, "分享失败啦");
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA platform) {
+            ToastUtils.showCenter(SetActivity.this, "分享取消了");
+        }
+    };
+
 }
