@@ -405,6 +405,16 @@ public class RegisterActivity extends BaseActivity
                     String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
                     if (error_code == 0) {
                         LoginBean loginBean = GsonUtil.jsonToBean(data_msg, LoginBean.class);
+                        //友盟统计
+                        HashMap<String, String> map_forget = new HashMap<String, String>();
+                        map_forget.put("evenname", "登陆成功提示");
+                        map_forget.put("even", "登陆成功后的提示");
+                        MobclickAgent.onEvent(RegisterActivity.this, "user_login", map_forget);
+                        //ga统计
+                        MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                                .setCategory("登陆成功后的提示")  //事件类别
+                                .setAction("登陆成功提示")      //事件操作
+                                .build());
                         PublicUtils.loginSucces(loginBean);
                         Intent intent_result = getIntent();
                         setResult(1, intent_result);

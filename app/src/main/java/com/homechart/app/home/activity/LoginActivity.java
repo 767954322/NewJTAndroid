@@ -168,7 +168,16 @@ public class LoginActivity extends BaseActivity
 
                 break;
             case R.id.tv_gorget_pass:
-
+                //友盟统计
+                HashMap<String, String> map_forget = new HashMap<String, String>();
+                map_forget.put("evenname", "忘记密码");
+                map_forget.put("even", "点击忘记密码进入密码重置流程");
+                MobclickAgent.onEvent(LoginActivity.this, "user_login", map_forget);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("点击忘记密码进入密码重置流程")  //事件类别
+                        .setAction("忘记密码")      //事件操作
+                        .build());
                 clickGorgetPass();
 
                 break;
@@ -209,6 +218,16 @@ public class LoginActivity extends BaseActivity
                         String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
                         LoginBean loginBean = GsonUtil.jsonToBean(data_msg, LoginBean.class);
                         PublicUtils.loginSucces(loginBean);
+                        //友盟统计
+                        HashMap<String, String> map_forget = new HashMap<String, String>();
+                        map_forget.put("evenname", "登陆成功提示");
+                        map_forget.put("even", "登陆成功后的提示");
+                        MobclickAgent.onEvent(LoginActivity.this, "user_login", map_forget);
+                        //ga统计
+                        MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                                .setCategory("登陆成功后的提示")  //事件类别
+                                .setAction("登陆成功提示")      //事件操作
+                                .build());
                         Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
                         LoginActivity.this.finish();
