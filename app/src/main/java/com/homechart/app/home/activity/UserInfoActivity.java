@@ -15,6 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.android.gms.analytics.HitBuilders;
+import com.homechart.app.MyApplication;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
@@ -36,11 +38,13 @@ import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.imageloader.ImageUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -118,6 +122,7 @@ public class UserInfoActivity
         mIBBack.setOnClickListener(this);
         rl_info_zhunaye.setOnClickListener(this);
         btn_guanzhu_demand.setOnClickListener(this);
+        iv_header_desiner_center.setOnClickListener(this);
     }
 
     @Override
@@ -194,6 +199,17 @@ public class UserInfoActivity
                 UserInfoActivity.this.finish();
                 break;
             case R.id.rl_info_zhunaye:
+
+                //友盟统计
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("evenname", "专业用户资料");
+                map.put("even", "点击专业用户资料查看");
+                MobclickAgent.onEvent(UserInfoActivity.this, "userinfo_even", map);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("点击专业用户资料查看")  //事件类别
+                        .setAction("专业用户资料")      //事件操作
+                        .build());
                 //TODO 跳转专业用户资料页
                 Intent intent = new Intent(UserInfoActivity.this, DesinerInfoHeaderActivity.class);
                 intent.putExtra("info", userCenterInfoBean);
@@ -215,12 +231,35 @@ public class UserInfoActivity
                 }
 
                 break;
+            case R.id.iv_header_desiner_center:
+                //友盟统计
+                HashMap<String, String> map1 = new HashMap<String, String>();
+                map1.put("evenname", "主页头像");
+                map1.put("even", "点击个人主页头像");
+                MobclickAgent.onEvent(UserInfoActivity.this, "userinfo_even", map1);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("点击个人主页头像")  //事件类别
+                        .setAction("主页头像")      //事件操作
+                        .build());
+                break;
         }
 
     }
 
     //关注用户
     private void getGuanZhu() {
+
+        //友盟统计
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("evenname", "主页关注");
+        map.put("even", "点击个人主页的关注按钮");
+        MobclickAgent.onEvent(UserInfoActivity.this, "userinfo_even", map);
+        //ga统计
+        MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                .setCategory("点击个人主页的关注按钮")  //事件类别
+                .setAction("主页关注")      //事件操作
+                .build());
         OkStringRequest.OKResponseCallback callBack = new OkStringRequest.OKResponseCallback() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
@@ -456,7 +495,17 @@ public class UserInfoActivity
         mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
 
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
     private int width_Pic;
     private int position;
 }
