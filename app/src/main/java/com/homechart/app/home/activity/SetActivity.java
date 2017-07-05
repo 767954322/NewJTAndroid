@@ -177,13 +177,13 @@ public class SetActivity
             case R.id.rl_set_tuijian:
                 //友盟统计
                 HashMap<String, String> map2 = new HashMap<String, String>();
-                map2.put("evenname", "推荐家图");
-                map2.put("even", "点击推荐家图");
+                map2.put("evenname", "推荐家图详情第三方");
+                map2.put("even", "点击推荐家图出的第三方分享");
                 MobclickAgent.onEvent(SetActivity.this, "system_set", map2);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
-                        .setCategory("点击推荐家图")  //事件类别
-                        .setAction("推荐家图")      //事件操作
+                        .setCategory("点击推荐家图出的第三方分享")  //事件类别
+                        .setAction("推荐家图详情第三方")      //事件操作
                         .build());
 
                 homeSharedPopWinPublic.showAtLocation(SetActivity.this.findViewById(R.id.main),
