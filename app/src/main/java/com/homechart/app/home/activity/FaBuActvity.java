@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.android.gms.analytics.HitBuilders;
 import com.homechart.app.MyApplication;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
@@ -44,6 +45,7 @@ import com.homechart.app.utils.volley.FileHttpManager;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
 import com.homechart.app.utils.volley.PutFileCallBack;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -151,6 +153,16 @@ public class FaBuActvity
                 if ((selectTags != null && selectTags.size() > 0) || !TextUtils.isEmpty(miaosu1)) {
                     mAlertView.show();
                 } else {
+                    //友盟统计
+                    HashMap<String, String> map5 = new HashMap<String, String>();
+                    map5.put("evenname", "取消发布");
+                    map5.put("even", "取消发布");
+                    MobclickAgent.onEvent(FaBuActvity.this, "fabu_even", map5);
+                    //ga统计
+                    MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                            .setCategory("取消发布")  //事件类别
+                            .setAction("取消发布")      //事件操作
+                            .build());
                     FaBuActvity.this.finish();
                 }
                 break;
@@ -294,6 +306,18 @@ public class FaBuActvity
 
     @Override
     public void checkChange(int position, boolean status, String activityId) {
+
+
+        //友盟统计
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("evenname", "参与活动");
+        map.put("even", "点击选择参与某活动");
+        MobclickAgent.onEvent(FaBuActvity.this, "fabu_even", map);
+        //ga统计
+        MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                .setCategory("点击选择参与某活动")  //事件类别
+                .setAction("参与活动")      //事件操作
+                .build());
 
         if (status) {
             activityMap.clear();
@@ -448,7 +472,16 @@ public class FaBuActvity
                 fl_tag_flowLayout.cleanTag();
                 fl_tag_flowLayout.setListData(listTag);
             } else if (code == 3) {
-
+                //友盟统计
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("evenname", "发布成功");
+                map.put("even", "发布成功统计");
+                MobclickAgent.onEvent(FaBuActvity.this, "fabu_even", map);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("发布成功统计")  //事件类别
+                        .setAction("发布成功")      //事件操作
+                        .build());
                 String info = (String) msg.obj;
                 try {
                     JSONObject jsonObject = new JSONObject(info);
@@ -509,5 +542,17 @@ public class FaBuActvity
             }
         };
         MyHttpManager.getInstance().getPicTagData(callBack);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }

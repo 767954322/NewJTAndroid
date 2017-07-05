@@ -20,14 +20,18 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.homechart.app.MyApplication;
 import com.homechart.app.R;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.fragment.HomeCenterFragment;
 import com.homechart.app.home.fragment.HomePicFragment;
 import com.homechart.app.myview.SelectPicPopupWindow;
 import com.homechart.app.utils.ToastUtils;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 
 import cn.finalteam.galleryfinal.GalleryFinal;
@@ -144,6 +148,16 @@ public class HomeActivity
         switch (v.getId()) {
             case R.id.tv_takephoto:
                 menuWindow.dismiss();
+                //友盟统计
+                HashMap<String, String> map5 = new HashMap<String, String>();
+                map5.put("evenname", "照相");
+                map5.put("even", "打开相机");
+                MobclickAgent.onEvent(HomeActivity.this, "fabu_even", map5);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("打开相机")  //事件类别
+                        .setAction("照相")      //事件操作
+                        .build());
                 GalleryFinal.openCamera(0, new GalleryFinal.OnHanlderResultCallback() {
                     @Override
                     public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
@@ -166,6 +180,16 @@ public class HomeActivity
                 break;
             case R.id.tv_pic:
                 menuWindow.dismiss();
+                //友盟统计
+                HashMap<String, String> map6 = new HashMap<String, String>();
+                map6.put("evenname", "本地相册");
+                map6.put("even", "本地相册选择图片");
+                MobclickAgent.onEvent(HomeActivity.this, "fabu_even", map6);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("本地相册选择图片")  //事件类别
+                        .setAction("本地相册")      //事件操作
+                        .build());
                 GalleryFinal.openGallerySingle(0, new GalleryFinal.OnHanlderResultCallback() {
                     @Override
                     public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
@@ -208,6 +232,16 @@ public class HomeActivity
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
+            //友盟统计
+            HashMap<String, String> map6 = new HashMap<String, String>();
+            map6.put("evenname", "完成选择图片");
+            map6.put("even", "完成选择图片");
+            MobclickAgent.onEvent(HomeActivity.this, "fabu_even", map6);
+            //ga统计
+            MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                    .setCategory("完成选择图片")  //事件类别
+                    .setAction("完成选择图片")      //事件操作
+                    .build());
             String url_Imag = (String) msg.obj;
             Intent intent = new Intent(HomeActivity.this, FaBuActvity.class);
             intent.putExtra("image_path", url_Imag);
@@ -239,6 +273,18 @@ public class HomeActivity
             HomeActivity.this.finish();
             System.exit(0);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
 }
