@@ -238,6 +238,16 @@ public class HuoDongDetailsActivity
                 HuoDongDetailsActivity.this.finish();
                 break;
             case R.id.tv_add_activity:
+                //友盟统计
+                HashMap<String, String> map1 = new HashMap<String, String>();
+                map1.put("evenname", " 参与活动");
+                map1.put("even", "点击参与活动入口进入发布图片页");
+                MobclickAgent.onEvent(HuoDongDetailsActivity.this, "piclist_into_activity_info", map1);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("点击参与活动入口进入发布图片页")  //事件类别
+                        .setAction("参与活动")      //事件操作
+                        .build());
                 //参与
                 menuWindow.showAtLocation(HuoDongDetailsActivity.this.findViewById(R.id.main),
                         Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
@@ -287,6 +297,16 @@ public class HuoDongDetailsActivity
                 menuWindow.dismiss();
                 break;
             case R.id.iv_bufabu:
+                //友盟统计
+                HashMap<String, String> map_no = new HashMap<String, String>();
+                map_no.put("evenname", " 退出活动");
+                map_no.put("even", "点击返回活动页");
+                MobclickAgent.onEvent(HuoDongDetailsActivity.this, "piclist_into_activity_info", map_no);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("点击返回活动页")  //事件类别
+                        .setAction("退出活动")      //事件操作
+                        .build());
                 menuWindow.dismiss();
                 break;
             case R.id.nav_secondary_imageButton:
@@ -653,4 +673,20 @@ public class HuoDongDetailsActivity
         };
         MyHttpManager.getInstance().addShared(hdDetailsBean.getData().getActivity_info().getActivity_id(), "activity", callBack);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        MobclickAgent.onResume(HuoDongDetailsActivity.this);
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPause(HuoDongDetailsActivity.this);
+    }
+
 }
