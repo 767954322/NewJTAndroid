@@ -12,6 +12,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.android.gms.analytics.HitBuilders;
+import com.homechart.app.MyApplication;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.home.base.BaseActivity;
@@ -22,10 +24,12 @@ import com.homechart.app.utils.GsonUtil;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -89,6 +93,16 @@ public class SearchActivity
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_quxiao:
+                //友盟统计
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("evenname", "点击搜索框右上方的取消");
+                map.put("even", "点击搜索框右上方的取消");
+                MobclickAgent.onEvent(SearchActivity.this, "取消搜索框搜索", map);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("取消搜索框搜索")  //事件类别
+                        .setAction("点击搜索框右上方的取消")      //事件操作
+                        .build());
                 SearchActivity.this.finish();
                 break;
         }
@@ -161,6 +175,18 @@ public class SearchActivity
             his_flowLayout.setOnTagClickListener(new FlowLayoutSearch.OnTagClickListener() {
                 @Override
                 public void TagClick(String text) {
+
+                    //友盟统计
+                    HashMap<String, String> map = new HashMap<String, String>();
+                    map.put("evenname", "单击搜索框下方提供的热点词");
+                    map.put("even", "单击搜索框下方提供的热点词");
+                    MobclickAgent.onEvent(SearchActivity.this, "热点词", map);
+                    //ga统计
+                    MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                            .setCategory("热点词")  //事件类别
+                            .setAction("单击搜索框下方提供的热点词")      //事件操作
+                            .build());
+
                     // 跳转搜索结果页
                     Intent intent = new Intent(SearchActivity.this, SearchResultActivity.class);
                     intent.putExtra("search_tag", text);
@@ -182,4 +208,20 @@ public class SearchActivity
         }
 
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        MobclickAgent.onResume(this);
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPause(this);
+    }
+
 }
