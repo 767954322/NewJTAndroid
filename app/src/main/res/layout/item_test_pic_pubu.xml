@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/iv_imageview_one"
+        android:layout_alignRight="@+id/iv_imageview_one"
         android:layout_marginBottom="@dimen/font_15"
         android:layout_marginTop="@dimen/font_10">
 
@@ -42,7 +43,6 @@
             android:layout_height="@dimen/font_9"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/font_10"
             android:background="@color/bank_bg01" />
 
 
