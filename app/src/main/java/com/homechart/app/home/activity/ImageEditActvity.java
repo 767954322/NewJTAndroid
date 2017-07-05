@@ -15,6 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.android.gms.analytics.HitBuilders;
+import com.homechart.app.MyApplication;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.home.adapter.MyActivitysListAdapter;
@@ -36,6 +38,7 @@ import com.homechart.app.utils.alertview.OnItemClickListener;
 import com.homechart.app.utils.imageloader.ImageUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -280,6 +283,16 @@ public class ImageEditActvity
 
     @Override
     public void DeleteTag(String text, int position) {
+        //友盟统计
+        HashMap<String, String> map4 = new HashMap<String, String>();
+        map4.put("evenname", "点击作品里的删除标签");
+        map4.put("even", "删除标签");
+        MobclickAgent.onEvent(ImageEditActvity.this, "user_center", map4);
+        //ga统计
+        MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                .setCategory("删除标签")  //事件类别
+                .setAction("点击作品里的删除标签")      //事件操作
+                .build());
         fl_tag_flowLayout.cleanTag();
         listTag.remove(position);
         fl_tag_flowLayout.setListData(listTag);
@@ -298,6 +311,18 @@ public class ImageEditActvity
 
     @Override
     public void AddTag(String text, int position) {
+
+        //友盟统计
+        HashMap<String, String> map4 = new HashMap<String, String>();
+        map4.put("evenname", "点击作品里的添加标签");
+        map4.put("even", "添加新标签");
+        MobclickAgent.onEvent(ImageEditActvity.this, "user_center", map4);
+        //ga统计
+        MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                .setCategory("添加新标签")  //事件类别
+                .setAction("点击作品里的添加标签")      //事件操作
+                .build());
+
         Intent intent = new Intent(ImageEditActvity.this, EditTagsActivity.class);
         SerializableHashMap myMap = new SerializableHashMap();
         myMap.setMap(selectTags);
@@ -439,4 +464,17 @@ public class ImageEditActvity
         };
         MyHttpManager.getInstance().getPicTagData(callBack);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
 }
