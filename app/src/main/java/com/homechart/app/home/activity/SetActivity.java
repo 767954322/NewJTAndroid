@@ -124,7 +124,7 @@ public class SetActivity
                 HashMap<String, String> map4 = new HashMap<String, String>();
                 map4.put("evenname", "关于家图");
                 map4.put("even", "点击关于家图");
-                MobclickAgent.onEvent(SetActivity.this, "system_set", map4);
+                MobclickAgent.onEvent(SetActivity.this, "关于家图", map4);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击关于家图")  //事件类别
@@ -140,7 +140,7 @@ public class SetActivity
                     HashMap<String, String> map = new HashMap<String, String>();
                     map.put("evenname", "清除缓存");
                     map.put("even", "点击清除缓存");
-                    MobclickAgent.onEvent(SetActivity.this, "system_set", map);
+                    MobclickAgent.onEvent(SetActivity.this, "清除缓存", map);
                     //ga统计
                     MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                             .setCategory("点击清除缓存")  //事件类别
@@ -163,7 +163,7 @@ public class SetActivity
                 HashMap<String, String> map1 = new HashMap<String, String>();
                 map1.put("evenname", "使用反馈");
                 map1.put("even", "点击使用反馈");
-                MobclickAgent.onEvent(SetActivity.this, "system_set", map1);
+                MobclickAgent.onEvent(SetActivity.this, "使用反馈", map1);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击使用反馈")  //事件类别
@@ -179,7 +179,7 @@ public class SetActivity
                 HashMap<String, String> map2 = new HashMap<String, String>();
                 map2.put("evenname", "推荐家图详情第三方");
                 map2.put("even", "点击推荐家图出的第三方分享");
-                MobclickAgent.onEvent(SetActivity.this, "system_set", map2);
+                MobclickAgent.onEvent(SetActivity.this, "推荐家图详情第三方", map2);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击推荐家图出的第三方分享")  //事件类别
@@ -196,7 +196,7 @@ public class SetActivity
                 HashMap<String, String> map3 = new HashMap<String, String>();
                 map3.put("evenname", "退出登录");
                 map3.put("even", "点击退出登陆");
-                MobclickAgent.onEvent(SetActivity.this, "system_set", map3);
+                MobclickAgent.onEvent(SetActivity.this, "退出登录", map3);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击退出登陆")  //事件类别

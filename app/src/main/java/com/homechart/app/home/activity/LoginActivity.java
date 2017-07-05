@@ -115,7 +115,7 @@ public class LoginActivity extends BaseActivity
                 HashMap<String, String> map_qq = new HashMap<String, String>();
                 map_qq.put("evenname", "qq第三方登录");
                 map_qq.put("even", "点击使用QQ作为第三方登录按钮");
-                MobclickAgent.onEvent(LoginActivity.this, "user_login", map_qq);
+                MobclickAgent.onEvent(LoginActivity.this, "qq第三方登录", map_qq);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击使用QQ作为第三方登录按钮")  //事件类别
@@ -129,7 +129,7 @@ public class LoginActivity extends BaseActivity
                 HashMap<String, String> map_weixin = new HashMap<String, String>();
                 map_weixin.put("evenname", "wechat第三方登录");
                 map_weixin.put("even", "点击使用微信作为第三方登录按钮");
-                MobclickAgent.onEvent(LoginActivity.this, "user_login", map_weixin);
+                MobclickAgent.onEvent(LoginActivity.this, "wechat第三方登录", map_weixin);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击使用微信作为第三方登录按钮")  //事件类别
@@ -142,7 +142,7 @@ public class LoginActivity extends BaseActivity
                 HashMap<String, String> map_sina = new HashMap<String, String>();
                 map_sina.put("evenname", "weibo第三方登录");
                 map_sina.put("even", "点击使用微博作为第三方登录按钮");
-                MobclickAgent.onEvent(LoginActivity.this, "user_login", map_sina);
+                MobclickAgent.onEvent(LoginActivity.this, "weibo第三方登录", map_sina);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击使用微博作为第三方登录按钮")  //事件类别
@@ -158,7 +158,7 @@ public class LoginActivity extends BaseActivity
                 HashMap<String, String> map1 = new HashMap<String, String>();
                 map1.put("evenname", "登录");
                 map1.put("even", "点击登录");
-                MobclickAgent.onEvent(LoginActivity.this, "user_login", map1);
+                MobclickAgent.onEvent(LoginActivity.this, "登录", map1);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击登录")  //事件类别
@@ -172,7 +172,7 @@ public class LoginActivity extends BaseActivity
                 HashMap<String, String> map_forget = new HashMap<String, String>();
                 map_forget.put("evenname", "忘记密码");
                 map_forget.put("even", "点击忘记密码进入密码重置流程");
-                MobclickAgent.onEvent(LoginActivity.this, "user_login", map_forget);
+                MobclickAgent.onEvent(LoginActivity.this, "忘记密码", map_forget);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击忘记密码进入密码重置流程")  //事件类别
@@ -222,7 +222,7 @@ public class LoginActivity extends BaseActivity
                         HashMap<String, String> map_forget = new HashMap<String, String>();
                         map_forget.put("evenname", "登陆成功提示");
                         map_forget.put("even", "登陆成功后的提示");
-                        MobclickAgent.onEvent(LoginActivity.this, "user_login", map_forget);
+                        MobclickAgent.onEvent(LoginActivity.this, "登陆成功提示", map_forget);
                         //ga统计
                         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                                 .setCategory("登陆成功后的提示")  //事件类别

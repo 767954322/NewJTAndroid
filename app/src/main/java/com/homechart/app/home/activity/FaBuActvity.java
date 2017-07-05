@@ -157,7 +157,7 @@ public class FaBuActvity
                     HashMap<String, String> map5 = new HashMap<String, String>();
                     map5.put("evenname", "取消发布");
                     map5.put("even", "取消发布");
-                    MobclickAgent.onEvent(FaBuActvity.this, "fabu_even", map5);
+                    MobclickAgent.onEvent(FaBuActvity.this, "取消发布", map5);
                     //ga统计
                     MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                             .setCategory("取消发布")  //事件类别
@@ -312,7 +312,7 @@ public class FaBuActvity
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("evenname", "参与活动");
         map.put("even", "点击选择参与某活动");
-        MobclickAgent.onEvent(FaBuActvity.this, "fabu_even", map);
+        MobclickAgent.onEvent(FaBuActvity.this, "参与活动", map);
         //ga统计
         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                 .setCategory("点击选择参与某活动")  //事件类别
@@ -476,7 +476,7 @@ public class FaBuActvity
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("evenname", "发布成功");
                 map.put("even", "发布成功统计");
-                MobclickAgent.onEvent(FaBuActvity.this, "fabu_even", map);
+                MobclickAgent.onEvent(FaBuActvity.this, "发布成功", map);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("发布成功统计")  //事件类别

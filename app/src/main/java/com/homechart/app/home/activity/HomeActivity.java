@@ -152,7 +152,7 @@ public class HomeActivity
                 HashMap<String, String> map5 = new HashMap<String, String>();
                 map5.put("evenname", "照相");
                 map5.put("even", "打开相机");
-                MobclickAgent.onEvent(HomeActivity.this, "fabu_even", map5);
+                MobclickAgent.onEvent(HomeActivity.this, "照相", map5);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("打开相机")  //事件类别
@@ -184,7 +184,7 @@ public class HomeActivity
                 HashMap<String, String> map6 = new HashMap<String, String>();
                 map6.put("evenname", "本地相册");
                 map6.put("even", "本地相册选择图片");
-                MobclickAgent.onEvent(HomeActivity.this, "fabu_even", map6);
+                MobclickAgent.onEvent(HomeActivity.this, "本地相册", map6);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("本地相册选择图片")  //事件类别
@@ -236,7 +236,7 @@ public class HomeActivity
             HashMap<String, String> map6 = new HashMap<String, String>();
             map6.put("evenname", "完成选择图片");
             map6.put("even", "完成选择图片");
-            MobclickAgent.onEvent(HomeActivity.this, "fabu_even", map6);
+            MobclickAgent.onEvent(HomeActivity.this, "完成选择图片", map6);
             //ga统计
             MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                     .setCategory("完成选择图片")  //事件类别

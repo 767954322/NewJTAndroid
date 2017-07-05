@@ -383,7 +383,7 @@ public class ImageDetailLongActivity
                 HashMap<String, String> map_weibo = new HashMap<String, String>();
                 map_weibo.put("evenname", "详情点击作者头像");
                 map_weibo.put("even", "详情点击作者头像进入作者主页");
-                MobclickAgent.onEvent(ImageDetailLongActivity.this, "image_details", map_weibo);
+                MobclickAgent.onEvent(ImageDetailLongActivity.this, "详情点击作者头像", map_weibo);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("详情点击作者头像进入作者主页")  //事件类别
@@ -413,7 +413,7 @@ public class ImageDetailLongActivity
                     HashMap<String, String> map_next = new HashMap<String, String>();
                     map_next.put("evenname", "详情点赞");
                     map_next.put("even", "详情点赞");
-                    MobclickAgent.onEvent(ImageDetailLongActivity.this, "image_details", map_next);
+                    MobclickAgent.onEvent(ImageDetailLongActivity.this, "详情点赞", map_next);
                     //ga统计
                     MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                             .setCategory("详情点赞")  //事件类别
@@ -446,7 +446,7 @@ public class ImageDetailLongActivity
                             HashMap<String, String> map5 = new HashMap<String, String>();
                             map5.put("evenname", "详情关注作者");
                             map5.put("even", "点击关注作者");
-                            MobclickAgent.onEvent(ImageDetailLongActivity.this, "image_details", map5);
+                            MobclickAgent.onEvent(ImageDetailLongActivity.this, "详情关注作者", map5);
                             //ga统计
                             MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                                     .setCategory("点击关注作者")  //事件类别
@@ -471,7 +471,7 @@ public class ImageDetailLongActivity
                 HashMap<String, String> map_next = new HashMap<String, String>();
                 map_next.put("evenname", "相似色彩搭配");
                 map_next.put("even", "点击相似色彩搭配");
-                MobclickAgent.onEvent(ImageDetailLongActivity.this, "image_details", map_next);
+                MobclickAgent.onEvent(ImageDetailLongActivity.this, "相似色彩搭配", map_next);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击相似色彩搭配")  //事件类别
@@ -589,7 +589,7 @@ public class ImageDetailLongActivity
         HashMap<String, String> map_next = new HashMap<String, String>();
         map_next.put("evenname", "详情评论");
         map_next.put("even", "详情评论");
-        MobclickAgent.onEvent(ImageDetailLongActivity.this, "image_details", map_next);
+        MobclickAgent.onEvent(ImageDetailLongActivity.this, "详情评论", map_next);
         //ga统计
         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                 .setCategory("详情评论")  //事件类别
@@ -628,7 +628,7 @@ public class ImageDetailLongActivity
         HashMap<String, String> map_next = new HashMap<String, String>();
         map_next.put("evenname", "详情评论");
         map_next.put("even", "详情评论");
-        MobclickAgent.onEvent(ImageDetailLongActivity.this, "image_details", map_next);
+        MobclickAgent.onEvent(ImageDetailLongActivity.this, "详情评论", map_next);
         //ga统计
         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                 .setCategory("详情评论")  //事件类别
@@ -813,7 +813,7 @@ public class ImageDetailLongActivity
                         HashMap<String, String> map_next = new HashMap<String, String>();
                         map_next.put("evenname", "点击可能还喜欢单个图片");
                         map_next.put("even", "点击可能还喜欢图片进入详情");
-                        MobclickAgent.onEvent(ImageDetailLongActivity.this, "image_details", map_next);
+                        MobclickAgent.onEvent(ImageDetailLongActivity.this, "点击可能还喜欢单个图片", map_next);
                         //ga统计
                         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                                 .setCategory("点击可能还喜欢图片进入详情")  //事件类别
@@ -917,7 +917,7 @@ public class ImageDetailLongActivity
         HashMap<String, String> map_weibo = new HashMap<String, String>();
         map_weibo.put("evenname", "详情收藏");
         map_weibo.put("even", "详情收藏");
-        MobclickAgent.onEvent(ImageDetailLongActivity.this, "image_details", map_weibo);
+        MobclickAgent.onEvent(ImageDetailLongActivity.this, "详情收藏", map_weibo);
         //ga统计
         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                 .setCategory("详情收藏")  //事件类别
@@ -1164,7 +1164,7 @@ public class ImageDetailLongActivity
                 HashMap<String, String> map_next = new HashMap<String, String>();
                 map_next.put("evenname", "图片详情点击标签");
                 map_next.put("even", "图片详情点击标签进入更多页面");
-                MobclickAgent.onEvent(ImageDetailLongActivity.this, "image_details", map_next);
+                MobclickAgent.onEvent(ImageDetailLongActivity.this, "图片详情点击标签", map_next);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("图片详情点击标签进入更多页面")  //事件类别
@@ -1486,7 +1486,7 @@ public class ImageDetailLongActivity
                 HashMap<String, String> map_weibo = new HashMap<String, String>();
                 map_weibo.put("evenname", "详情weixin分享");
                 map_weibo.put("even", "详情weixin分享");
-                MobclickAgent.onEvent(ImageDetailLongActivity.this, "image_details", map_weibo);
+                MobclickAgent.onEvent(ImageDetailLongActivity.this, "详情weixin分享", map_weibo);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("详情weixin分享")  //事件类别
@@ -1498,7 +1498,7 @@ public class ImageDetailLongActivity
                 HashMap<String, String> map_weibo = new HashMap<String, String>();
                 map_weibo.put("evenname", "详情weinxinfriends分享");
                 map_weibo.put("even", "详情weinxinfriends分享");
-                MobclickAgent.onEvent(ImageDetailLongActivity.this, "image_details", map_weibo);
+                MobclickAgent.onEvent(ImageDetailLongActivity.this, "详情weinxinfriends分享", map_weibo);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("详情weinxinfriends分享")  //事件类别
@@ -1510,7 +1510,7 @@ public class ImageDetailLongActivity
                 HashMap<String, String> map_weibo = new HashMap<String, String>();
                 map_weibo.put("evenname", "详情weibo分享");
                 map_weibo.put("even", "详情weibo分享");
-                MobclickAgent.onEvent(ImageDetailLongActivity.this, "image_details", map_weibo);
+                MobclickAgent.onEvent(ImageDetailLongActivity.this, "详情weibo分享", map_weibo);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("详情weibo分享")  //事件类别

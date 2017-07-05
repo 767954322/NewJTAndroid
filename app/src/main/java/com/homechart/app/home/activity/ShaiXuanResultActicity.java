@@ -216,7 +216,7 @@ public class ShaiXuanResultActicity
                     HashMap<String, String> map1 = new HashMap<String, String>();
                     map1.put("evenname", "筛选结果双列查看");
                     map1.put("even", "选择双列查看图片列表");
-                    MobclickAgent.onEvent(ShaiXuanResultActicity.this, "shaixuanpager", map1);
+                    MobclickAgent.onEvent(ShaiXuanResultActicity.this, "筛选结果双列查看", map1);
                     //ga统计
                     MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                             .setCategory("选择双列查看图片列表")  //事件类别
@@ -227,7 +227,7 @@ public class ShaiXuanResultActicity
                     HashMap<String, String> map1 = new HashMap<String, String>();
                     map1.put("evenname", "筛选结果单列查看");
                     map1.put("even", "选择单列查看图片列表");
-                    MobclickAgent.onEvent(ShaiXuanResultActicity.this, "shaixuanpager", map1);
+                    MobclickAgent.onEvent(ShaiXuanResultActicity.this, "筛选结果单列查看", map1);
                     //ga统计
                     MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                             .setCategory("选择单列查看图片列表")  //事件类别
@@ -256,7 +256,7 @@ public class ShaiXuanResultActicity
                     HashMap<String, String> map1 = new HashMap<String, String>();
                     map1.put("evenname", "筛选结果色彩");
                     map1.put("even", "点击筛选结果色彩属性按钮");
-                    MobclickAgent.onEvent(ShaiXuanResultActicity.this, "shaixuanpager", map1);
+                    MobclickAgent.onEvent(ShaiXuanResultActicity.this, "筛选结果色彩", map1);
                     //ga统计
                     MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                             .setCategory("点击筛选结果色彩属性按钮")  //事件类别
@@ -293,7 +293,7 @@ public class ShaiXuanResultActicity
         HashMap<String, String> map1 = new HashMap<String, String>();
         map1.put("evenname", "筛选结果下拉翻页");
         map1.put("even", "筛选结果列表页下拉查看更多图片缩略图");
-        MobclickAgent.onEvent(ShaiXuanResultActicity.this, "shaixuanpager", map1);
+        MobclickAgent.onEvent(ShaiXuanResultActicity.this, "筛选结果下拉翻页", map1);
         //ga统计
         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                 .setCategory("筛选结果列表页下拉查看更多图片缩略图")  //事件类别
@@ -408,7 +408,7 @@ public class ShaiXuanResultActicity
                     HashMap<String, String> map1 = new HashMap<String, String>();
                     map1.put("evenname", "推荐标签");
                     map1.put("even", "点击推荐标签，进入新列表页面");
-                    MobclickAgent.onEvent(ShaiXuanResultActicity.this, "shaixuanpager", map1);
+                    MobclickAgent.onEvent(ShaiXuanResultActicity.this, "推荐标签", map1);
                     //ga统计
                     MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                             .setCategory("点击推荐标签，进入新列表页面")  //事件类别
@@ -533,7 +533,7 @@ public class ShaiXuanResultActicity
                         HashMap<String, String> map1 = new HashMap<String, String>();
                         map1.put("evenname", "筛选结果点击列表页图片进入详情页面");
                         map1.put("even", "筛选结果点击列表页图片进入详情页面");
-                        MobclickAgent.onEvent(ShaiXuanResultActicity.this, "shaixuanpager", map1);
+                        MobclickAgent.onEvent(ShaiXuanResultActicity.this, "筛选结果点击列表页图片进入详情页面", map1);
                         //ga统计
                         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                                 .setCategory("筛选结果点击列表页图片进入详情页面")  //事件类别
@@ -679,7 +679,7 @@ public class ShaiXuanResultActicity
             HashMap<String, String> map1 = new HashMap<String, String>();
             map1.put("evenname", "筛选结果取消色彩选择");
             map1.put("even", "筛选结果取消已选色彩");
-            MobclickAgent.onEvent(ShaiXuanResultActicity.this, "shaixuanpager", map1);
+            MobclickAgent.onEvent(ShaiXuanResultActicity.this, "筛选结果取消色彩选择", map1);
             //ga统计
             MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                     .setCategory("筛选结果取消已选色彩")  //事件类别

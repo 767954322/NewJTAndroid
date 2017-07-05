@@ -287,7 +287,7 @@ public class ImageEditActvity
         HashMap<String, String> map4 = new HashMap<String, String>();
         map4.put("evenname", "点击作品里的删除标签");
         map4.put("even", "删除标签");
-        MobclickAgent.onEvent(ImageEditActvity.this, "user_center", map4);
+        MobclickAgent.onEvent(ImageEditActvity.this, "点击作品里的删除标签", map4);
         //ga统计
         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                 .setCategory("删除标签")  //事件类别
@@ -316,7 +316,7 @@ public class ImageEditActvity
         HashMap<String, String> map4 = new HashMap<String, String>();
         map4.put("evenname", "点击作品里的添加标签");
         map4.put("even", "添加新标签");
-        MobclickAgent.onEvent(ImageEditActvity.this, "user_center", map4);
+        MobclickAgent.onEvent(ImageEditActvity.this, "点击作品里的添加标签", map4);
         //ga统计
         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                 .setCategory("添加新标签")  //事件类别

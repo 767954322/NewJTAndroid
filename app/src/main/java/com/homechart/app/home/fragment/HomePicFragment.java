@@ -261,7 +261,7 @@ public class HomePicFragment
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("evenname", "关键词搜索");
                 map.put("even", "单击首页顶部搜索框");
-                MobclickAgent.onEvent(activity, "homepage", map);
+                MobclickAgent.onEvent(activity, "关键词搜索", map);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("单击首页顶部搜索框")  //事件类别
@@ -278,13 +278,13 @@ public class HomePicFragment
                 if (curentListTag) {
                     //友盟统计
                     HashMap<String, String> map1 = new HashMap<String, String>();
-                    map1.put("evenname", "首页图片单双列切换按钮");
-                    map1.put("even", "首页图片单列->双列");
-                    MobclickAgent.onEvent(activity, "homepage", map1);
+                    map1.put("evenname", "首页图片单列_双列");
+                    map1.put("even", "首页图片单双列切换按钮");
+                    MobclickAgent.onEvent(activity, "首页图片单列_双列", map1);
                     //ga统计
                     MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
-                            .setCategory("首页图片单列->双列")  //事件类别
-                            .setAction("首页图片单双列切换按钮")      //事件操作
+                            .setCategory("首页图片单双列切换按钮")  //事件类别
+                            .setAction("首页图片单列_双列")      //事件操作
                             .build());
                     mRecyclerView.setPadding(UIUtils.getDimens(R.dimen.font_6), 0, UIUtils.getDimens(R.dimen.font_6), 0);
                     iv_change_frag.setImageResource(R.drawable.changtu);
@@ -294,13 +294,13 @@ public class HomePicFragment
                 } else {
                     //友盟统计
                     HashMap<String, String> map1 = new HashMap<String, String>();
-                    map1.put("evenname", "首页图片单双列切换按钮");
-                    map1.put("even", "首页图片双列->单列");
-                    MobclickAgent.onEvent(activity, "homepage", map1);
+                    map1.put("evenname", "首页图片双列_单列");
+                    map1.put("even", "首页图片单双列切换按钮");
+                    MobclickAgent.onEvent(activity, "首页图片双列_单列", map1);
                     //ga统计
                     MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
-                            .setCategory("首页图片双列->单列")  //事件类别
-                            .setAction("首页图片单双列切换按钮")      //事件操作
+                            .setCategory("首页图片单双列切换按钮")  //事件类别
+                            .setAction("首页图片双列_单列")      //事件操作
                             .build());
                     mRecyclerView.setPadding(0, 0, 0, 0);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
@@ -417,7 +417,7 @@ public class HomePicFragment
                             HashMap<String, String> map1 = new HashMap<String, String>();
                             map1.put("evenname", "活动封面图点击");
                             map1.put("even", "点击封面图查看");
-                            MobclickAgent.onEvent(activity, "piclist_into_activity_info", map1);
+                            MobclickAgent.onEvent(activity, "活动封面图点击", map1);
                             //ga统计
                             MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                                     .setCategory("点击封面图查看")  //事件类别
@@ -521,22 +521,22 @@ public class HomePicFragment
             //友盟统计
             HashMap<String, String> map = new HashMap<String, String>();
             map.put("evenname", "首页图片单列刷新");
-            map.put("even", "首页图片单列向下翻页（刷新）");
-            MobclickAgent.onEvent(activity, "homepage", map);
+            map.put("even", "首页图片单列向下翻页");
+            MobclickAgent.onEvent(activity, "首页图片单列刷新", map);
             //ga统计
             MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
-                    .setCategory("首页图片单列向下翻页（刷新）")  //事件类别
+                    .setCategory("首页图片单列向下翻页")  //事件类别
                     .setAction("首页图片单列刷新")      //事件操作
                     .build());
         } else {
             //友盟统计
             HashMap<String, String> map = new HashMap<String, String>();
             map.put("evenname", "首页图片双列刷新");
-            map.put("even", "首页图片双列向下翻页（刷新）");
-            MobclickAgent.onEvent(activity, "homepage", map);
+            map.put("even", "首页图片双列向下翻页");
+            MobclickAgent.onEvent(activity, "首页图片双列刷新", map);
             //ga统计
             MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
-                    .setCategory("首页图片双列向下翻页（刷新）")  //事件类别
+                    .setCategory("首页图片双列向下翻页")  //事件类别
                     .setAction("首页图片双列刷新")      //事件操作
                     .build());
         }
@@ -557,22 +557,22 @@ public class HomePicFragment
             //友盟统计
             HashMap<String, String> map = new HashMap<String, String>();
             map.put("evenname", "首页图片单列加载");
-            map.put("even", "首页图片单列向上翻页（加载）");
-            MobclickAgent.onEvent(activity, "homepage", map);
+            map.put("even", "首页图片单列向上翻页");
+            MobclickAgent.onEvent(activity, "首页图片单列加载", map);
             //ga统计
             MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
-                    .setCategory("首页图片单列向上翻页（加载）")  //事件类别
+                    .setCategory("首页图片单列向上翻页")  //事件类别
                     .setAction("首页图片单列加载")      //事件操作
                     .build());
         } else {
             //友盟统计
             HashMap<String, String> map = new HashMap<String, String>();
             map.put("evenname", "首页图片双列加载");
-            map.put("even", "首页图片双列向上翻页（加载）");
-            MobclickAgent.onEvent(activity, "homepage", map);
+            map.put("even", "首页图片双列向上翻页");
+            MobclickAgent.onEvent(activity, "首页图片双列加载", map);
             //ga统计
             MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
-                    .setCategory("首页图片双列向上翻页（加载）")  //事件类别
+                    .setCategory("首页图片双列向上翻页")  //事件类别
                     .setAction("首页图片双列加载")      //事件操作
                     .build());
         }
@@ -822,7 +822,7 @@ public class HomePicFragment
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("evenname", "首页图片取消筛选");
         map.put("even", "首页图片取消筛选");
-        MobclickAgent.onEvent(activity, "homepage", map);
+        MobclickAgent.onEvent(activity, "首页图片取消筛选", map);
         //ga统计
         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                 .setCategory("首页图片取消筛选")  //事件类别
@@ -833,13 +833,13 @@ public class HomePicFragment
     private void openTagTongJi(String name) {
         //友盟统计
         HashMap<String, String> map = new HashMap<String, String>();
-        map.put("evenname", "筛选-" + name);
+        map.put("evenname", "筛选_" + name);
         map.put("even", "点开" + name + "筛选项");
-        MobclickAgent.onEvent(activity, "shaixuanpager", map);
+        MobclickAgent.onEvent(activity, "筛选_" + name, map);
         //ga统计
         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                 .setCategory("点开" + name + "筛选项")  //事件类别
-                .setAction("筛选-" + name)      //事件操作
+                .setAction("筛选_" + name)      //事件操作
                 .build());
 
 

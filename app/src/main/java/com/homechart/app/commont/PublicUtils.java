@@ -256,7 +256,7 @@ public class PublicUtils {
                     HashMap<String, String> map_weibo = new HashMap<String, String>();
                     map_weibo.put("evenname", "weibo登陆成功次数");
                     map_weibo.put("even", "登陆成功后+1");
-                    MobclickAgent.onEvent(mActivity, "user_login", map_weibo);
+                    MobclickAgent.onEvent(mActivity, "weibo登陆成功次数", map_weibo);
                     //ga统计
                     MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                             .setCategory("登陆成功后+1")  //事件类别
@@ -269,7 +269,7 @@ public class PublicUtils {
                     HashMap<String, String> map_qq = new HashMap<String, String>();
                     map_qq.put("evenname", "qq登陆成功次数");
                     map_qq.put("even", "登陆成功后+1");
-                    MobclickAgent.onEvent(mActivity, "user_login", map_qq);
+                    MobclickAgent.onEvent(mActivity, "qq登陆成功次数", map_qq);
                     //ga统计
                     MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                             .setCategory("登陆成功后+1")  //事件类别
@@ -283,7 +283,7 @@ public class PublicUtils {
                     HashMap<String, String> map_weixin = new HashMap<String, String>();
                     map_weixin.put("evenname", "wechat登陆成功次数");
                     map_weixin.put("even", "登陆成功后+1");
-                    MobclickAgent.onEvent(mActivity, "user_login", map_weixin);
+                    MobclickAgent.onEvent(mActivity, "wechat登陆成功次数", map_weixin);
                     //ga统计
                     MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                             .setCategory("登陆成功后+1")  //事件类别

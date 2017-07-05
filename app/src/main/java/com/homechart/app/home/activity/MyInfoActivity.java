@@ -291,7 +291,7 @@ public class MyInfoActivity
                 HashMap<String, String> map5 = new HashMap<String, String>();
                 map5.put("evenname", "个人资料保存");
                 map5.put("even", "个人资料点击保存");
-                MobclickAgent.onEvent(MyInfoActivity.this, "user_center", map5);
+                MobclickAgent.onEvent(MyInfoActivity.this, "个人资料保存", map5);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("个人资料点击保存")  //事件类别

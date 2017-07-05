@@ -177,7 +177,7 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
                 HashMap<String, String> map1 = new HashMap<String, String>();
                 map1.put("evenname", "点击粉丝");
                 map1.put("even", "点击粉丝进入粉丝列表");
-                MobclickAgent.onEvent(activity, "user_center", map1);
+                MobclickAgent.onEvent(activity, "点击粉丝", map1);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击粉丝进入粉丝列表")  //事件类别
@@ -193,7 +193,7 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
                 HashMap<String, String> map2 = new HashMap<String, String>();
                 map2.put("evenname", "点击关注");
                 map2.put("even", "点击关注进入关注列表页");
-                MobclickAgent.onEvent(activity, "user_center", map2);
+                MobclickAgent.onEvent(activity, "点击关注", map2);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击关注进入关注列表页")  //事件类别
@@ -210,7 +210,7 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
                 HashMap<String, String> map4 = new HashMap<String, String>();
                 map4.put("evenname", "点击收藏");
                 map4.put("even", "点击收藏进入收藏列表");
-                MobclickAgent.onEvent(activity, "user_center", map4);
+                MobclickAgent.onEvent(activity, "点击收藏", map4);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击收藏进入收藏列表")  //事件类别
@@ -226,7 +226,7 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
                 HashMap<String, String> map5 = new HashMap<String, String>();
                 map5.put("evenname", "点击晒家");
                 map5.put("even", "点击晒家进入已发布晒家图片列表页");
-                MobclickAgent.onEvent(activity, "user_center", map5);
+                MobclickAgent.onEvent(activity, "点击晒家", map5);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击晒家进入已发布晒家图片列表页")  //事件类别
@@ -242,7 +242,7 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
                 HashMap<String, String> map3 = new HashMap<String, String>();
                 map3.put("evenname", "点击头像");
                 map3.put("even", "点击头像进入个人资料页");
-                MobclickAgent.onEvent(activity, "user_center", map3);
+                MobclickAgent.onEvent(activity, "点击头像", map3);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击头像进入个人资料页")  //事件类别
@@ -257,7 +257,7 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
                 HashMap<String, String> map6 = new HashMap<String, String>();
                 map6.put("evenname", "点击个人资料");
                 map6.put("even", "点击个人资料");
-                MobclickAgent.onEvent(activity, "user_center", map6);
+                MobclickAgent.onEvent(activity, "点击个人资料", map6);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击个人资料")  //事件类别

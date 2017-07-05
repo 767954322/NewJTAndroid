@@ -209,7 +209,7 @@ public class ShaiJiaListActivity extends BaseActivity
                         HashMap<String, String> map4 = new HashMap<String, String>();
                         map4.put("evenname", "点击晒家列表编辑作品");
                         map4.put("even", "点击晒家列表编辑作品进入编辑图片页面");
-                        MobclickAgent.onEvent(ShaiJiaListActivity.this, "user_center", map4);
+                        MobclickAgent.onEvent(ShaiJiaListActivity.this, "点击晒家列表编辑作品", map4);
                         //ga统计
                         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                                 .setCategory("点击晒家列表编辑作品进入编辑图片页面")  //事件类别
@@ -411,7 +411,7 @@ public class ShaiJiaListActivity extends BaseActivity
         HashMap<String, String> map4 = new HashMap<String, String>();
         map4.put("evenname", "点击晒家作品");
         map4.put("even", "点击晒家列表页进入图片详情");
-        MobclickAgent.onEvent(ShaiJiaListActivity.this, "user_center", map4);
+        MobclickAgent.onEvent(ShaiJiaListActivity.this, "点击晒家作品", map4);
         //ga统计
         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                 .setCategory("点击晒家列表页进入图片详情")  //事件类别
