@@ -46,7 +46,7 @@
                     android:layout_toRightOf="@+id/iv_image_fabu"
                     android:background="@null"
                     android:maxLength="140"
-                    android:hint="请输出你的故事（必选项）"
+                    android:hint="说出你的故事（必选项）"
                     android:textColorHint="@color/bg_8f8f8f"
                     android:textCursorDrawable="@null"
                     android:textSize="@dimen/font_14" />

@@ -192,6 +192,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/font_10"
+                android:layout_centerVertical="true"
                 android:text="专业用户资料"
                 android:textColor="@color/bg_707070"
                 android:textSize="@dimen/size_13" />
@@ -199,6 +200,7 @@
             <ImageView
                 android:id="@+id/iv_info_zhanye_back"
                 android:layout_width="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/tv_info_zhanye_back"
                 android:src="@drawable/next" />
