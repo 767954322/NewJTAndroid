@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.android.gms.analytics.HitBuilders;
+import com.homechart.app.MyApplication;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.KeyConstans;
@@ -32,11 +34,14 @@ import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
 
 /**
  * Created by allen on 2017/6/1.
@@ -123,6 +128,16 @@ public class LoginActivity extends BaseActivity
 
             case R.id.btn_send_demand:
 
+                //友盟统计
+                HashMap<String, String> map1 = new HashMap<String, String>();
+                map1.put("evenname", "登录");
+                map1.put("even", "点击登录");
+                MobclickAgent.onEvent(LoginActivity.this, "user_login", map1);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("点击登录")  //事件类别
+                        .setAction("登录")      //事件操作
+                        .build());
                 clickLoginUser();
 
                 break;
@@ -335,7 +350,20 @@ public class LoginActivity extends BaseActivity
             System.exit(0);
         }
     }
+    @Override
+    public void onResume() {
+        super.onResume();
 
+        MobclickAgent.onResume(LoginActivity.this);
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPause(LoginActivity.this);
+    }
     private TextView mTVToRegister;
     private TextView mTVGorgetPass;
     private TextView mTVLoginWeiXin;

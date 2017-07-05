@@ -19,6 +19,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.android.gms.analytics.HitBuilders;
+import com.homechart.app.MyApplication;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
@@ -35,11 +37,14 @@ import com.homechart.app.utils.alertview.OnItemClickListener;
 import com.homechart.app.utils.geetest.GeetestTest;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
 
 import static com.homechart.app.R.id.tv_tital_comment;
 
@@ -154,11 +159,31 @@ public class RegisterActivity extends BaseActivity
                 break;
             case R.id.btn_regiter_demand:
 
+                //友盟统计
+                HashMap<String, String> map1 = new HashMap<String, String>();
+                map1.put("evenname", "注册");
+                map1.put("even", "点击注册按钮");
+                MobclickAgent.onEvent(RegisterActivity.this, "user_register", map1);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("点击注册按钮")  //事件类别
+                        .setAction("注册")      //事件操作
+                        .build());
                 clickRegister();
 
                 break;
             case R.id.rl_jumpto_mast:
 
+                //友盟统计
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("evenname", "注册协议");
+                map.put("even", "点击注册协议入口");
+                MobclickAgent.onEvent(RegisterActivity.this, "user_register", map);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("点击注册协议入口")  //事件类别
+                        .setAction("注册协议")      //事件操作
+                        .build());
                 clickJumpMast();
 
                 break;
@@ -443,7 +468,20 @@ public class RegisterActivity extends BaseActivity
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
+        MobclickAgent.onResume(RegisterActivity.this);
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPause(RegisterActivity.this);
+    }
     private RelativeLayout mRLJumpMast;
     private ImageView mIVIfShowPass;
     private ImageButton mIBBack;
