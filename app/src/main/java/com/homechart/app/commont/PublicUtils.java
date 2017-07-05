@@ -24,7 +24,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.homechart.app.MyApplication;
 import com.homechart.app.R;
+import com.homechart.app.home.activity.LoginActivity;
 import com.homechart.app.home.bean.login.LoginBean;
 import com.homechart.app.utils.CustomProgress;
 import com.homechart.app.utils.DataCleanManager;
@@ -33,6 +36,7 @@ import com.homechart.app.utils.SharedPreferencesUtils;
 import com.homechart.app.utils.ToastUtils;
 import com.homechart.app.utils.UIUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -248,13 +252,43 @@ public class PublicUtils {
             switch (platform.toString()) {
                 case "SINA":
                     plat = "weibo";
+                    //友盟统计
+                    HashMap<String, String> map_weibo = new HashMap<String, String>();
+                    map_weibo.put("evenname", "weibo登陆成功次数");
+                    map_weibo.put("even", "登陆成功后+1");
+                    MobclickAgent.onEvent(mActivity, "user_login", map_weibo);
+                    //ga统计
+                    MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                            .setCategory("登陆成功后+1")  //事件类别
+                            .setAction("weibo登陆成功次数")      //事件操作
+                            .build());
 //                    PublicUtils.clearUMengOauth(mActivity);
                     break;
                 case "QQ":
+                    //友盟统计
+                    HashMap<String, String> map_qq = new HashMap<String, String>();
+                    map_qq.put("evenname", "qq登陆成功次数");
+                    map_qq.put("even", "登陆成功后+1");
+                    MobclickAgent.onEvent(mActivity, "user_login", map_qq);
+                    //ga统计
+                    MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                            .setCategory("登陆成功后+1")  //事件类别
+                            .setAction("qq登陆成功次数")      //事件操作
+                            .build());
                     plat = "qq";
                     PublicUtils.clearUMengOauth(mActivity);
                     break;
                 case "WEIXIN":
+                    //友盟统计
+                    HashMap<String, String> map_weixin = new HashMap<String, String>();
+                    map_weixin.put("evenname", "wechat登陆成功次数");
+                    map_weixin.put("even", "登陆成功后+1");
+                    MobclickAgent.onEvent(mActivity, "user_login", map_weixin);
+                    //ga统计
+                    MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                            .setCategory("登陆成功后+1")  //事件类别
+                            .setAction("wechat登陆成功次数")      //事件操作
+                            .build());
                     plat = "weixin";
                     PublicUtils.clearUMengOauth(mActivity);
                     break;

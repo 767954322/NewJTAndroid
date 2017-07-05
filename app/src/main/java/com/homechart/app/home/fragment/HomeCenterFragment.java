@@ -275,7 +275,6 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
                     }
                 } catch (JSONException e) {
 
-                    ToastUtils.showCenter(activity, getString(R.string.unreader_msg_get_error));
                 }
             }
         };

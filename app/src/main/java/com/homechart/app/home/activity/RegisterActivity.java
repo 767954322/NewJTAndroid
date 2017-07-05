@@ -129,17 +129,44 @@ public class RegisterActivity extends BaseActivity
                 break;
 
             case R.id.tv_login_qq:
-
+                //友盟统计
+                HashMap<String, String> map_qq = new HashMap<String, String>();
+                map_qq.put("evenname", "qq第三方登录");
+                map_qq.put("even", "点击使用QQ作为第三方登录按钮");
+                MobclickAgent.onEvent(RegisterActivity.this, "user_login", map_qq);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("点击使用QQ作为第三方登录按钮")  //事件类别
+                        .setAction("qq第三方登录")      //事件操作
+                        .build());
                 UMShareAPI.get(RegisterActivity.this).getPlatformInfo(RegisterActivity.this, SHARE_MEDIA.QQ, umAuthListener);
 
                 break;
             case R.id.tv_login_weixin:
-
+                //友盟统计
+                HashMap<String, String> map_weixin = new HashMap<String, String>();
+                map_weixin.put("evenname", "wechat第三方登录");
+                map_weixin.put("even", "点击使用微信作为第三方登录按钮");
+                MobclickAgent.onEvent(RegisterActivity.this, "user_login", map_weixin);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("点击使用微信作为第三方登录按钮")  //事件类别
+                        .setAction("wechat第三方登录")      //事件操作
+                        .build());
                 UMShareAPI.get(RegisterActivity.this).getPlatformInfo(RegisterActivity.this, SHARE_MEDIA.WEIXIN, umAuthListener);
 
                 break;
             case R.id.tv_login_sina:
-
+                //友盟统计
+                HashMap<String, String> map_sina = new HashMap<String, String>();
+                map_sina.put("evenname", "weibo第三方登录");
+                map_sina.put("even", "点击使用微博作为第三方登录按钮");
+                MobclickAgent.onEvent(RegisterActivity.this, "user_login", map_sina);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("点击使用微博作为第三方登录按钮")  //事件类别
+                        .setAction("weibo第三方登录")      //事件操作
+                        .build());
                 UMShareAPI.get(RegisterActivity.this).getPlatformInfo(RegisterActivity.this, SHARE_MEDIA.SINA, umAuthListener);
 
                 break;

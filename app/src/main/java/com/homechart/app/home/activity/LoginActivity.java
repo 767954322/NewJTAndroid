@@ -111,17 +111,43 @@ public class LoginActivity extends BaseActivity
 
         switch (v.getId()) {
             case R.id.tv_login_qq:
-
+                //友盟统计
+                HashMap<String, String> map_qq = new HashMap<String, String>();
+                map_qq.put("evenname", "qq第三方登录");
+                map_qq.put("even", "点击使用QQ作为第三方登录按钮");
+                MobclickAgent.onEvent(LoginActivity.this, "user_login", map_qq);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("点击使用QQ作为第三方登录按钮")  //事件类别
+                        .setAction("qq第三方登录")      //事件操作
+                        .build());
                 UMShareAPI.get(LoginActivity.this).getPlatformInfo(LoginActivity.this, SHARE_MEDIA.QQ, umAuthListener);
 
                 break;
             case R.id.tv_login_weixin:
-
+                //友盟统计
+                HashMap<String, String> map_weixin = new HashMap<String, String>();
+                map_weixin.put("evenname", "wechat第三方登录");
+                map_weixin.put("even", "点击使用微信作为第三方登录按钮");
+                MobclickAgent.onEvent(LoginActivity.this, "user_login", map_weixin);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("点击使用微信作为第三方登录按钮")  //事件类别
+                        .setAction("wechat第三方登录")      //事件操作
+                        .build());
                 UMShareAPI.get(LoginActivity.this).getPlatformInfo(LoginActivity.this, SHARE_MEDIA.WEIXIN, umAuthListener);
-
                 break;
             case R.id.tv_login_sina:
-
+                //友盟统计
+                HashMap<String, String> map_sina = new HashMap<String, String>();
+                map_sina.put("evenname", "weibo第三方登录");
+                map_sina.put("even", "点击使用微博作为第三方登录按钮");
+                MobclickAgent.onEvent(LoginActivity.this, "user_login", map_sina);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("点击使用微博作为第三方登录按钮")  //事件类别
+                        .setAction("weibo第三方登录")      //事件操作
+                        .build());
                 UMShareAPI.get(LoginActivity.this).getPlatformInfo(LoginActivity.this, SHARE_MEDIA.SINA, umAuthListener);
 
                 break;
@@ -228,7 +254,7 @@ public class LoginActivity extends BaseActivity
 //        intent1.setData(content_url);
 //        startActivity(intent1);
 
-        Intent intent = new Intent(LoginActivity.this,ResetPasswordActivity.class);
+        Intent intent = new Intent(LoginActivity.this, ResetPasswordActivity.class);
         startActivity(intent);
 
     }
@@ -326,9 +352,9 @@ public class LoginActivity extends BaseActivity
     }
 
 
-
     //退出时的时间
     private long mExitTime;
+
     //对返回键进行监听
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -343,13 +369,14 @@ public class LoginActivity extends BaseActivity
 
     public void exit() {
         if ((System.currentTimeMillis() - mExitTime) > 3000) {
-            ToastUtils.showCenter(LoginActivity.this,"再次点击返回键退出");
+            ToastUtils.showCenter(LoginActivity.this, "再次点击返回键退出");
             mExitTime = System.currentTimeMillis();
         } else {
             LoginActivity.this.finish();
             System.exit(0);
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -364,6 +391,7 @@ public class LoginActivity extends BaseActivity
 
         MobclickAgent.onPause(LoginActivity.this);
     }
+
     private TextView mTVToRegister;
     private TextView mTVGorgetPass;
     private TextView mTVLoginWeiXin;
