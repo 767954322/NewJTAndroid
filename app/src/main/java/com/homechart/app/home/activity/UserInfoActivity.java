@@ -82,6 +82,7 @@ public class UserInfoActivity
     private int TYPE_RIGHT = 2;
     private View headerView;
     private boolean first = true;
+    private TextView tv_info_pic_tital;
 
     @Override
     protected int getLayoutResId() {
@@ -97,6 +98,7 @@ public class UserInfoActivity
         mRecyclerView = (HRecyclerView) findViewById(R.id.rcy_recyclerview_info);
 
         tv_userinfo_nikename = (TextView) headerView.findViewById(R.id.tv_userinfo_nikename);
+        tv_info_pic_tital = (TextView) headerView.findViewById(R.id.tv_info_pic_tital);
         tv_info_guanzhu_num = (TextView) headerView.findViewById(R.id.tv_info_guanzhu_num);
         tv_info_shaijia_num = (TextView) headerView.findViewById(R.id.tv_info_shaijia_num);
         tv_info_fensi_num = (TextView) headerView.findViewById(R.id.tv_info_fensi_num);
@@ -167,8 +169,8 @@ public class UserInfoActivity
                             (ImageView) holder.getView(R.id.iv_shoucang_image));
                 }
 
-              String[] str =   mListData.get(position).getItem_info().getAdd_time().split(" ");
-                if(str.length >0 ){
+                String[] str = mListData.get(position).getItem_info().getAdd_time().split(" ");
+                if (str.length > 0) {
                     ((TextView) holder.getView(R.id.item_info_time)).
                             setText(str[0] + "   发布");
                 }
@@ -394,33 +396,33 @@ public class UserInfoActivity
 
             if (userCenterInfoBean.getUser_info().getRelation().equals("0")) {//未关注
 
-                btn_guanzhu_demand.setBackgroundResource(R.drawable.bt_guanzu );
+                btn_guanzhu_demand.setBackgroundResource(R.drawable.bt_guanzu);
                 btn_guanzhu_demand.setTextColor(UIUtils.getColor(R.color.white));
                 btn_guanzhu_demand.setText("关注Ta");
-                if(first){
+                if (first) {
                     first = false;
-                }else {
-                    ToastUtils.showCenter(UserInfoActivity.this,"已取消关注");
+                } else {
+                    ToastUtils.showCenter(UserInfoActivity.this, "已取消关注");
                 }
 
             } else if (userCenterInfoBean.getUser_info().getRelation().equals("1")) {//已关注
                 btn_guanzhu_demand.setBackgroundResource(R.drawable.bt_guanzhu);
                 btn_guanzhu_demand.setTextColor(UIUtils.getColor(R.color.bg_8f8f8f));
                 btn_guanzhu_demand.setText("已关注");
-                if(first){
+                if (first) {
                     first = false;
-                }else {
-                    ToastUtils.showCenter(UserInfoActivity.this,"关注成功");
+                } else {
+                    ToastUtils.showCenter(UserInfoActivity.this, "关注成功");
                 }
 
             } else if (userCenterInfoBean.getUser_info().getRelation().equals("2")) {//互相关注
                 btn_guanzhu_demand.setBackgroundResource(R.drawable.bt_guanzhu);
                 btn_guanzhu_demand.setTextColor(UIUtils.getColor(R.color.bg_8f8f8f));
                 btn_guanzhu_demand.setText("互相关注");
-                if(first){
+                if (first) {
                     first = false;
-                }else {
-                    ToastUtils.showCenter(UserInfoActivity.this,"关注成功");
+                } else {
+                    ToastUtils.showCenter(UserInfoActivity.this, "关注成功");
                 }
             }
 
@@ -490,11 +492,18 @@ public class UserInfoActivity
 
         position = mListData.size();
         mListData.addAll(item_list);
-        mAdapter.notifyItem(position, mListData, item_list);
+        if (mListData == null || mListData.size() == 0) {
+
+            tv_info_pic_tital.setVisibility(View.GONE);
+        }else {
+            tv_info_pic_tital.setVisibility(View.VISIBLE);
+            mAdapter.notifyItem(position, mListData, item_list);
+        }
 
         mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
 
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -506,6 +515,7 @@ public class UserInfoActivity
         super.onPause();
         MobclickAgent.onPause(this);
     }
+
     private int width_Pic;
     private int position;
 }
