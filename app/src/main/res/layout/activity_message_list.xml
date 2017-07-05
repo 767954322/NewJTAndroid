@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_empty"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/font_20"
+            android:layout_marginTop="@dimen/font_40"
             android:text="暂无消息"
             android:textColor="@color/bg_8f8f8f"
             android:textSize="@dimen/font_14" />
