@@ -78,13 +78,13 @@ public class AdvertisementActivity extends BaseActivity implements View.OnClickL
     @SuppressLint("JavascriptInterface")
     @Override
     protected void initData(Bundle savedInstanceState) {
-        wv_webView.setWebViewClient(new webViewClient());
-        WebSettings settings = wv_webView.getSettings();
-        settings.setUseWideViewPort(true);
-        settings.setLoadWithOverviewMode(true);
-        settings.setJavaScriptEnabled(true);
-        wv_webView.addJavascriptInterface(new AndroidJs(AdvertisementActivity.this), "AndroidJs");
-        wv_webView.loadUrl(KeyConstans.ADVERTISEMENT_WEB);
+//        wv_webView.setWebViewClient(new webViewClient());
+//        WebSettings settings = wv_webView.getSettings();
+//        settings.setUseWideViewPort(true);
+//        settings.setLoadWithOverviewMode(true);
+//        settings.setJavaScriptEnabled(true);
+//        wv_webView.addJavascriptInterface(new AndroidJs(AdvertisementActivity.this), "AndroidJs");
+//        wv_webView.loadUrl(KeyConstans.ADVERTISEMENT_WEB);
         handler.postDelayed(runnable, 1500);
     }
 
@@ -132,16 +132,21 @@ public class AdvertisementActivity extends BaseActivity implements View.OnClickL
     Runnable runnable = new Runnable() {
         @Override
         public void run() {
-            if (PublicUtils.isNetworkConnected(AdvertisementActivity.this) && loadweb_success) {
-                wv_webView.setVisibility(View.VISIBLE);
-                iv_flush.setVisibility(View.GONE);
-                handler.postDelayed(runnable_timeui, 1000);
-            } else {
-                Intent intent = new Intent(AdvertisementActivity.this, LoginActivity.class);
-                startActivity(intent);
-                handler.removeCallbacksAndMessages(null);
-                finish();
-            }
+            Intent intent = new Intent(AdvertisementActivity.this, LoginActivity.class);
+            startActivity(intent);
+            handler.removeCallbacksAndMessages(null);
+            AdvertisementActivity.this.finish();
+
+//            if (PublicUtils.isNetworkConnected(AdvertisementActivity.this) && loadweb_success) {
+//                wv_webView.setVisibility(View.VISIBLE);
+//                iv_flush.setVisibility(View.GONE);
+//                handler.postDelayed(runnable_timeui, 1000);
+//            } else {
+//                Intent intent = new Intent(AdvertisementActivity.this, LoginActivity.class);
+//                startActivity(intent);
+//                handler.removeCallbacksAndMessages(null);
+//                finish();
+//            }
         }
     };
 

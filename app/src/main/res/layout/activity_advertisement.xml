@@ -21,7 +21,8 @@
         android:paddingTop="@dimen/font_3"
         android:background="@drawable/time_background"
         android:paddingBottom="@dimen/font_3"
-        android:layout_margin="@dimen/size_20">
+        android:layout_margin="@dimen/size_20"
+        android:visibility="gone">
         <TextView
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
