@@ -26,11 +26,13 @@ import com.homechart.app.utils.alertview.AlertView;
 import com.homechart.app.utils.alertview.OnItemClickListener;
 import com.homechart.app.utils.imageloader.ImageUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.UMAuthListener;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -105,11 +107,31 @@ public class SetActivity
                 break;
             case R.id.rl_set_guanyu:
 
+                //友盟统计
+                HashMap<String, String> map4 = new HashMap<String, String>();
+                map4.put("evenname", "关于家图");
+                map4.put("even", "点击关于家图");
+                MobclickAgent.onEvent(SetActivity.this, "system_set", map4);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("点击关于家图")  //事件类别
+                        .setAction("关于家图")      //事件操作
+                        .build());
                 Intent intent_guanyu = new Intent(SetActivity.this, GuanYuActivity.class);
                 startActivity(intent_guanyu);
 
                 break;
             case R.id.rl_set_clear:
+                //友盟统计
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("evenname", "清除缓存");
+                map.put("even", "点击清除缓存");
+                MobclickAgent.onEvent(SetActivity.this, "system_set", map);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("点击清除缓存")  //事件类别
+                        .setAction("清除缓存")      //事件操作
+                        .build());
                 if (!tv_clear_num.getText().equals("0.0B")) {
                     PublicUtils.clearAppCache(this);
                     tv_clear_num.setText("0.0B");
@@ -121,19 +143,47 @@ public class SetActivity
 
                 break;
             case R.id.rl_set_fankui:
+                //友盟统计
+                HashMap<String, String> map1 = new HashMap<String, String>();
+                map1.put("evenname", "使用反馈");
+                map1.put("even", "点击使用反馈");
+                MobclickAgent.onEvent(SetActivity.this, "system_set", map1);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("点击使用反馈")  //事件类别
+                        .setAction("使用反馈")      //事件操作
+                        .build());
                 PublicUtils.clearAppCache(SetActivity.this);
                 Intent intent = new Intent(this, IssueBackActivity.class);
                 startActivity(intent);
 
                 break;
             case R.id.rl_set_tuijian:
-
+                //友盟统计
+                HashMap<String, String> map2 = new HashMap<String, String>();
+                map2.put("evenname", "推荐家图");
+                map2.put("even", "点击推荐家图");
+                MobclickAgent.onEvent(SetActivity.this, "system_set", map2);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("点击推荐家图")  //事件类别
+                        .setAction("推荐家图")      //事件操作
+                        .build());
                 Intent intent2 = new Intent(SetActivity.this,TuiJianFriendsActivity.class);
                 startActivity(intent2);
 
                 break;
             case R.id.btn_outlogin:
-
+                //友盟统计
+                HashMap<String, String> map3 = new HashMap<String, String>();
+                map3.put("evenname", "退出登录");
+                map3.put("even", "点击退出登陆");
+                MobclickAgent.onEvent(SetActivity.this, "system_set", map3);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("点击退出登陆")  //事件类别
+                        .setAction("退出登录")      //事件操作
+                        .build());
                 //清除登陆数据
                 PublicUtils.clearShared(SetActivity.this);
                 //清除所有显示Activity
@@ -227,4 +277,16 @@ public class SetActivity
         public void onCancel(SHARE_MEDIA platform, int action) {
         }
     };
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 }

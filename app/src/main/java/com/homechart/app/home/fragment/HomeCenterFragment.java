@@ -238,7 +238,6 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
 
                 break;
             case R.id.iv_center_header:
-            case R.id.rl_wodeanli:
                 //友盟统计
                 HashMap<String, String> map3 = new HashMap<String, String>();
                 map3.put("evenname", "点击头像");
@@ -252,6 +251,21 @@ public class HomeCenterFragment extends BaseFragment implements View.OnClickList
                 Intent intent_wodeanli = new Intent(activity, MyInfoActivity.class);
                 intent_wodeanli.putExtra("info", userCenterInfoBean);
                 startActivityForResult(intent_wodeanli, 0);
+                break;
+            case R.id.rl_wodeanli:
+                //友盟统计
+                HashMap<String, String> map6 = new HashMap<String, String>();
+                map6.put("evenname", "点击个人资料");
+                map6.put("even", "点击个人资料");
+                MobclickAgent.onEvent(activity, "user_center", map6);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("点击个人资料")  //事件类别
+                        .setAction("点击个人资料")      //事件操作
+                        .build());
+                Intent intent_wodeanli1 = new Intent(activity, MyInfoActivity.class);
+                intent_wodeanli1.putExtra("info", userCenterInfoBean);
+                startActivityForResult(intent_wodeanli1, 0);
 
                 break;
             case R.id.rl_set:
