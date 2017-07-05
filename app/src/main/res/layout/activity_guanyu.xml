@@ -29,7 +29,7 @@
                 android:layout_marginLeft="@dimen/font_15"
                 android:text="联系邮箱"
                 android:textColor="@color/case_text_tital_name"
-                android:textSize="@dimen/size_16" />
+                android:textSize="@dimen/size_14" />
 
             <TextView
                 android:id="@+id/tv_guanyu_youxiang_content"
@@ -67,7 +67,7 @@
                 android:layout_marginLeft="@dimen/font_15"
                 android:text="微信公众号"
                 android:textColor="@color/case_text_tital_name"
-                android:textSize="@dimen/size_16" />
+                android:textSize="@dimen/size_14" />
 
             <TextView
                 android:id="@+id/tv_guanyu_wx_content"
@@ -103,7 +103,7 @@
                 android:layout_marginLeft="@dimen/font_15"
                 android:text="官方微博"
                 android:textColor="@color/case_text_tital_name"
-                android:textSize="@dimen/size_16" />
+                android:textSize="@dimen/size_14" />
 
             <TextView
                 android:id="@+id/tv_guanyu_wb_content"
@@ -141,7 +141,7 @@
                 android:layout_marginLeft="@dimen/font_15"
                 android:text="今日头条"
                 android:textColor="@color/case_text_tital_name"
-                android:textSize="@dimen/size_16" />
+                android:textSize="@dimen/size_14" />
 
             <TextView
                 android:id="@+id/tv_guanyu_tt_content"
@@ -177,7 +177,7 @@
                 android:layout_marginLeft="@dimen/font_15"
                 android:text="系统版本"
                 android:textColor="@color/case_text_tital_name"
-                android:textSize="@dimen/size_16" />
+                android:textSize="@dimen/size_14" />
 
             <TextView
                 android:id="@+id/tv_guanyu_bb_content"
@@ -212,7 +212,7 @@
                 android:layout_marginTop="@dimen/font_17"
                 android:text="简介"
                 android:textColor="@color/case_text_tital_name"
-                android:textSize="@dimen/size_16" />
+                android:textSize="@dimen/size_14" />
 
             <TextView
                 android:id="@+id/tv_guanyu_jj_content"
