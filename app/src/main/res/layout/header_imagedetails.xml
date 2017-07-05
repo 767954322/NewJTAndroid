@@ -253,21 +253,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/font_15"
-            android:paddingBottom="@dimen/font_15"
             android:paddingTop="@dimen/font_15"
+            android:paddingBottom="@dimen/font_15"
             android:src="@drawable/bang" />
 
         <TextView
             android:id="@+id/tv_bang"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerVertical="true"
+            android:includeFontPadding="true"
             android:layout_toRightOf="@+id/iv_bang"
-            android:paddingBottom="@dimen/font_15"
+            android:paddingTop="@dimen/font_13"
             android:paddingLeft="@dimen/font_4"
-            android:paddingTop="@dimen/font_15"
-            android:text="0"
+            android:text="4"
             android:textColor="@color/bg_8f8f8f"
             android:textSize="@dimen/size_11" />
 
@@ -287,11 +285,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_centerVertical="true"
+            android:paddingTop="@dimen/font_13"
             android:layout_toRightOf="@+id/iv_xing"
             android:paddingBottom="@dimen/font_15"
             android:paddingLeft="@dimen/font_4"
-            android:paddingTop="@dimen/font_15"
             android:text="0"
             android:textColor="@color/bg_8f8f8f"
             android:textSize="@dimen/size_11" />
@@ -316,7 +313,7 @@
             android:layout_toRightOf="@+id/iv_ping"
             android:paddingBottom="@dimen/font_15"
             android:paddingLeft="@dimen/font_4"
-            android:paddingTop="@dimen/font_15"
+            android:paddingTop="@dimen/font_13"
             android:text="0"
             android:textColor="@color/bg_8f8f8f"
             android:textSize="@dimen/size_11" />
@@ -332,7 +329,7 @@
             android:layout_marginLeft="@dimen/font_4"
             android:layout_marginRight="@dimen/font_10"
             android:paddingBottom="@dimen/font_15"
-            android:paddingTop="@dimen/font_15"
+            android:paddingTop="@dimen/font_13"
             android:text="0"
             android:textColor="@color/bg_8f8f8f"
             android:textSize="@dimen/size_11" />
