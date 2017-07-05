@@ -3,6 +3,7 @@ package com.homechart.app.home.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -16,6 +17,8 @@ import com.homechart.app.commont.ActivityManager;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
+import com.homechart.app.myview.HomeSharedPopWin;
+import com.homechart.app.myview.HomeSharedPopWinPublic;
 import com.homechart.app.utils.CustomProgress;
 import com.homechart.app.utils.DataCleanManager;
 import com.homechart.app.utils.MPFileUtility;
@@ -46,7 +49,8 @@ import java.util.Map;
 public class SetActivity
         extends BaseActivity
         implements View.OnClickListener,
-        OnItemClickListener {
+        OnItemClickListener,
+        HomeSharedPopWinPublic.ClickInter {
     private ImageButton mIBBack;
     private TextView mTVTital;
     private RelativeLayout rl_set_guanyu;
@@ -62,6 +66,8 @@ public class SetActivity
     private Button btn_outlogin;
     private boolean ifClear = false;
 
+    private HomeSharedPopWinPublic homeSharedPopWinPublic;
+
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_set;
@@ -69,6 +75,8 @@ public class SetActivity
 
     @Override
     protected void initView() {
+
+        homeSharedPopWinPublic = new HomeSharedPopWinPublic(SetActivity.this, SetActivity.this);
         mIBBack = (ImageButton) findViewById(R.id.nav_left_imageButton);
         mTVTital = (TextView) findViewById(R.id.tv_tital_comment);
         tv_clear_num = (TextView) findViewById(R.id.tv_clear_num);
@@ -177,10 +185,11 @@ public class SetActivity
                         .setCategory("点击推荐家图")  //事件类别
                         .setAction("推荐家图")      //事件操作
                         .build());
-//                Intent intent2 = new Intent(SetActivity.this,TuiJianFriendsActivity.class);
-//                startActivity(intent2);
-                sharedItemOpen();
 
+                homeSharedPopWinPublic.showAtLocation(SetActivity.this.findViewById(R.id.main),
+                        Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
+                        0,
+                        0); //设置layout在PopupWindow中显示的位置
                 break;
             case R.id.btn_outlogin:
                 //友盟统计
@@ -299,7 +308,7 @@ public class SetActivity
         MobclickAgent.onPause(this);
     }
 
-    private void sharedItemOpen() {
+    private void sharedItemOpen(SHARE_MEDIA share_media) {
         UMImage image = new UMImage(SetActivity.this, R.drawable.icon_app);
         image.compressStyle = UMImage.CompressStyle.SCALE;//大小压缩，默认为大小压缩，适合普通很大的图
         UMWeb web = new UMWeb("https://h5.idcool.com.cn/appdownload");
@@ -308,9 +317,9 @@ public class SetActivity
         String desi = "家图app丨帮你实现舒适生活";
         web.setDescription(desi);//描述
         new ShareAction(SetActivity.this).
-                setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA).
+                setPlatform(share_media).
                 withMedia(web).
-                setCallback(umShareListener).open();
+                setCallback(umShareListener).share();
     }
 
     private UMShareListener umShareListener = new UMShareListener() {
@@ -342,4 +351,18 @@ public class SetActivity
         }
     };
 
+    @Override
+    public void onClickWeiXin() {
+        sharedItemOpen(SHARE_MEDIA.WEIXIN);
+    }
+
+    @Override
+    public void onClickPYQ() {
+        sharedItemOpen(SHARE_MEDIA.WEIXIN_CIRCLE);
+    }
+
+    @Override
+    public void onClickWeiBo() {
+        sharedItemOpen(SHARE_MEDIA.SINA);
+    }
 }
