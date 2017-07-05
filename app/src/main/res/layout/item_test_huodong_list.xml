@@ -40,7 +40,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/iv_imageview_one"
+        android:layout_alignRight="@+id/iv_imageview_one"
         android:layout_alignTop="@+id/iv_imageview_one">
 
         <ImageView
