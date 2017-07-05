@@ -11,7 +11,7 @@
         android:layout_marginTop="@dimen/font_20"
         android:gravity="center"
         android:background="@drawable/tv_tag_pic"
-        android:textColor="@color/bg_262626"
+        android:textColor="@color/bg_464646"
         android:textSize="@dimen/font_14" />
 
 </RelativeLayout>
