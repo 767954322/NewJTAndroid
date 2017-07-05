@@ -18,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.android.gms.analytics.HitBuilders;
+import com.homechart.app.MyApplication;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
@@ -45,6 +47,7 @@ import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.imageloader.ImageUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -209,19 +212,32 @@ public class ShaiXuanResultActicity
                     iv_change_frag.setImageResource(R.drawable.changtu);
                     mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
                     curentListTag = false;
-//                    mListData.clear();
-//                    mAdapter.notifyDataSetChanged();
-//                    onRefresh();
-//                    mRecyclerView.scrollToPosition(scroll_position);
+                    //友盟统计
+                    HashMap<String, String> map1 = new HashMap<String, String>();
+                    map1.put("evenname", "筛选结果双列查看");
+                    map1.put("even", "选择双列查看图片列表");
+                    MobclickAgent.onEvent(ShaiXuanResultActicity.this, "筛选结果", map1);
+                    //ga统计
+                    MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                            .setCategory("选择双列查看图片列表")  //事件类别
+                            .setAction("筛选结果双列查看")      //事件操作
+                            .build());
                 } else {
+                    //友盟统计
+                    HashMap<String, String> map1 = new HashMap<String, String>();
+                    map1.put("evenname", "筛选结果单列查看");
+                    map1.put("even", "选择单列查看图片列表");
+                    MobclickAgent.onEvent(ShaiXuanResultActicity.this, "筛选结果", map1);
+                    //ga统计
+                    MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                            .setCategory("选择单列查看图片列表")  //事件类别
+                            .setAction("筛选结果单列查看")      //事件操作
+                            .build());
+
                     mRecyclerView.setPadding(0, 0, 0, 0);
                     iv_change_frag.setImageResource(R.drawable.pubuliu);
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(ShaiXuanResultActicity.this));
                     curentListTag = true;
-//                    mListData.clear();
-//                    mAdapter.notifyDataSetChanged();
-//                    onRefresh();
-//                    mRecyclerView.scrollToPosition(scroll_position);
                 }
                 break;
             case R.id.iv_color_tital:
@@ -235,6 +251,17 @@ public class ShaiXuanResultActicity
                     getColorData();
                     ToastUtils.showCenter(ShaiXuanResultActicity.this, "色彩信息获取失败");
                 } else {
+
+                    //友盟统计
+                    HashMap<String, String> map1 = new HashMap<String, String>();
+                    map1.put("evenname", "筛选结果色彩");
+                    map1.put("even", "点击筛选结果色彩属性按钮");
+                    MobclickAgent.onEvent(ShaiXuanResultActicity.this, " 筛选结果", map1);
+                    //ga统计
+                    MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                            .setCategory("点击筛选结果色彩属性按钮")  //事件类别
+                            .setAction("筛选结果色彩")      //事件操作
+                            .build());
 
                     if (selectColorPopupWindow == null) {
                         selectColorPopupWindow = new SelectColorPopupWindow(this, this, colorBean, this);
@@ -365,6 +392,18 @@ public class ShaiXuanResultActicity
             his_flowLayout.setOnTagClickListener(new FlowLayoutShaiXuan.OnTagClickListener() {
                 @Override
                 public void TagClick(String text) {
+
+                    //友盟统计
+                    HashMap<String, String> map1 = new HashMap<String, String>();
+                    map1.put("evenname", "推荐标签");
+                    map1.put("even", "点击推荐标签，进入新列表页面");
+                    MobclickAgent.onEvent(ShaiXuanResultActicity.this, " 筛选结果", map1);
+                    //ga统计
+                    MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                            .setCategory("点击推荐标签，进入新列表页面")  //事件类别
+                            .setAction("推荐标签")      //事件操作
+                            .build());
+
                     // 跳转搜索结果页
                     Intent intent = new Intent(ShaiXuanResultActicity.this, ShaiXuanResultActicity.class);
                     intent.putExtra("shaixuan_tag", text);
@@ -612,6 +651,17 @@ public class ShaiXuanResultActicity
             riv_round_two.setVisibility(View.GONE);
             riv_round_three.setVisibility(View.GONE);
             selectColorPopupWindow.dismiss();
+
+            //友盟统计
+            HashMap<String, String> map1 = new HashMap<String, String>();
+            map1.put("evenname", "筛选结果取消色彩选择");
+            map1.put("even", "筛选结果取消已选色彩");
+            MobclickAgent.onEvent(ShaiXuanResultActicity.this, "筛选结果", map1);
+            //ga统计
+            MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                    .setCategory("筛选结果取消已选色彩")  //事件类别
+                    .setAction("筛选结果取消色彩选择")      //事件操作
+                    .build());
         } else {
             changeColorRound();
         }
@@ -677,6 +727,21 @@ public class ShaiXuanResultActicity
             }
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        MobclickAgent.onResume(this);
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPause(this);
     }
 
     private List<SearchItemDataBean> mListData = new ArrayList<>();
