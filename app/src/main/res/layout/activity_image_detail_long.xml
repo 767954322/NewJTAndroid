@@ -48,6 +48,7 @@
             android:drawablePadding="@dimen/font_10"
             android:gravity="center_vertical"
             android:hint="评论"
+            android:maxLength="300"
             android:imeOptions="actionSend"
             android:paddingLeft="@dimen/font_10"
             android:singleLine="true"
