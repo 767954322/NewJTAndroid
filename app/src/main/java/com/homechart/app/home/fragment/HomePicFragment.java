@@ -259,13 +259,13 @@ public class HomePicFragment
 
                 //友盟统计
                 HashMap<String, String> map = new HashMap<String, String>();
-                map.put("evenname", "单击首页顶部搜索框");
-                map.put("even", "单击首页顶部搜索框");
-                MobclickAgent.onEvent(activity, "关键词搜索", map);
+                map.put("evenname", "搜索框单击首页顶部搜索框");
+                map.put("even", "搜索框关键词搜索");
+                MobclickAgent.onEvent(activity, "搜索框", map);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
-                        .setCategory("关键词搜索")  //事件类别
-                        .setAction("单击首页顶部搜索框")      //事件操作
+                        .setCategory("搜索框关键词搜索")  //事件类别
+                        .setAction("搜索框单击首页顶部搜索框")      //事件操作
                         .build());
 
                 onDismiss();

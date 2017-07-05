@@ -16,6 +16,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.android.gms.analytics.HitBuilders;
+import com.homechart.app.MyApplication;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
@@ -41,11 +43,13 @@ import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.imageloader.ImageUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -251,6 +255,16 @@ public class SearchResultActivity
 
     @Override
     public void onRefresh() {
+        //友盟统计
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("evenname", "筛选向上滑动（刷新数据）");
+        map.put("even", "筛选刷新数据（图片）");
+        MobclickAgent.onEvent(SearchResultActivity.this, "筛选", map);
+        //ga统计
+        MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                .setCategory("筛选刷新数据（图片）")  //事件类别
+                .setAction("筛选向上滑动（刷新数据）")      //事件操作
+                .build());
         page_num = 1;
         mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
         getListData(REFRESH_STATUS);
@@ -258,6 +272,17 @@ public class SearchResultActivity
 
     @Override
     public void onLoadMore() {
+        //友盟统计
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("evenname", "筛选向下滑动（动作）");
+        map.put("even", "筛选加载更多（图片）");
+        MobclickAgent.onEvent(SearchResultActivity.this, "筛选", map);
+        //ga统计
+        MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                .setCategory("筛选加载更多（图片）")  //事件类别
+                .setAction("筛选向下滑动（动作）")      //事件操作
+                .build());
+
         mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.LOADING);
         ++page_num;
         getListData(LOADMORE_STATUS);
@@ -369,6 +394,7 @@ public class SearchResultActivity
             }
         }
     }
+
     private void changeNone(int i) {
         if (i == 0) {
             rl_no_data.setVisibility(View.GONE);
@@ -381,6 +407,23 @@ public class SearchResultActivity
 
         }
     }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        MobclickAgent.onResume(this);
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPause(this);
+    }
+
     private int position;
     private List<Integer> mListDataHeight = new ArrayList<>();
 }

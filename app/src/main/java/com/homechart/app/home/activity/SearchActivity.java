@@ -95,13 +95,13 @@ public class SearchActivity
             case R.id.tv_quxiao:
                 //友盟统计
                 HashMap<String, String> map = new HashMap<String, String>();
-                map.put("evenname", "点击搜索框右上方的取消");
-                map.put("even", "点击搜索框右上方的取消");
-                MobclickAgent.onEvent(SearchActivity.this, "取消搜索框搜索", map);
+                map.put("evenname", "筛选点击搜索框右上方的取消");
+                map.put("even", "筛选取消搜索框搜索");
+                MobclickAgent.onEvent(SearchActivity.this, "筛选", map);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
-                        .setCategory("取消搜索框搜索")  //事件类别
-                        .setAction("点击搜索框右上方的取消")      //事件操作
+                        .setCategory("筛选取消搜索框搜索")  //事件类别
+                        .setAction("筛选点击搜索框右上方的取消")      //事件操作
                         .build());
                 SearchActivity.this.finish();
                 break;
@@ -178,13 +178,13 @@ public class SearchActivity
 
                     //友盟统计
                     HashMap<String, String> map = new HashMap<String, String>();
-                    map.put("evenname", "单击搜索框下方提供的热点词");
-                    map.put("even", "单击搜索框下方提供的热点词");
-                    MobclickAgent.onEvent(SearchActivity.this, "热点词", map);
+                    map.put("evenname", "筛选单击搜索框下方提供的热点词");
+                    map.put("even", "筛选热点词");
+                    MobclickAgent.onEvent(SearchActivity.this, "筛选", map);
                     //ga统计
                     MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
-                            .setCategory("热点词")  //事件类别
-                            .setAction("单击搜索框下方提供的热点词")      //事件操作
+                            .setCategory("筛选热点词")  //事件类别
+                            .setAction("筛选单击搜索框下方提供的热点词")      //事件操作
                             .build());
 
                     // 跳转搜索结果页
