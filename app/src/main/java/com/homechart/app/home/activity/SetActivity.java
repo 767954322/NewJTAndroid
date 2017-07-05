@@ -128,6 +128,9 @@ public class SetActivity
                 break;
             case R.id.rl_set_tuijian:
 
+                Intent intent2 = new Intent(SetActivity.this,TuiJianFriendsActivity.class);
+                startActivity(intent2);
+
                 break;
             case R.id.btn_outlogin:
 
