@@ -158,7 +158,7 @@ public class FenSiListActivity
         HashMap<String, String> map2 = new HashMap<String, String>();
         map2.put("evenname", "点击粉丝头像");
         map2.put("even", "点击粉丝头像进入粉丝主页");
-        MobclickAgent.onEvent(FenSiListActivity.this, "点击粉丝头像", map2);
+        MobclickAgent.onEvent(FenSiListActivity.this, "action42", map2);
         //ga统计
         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                 .setCategory("点击粉丝头像进入粉丝主页")  //事件类别

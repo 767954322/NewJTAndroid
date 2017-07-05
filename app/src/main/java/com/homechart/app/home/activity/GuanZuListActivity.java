@@ -157,7 +157,7 @@ public class GuanZuListActivity
         HashMap<String, String> map2 = new HashMap<String, String>();
         map2.put("evenname", "点击关注头像");
         map2.put("even", "点击关注头像进入用户主页");
-        MobclickAgent.onEvent(GuanZuListActivity.this, "点击关注头像", map2);
+        MobclickAgent.onEvent(GuanZuListActivity.this, "action44", map2);
         //ga统计
         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                 .setCategory("点击关注头像进入用户主页")  //事件类别

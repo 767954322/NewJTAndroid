@@ -259,7 +259,7 @@ public class SearchResultActivity
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("evenname", "搜索刷新数据");
         map.put("even", "搜索向上滑动");
-        MobclickAgent.onEvent(SearchResultActivity.this, "搜索刷新数据", map);
+        MobclickAgent.onEvent(SearchResultActivity.this, "action5", map);
         //ga统计
         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                 .setCategory("搜索向上滑动")  //事件类别
@@ -276,7 +276,7 @@ public class SearchResultActivity
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("evenname", "搜索加载更多");
         map.put("even", "搜索向下滑动");
-        MobclickAgent.onEvent(SearchResultActivity.this, "搜索加载更多", map);
+        MobclickAgent.onEvent(SearchResultActivity.this, "action4", map);
         //ga统计
         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                 .setCategory("搜索向下滑动")  //事件类别

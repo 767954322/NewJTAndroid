@@ -157,7 +157,7 @@ public class IssueBackActivity
                 HashMap<String, String> map1 = new HashMap<String, String>();
                 map1.put("evenname", "使用反馈完成");
                 map1.put("even", "点击反馈页面提交按钮");
-                MobclickAgent.onEvent(IssueBackActivity.this, "使用反馈完成", map1);
+                MobclickAgent.onEvent(IssueBackActivity.this, "action57", map1);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击反馈页面提交按钮")  //事件类别

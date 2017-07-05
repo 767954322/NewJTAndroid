@@ -133,7 +133,7 @@ public class RegisterActivity extends BaseActivity
                 HashMap<String, String> map_qq = new HashMap<String, String>();
                 map_qq.put("evenname", "qq第三方登录");
                 map_qq.put("even", "点击使用QQ作为第三方登录按钮");
-                MobclickAgent.onEvent(RegisterActivity.this, "qq第三方登录", map_qq);
+                MobclickAgent.onEvent(RegisterActivity.this, "action31", map_qq);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击使用QQ作为第三方登录按钮")  //事件类别
@@ -147,7 +147,7 @@ public class RegisterActivity extends BaseActivity
                 HashMap<String, String> map_weixin = new HashMap<String, String>();
                 map_weixin.put("evenname", "wechat第三方登录");
                 map_weixin.put("even", "点击使用微信作为第三方登录按钮");
-                MobclickAgent.onEvent(RegisterActivity.this, "wechat第三方登录", map_weixin);
+                MobclickAgent.onEvent(RegisterActivity.this, "action29", map_weixin);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击使用微信作为第三方登录按钮")  //事件类别
@@ -161,7 +161,7 @@ public class RegisterActivity extends BaseActivity
                 HashMap<String, String> map_sina = new HashMap<String, String>();
                 map_sina.put("evenname", "weibo第三方登录");
                 map_sina.put("even", "点击使用微博作为第三方登录按钮");
-                MobclickAgent.onEvent(RegisterActivity.this, "weibo第三方登录", map_sina);
+                MobclickAgent.onEvent(RegisterActivity.this, "action27", map_sina);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击使用微博作为第三方登录按钮")  //事件类别
@@ -190,7 +190,7 @@ public class RegisterActivity extends BaseActivity
                 HashMap<String, String> map1 = new HashMap<String, String>();
                 map1.put("evenname", "注册");
                 map1.put("even", "点击注册按钮");
-                MobclickAgent.onEvent(RegisterActivity.this, "注册", map1);
+                MobclickAgent.onEvent(RegisterActivity.this, "action24", map1);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击注册按钮")  //事件类别
@@ -205,7 +205,7 @@ public class RegisterActivity extends BaseActivity
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("evenname", "注册协议");
                 map.put("even", "点击注册协议入口");
-                MobclickAgent.onEvent(RegisterActivity.this, "注册协议", map);
+                MobclickAgent.onEvent(RegisterActivity.this, "action25", map);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击注册协议入口")  //事件类别
@@ -409,7 +409,7 @@ public class RegisterActivity extends BaseActivity
                         HashMap<String, String> map_forget = new HashMap<String, String>();
                         map_forget.put("evenname", "登陆成功提示");
                         map_forget.put("even", "登陆成功后的提示");
-                        MobclickAgent.onEvent(RegisterActivity.this, "登陆成功提示", map_forget);
+                        MobclickAgent.onEvent(RegisterActivity.this, "action33", map_forget);
                         //ga统计
                         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                                 .setCategory("登陆成功后的提示")  //事件类别

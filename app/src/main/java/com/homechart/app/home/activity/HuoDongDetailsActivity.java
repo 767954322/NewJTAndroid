@@ -178,7 +178,7 @@ public class HuoDongDetailsActivity
                     HashMap<String, String> map1 = new HashMap<String, String>();
                     map1.put("evenname", "点击活动最新排序");
                     map1.put("even", "点击最新排序");
-                    MobclickAgent.onEvent(HuoDongDetailsActivity.this, "点击活动最新排序", map1);
+                    MobclickAgent.onEvent(HuoDongDetailsActivity.this, "action36", map1);
                     //ga统计
                     MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                             .setCategory("点击最新排序")  //事件类别
@@ -190,7 +190,7 @@ public class HuoDongDetailsActivity
                     HashMap<String, String> map1 = new HashMap<String, String>();
                     map1.put("evenname", "点击活动热度排序");
                     map1.put("even", "点击热度排序");
-                    MobclickAgent.onEvent(HuoDongDetailsActivity.this, "点击活动热度排序", map1);
+                    MobclickAgent.onEvent(HuoDongDetailsActivity.this, "action35", map1);
                     //ga统计
                     MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                             .setCategory("点击热度排序")  //事件类别
@@ -240,13 +240,13 @@ public class HuoDongDetailsActivity
             case R.id.tv_add_activity:
                 //友盟统计
                 HashMap<String, String> map1 = new HashMap<String, String>();
-                map1.put("evenname", "参与活动");
+                map1.put("evenname", "活动详情参与活动");
                 map1.put("even", "点击参与活动入口进入发布图片页");
-                MobclickAgent.onEvent(HuoDongDetailsActivity.this, "参与活动", map1);
+                MobclickAgent.onEvent(HuoDongDetailsActivity.this, "action78", map1);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击参与活动入口进入发布图片页")  //事件类别
-                        .setAction("参与活动")      //事件操作
+                        .setAction("活动详情参与活动")      //事件操作
                         .build());
                 //参与
                 menuWindow.showAtLocation(HuoDongDetailsActivity.this.findViewById(R.id.main),
@@ -301,7 +301,7 @@ public class HuoDongDetailsActivity
                 HashMap<String, String> map_no = new HashMap<String, String>();
                 map_no.put("evenname", "退出活动");
                 map_no.put("even", "点击返回活动页");
-                MobclickAgent.onEvent(HuoDongDetailsActivity.this, "退出活动", map_no);
+                MobclickAgent.onEvent(HuoDongDetailsActivity.this, "action39", map_no);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击返回活动页")  //事件类别
@@ -568,7 +568,7 @@ public class HuoDongDetailsActivity
         HashMap<String, String> map1 = new HashMap<String, String>();
         map1.put("evenname", "加载更多参与活动图片");
         map1.put("even", "上拉加载更多参与活动图片");
-        MobclickAgent.onEvent(HuoDongDetailsActivity.this, "加载更多参与活动图片", map1);
+        MobclickAgent.onEvent(HuoDongDetailsActivity.this, "action37", map1);
         //ga统计
         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                 .setCategory("上拉加载更多参与活动图片")  //事件类别

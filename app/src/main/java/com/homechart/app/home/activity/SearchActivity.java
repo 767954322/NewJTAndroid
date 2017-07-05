@@ -97,7 +97,7 @@ public class SearchActivity
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("evenname", "取消搜索框搜索");
                 map.put("even", "点击搜索框右上方的取消");
-                MobclickAgent.onEvent(SearchActivity.this, "取消搜索框搜索", map);
+                MobclickAgent.onEvent(SearchActivity.this, "action3", map);
                 //ga统计
                 MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                         .setCategory("点击搜索框右上方的取消")  //事件类别
@@ -180,7 +180,7 @@ public class SearchActivity
                     HashMap<String, String> map = new HashMap<String, String>();
                     map.put("evenname", "搜索热点词");
                     map.put("even", "单击搜索框下方提供的热点词");
-                    MobclickAgent.onEvent(SearchActivity.this, "搜索热点词", map);
+                    MobclickAgent.onEvent(SearchActivity.this, "action2", map);
                     //ga统计
                     MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                             .setCategory("单击搜索框下方提供的热点词")  //事件类别

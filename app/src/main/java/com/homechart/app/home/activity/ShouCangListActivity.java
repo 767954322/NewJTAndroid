@@ -157,6 +157,17 @@ public class ShouCangListActivity
 
                         if (guanli_tag == 0) {//未打开管理
 
+                            //友盟统计
+                            HashMap<String, String> map1 = new HashMap<String, String>();
+                            map1.put("evenname", "点击查看收藏图");
+                            map1.put("even", "点击收藏列表的图进入图片详情");
+                            MobclickAgent.onEvent(ShouCangListActivity.this, "action48", map1);
+                            //ga统计
+                            MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                                    .setCategory("点击收藏列表的图进入图片详情")  //事件类别
+                                    .setAction("点击查看收藏图")      //事件操作
+                                    .build());
+
                             jumpImageDetail(mListData.get(position).getItem_info().getItem_id());
 
                         } else {
@@ -212,7 +223,7 @@ public class ShouCangListActivity
                         HashMap<String, String> map4 = new HashMap<String, String>();
                         map4.put("evenname", "点击收藏管理");
                         map4.put("even", "点击收藏管理按钮");
-                        MobclickAgent.onEvent(ShouCangListActivity.this, "点击收藏管理", map4);
+                        MobclickAgent.onEvent(ShouCangListActivity.this, "action46", map4);
                         //ga统计
                         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                                 .setCategory("点击收藏管理按钮")  //事件类别
@@ -250,7 +261,7 @@ public class ShouCangListActivity
                     HashMap<String, String> map4 = new HashMap<String, String>();
                     map4.put("evenname", "点击删除收藏");
                     map4.put("even", "点击收藏删除按钮");
-                    MobclickAgent.onEvent(ShouCangListActivity.this, "点击删除收藏", map4);
+                    MobclickAgent.onEvent(ShouCangListActivity.this, "action47", map4);
                     //ga统计
                     MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                             .setCategory("点击收藏删除按钮")  //事件类别
