@@ -15,6 +15,6 @@ public class KeyConstans {
     public static final String GORGETPASS_URL ="http://m.idcool.com.cn/account/findpassword?from=client&version=Android";//忘记密码的URL
 
     //启动Web链接
-    public static final String ADVERTISEMENT_WEB = "http://m.idcool.com.cn/app/appstart";
+    public static final String ADVERTISEMENT_WEB = "http://m.idcool.com.cn/app/start";
 
 }
