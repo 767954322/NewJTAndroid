@@ -639,6 +639,8 @@ public class ShaiXuanResultActicity
                 if (null != listData) {
                     mListData.addAll(listData);
                 } else {
+                    //没有更多数据
+                    mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.THE_END);
                     page_num = 1;
                     mListData.clear();
                 }

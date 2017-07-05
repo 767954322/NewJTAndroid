@@ -56,6 +56,7 @@ public class SetActivity
     private TextView tv_clear_num;
     private String cacheSize;
     private Button btn_outlogin;
+    private boolean ifClear = false;
 
     @Override
     protected int getLayoutResId() {
@@ -122,23 +123,26 @@ public class SetActivity
 
                 break;
             case R.id.rl_set_clear:
-                //友盟统计
-                HashMap<String, String> map = new HashMap<String, String>();
-                map.put("evenname", "清除缓存");
-                map.put("even", "点击清除缓存");
-                MobclickAgent.onEvent(SetActivity.this, "system_set", map);
-                //ga统计
-                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
-                        .setCategory("点击清除缓存")  //事件类别
-                        .setAction("清除缓存")      //事件操作
-                        .build());
-                if (!tv_clear_num.getText().equals("0.0B")) {
-                    PublicUtils.clearAppCache(this);
-                    tv_clear_num.setText("0.0B");
-                    ToastUtils.showCenter(SetActivity.this, "缓存已清完");
+                if(!ifClear){
+                    //友盟统计
+                    HashMap<String, String> map = new HashMap<String, String>();
+                    map.put("evenname", "清除缓存");
+                    map.put("even", "点击清除缓存");
+                    MobclickAgent.onEvent(SetActivity.this, "system_set", map);
+                    //ga统计
+                    MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                            .setCategory("点击清除缓存")  //事件类别
+                            .setAction("清除缓存")      //事件操作
+                            .build());
+                    if (!tv_clear_num.getText().equals("0.0B")) {
+                        PublicUtils.clearAppCache(this);
+                        tv_clear_num.setText("0.0B");
+                        ToastUtils.showCenter(SetActivity.this, "缓存已清完");
 
-                } else {
-                    ToastUtils.showCenter(SetActivity.this, "暂无缓存数据");
+                    } else {
+                        ToastUtils.showCenter(SetActivity.this, "暂无缓存数据");
+                    }
+                    ifClear = true;
                 }
 
                 break;
