@@ -320,7 +320,7 @@ public class SearchResultActivity
                             updateViewFromData(searchDataBean.getItem_list(), state);
                         } else {
                             changeNone(1);
-                            ToastUtils.showCenter(SearchResultActivity.this, "暂时没搜到您要的结果，不如换个关键词试试？");
+//                            ToastUtils.showCenter(SearchResultActivity.this, "暂时没搜到您要的结果，不如换个关键词试试？");
                             updateViewFromData(null, state);
                         }
                     } else {

@@ -289,6 +289,17 @@ public class ShaiXuanResultActicity
 
     @Override
     public void onLoadMore() {
+        //友盟统计
+        HashMap<String, String> map1 = new HashMap<String, String>();
+        map1.put("evenname", "筛选结果下拉翻页");
+        map1.put("even", "筛选结果列表页下拉查看更多图片缩略图");
+        MobclickAgent.onEvent(ShaiXuanResultActicity.this, "筛选结果", map1);
+        //ga统计
+        MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                .setCategory("筛选结果列表页下拉查看更多图片缩略图")  //事件类别
+                .setAction("筛选结果下拉翻页")      //事件操作
+                .build());
+
         mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.LOADING);
         ++page_num;
         getListData(LOADMORE_STATUS);
@@ -518,6 +529,16 @@ public class ShaiXuanResultActicity
                 holder.getView(R.id.iv_imageview_one).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        //友盟统计
+                        HashMap<String, String> map1 = new HashMap<String, String>();
+                        map1.put("evenname", " 筛选结果列表-图片详情");
+                        map1.put("even", "筛选结果点击列表页图片进入详情页面");
+                        MobclickAgent.onEvent(ShaiXuanResultActicity.this, "筛选结果", map1);
+                        //ga统计
+                        MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                                .setCategory("筛选结果点击列表页图片进入详情页面")  //事件类别
+                                .setAction(" 筛选结果列表-图片详情")      //事件操作
+                                .build());
                         //查看单图详情
                         Intent intent = new Intent(ShaiXuanResultActicity.this, ImageDetailLongActivity.class);
                         intent.putExtra("item_id", mListData.get(position).getItem_info().getItem_id());
