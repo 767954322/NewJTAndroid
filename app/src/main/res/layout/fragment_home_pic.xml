@@ -125,7 +125,7 @@
             android:id="@+id/ll_pic_choose"
             android:layout_width="match_parent"
             android:layout_height="@dimen/font_90"
-            android:background="@color/bg_f7f7f7"
+            android:background="@color/white"
             android:orientation="horizontal">
 
 
@@ -193,14 +193,13 @@
         <View
             android:id="@+id/view_line_back"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/font_10"
-            android:layout_below="@+id/ll_pic_choose"
-            android:background="@color/bg_f7f7f7" />
+            android:layout_height="@dimen/font_1"
+            android:layout_below="@+id/ll_pic_choose" />
         <View
             android:id="@+id/view_line_bommon"
             android:layout_width="match_parent"
             android:layout_height="@dimen/font_1"
-            android:layout_below="@+id/view_line_back"
+            android:layout_below="@+id/ll_pic_choose"
             android:background="@color/view_line" />
 
         <RelativeLayout
