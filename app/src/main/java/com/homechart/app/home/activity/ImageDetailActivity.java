@@ -27,6 +27,8 @@ import com.homechart.app.home.bean.imagedetail.ImageDetailBean;
 import com.homechart.app.myview.FlowLayoutBiaoQian;
 import com.homechart.app.myview.FlowLayoutShaiXuan;
 import com.homechart.app.myview.HomeSharedPopWin;
+import com.homechart.app.myview.HomeSharedPopWinFaBu;
+import com.homechart.app.myview.HomeSharedPopWinPublic;
 import com.homechart.app.myview.MyListView;
 import com.homechart.app.utils.CustomProgress;
 import com.homechart.app.utils.GsonUtil;
@@ -57,7 +59,8 @@ import java.util.List;
 public class ImageDetailActivity
         extends BaseActivity
         implements View.OnClickListener,
-        HomeSharedPopWin.ClickInter {
+        HomeSharedPopWin.ClickInter ,
+        HomeSharedPopWinFaBu.ClickInter{
     private ImageView iv_details_image;
     private TextView tv_details_tital;
     private TextView tv_details_time;
@@ -75,6 +78,7 @@ public class ImageDetailActivity
     private TextView tv_tital_comment;
     private TextView tv_content_right;
     private HomeSharedPopWin homeSharedPopWin;
+    private HomeSharedPopWinFaBu homeSharedPopWinFaBu;
     private boolean ifZan = true;
     private boolean ifShouCang = true;
     private boolean ifPingLun = true;
@@ -111,6 +115,7 @@ public class ImageDetailActivity
     protected void initView() {
 
         homeSharedPopWin = new HomeSharedPopWin(ImageDetailActivity.this, ImageDetailActivity.this);
+        homeSharedPopWinFaBu = new HomeSharedPopWinFaBu(ImageDetailActivity.this,ImageDetailActivity.this);
         nav_left_imageButton = (ImageButton) findViewById(R.id.nav_left_imageButton);
         tv_tital_comment = (TextView) findViewById(R.id.tv_tital_comment);
         tv_content_right = (TextView) findViewById(R.id.tv_content_right);
@@ -211,7 +216,12 @@ public class ImageDetailActivity
             case R.id.iv_shared:
             case R.id.tv_shared:
                 if (imageDetailBean != null) {
-                    sharedItemOpen();
+
+                    homeSharedPopWinFaBu.showAtLocation(ImageDetailActivity.this.findViewById(R.id.main),
+                            Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
+                            0,
+                            0); //设置layout在PopupWindow中显示的位置
+//                    sharedItemOpen();
                 }
                 break;
             case R.id.iv_ifshow_color:
@@ -577,21 +587,18 @@ public class ImageDetailActivity
     public void onClickWeiXin() {
 
         sharedItemFaBu(SHARE_MEDIA.WEIXIN);
-//        ToastUtils.showCenter(ImageDetailActivity.this, "微信分享");
     }
 
     @Override
     public void onClickPYQ() {
 
         sharedItemFaBu(SHARE_MEDIA.WEIXIN_CIRCLE);
-//        ToastUtils.showCenter(ImageDetailActivity.this, "朋友圈分享");
     }
 
     @Override
     public void onClickWeiBo() {
 
         sharedItemFaBu(SHARE_MEDIA.SINA);
-//        ToastUtils.showCenter(ImageDetailActivity.this, "微博分享");
     }
 
     @Override
@@ -624,7 +631,7 @@ public class ImageDetailActivity
                 setCallback(umShareListener).share();
     }
 
-    private void sharedItemOpen() {
+    private void sharedItemOpen(SHARE_MEDIA share_media) {
 
         UMImage image = new UMImage(ImageDetailActivity.this, imageDetailBean.getItem_info().getImage().getImg0());
         image.compressStyle = UMImage.CompressStyle.SCALE;//大小压缩，默认为大小压缩，适合普通很大的图
@@ -637,9 +644,9 @@ public class ImageDetailActivity
         }
         web.setDescription(desi);//描述
         new ShareAction(ImageDetailActivity.this).
-                setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA).
+                setPlatform(share_media).
                 withMedia(web).
-                setCallback(umShareListener).open();
+                setCallback(umShareListener).share();
     }
 
     private UMShareListener umShareListener = new UMShareListener() {
@@ -688,5 +695,20 @@ public class ImageDetailActivity
             }
         };
         MyHttpManager.getInstance().addShared(imageDetailBean.getItem_info().getItem_id(), "item", callBack);
+    }
+
+    @Override
+    public void onClickWeiXinFaBu() {
+        sharedItemOpen(SHARE_MEDIA.WEIXIN);
+    }
+
+    @Override
+    public void onClickPYQFaBu() {
+        sharedItemOpen(SHARE_MEDIA.WEIXIN_CIRCLE);
+    }
+
+    @Override
+    public void onClickWeiBoFaBu() {
+        sharedItemOpen(SHARE_MEDIA.SINA);
     }
 }

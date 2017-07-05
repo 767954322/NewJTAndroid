@@ -46,6 +46,7 @@ import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
 import com.homechart.app.myview.ClearEditText;
 import com.homechart.app.myview.CustomGridView;
 import com.homechart.app.myview.FlowLayoutBiaoQian;
+import com.homechart.app.myview.HomeSharedPopWinPublic;
 import com.homechart.app.myview.MyListView;
 import com.homechart.app.myview.ResizeRelativeLayout;
 import com.homechart.app.myview.RoundImageView;
@@ -84,7 +85,8 @@ import java.util.List;
 public class ImageDetailLongActivity
         extends BaseActivity
         implements View.OnClickListener,
-        OnLoadMoreListener {
+        OnLoadMoreListener ,
+        HomeSharedPopWinPublic.ClickInter{
     private ImageView iv_details_image;
     private TextView tv_details_tital;
     private TextView tv_details_time;
@@ -184,7 +186,7 @@ public class ImageDetailLongActivity
     private ImageView iv_ifshow_color;
     private RelativeLayout rl_imagedetails_next;
     private LinearLayout ll_color_lines;
-
+    private HomeSharedPopWinPublic homeSharedPopWinPublic;
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_image_detail_long;
@@ -201,6 +203,7 @@ public class ImageDetailLongActivity
     protected void initView() {
 
         view = LayoutInflater.from(ImageDetailLongActivity.this).inflate(R.layout.header_imagedetails, null);
+        homeSharedPopWinPublic = new HomeSharedPopWinPublic(ImageDetailLongActivity.this, ImageDetailLongActivity.this);
         mRecyclerView = (HRecyclerView) findViewById(R.id.rcy_recyclerview_info);
         cet_clearedit = (ClearEditText) findViewById(R.id.cet_clearedit);
         nav_left_imageButton = (ImageButton) findViewById(R.id.nav_left_imageButton);
@@ -515,7 +518,10 @@ public class ImageDetailLongActivity
             case R.id.nav_secondary_imageButton:
 
                 if (imageDetailBean != null) {
-                    sharedItemOpen();
+                    homeSharedPopWinPublic.showAtLocation(ImageDetailLongActivity.this.findViewById(R.id.menu_layout),
+                            Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
+                            0,
+                            0); //设置layout在PopupWindow中显示的位置
                 }
 
                 break;
@@ -1213,11 +1219,6 @@ public class ImageDetailLongActivity
         tv_shared.setText(share_num + "");
     }
 
-
-    private void showColorList() {
-
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -1231,24 +1232,6 @@ public class ImageDetailLongActivity
             getImageDetail();
         }
 
-    }
-
-    private void sharedItemOpen() {
-
-        UMImage image = new UMImage(ImageDetailLongActivity.this, imageDetailBean.getItem_info().getImage().getImg0());
-        image.compressStyle = UMImage.CompressStyle.SCALE;//大小压缩，默认为大小压缩，适合普通很大的图
-        UMWeb web = new UMWeb("http://h5.idcool.com.cn/photo/" + imageDetailBean.getItem_info().getItem_id());
-        web.setTitle("「" + imageDetailBean.getUser_info().getNickname() + "」在晒家｜家图APP");//标题
-        web.setThumb(image);  //缩略图
-        String desi = imageDetailBean.getItem_info().getDescription() + imageDetailBean.getItem_info().getTag();
-        if (desi.length() > 160) {
-            desi = desi.substring(0, 160) + "...";
-        }
-        web.setDescription(desi);//描述
-        new ShareAction(ImageDetailLongActivity.this).
-                setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA).
-                withMedia(web).
-                setCallback(umShareListener).open();
     }
 
     @Override
@@ -1585,4 +1568,37 @@ public class ImageDetailLongActivity
         super.onPause();
         MobclickAgent.onPause(this);
     }
+
+    @Override
+    public void onClickWeiXin() {
+        sharedItemOpen(SHARE_MEDIA.WEIXIN);
+    }
+
+    @Override
+    public void onClickPYQ() {
+        sharedItemOpen(SHARE_MEDIA.WEIXIN_CIRCLE);
+    }
+
+    @Override
+    public void onClickWeiBo() {
+        sharedItemOpen(SHARE_MEDIA.SINA);
+    }
+
+    private void sharedItemOpen(SHARE_MEDIA share_media) {
+        UMImage image = new UMImage(ImageDetailLongActivity.this, imageDetailBean.getItem_info().getImage().getImg0());
+        image.compressStyle = UMImage.CompressStyle.SCALE;//大小压缩，默认为大小压缩，适合普通很大的图
+        UMWeb web = new UMWeb("http://h5.idcool.com.cn/photo/" + imageDetailBean.getItem_info().getItem_id());
+        web.setTitle("「" + imageDetailBean.getUser_info().getNickname() + "」在晒家｜家图APP");//标题
+        web.setThumb(image);  //缩略图
+        String desi = imageDetailBean.getItem_info().getDescription() + imageDetailBean.getItem_info().getTag();
+        if (desi.length() > 160) {
+            desi = desi.substring(0, 160) + "...";
+        }
+        web.setDescription(desi);//描述
+        new ShareAction(ImageDetailLongActivity.this).
+                setPlatform(share_media).
+                withMedia(web).
+                setCallback(umShareListener).share();
+    }
+
 }
