@@ -103,7 +103,7 @@ public class FlowLayoutShaiXuan extends ViewGroup {
                         : width + getPaddingLeft() + getPaddingRight(),
                 modeHeight == MeasureSpec.EXACTLY ? sizeHeight : height
                         + getPaddingTop() + getPaddingBottom());
-        setPadding(UIUtils.getDimens(R.dimen.font_15), UIUtils.getDimens(R.dimen.font_20), UIUtils.getDimens(R.dimen.font_15), UIUtils.getDimens(R.dimen.font_5));
+        setPadding(UIUtils.getDimens(R.dimen.font_15), UIUtils.getDimens(R.dimen.font_20), UIUtils.getDimens(R.dimen.font_10), UIUtils.getDimens(R.dimen.font_5));
     }
 
     // 储存所有的View
