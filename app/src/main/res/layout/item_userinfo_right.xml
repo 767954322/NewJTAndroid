@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/bg_f7f7f7">
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/iv_shoucang_image"
@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/font_7"
         android:layout_marginRight="@dimen/font_7"
-        android:layout_marginTop="@dimen/font_10"
+        android:layout_marginTop="@dimen/font_20"
         android:scaleType="fitXY" />
 
     <TextView

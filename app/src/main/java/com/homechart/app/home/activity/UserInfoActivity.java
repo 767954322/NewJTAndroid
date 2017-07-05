@@ -473,7 +473,7 @@ public class UserInfoActivity
             }
         };
 //        MyHttpManager.getInstance().getShaiJiaList(user_id, (page_num - 1) * 20, "20", callback);
-        MyHttpManager.getInstance().getShaiJiaList("101095", (page_num - 1) * 20, "20", callback);
+        MyHttpManager.getInstance().getShaiJiaList(user_id, (page_num - 1) * 20, "20", callback);
 
     }
 
