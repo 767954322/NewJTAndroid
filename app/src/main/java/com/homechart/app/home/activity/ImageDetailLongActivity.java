@@ -1030,7 +1030,12 @@ public class ImageDetailLongActivity
                     TextView textView = new TextView(this);
                     float wid = Float.parseFloat(listColor.get(i).getColor_percent().trim());
                     float per = wid / float_talte;
-                    textView.setWidth((int) (width * per));
+
+                    if(i == listColor.size()-1){
+                        textView.setWidth(width);
+                    }else {
+                        textView.setWidth((int) (width * per));
+                    }
                     textView.setHeight(UIUtils.getDimens(R.dimen.font_30));
                     textView.setBackgroundColor(Color.parseColor("#" + listColor.get(i).getColor_value()));
                     ll_color_lines.addView(textView);
