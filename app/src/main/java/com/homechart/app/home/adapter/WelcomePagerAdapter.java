@@ -48,10 +48,10 @@ public class WelcomePagerAdapter extends PagerAdapter {
             @Override
             public void onClick(View v) {
                 if (position == 2) {
-                    HashMap<String, String> map = new HashMap<String, String>();
-                    map.put("evenname", "离开启动页");
-                    map.put("even", "离开启动页");
-                    MobclickAgent.onEvent(context, "test", map);
+//                    HashMap<String, String> map = new HashMap<String, String>();
+//                    map.put("evenname", "离开启动页");
+//                    map.put("even", "离开启动页");
+//                    MobclickAgent.onEvent(context, "test", map);
                     SharedPreferencesUtils.writeBoolean(ISFIRST, true);
                     Intent intent = new Intent(context, LoginActivity.class);
                     context.startActivity(intent);

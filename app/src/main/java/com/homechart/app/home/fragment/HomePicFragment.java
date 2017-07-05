@@ -27,6 +27,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.android.gms.analytics.HitBuilders;
+import com.homechart.app.MyApplication;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
@@ -63,11 +65,13 @@ import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.imageloader.ImageUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -253,6 +257,17 @@ public class HomePicFragment
         switch (v.getId()) {
             case R.id.cet_clearedit:
 
+                //友盟统计
+                HashMap<String, String> map = new HashMap<String, String>();
+                map.put("evenname", "单击首页顶部搜索框");
+                map.put("even", "单击首页顶部搜索框");
+                MobclickAgent.onEvent(activity, "关键词搜索", map);
+                //ga统计
+                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                        .setCategory("关键词搜索")  //事件类别
+                        .setAction("单击首页顶部搜索框")      //事件操作
+                        .build());
+
                 onDismiss();
                 Intent intent = new Intent(activity, SearchActivity.class);
                 startActivity(intent);
@@ -342,11 +357,11 @@ public class HomePicFragment
                 scroll_position = position;
                 ViewGroup.LayoutParams layoutParams = holder.getView(R.id.iv_imageview_one).getLayoutParams();
                 layoutParams.width = width_Pic_List;
-                if(mListData.get(position).getObject_info().getType().equals("活动")){
+                if (mListData.get(position).getObject_info().getType().equals("活动")) {
 
-                    layoutParams.height = (curentListTag ? (int) (width_Pic_List*0.42) : (int) (width_Pic_Staggered*0.42));
+                    layoutParams.height = (curentListTag ? (int) (width_Pic_List * 0.42) : (int) (width_Pic_Staggered * 0.42));
 
-                }else {
+                } else {
                     layoutParams.height = (curentListTag ? mLListDataHeight.get(position) : mSListDataHeight.get(position));
                 }
                 holder.getView(R.id.iv_imageview_one).setLayoutParams(layoutParams);
@@ -390,7 +405,7 @@ public class HomePicFragment
                     if (curentListTag) {
                         if (!mListData.get(position).getUser_info().getProfession().equals("0")) {
                             holder.getView(R.id.iv_desiner_icon).setVisibility(View.VISIBLE);
-                        }else {
+                        } else {
                             holder.getView(R.id.iv_desiner_icon).setVisibility(View.GONE);
                         }
                     }
@@ -869,6 +884,27 @@ public class HomePicFragment
         startActivity(intent);
     }
 
+
+    /**
+     * HashMap<String, String> map = new HashMap<String, String>();
+     * map.put("evenname", "离开启动页");
+     * map.put("even", "离开启动页");
+     * MobclickAgent.onEvent(context, "test", map);
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        MobclickAgent.onResume(activity);
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        MobclickAgent.onPause(activity);
+    }
 
     //任务
     private TimerTask task = new TimerTask() {

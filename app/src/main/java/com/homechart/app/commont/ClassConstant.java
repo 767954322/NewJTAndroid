@@ -132,7 +132,7 @@ public class ClassConstant {
 
     public static class SearchList {
         public static final String Q = "q";
-        public static final String TAG_NAME = "tag_name";
+        public static final String TAG_NAME = "tag";
         public static final String S = "s";
         public static final String N = "n";
         public static final String COLOR_ID = "color_id";
