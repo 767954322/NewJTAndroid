@@ -412,13 +412,13 @@ public class HomePicFragment
                 } else {
                     //友盟统计
                     HashMap<String, String> map1 = new HashMap<String, String>();
-                    map1.put("evenname", "活动入口");
-                    map1.put("even", "点击活动页入口进入活动详情");
-                    MobclickAgent.onEvent(activity, "活动入口", map1);
+                    map1.put("evenname", "活动封面图点击");
+                    map1.put("even", "点击封面图查看");
+                    MobclickAgent.onEvent(activity, "piclist_into_activity_info", map1);
                     //ga统计
                     MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
-                            .setCategory("点击活动页入口进入活动详情")  //事件类别
-                            .setAction("活动入口")      //事件操作
+                            .setCategory("点击封面图查看")  //事件类别
+                            .setAction("活动封面图点击")      //事件操作
                             .build());
                     holder.getView(R.id.iv_imageview_one).setOnClickListener(new View.OnClickListener() {
                         @Override

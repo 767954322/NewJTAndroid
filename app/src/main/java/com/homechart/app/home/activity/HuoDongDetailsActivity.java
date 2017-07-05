@@ -25,6 +25,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.android.gms.analytics.HitBuilders;
+import com.homechart.app.MyApplication;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
@@ -49,6 +51,7 @@ import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.imageloader.ImageUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
+import com.umeng.analytics.MobclickAgent;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -61,6 +64,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import cn.finalteam.galleryfinal.GalleryFinal;
@@ -170,8 +174,28 @@ public class HuoDongDetailsActivity
                 mListData.clear();
                 mListDataHeight.clear();
                 if (tab.getText().equals("最新")) {
+                    //友盟统计
+                    HashMap<String, String> map1 = new HashMap<String, String>();
+                    map1.put("evenname", "点击活动最新排序");
+                    map1.put("even", "点击最新排序");
+                    MobclickAgent.onEvent(HuoDongDetailsActivity.this, "piclist_into_activity_info", map1);
+                    //ga统计
+                    MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                            .setCategory("点击最新排序")  //事件类别
+                            .setAction("点击活动最新排序")      //事件操作
+                            .build());
                     sort = "new";
                 } else if (tab.getText().equals("最热")) {
+                    //友盟统计
+                    HashMap<String, String> map1 = new HashMap<String, String>();
+                    map1.put("evenname", "点击活动热度排序");
+                    map1.put("even", "点击热度排序");
+                    MobclickAgent.onEvent(HuoDongDetailsActivity.this, "piclist_into_activity_info", map1);
+                    //ga统计
+                    MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                            .setCategory("点击热度排序")  //事件类别
+                            .setAction("点击活动热度排序")      //事件操作
+                            .build());
                     sort = "hot";
                 }
                 getListData();
@@ -520,6 +544,16 @@ public class HuoDongDetailsActivity
 
     @Override
     public void onLoadMore() {
+        //友盟统计
+        HashMap<String, String> map1 = new HashMap<String, String>();
+        map1.put("evenname", " 加载更多参与活动图片");
+        map1.put("even", "上拉加载更多参与活动图片");
+        MobclickAgent.onEvent(HuoDongDetailsActivity.this, "piclist_into_activity_info", map1);
+        //ga统计
+        MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                .setCategory("上拉加载更多参与活动图片")  //事件类别
+                .setAction("加载更多参与活动图片")      //事件操作
+                .build());
         mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.LOADING);
         getListData();
     }
