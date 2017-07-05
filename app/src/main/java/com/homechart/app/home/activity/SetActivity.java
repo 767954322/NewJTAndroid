@@ -353,16 +353,49 @@ public class SetActivity
 
     @Override
     public void onClickWeiXin() {
+        //友盟统计
+        HashMap<String, String> map2 = new HashMap<String, String>();
+        map2.put("evenname", "推荐家图详情weixin");
+        map2.put("even", "点击推荐家图出的第三方weixin分享");
+        MobclickAgent.onEvent(SetActivity.this, "action59", map2);
+        //ga统计
+        MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                .setCategory("点击推荐家图出的第三方weixin分享")  //事件类别
+                .setAction("推荐家图详情weixin")      //事件操作
+                .build());
+
         sharedItemOpen(SHARE_MEDIA.WEIXIN);
     }
 
     @Override
     public void onClickPYQ() {
+        //友盟统计
+        HashMap<String, String> map2 = new HashMap<String, String>();
+        map2.put("evenname", "推荐家图详情weixinfriends");
+        map2.put("even", "点击推荐家图出的第三方weixinfriends分享");
+        MobclickAgent.onEvent(SetActivity.this, "action84", map2);
+        //ga统计
+        MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                .setCategory("点击推荐家图出的第三方weixinfriends分享")  //事件类别
+                .setAction("推荐家图详情weixinfriends")      //事件操作
+                .build());
+
         sharedItemOpen(SHARE_MEDIA.WEIXIN_CIRCLE);
     }
 
     @Override
     public void onClickWeiBo() {
+        //友盟统计
+        HashMap<String, String> map2 = new HashMap<String, String>();
+        map2.put("evenname", "推荐家图详情sina");
+        map2.put("even", "点击推荐家图出的第三方sina分享");
+        MobclickAgent.onEvent(SetActivity.this, "action85", map2);
+        //ga统计
+        MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                .setCategory("点击推荐家图出的第三方sina分享")  //事件类别
+                .setAction("推荐家图详情sina")      //事件操作
+                .build());
+
         sharedItemOpen(SHARE_MEDIA.SINA);
     }
 }
