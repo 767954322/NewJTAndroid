@@ -280,7 +280,7 @@ public class HomePicFragment
                     HashMap<String, String> map1 = new HashMap<String, String>();
                     map1.put("evenname", "首页图片单双列切换按钮");
                     map1.put("even", "首页图片单列->双列");
-                    MobclickAgent.onEvent(activity, "首页图片", map1);
+                    MobclickAgent.onEvent(activity, "homepage", map1);
                     //ga统计
                     MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                             .setCategory("首页图片单列->双列")  //事件类别
@@ -296,7 +296,7 @@ public class HomePicFragment
                     HashMap<String, String> map1 = new HashMap<String, String>();
                     map1.put("evenname", "首页图片单双列切换按钮");
                     map1.put("even", "首页图片双列->单列");
-                    MobclickAgent.onEvent(activity, "首页图片", map1);
+                    MobclickAgent.onEvent(activity, "homepage", map1);
                     //ga统计
                     MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                             .setCategory("首页图片双列->单列")  //事件类别
@@ -410,19 +410,19 @@ public class HomePicFragment
                     ImageUtils.displayFilletImage(mListData.get(position).getUser_info().getAvatar().getBig(),
                             (ImageView) holder.getView(R.id.iv_header_pic));
                 } else {
-                    //友盟统计
-                    HashMap<String, String> map1 = new HashMap<String, String>();
-                    map1.put("evenname", "活动封面图点击");
-                    map1.put("even", "点击封面图查看");
-                    MobclickAgent.onEvent(activity, "piclist_into_activity_info", map1);
-                    //ga统计
-                    MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
-                            .setCategory("点击封面图查看")  //事件类别
-                            .setAction("活动封面图点击")      //事件操作
-                            .build());
                     holder.getView(R.id.iv_imageview_one).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            //友盟统计
+                            HashMap<String, String> map1 = new HashMap<String, String>();
+                            map1.put("evenname", "活动封面图点击");
+                            map1.put("even", "点击封面图查看");
+                            MobclickAgent.onEvent(activity, "piclist_into_activity_info", map1);
+                            //ga统计
+                            MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                                    .setCategory("点击封面图查看")  //事件类别
+                                    .setAction("活动封面图点击")      //事件操作
+                                    .build());
                             //查看活动详情
                             Intent intent = new Intent(activity, HuoDongDetailsActivity.class);
                             intent.putExtra("activity_id", mListData.get(position).getObject_info().getObject_id());
@@ -522,7 +522,7 @@ public class HomePicFragment
             HashMap<String, String> map = new HashMap<String, String>();
             map.put("evenname", "首页图片单列刷新");
             map.put("even", "首页图片单列向下翻页（刷新）");
-            MobclickAgent.onEvent(activity, "首页图片", map);
+            MobclickAgent.onEvent(activity, "homepage", map);
             //ga统计
             MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                     .setCategory("首页图片单列向下翻页（刷新）")  //事件类别
@@ -533,7 +533,7 @@ public class HomePicFragment
             HashMap<String, String> map = new HashMap<String, String>();
             map.put("evenname", "首页图片双列刷新");
             map.put("even", "首页图片双列向下翻页（刷新）");
-            MobclickAgent.onEvent(activity, "首页图片", map);
+            MobclickAgent.onEvent(activity, "homepage", map);
             //ga统计
             MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                     .setCategory("首页图片双列向下翻页（刷新）")  //事件类别
@@ -558,7 +558,7 @@ public class HomePicFragment
             HashMap<String, String> map = new HashMap<String, String>();
             map.put("evenname", "首页图片单列加载");
             map.put("even", "首页图片单列向上翻页（加载）");
-            MobclickAgent.onEvent(activity, "首页图片", map);
+            MobclickAgent.onEvent(activity, "homepage", map);
             //ga统计
             MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                     .setCategory("首页图片单列向上翻页（加载）")  //事件类别
@@ -569,7 +569,7 @@ public class HomePicFragment
             HashMap<String, String> map = new HashMap<String, String>();
             map.put("evenname", "首页图片双列加载");
             map.put("even", "首页图片双列向上翻页（加载）");
-            MobclickAgent.onEvent(activity, "首页图片", map);
+            MobclickAgent.onEvent(activity, "homepage", map);
             //ga统计
             MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                     .setCategory("首页图片双列向上翻页（加载）")  //事件类别
@@ -822,7 +822,7 @@ public class HomePicFragment
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("evenname", "首页图片取消筛选");
         map.put("even", "首页图片取消筛选");
-        MobclickAgent.onEvent(activity, "筛选", map);
+        MobclickAgent.onEvent(activity, "homepage", map);
         //ga统计
         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
                 .setCategory("首页图片取消筛选")  //事件类别
@@ -833,13 +833,13 @@ public class HomePicFragment
     private void openTagTongJi(String name) {
         //友盟统计
         HashMap<String, String> map = new HashMap<String, String>();
-        map.put("evenname", "点开" + name + "筛选项");
-        map.put("even", "筛选-" + name);
-        MobclickAgent.onEvent(activity, "筛选", map);
+        map.put("evenname", "筛选-" + name);
+        map.put("even", "点开" + name + "筛选项");
+        MobclickAgent.onEvent(activity, "shaixuanpager", map);
         //ga统计
         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
-                .setCategory("筛选-" + name)  //事件类别
-                .setAction("点开" + name + "筛选项")      //事件操作
+                .setCategory("点开" + name + "筛选项")  //事件类别
+                .setAction("筛选-" + name)      //事件操作
                 .build());
 
 
