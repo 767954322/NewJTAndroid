@@ -257,13 +257,13 @@ public class SearchResultActivity
     public void onRefresh() {
         //友盟统计
         HashMap<String, String> map = new HashMap<String, String>();
-        map.put("evenname", "筛选向上滑动（刷新数据）");
-        map.put("even", "筛选刷新数据（图片）");
-        MobclickAgent.onEvent(SearchResultActivity.this, "筛选", map);
+        map.put("evenname", "搜索刷新数据（图片）");
+        map.put("even", "搜索向上滑动（刷新数据）");
+        MobclickAgent.onEvent(SearchResultActivity.this, "searchpager", map);
         //ga统计
         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
-                .setCategory("筛选刷新数据（图片）")  //事件类别
-                .setAction("筛选向上滑动（刷新数据）")      //事件操作
+                .setCategory("搜索向上滑动（刷新数据）")  //事件类别
+                .setAction("搜索刷新数据（图片）")      //事件操作
                 .build());
         page_num = 1;
         mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
@@ -274,13 +274,13 @@ public class SearchResultActivity
     public void onLoadMore() {
         //友盟统计
         HashMap<String, String> map = new HashMap<String, String>();
-        map.put("evenname", "筛选向下滑动（动作）");
-        map.put("even", "筛选加载更多（图片）");
-        MobclickAgent.onEvent(SearchResultActivity.this, "筛选", map);
+        map.put("evenname", "搜索加载更多（图片）");
+        map.put("even", "搜索向下滑动（动作）");
+        MobclickAgent.onEvent(SearchResultActivity.this, "searchpager", map);
         //ga统计
         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
-                .setCategory("筛选加载更多（图片）")  //事件类别
-                .setAction("筛选向下滑动（动作）")      //事件操作
+                .setCategory("搜索向下滑动（动作）")  //事件类别
+                .setAction("搜索加载更多（图片）")      //事件操作
                 .build());
 
         mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.LOADING);
