@@ -11,6 +11,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.android.gms.analytics.HitBuilders;
+import com.homechart.app.MyApplication;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.home.base.BaseActivity;
@@ -151,6 +153,16 @@ public class GuanZuListActivity
     //RecyclerView的Item点击事件
     @Override
     public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+        //友盟统计
+        HashMap<String, String> map2 = new HashMap<String, String>();
+        map2.put("evenname", "点击关注头像");
+        map2.put("even", "点击关注头像进入用户主页");
+        MobclickAgent.onEvent(GuanZuListActivity.this, "user_center", map2);
+        //ga统计
+        MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                .setCategory("点击关注头像进入用户主页")  //事件类别
+                .setAction("点击关注头像")      //事件操作
+                .build());
         Intent intent = new Intent(GuanZuListActivity.this, UserInfoActivity.class);
         intent.putExtra(ClassConstant.LoginSucces.USER_ID, mListData.get(position).getUser_id());
         startActivity(intent);
@@ -253,6 +265,7 @@ public class GuanZuListActivity
                 break;
         }
     }
+
     private void changeNone(int i) {
         if (i == 0) {
             rl_no_data.setVisibility(View.GONE);
@@ -265,5 +278,18 @@ public class GuanZuListActivity
 
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
     private int position;
 }

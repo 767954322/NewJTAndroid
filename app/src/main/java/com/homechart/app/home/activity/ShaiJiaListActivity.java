@@ -14,6 +14,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.google.android.gms.analytics.HitBuilders;
+import com.homechart.app.MyApplication;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.home.base.BaseActivity;
@@ -34,6 +36,7 @@ import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.imageloader.ImageUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -201,6 +204,17 @@ public class ShaiJiaListActivity extends BaseActivity
 
                 if (mListData != null && mListData.size() > 0) {
                     if (guanli_tag == 0) {
+
+                        //友盟统计
+                        HashMap<String, String> map4 = new HashMap<String, String>();
+                        map4.put("evenname", "点击晒家列表编辑作品");
+                        map4.put("even", "点击晒家列表编辑作品进入编辑图片页面");
+                        MobclickAgent.onEvent(ShaiJiaListActivity.this, "user_center", map4);
+                        //ga统计
+                        MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                                .setCategory("点击晒家列表编辑作品进入编辑图片页面")  //事件类别
+                                .setAction("点击晒家列表编辑作品")      //事件操作
+                                .build());
                         //打开管理
                         tv_content_right.setText("取消");
                         map_delete.clear();
@@ -393,7 +407,16 @@ public class ShaiJiaListActivity extends BaseActivity
     }
     //查看图片详情
     private void jumpImageDetail(String item_id) {
-
+       //友盟统计
+        HashMap<String, String> map4 = new HashMap<String, String>();
+        map4.put("evenname", "点击晒家作品");
+        map4.put("even", "点击晒家列表页进入图片详情");
+        MobclickAgent.onEvent(ShaiJiaListActivity.this, "user_center", map4);
+        //ga统计
+        MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                .setCategory("点击晒家列表页进入图片详情")  //事件类别
+                .setAction("点击晒家作品")      //事件操作
+                .build());
         Intent intent = new Intent(ShaiJiaListActivity.this, ImageDetailLongActivity.class);
         intent.putExtra("item_id", item_id);
         startActivity(intent);
@@ -412,5 +435,18 @@ public class ShaiJiaListActivity extends BaseActivity
 
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
     private int position;
 }

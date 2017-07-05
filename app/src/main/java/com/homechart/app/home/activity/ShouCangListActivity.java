@@ -18,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.google.android.gms.analytics.HitBuilders;
+import com.homechart.app.MyApplication;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.home.base.BaseActivity;
@@ -42,6 +44,7 @@ import com.homechart.app.utils.UIUtils;
 import com.homechart.app.utils.imageloader.ImageUtils;
 import com.homechart.app.utils.volley.MyHttpManager;
 import com.homechart.app.utils.volley.OkStringRequest;
+import com.umeng.analytics.MobclickAgent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -204,6 +207,18 @@ public class ShouCangListActivity
                 if (mListData != null && mListData.size() > 0) {
 
                     if (guanli_tag == 0) {
+
+                        //友盟统计
+                        HashMap<String, String> map4 = new HashMap<String, String>();
+                        map4.put("evenname", "点击收藏管理");
+                        map4.put("even", "点击收藏管理按钮");
+                        MobclickAgent.onEvent(ShouCangListActivity.this, "user_center", map4);
+                        //ga统计
+                        MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                                .setCategory("点击收藏管理按钮")  //事件类别
+                                .setAction("点击收藏管理")      //事件操作
+                                .build());
+
                         //打开管理
                         tv_content_right.setText("取消");
                         map_delete.clear();
@@ -230,6 +245,18 @@ public class ShouCangListActivity
             case R.id.iv_delete_icon:
 
                 if (map_delete.size() > 0) {
+
+                    //友盟统计
+                    HashMap<String, String> map4 = new HashMap<String, String>();
+                    map4.put("evenname", "点击删除收藏");
+                    map4.put("even", "点击收藏删除按钮");
+                    MobclickAgent.onEvent(ShouCangListActivity.this, "user_center", map4);
+                    //ga统计
+                    MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                            .setCategory("点击收藏删除按钮")  //事件类别
+                            .setAction("点击删除收藏")      //事件操作
+                            .build());
+
                     CustomProgress.show(ShouCangListActivity.this, "正在删除...", false, null);
                     String delete_items = "";
                     for (String key : map_delete.keySet()) {
@@ -426,4 +453,18 @@ public class ShouCangListActivity
 
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+
 }
