@@ -2,6 +2,8 @@ package com.homechart.app.home.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -266,6 +268,9 @@ public class ShaiJiaListActivity extends BaseActivity
                                     map_delete.clear();
                                     upCheckedStatus();
                                     mAdapter.notifyDataSetChanged();
+                                    if(mListData == null || mListData.size() == 0){
+                                        handler.sendEmptyMessage(0);
+                                    }
                                     CustomProgress.cancelDialog();
                                     ToastUtils.showCenter(ShaiJiaListActivity.this, getString(R.string.succes_delete_shaijia));
                                 } else {
@@ -286,7 +291,18 @@ public class ShaiJiaListActivity extends BaseActivity
                 break;
         }
     }
-
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            //关闭管理
+            rl_no_data.setVisibility(View.VISIBLE);
+            tv_content_right.setText("管理");
+            map_delete.clear();
+            guanli_tag = 0;
+            rl_below.setVisibility(View.GONE);
+        }
+    };
     @Override
     public void onRefresh() {
         page_num = 1;
@@ -337,11 +353,11 @@ public class ShaiJiaListActivity extends BaseActivity
                                 updateViewFromData(shouCangBean.getItem_list(), state);
                             } else {
                                 changeNone(1);
-                                if (page_num == 1) {
-//                                    ToastUtils.showCenter(ShaiJiaListActivity.this, "暂无晒家图片，先去发布一些图片吧!");
-                                }else {
-                                    ToastUtils.showCenter(ShaiJiaListActivity.this, "暂无更多数据!");
-                                }
+//                                if (page_num == 1) {
+////                                    ToastUtils.showCenter(ShaiJiaListActivity.this, "暂无晒家图片，先去发布一些图片吧!");
+//                                }else {
+//                                    ToastUtils.showCenter(ShaiJiaListActivity.this, "暂无更多数据!");
+//                                }
                                 updateViewFromData(null, state);
                             }
                         } else {
@@ -374,26 +390,27 @@ public class ShaiJiaListActivity extends BaseActivity
             case REFRESH_STATUS:
                 mListData.clear();
                 if (null != listData) {
+                    rl_no_data.setVisibility(View.GONE);
                     mListData.addAll(listData);
+                    mAdapter.notifyDataSetChanged();
+                    mRecyclerView.setRefreshing(false);//刷新完毕
                 } else {
                     page_num = 1;
                     mListData.clear();
+                    mRecyclerView.setRefreshing(false);//刷新完毕
+                    mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.THE_END);
                 }
-                mAdapter.notifyDataSetChanged();
-                mRecyclerView.setRefreshing(false);//刷新完毕
                 break;
 
             case LOADMORE_STATUS:
                 if (null != listData) {
+                    rl_no_data.setVisibility(View.GONE);
                     position = mListData.size();
                     mListData.addAll(listData);
-//                    mAdapter.notifyItemInserted(mListData.size() + 1);
-//                    mAdapter.notifyData(mListData);
                     mAdapter.notifyItem(position, mListData, listData);
                     mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
                 } else {
                     --page_num;
-                    //没有更多数据
                     mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.THE_END);
                 }
                 break;

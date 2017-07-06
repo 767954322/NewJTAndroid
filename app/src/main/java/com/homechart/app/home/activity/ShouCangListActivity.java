@@ -382,11 +382,11 @@ public class ShouCangListActivity
                                 updateViewFromData(shouCangBean.getItem_list(), state);
                             } else {
                                 changeNone(1);
-                                if (page_num == 1) {
-//                                    ToastUtils.showCenter(ShouCangListActivity.this, "您还没收藏图片呢，先去收藏一些图片吧!");
-                                } else {
-//                                    ToastUtils.showCenter(ShouCangListActivity.this, "暂无更多数据!");
-                                }
+//                                if (page_num == 1) {
+////                                    ToastUtils.showCenter(ShouCangListActivity.this, "您还没收藏图片呢，先去收藏一些图片吧!");
+//                                } else {
+////                                    ToastUtils.showCenter(ShouCangListActivity.this, "暂无更多数据!");
+//                                }
                                 updateViewFromData(null, state);
                             }
                         } else {
@@ -434,11 +434,9 @@ public class ShouCangListActivity
 
             case LOADMORE_STATUS:
                 if (null != listData) {
+                    rl_no_data.setVisibility(View.GONE);
                     position = mListData.size();
                     mListData.addAll(listData);
-//                    mAdapter.notifyItemInserted(mListData.size() + 1);
-//                    mAdapter.notifyData(mListData);
-
                     mAdapter.notifyItem(position, mListData, listData);
                     mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
                 } else {
