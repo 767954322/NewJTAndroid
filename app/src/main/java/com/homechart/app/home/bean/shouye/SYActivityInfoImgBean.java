@@ -10,11 +10,13 @@ public class SYActivityInfoImgBean implements Serializable{
 
     private String img0;
     private String img1;
+    private float img1_ratio;
 
 
-    public SYActivityInfoImgBean(String img0, String img1) {
+    public SYActivityInfoImgBean(String img0, String img1, float img1_ratio) {
         this.img0 = img0;
         this.img1 = img1;
+        this.img1_ratio = img1_ratio;
     }
 
     public String getImg0() {
@@ -33,11 +35,20 @@ public class SYActivityInfoImgBean implements Serializable{
         this.img1 = img1;
     }
 
+    public float getImg1_ratio() {
+        return img1_ratio;
+    }
+
+    public void setImg1_ratio(float img1_ratio) {
+        this.img1_ratio = img1_ratio;
+    }
+
     @Override
     public String toString() {
         return "SYActivityInfoImgBean{" +
                 "img0='" + img0 + '\'' +
                 ", img1='" + img1 + '\'' +
+                ", img1_ratio=" + img1_ratio +
                 '}';
     }
 }

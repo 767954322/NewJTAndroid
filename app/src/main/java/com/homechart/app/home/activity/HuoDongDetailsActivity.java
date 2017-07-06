@@ -118,6 +118,7 @@ public class HuoDongDetailsActivity
     private TextView tv_show_num_people;
     private TabLayout tl_tab;
     private HDDetailsBean hdDetailsBean;
+    private int wid_imag;
 
     @Override
     protected int getLayoutResId() {
@@ -445,8 +446,9 @@ public class HuoDongDetailsActivity
         ActivityInfoBean activityInfoBean = hdDetailsBean.getData().getActivity_info();
         ViewGroup.LayoutParams layoutParams = iv_huodong_image.getLayoutParams();
         layoutParams.width = width_activity;
-        layoutParams.height = (int) (width_activity / 1.5);
+        layoutParams.height = (int) (width_activity / 2.36);
         iv_huodong_image.setLayoutParams(layoutParams);
+
         ImageUtils.displayFilletImage(activityInfoBean.getImage().getImg0(), iv_huodong_image);
         tv_tital_huodong.setText(activityInfoBean.getTitle());
 

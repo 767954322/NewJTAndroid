@@ -9,10 +9,12 @@ import java.io.Serializable;
 public class ActivityImageBean implements Serializable{
 
     private String img0;
+    private String img1_ratio;
     private String img1;
 
-    public ActivityImageBean(String img0, String img1) {
+    public ActivityImageBean(String img0, String img1_ratio, String img1) {
         this.img0 = img0;
+        this.img1_ratio = img1_ratio;
         this.img1 = img1;
     }
 
@@ -22,6 +24,14 @@ public class ActivityImageBean implements Serializable{
 
     public void setImg0(String img0) {
         this.img0 = img0;
+    }
+
+    public String getImg1_ratio() {
+        return img1_ratio;
+    }
+
+    public void setImg1_ratio(String img1_ratio) {
+        this.img1_ratio = img1_ratio;
     }
 
     public String getImg1() {
@@ -36,6 +46,7 @@ public class ActivityImageBean implements Serializable{
     public String toString() {
         return "ActivityImageBean{" +
                 "img0='" + img0 + '\'' +
+                ", img1_ratio='" + img1_ratio + '\'' +
                 ", img1='" + img1 + '\'' +
                 '}';
     }

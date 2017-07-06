@@ -379,7 +379,7 @@ public class HomePicFragment
                 layoutParams.width = width_Pic_List;
                 if (mListData.get(position).getObject_info().getType().equals("活动")) {
 
-                    layoutParams.height = (curentListTag ? (int) (width_Pic_List * 0.42) : (int) (width_Pic_Staggered * 0.42));
+                    layoutParams.height = (curentListTag ? (int) (width_Pic_List /2.36) : (int) (width_Pic_Staggered /mListData.get(position).getObject_info().getImage().getRatio()));
 
                 } else {
                     layoutParams.height = (curentListTag ? mLListDataHeight.get(position) : mSListDataHeight.get(position));
@@ -733,7 +733,8 @@ public class HomePicFragment
                                 SYActivityInfoBean syActivityInfoBean = list_activity.get(0).getActivity_info();
                                 SYDataBean syDataBean = new SYDataBean(new SYDataObjectBean
                                         (syActivityInfoBean.getId(), "活动", syActivityInfoBean.getTitle(),
-                                                new SYDataObjectImgBean(1.33333f, syActivityInfoBean.getImage().getImg0(), syActivityInfoBean.getImage().getImg0())
+                                                new SYDataObjectImgBean(syActivityInfoBean.getImage().getImg1_ratio(),
+                                                        syActivityInfoBean.getImage().getImg0(), syActivityInfoBean.getImage().getImg1())
                                         ), null, null);
                                 if (state.equals(REFRESH_STATUS)) {
                                     list_newdata.add(syDataBean);
