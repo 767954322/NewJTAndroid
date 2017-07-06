@@ -12,9 +12,14 @@
         <RelativeLayout
             android:id="@+id/rl_top"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/font_240"
-            android:background="@drawable/background_top">
+            android:layout_height="@dimen/font_240">
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:layout_marginBottom="@dimen/font_12"
+                android:src="@drawable/background_top"/>
             <com.homechart.app.myview.RoundImageView
                 android:id="@+id/iv_header_desiner_center_white"
                 android:layout_width="@dimen/font_83"
