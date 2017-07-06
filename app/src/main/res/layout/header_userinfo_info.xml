@@ -177,6 +177,7 @@
             android:layout_height="@dimen/font_40"
             android:layout_below="@+id/rl_info_num"
             android:layout_centerHorizontal="true"
+            android:textAllCaps="false"
             android:layout_marginTop="@dimen/font_30"
             android:background="@drawable/bt_guanzu"
             android:textColor="@color/white"
