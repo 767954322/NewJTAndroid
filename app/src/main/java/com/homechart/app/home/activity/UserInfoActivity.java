@@ -502,13 +502,16 @@ public class UserInfoActivity
         mListData.addAll(item_list);
         if (mListData == null || mListData.size() == 0) {
 
-            tv_info_pic_tital.setVisibility(View.GONE);
-        }else {
-            tv_info_pic_tital.setVisibility(View.VISIBLE);
+            mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
+            mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.THE_END);
+        } else {
             mAdapter.notifyItem(position, mListData, item_list);
+            mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
+            if (item_list == null || item_list.size() == 0) {
+                mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.THE_END);
+            }
         }
 
-        mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
 
     }
 
