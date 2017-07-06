@@ -508,7 +508,7 @@ public class RegisterActivity extends BaseActivity
     @Override
     public void onResume() {
         super.onResume();
-
+        CustomProgress.cancelDialog();
         MobclickAgent.onResume(RegisterActivity.this);
     }
 

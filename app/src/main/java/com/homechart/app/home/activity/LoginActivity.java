@@ -370,6 +370,10 @@ public class LoginActivity extends BaseActivity
 
     }
 
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
 
     //退出时的时间
     private long mExitTime;
@@ -399,7 +403,7 @@ public class LoginActivity extends BaseActivity
     @Override
     public void onResume() {
         super.onResume();
-
+        CustomProgress.cancelDialog();
         MobclickAgent.onResume(LoginActivity.this);
     }
 
