@@ -315,8 +315,8 @@ public class SetActivity
         web.setTitle("分析生活之美，分享生活之美，就在家图");//标题
         web.setThumb(image);  //缩略图
         String desi = "家图app丨帮你实现舒适生活";
-        if(share_media == SHARE_MEDIA.SINA){
-            desi = desi + "@微博家图互动";
+        if (share_media == SHARE_MEDIA.SINA) {
+            desi = "分析生活之美，分享生活之美，就在家图。" + "@家图互动";
         }
         web.setDescription(desi);//描述
         new ShareAction(SetActivity.this).

@@ -1,6 +1,7 @@
 package com.homechart.app.utils;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.widget.Toast;
 
@@ -10,9 +11,15 @@ import android.widget.Toast;
 
 public class ToastUtils {
 
-    public static void showCenter(Context context ,String content) {
+
+    private void getToast() {
+
+    }
+
+    public static void showCenter(Context context, String content) {
+
         Toast toast = Toast.makeText(context,
-                content, Toast.LENGTH_SHORT);
+                content, 500);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
