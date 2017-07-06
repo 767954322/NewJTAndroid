@@ -1392,7 +1392,7 @@ public class ImageDetailLongActivity
 
         if (item_list == null || item_list.size() == 0) {
             mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
-            ToastUtils.showCenter(ImageDetailLongActivity.this, "暂无更多数据");
+            mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.THE_END);
         } else {
             page++;
             position = mListData.size();
