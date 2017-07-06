@@ -297,7 +297,7 @@ public class BundleMobileActivity
             return;
         }
         if (TextUtils.isEmpty(passWord)) {
-            ToastUtils.showCenter(BundleMobileActivity.this, "请输入登陆密码");
+            ToastUtils.showCenter(BundleMobileActivity.this, "请输入登录密码");
             return;
         }
         if (!phone.matches(RegexUtil.PHONE_REGEX)) {
@@ -305,7 +305,7 @@ public class BundleMobileActivity
             return;
         }
         if (!passWord.matches(RegexUtil.ADDRESS_REGEX_PASS)) {
-            ToastUtils.showCenter(BundleMobileActivity.this, " 请输入正确的登陆密码");
+            ToastUtils.showCenter(BundleMobileActivity.this, " 请输入正确的登录密码");
             return;
         }
 
