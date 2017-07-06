@@ -202,7 +202,6 @@ public class MessagesListActivity extends BaseActivity
                             updateViewFromData(list, state);
                         } else {
                             changeNone(1);
-                            ToastUtils.showCenter(MessagesListActivity.this, "暂无消息");
                             updateViewFromData(null, state);
                         }
                     } else {
