@@ -546,7 +546,8 @@ public class HuoDongDetailsActivity
                             updateViewFromData(list);
                         } else {
                             mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
-                            ToastUtils.showCenter(HuoDongDetailsActivity.this, getString(R.string.info_get_no));
+                            mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.THE_END);
+//                            ToastUtils.showCenter(HuoDongDetailsActivity.this, getString(R.string.info_get_no));
                         }
                     } else {
                         mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.GONE);
