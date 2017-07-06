@@ -156,7 +156,7 @@ public class UserInfoActivity
 
         mAdapter = new MultiItemCommonAdapter<ShaiJiaItemBean>(this, mListData, support) {
             @Override
-            public void convert(BaseViewHolder holder, int position) {
+            public void convert(BaseViewHolder holder, final int position) {
                 String item_id = mListData.get(position).getItem_info().getItem_id();
                 if (item_id.equals(holder.getView(R.id.iv_shoucang_image).getTag())) {
                 } else {
@@ -174,7 +174,15 @@ public class UserInfoActivity
                     ((TextView) holder.getView(R.id.item_info_time)).
                             setText(str[0] + "   发布");
                 }
-
+                holder.getView(R.id.iv_shoucang_image).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //查看单图详情
+                        Intent intent = new Intent(UserInfoActivity.this, ImageDetailLongActivity.class);
+                        intent.putExtra("item_id", mListData.get(position).getItem_info().getItem_id());
+                        startActivity(intent);
+                    }
+                });
 
             }
         };
