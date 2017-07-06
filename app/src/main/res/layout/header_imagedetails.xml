@@ -232,7 +232,7 @@
     <View
         android:id="@+id/view_line"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/font_1"
+        android:layout_height="0.5dp"
         android:layout_below="@+id/tv_details_time"
         android:layout_marginLeft="@dimen/font_10"
         android:layout_marginRight="@dimen/font_10"
