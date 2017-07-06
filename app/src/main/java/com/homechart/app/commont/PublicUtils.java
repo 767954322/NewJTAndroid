@@ -496,6 +496,10 @@ public class PublicUtils {
             Date cend = sdf.parse(end);
             long l = cbegin.getTime() - cend.getTime();
             rday = l / (24 * 60 * 60 * 1000);
+            if (l > 0 && rday * 24 * 60 * 60 * 1000 < l) {
+                rday = rday + 1;
+            }
+
 
         } catch (Exception e) {
             e.printStackTrace();
