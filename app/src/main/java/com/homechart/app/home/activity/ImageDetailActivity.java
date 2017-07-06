@@ -97,7 +97,7 @@ public class ImageDetailActivity
     private ImageView iv_imagedetails_next;
     private TextView tv_imagedetails_next;
     private List<ColorInfoBean> listColor;
-    private boolean ifShowColorList = false;
+    private boolean ifShowColorList = true;
     private List<String> list = new ArrayList<>();
     @Override
     protected int getLayoutResId() {
@@ -507,9 +507,9 @@ public class ImageDetailActivity
                 }
                 rl_imagedetails_next.setVisibility(View.VISIBLE);
                 iv_ifshow_color.setVisibility(View.VISIBLE);
-                dgv_colorlist.setVisibility(View.GONE);
-                tv_color_tips.setVisibility(View.GONE);
-                rl_color_location.setVisibility(View.GONE);
+                dgv_colorlist.setVisibility(View.VISIBLE);
+                tv_color_tips.setVisibility(View.VISIBLE);
+                rl_color_location.setVisibility(View.VISIBLE);
                 dgv_colorlist.setAdapter(new MyColorGridAdapter(listColor, ImageDetailActivity.this));
             } else {
                 rl_imagedetails_next.setVisibility(View.GONE);

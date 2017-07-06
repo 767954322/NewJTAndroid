@@ -1133,9 +1133,9 @@ public class ImageDetailLongActivity
                 }
                 rl_imagedetails_next.setVisibility(View.VISIBLE);
                 iv_ifshow_color.setVisibility(View.VISIBLE);
-                dgv_colorlist.setVisibility(View.GONE);
-                tv_color_tips.setVisibility(View.GONE);
-                rl_color_location.setVisibility(View.GONE);
+                dgv_colorlist.setVisibility(View.VISIBLE);
+                tv_color_tips.setVisibility(View.VISIBLE);
+                rl_color_location.setVisibility(View.VISIBLE);
                 dgv_colorlist.setAdapter(new MyColorGridAdapter(listColor, ImageDetailLongActivity.this));
             } else {
                 rl_imagedetails_next.setVisibility(View.GONE);
@@ -1556,7 +1556,7 @@ public class ImageDetailLongActivity
         MyHttpManager.getInstance().addShared(imageDetailBean.getItem_info().getItem_id(), "item", callBack);
     }
 
-    private boolean ifShowColorList = false;
+    private boolean ifShowColorList = true;
     @Override
     protected void onResume() {
         super.onResume();
