@@ -38,6 +38,7 @@ import com.homechart.app.home.bean.huodong.ColorInfoBean;
 import com.homechart.app.home.bean.huodong.HuoDongDataBean;
 import com.homechart.app.home.bean.huodong.ItemActivityDataBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
+import com.homechart.app.myview.HomeSharedPopWinPublic;
 import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.myview.SelectPicPopupWindow;
 import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
@@ -77,7 +78,8 @@ import cn.finalteam.galleryfinal.model.PhotoInfo;
 public class HuoDongDetailsActivity
         extends BaseActivity
         implements View.OnClickListener,
-        OnLoadMoreListener {
+        OnLoadMoreListener,
+        HomeSharedPopWinPublic.ClickInter {
 
     private TextView tv_tital_comment;
     private ImageButton nav_left_imageButton;
@@ -119,6 +121,7 @@ public class HuoDongDetailsActivity
     private TabLayout tl_tab;
     private HDDetailsBean hdDetailsBean;
     private int wid_imag;
+    private HomeSharedPopWinPublic homeSharedPopWinPublic;
 
     @Override
     protected int getLayoutResId() {
@@ -135,6 +138,8 @@ public class HuoDongDetailsActivity
     protected void initView() {
 
         headerView = LayoutInflater.from(HuoDongDetailsActivity.this).inflate(R.layout.header_huodong_details, null);
+
+        homeSharedPopWinPublic = new HomeSharedPopWinPublic(HuoDongDetailsActivity.this, HuoDongDetailsActivity.this);
         iv_huodong_image = (ImageView) headerView.findViewById(R.id.iv_huodong_image);
         tv_tital_huodong = (TextView) headerView.findViewById(R.id.tv_tital_huodong);
         tv_data_last = (TextView) headerView.findViewById(R.id.tv_data_last);
@@ -313,7 +318,11 @@ public class HuoDongDetailsActivity
             case R.id.nav_secondary_imageButton:
 
                 if (hdDetailsBean != null) {
-                    sharedItemOpen();
+                    homeSharedPopWinPublic.showAtLocation(HuoDongDetailsActivity.this.findViewById(R.id.main),
+                            Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,
+                            0,
+                            0); //设置layout在PopupWindow中显示的位置
+
                 }
 
                 break;
@@ -612,8 +621,7 @@ public class HuoDongDetailsActivity
         }
     };
 
-    private void sharedItemOpen() {
-
+    private void sharedItemOpen(SHARE_MEDIA share_media) {
         UMImage image = new UMImage(HuoDongDetailsActivity.this, hdDetailsBean.getData().getActivity_info().getImage().getImg0());
         image.compressStyle = UMImage.CompressStyle.SCALE;//大小压缩，默认为大小压缩，适合普通很大的图
         UMWeb web = new UMWeb("http://h5.idcool.com.cn/" + hdDetailsBean.getData().getActivity_info().getActivity_id());
@@ -625,9 +633,9 @@ public class HuoDongDetailsActivity
         }
         web.setDescription(desi);//描述
         new ShareAction(HuoDongDetailsActivity.this).
-                setDisplayList(SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE, SHARE_MEDIA.SINA).
+                setPlatform(share_media).
                 withMedia(web).
-                setCallback(umShareListener).open();
+                setCallback(umShareListener).share();
     }
 
     private UMShareListener umShareListener = new UMShareListener() {
@@ -692,4 +700,18 @@ public class HuoDongDetailsActivity
         MobclickAgent.onPause(HuoDongDetailsActivity.this);
     }
 
+    @Override
+    public void onClickWeiXin() {
+        sharedItemOpen(SHARE_MEDIA.WEIXIN);
+    }
+
+    @Override
+    public void onClickPYQ() {
+        sharedItemOpen(SHARE_MEDIA.WEIXIN_CIRCLE);
+    }
+
+    @Override
+    public void onClickWeiBo() {
+        sharedItemOpen(SHARE_MEDIA.SINA);
+    }
 }
