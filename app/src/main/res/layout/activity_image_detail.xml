@@ -118,7 +118,7 @@
                     android:paddingLeft="@dimen/font_20"
                     android:paddingRight="@dimen/font_20"
                     android:paddingTop="@dimen/font_15"
-                    android:src="@drawable/zhankai"
+                    android:src="@drawable/shouqi"
                     android:visibility="gone" />
             </RelativeLayout>
 
