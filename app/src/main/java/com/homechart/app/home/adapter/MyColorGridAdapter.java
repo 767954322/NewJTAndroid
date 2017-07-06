@@ -59,7 +59,12 @@ public class MyColorGridAdapter extends BaseAdapter {
         } else {
             myColorHolder = (MyColorHolder) convertView.getTag();
         }
-        myColorHolder.view_color.setBackgroundColor(Color.parseColor("#" + listColor.get(position).getColor_value()));
+
+        if(listColor.get(position).getColor_value().trim().equalsIgnoreCase("ffffff")){
+            myColorHolder.view_color.setBackgroundResource(R.drawable.view_imagedetails_color);
+        }else {
+            myColorHolder.view_color.setBackgroundColor(Color.parseColor("#" + listColor.get(position).getColor_value()));
+        }
         myColorHolder.value_color.setText("#" + listColor.get(position).getColor_value());
         myColorHolder.name_color.setText(listColor.get(position).getColor_name());
         String per = listColor.get(position).getColor_percent().trim();
