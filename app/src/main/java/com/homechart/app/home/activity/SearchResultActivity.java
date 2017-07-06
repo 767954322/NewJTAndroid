@@ -203,23 +203,46 @@ public class SearchResultActivity
                     holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
                     holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
                     holder.getView(R.id.iv_color_center).setVisibility(View.GONE);
-                    holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
-
+                    if(list_color.get(0).getColor_value().trim().equalsIgnoreCase("ffffff")){
+                        holder.getView(R.id.iv_color_right).setBackgroundResource(R.drawable.color_line_white);
+                    }else {
+                        holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
+                    }
                 } else if (null != mListData.get(position).getColor_info() && mListData.get(position).getColor_info().size() == 2) {
 
                     holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
                     holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
                     holder.getView(R.id.iv_color_center).setVisibility(View.VISIBLE);
-                    holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(1).getColor_value()));
-                    holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
+                    if(list_color.get(1).getColor_value().trim().equalsIgnoreCase("ffffff")){
+                        holder.getView(R.id.iv_color_right).setBackgroundResource(R.drawable.color_line_white);
+                    }else {
+                        holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(1).getColor_value()));
+                    }
+                    if(list_color.get(0).getColor_value().trim().equalsIgnoreCase("ffffff")){
+                        holder.getView(R.id.iv_color_center).setBackgroundResource(R.drawable.color_line_white);
+                    }else {
+                        holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
+                    }
 
                 } else if (null != mListData.get(position).getColor_info() && mListData.get(position).getColor_info().size() == 3) {
                     holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
                     holder.getView(R.id.iv_color_left).setVisibility(View.VISIBLE);
                     holder.getView(R.id.iv_color_center).setVisibility(View.VISIBLE);
-                    holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(2).getColor_value()));
-                    holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color.get(1).getColor_value()));
-                    holder.getView(R.id.iv_color_left).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
+                    if(list_color.get(2).getColor_value().trim().equalsIgnoreCase("ffffff")){
+                        holder.getView(R.id.iv_color_right).setBackgroundResource(R.drawable.color_line_white);
+                    }else {
+                        holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(2).getColor_value()));
+                    }
+                    if(list_color.get(1).getColor_value().trim().equalsIgnoreCase("ffffff")){
+                        holder.getView(R.id.iv_color_center).setBackgroundResource(R.drawable.color_line_white);
+                    }else {
+                        holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color.get(1).getColor_value()));
+                    }
+                    if(list_color.get(0).getColor_value().trim().equalsIgnoreCase("ffffff")){
+                        holder.getView(R.id.iv_color_left).setBackgroundResource(R.drawable.color_line_white);
+                    }else {
+                        holder.getView(R.id.iv_color_left).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
+                    }
 
                 } else {
                     holder.getView(R.id.iv_color_right).setVisibility(View.GONE);
