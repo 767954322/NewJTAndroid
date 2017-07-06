@@ -488,7 +488,6 @@ public class FaBuActvity
                     JSONObject jsonObject1 = jsonObject.getJSONObject("item_info");
                     String item_id = jsonObject1.getString("item_id");
                     CustomProgress.cancelDialog();
-                    ToastUtils.showCenter(FaBuActvity.this, "发布成功");
                     Intent intent = new Intent(FaBuActvity.this, ImageDetailActivity.class);
                     intent.putExtra("item_id", item_id);
                     startActivity(intent);
