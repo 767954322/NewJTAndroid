@@ -3,6 +3,7 @@ package com.homechart.app.home.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -295,6 +296,9 @@ public class ShouCangListActivity
                                     map_delete.clear();
                                     upCheckedStatus();
                                     mAdapter.notifyDataSetChanged();
+                                    if(mListData == null || mListData.size() == 0){
+                                        handler.sendEmptyMessage(0);
+                                    }
                                     CustomProgress.cancelDialog();
                                     ToastUtils.showCenter(ShouCangListActivity.this, getString(R.string.succes_delete_shoucang));
                                 } else {
@@ -316,6 +320,18 @@ public class ShouCangListActivity
         }
     }
 
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            //关闭管理
+            rl_no_data.setVisibility(View.VISIBLE);
+            tv_content_right.setText("管理");
+            map_delete.clear();
+            guanli_tag = 0;
+            rl_below.setVisibility(View.GONE);
+        }
+    };
     @Override
     public void onRefresh() {
         page_num = 1;
@@ -369,7 +385,7 @@ public class ShouCangListActivity
                                 if (page_num == 1) {
 //                                    ToastUtils.showCenter(ShouCangListActivity.this, "您还没收藏图片呢，先去收藏一些图片吧!");
                                 } else {
-                                    ToastUtils.showCenter(ShouCangListActivity.this, "暂无更多数据!");
+//                                    ToastUtils.showCenter(ShouCangListActivity.this, "暂无更多数据!");
                                 }
                                 updateViewFromData(null, state);
                             }
@@ -403,13 +419,17 @@ public class ShouCangListActivity
             case REFRESH_STATUS:
                 mListData.clear();
                 if (null != listData) {
+
+                    rl_no_data.setVisibility(View.GONE);
                     mListData.addAll(listData);
+                    mAdapter.notifyDataSetChanged();
+                    mRecyclerView.setRefreshing(false);//刷新完毕
                 } else {
                     page_num = 1;
                     mListData.clear();
+                    mRecyclerView.setRefreshing(false);//刷新完毕
+                    mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.THE_END);
                 }
-                mAdapter.notifyDataSetChanged();
-                mRecyclerView.setRefreshing(false);//刷新完毕
                 break;
 
             case LOADMORE_STATUS:
