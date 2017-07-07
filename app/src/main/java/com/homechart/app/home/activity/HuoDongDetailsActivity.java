@@ -624,7 +624,7 @@ public class HuoDongDetailsActivity
     private void sharedItemOpen(SHARE_MEDIA share_media) {
         UMImage image = new UMImage(HuoDongDetailsActivity.this, hdDetailsBean.getData().getActivity_info().getImage().getImg0());
         image.compressStyle = UMImage.CompressStyle.SCALE;//大小压缩，默认为大小压缩，适合普通很大的图
-        UMWeb web = new UMWeb("http://h5.idcool.com.cn/" + hdDetailsBean.getData().getActivity_info().getActivity_id());
+        UMWeb web = new UMWeb("http://h5.idcool.com.cn/activity/" + hdDetailsBean.getData().getActivity_info().getActivity_id());
         web.setTitle(hdDetailsBean.getData().getActivity_info().getTitle() + "｜家图APP");//标题
         web.setThumb(image);  //缩略图
         String desi = hdDetailsBean.getData().getActivity_info().getDescription();
