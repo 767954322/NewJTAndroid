@@ -702,13 +702,13 @@ public class ShaiXuanResultActicity
 
             //友盟统计
             HashMap<String, String> map1 = new HashMap<String, String>();
-            map1.put("evenname", "筛选结果取消色彩选择");
-            map1.put("even", "筛选结果取消已选色彩");
+            map1.put("evenname", "消失色彩筛选弹框");
+            map1.put("even", "消失色彩筛选弹框");
             MobclickAgent.onEvent(ShaiXuanResultActicity.this, "action19", map1);
             //ga统计
             MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
-                    .setCategory("筛选结果取消已选色彩")  //事件类别
-                    .setAction("筛选结果取消色彩选择")      //事件操作
+                    .setCategory("消失色彩筛选弹框")  //事件类别
+                    .setAction("消失色彩筛选弹框")      //事件操作
                     .build());
         } else {
             changeColorRound();
