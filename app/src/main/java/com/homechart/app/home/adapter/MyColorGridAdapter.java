@@ -60,9 +60,9 @@ public class MyColorGridAdapter extends BaseAdapter {
             myColorHolder = (MyColorHolder) convertView.getTag();
         }
 
-        if(listColor.get(position).getColor_value().trim().equalsIgnoreCase("ffffff")){
+        if (listColor.get(position).getColor_value().trim().equalsIgnoreCase("ffffff")) {
             myColorHolder.view_color.setBackgroundResource(R.drawable.view_imagedetails_color);
-        }else {
+        } else {
             myColorHolder.view_color.setBackgroundColor(Color.parseColor("#" + listColor.get(position).getColor_value()));
         }
         myColorHolder.value_color.setText("#" + listColor.get(position).getColor_value());
@@ -71,6 +71,9 @@ public class MyColorGridAdapter extends BaseAdapter {
         float temp = Float.parseFloat(per) * 100;
         java.text.DecimalFormat df = new java.text.DecimalFormat("#.00");
         String text_per = df.format(temp);
+        if (text_per.substring(0, 1).equals(".")) {
+            text_per = "0" + text_per;
+        }
         myColorHolder.per_color.setText(text_per + "%");
 
         return convertView;
