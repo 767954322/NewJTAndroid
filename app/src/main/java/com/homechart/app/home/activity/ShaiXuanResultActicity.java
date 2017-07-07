@@ -292,11 +292,12 @@ public class ShaiXuanResultActicity
         //友盟统计
         HashMap<String, String> map1 = new HashMap<String, String>();
         map1.put("evenname", "筛选结果下拉翻页");
+        map1.put("pagenum", page_num + "");
         map1.put("even", "筛选结果列表页下拉查看更多图片缩略图");
         MobclickAgent.onEvent(ShaiXuanResultActicity.this, "action22", map1);
         //ga统计
         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
-                .setCategory("筛选结果列表页下拉查看更多图片缩略图")  //事件类别
+                .setCategory(page_num + "")  //事件类别
                 .setAction("筛选结果下拉翻页")      //事件操作
                 .build());
 
@@ -485,9 +486,9 @@ public class ShaiXuanResultActicity
                     holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
                     holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
                     holder.getView(R.id.iv_color_center).setVisibility(View.GONE);
-                    if(list_color.get(0).getColor_value().trim().equalsIgnoreCase("ffffff")){
+                    if (list_color.get(0).getColor_value().trim().equalsIgnoreCase("ffffff")) {
                         holder.getView(R.id.iv_color_right).setBackgroundResource(R.drawable.color_line_white);
-                    }else {
+                    } else {
                         holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
                     }
                     if (curentListTag) {
@@ -498,14 +499,14 @@ public class ShaiXuanResultActicity
                     holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
                     holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
                     holder.getView(R.id.iv_color_center).setVisibility(View.VISIBLE);
-                    if(list_color.get(1).getColor_value().trim().equalsIgnoreCase("ffffff")){
+                    if (list_color.get(1).getColor_value().trim().equalsIgnoreCase("ffffff")) {
                         holder.getView(R.id.iv_color_right).setBackgroundResource(R.drawable.color_line_white);
-                    }else {
+                    } else {
                         holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(1).getColor_value()));
                     }
-                    if(list_color.get(0).getColor_value().trim().equalsIgnoreCase("ffffff")){
+                    if (list_color.get(0).getColor_value().trim().equalsIgnoreCase("ffffff")) {
                         holder.getView(R.id.iv_color_center).setBackgroundResource(R.drawable.color_line_white);
-                    }else {
+                    } else {
                         holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
                     }
                     if (curentListTag) {
@@ -515,19 +516,19 @@ public class ShaiXuanResultActicity
                     holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
                     holder.getView(R.id.iv_color_left).setVisibility(View.VISIBLE);
                     holder.getView(R.id.iv_color_center).setVisibility(View.VISIBLE);
-                    if(list_color.get(2).getColor_value().trim().equalsIgnoreCase("ffffff")){
+                    if (list_color.get(2).getColor_value().trim().equalsIgnoreCase("ffffff")) {
                         holder.getView(R.id.iv_color_right).setBackgroundResource(R.drawable.color_line_white);
-                    }else {
+                    } else {
                         holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(2).getColor_value()));
                     }
-                    if(list_color.get(1).getColor_value().trim().equalsIgnoreCase("ffffff")){
+                    if (list_color.get(1).getColor_value().trim().equalsIgnoreCase("ffffff")) {
                         holder.getView(R.id.iv_color_center).setBackgroundResource(R.drawable.color_line_white);
-                    }else {
+                    } else {
                         holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color.get(1).getColor_value()));
                     }
-                    if(list_color.get(0).getColor_value().trim().equalsIgnoreCase("ffffff")){
+                    if (list_color.get(0).getColor_value().trim().equalsIgnoreCase("ffffff")) {
                         holder.getView(R.id.iv_color_left).setBackgroundResource(R.drawable.color_line_white);
-                    }else {
+                    } else {
                         holder.getView(R.id.iv_color_left).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
                     }
                     if (curentListTag) {

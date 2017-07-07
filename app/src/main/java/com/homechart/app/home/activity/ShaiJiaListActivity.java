@@ -209,13 +209,13 @@ public class ShaiJiaListActivity extends BaseActivity
 
                         //友盟统计
                         HashMap<String, String> map4 = new HashMap<String, String>();
-                        map4.put("evenname", "点击晒家列表编辑作品");
-                        map4.put("even", "点击晒家列表编辑作品进入编辑图片页面");
+                        map4.put("evenname", "点击晒家管理");
+                        map4.put("even", "点击晒家管理");
                         MobclickAgent.onEvent(ShaiJiaListActivity.this, "action51", map4);
                         //ga统计
                         MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
-                                .setCategory("点击晒家列表编辑作品进入编辑图片页面")  //事件类别
-                                .setAction("点击晒家列表编辑作品")      //事件操作
+                                .setCategory("点击晒家管理")  //事件类别
+                                .setAction("点击晒家管理")      //事件操作
                                 .build());
                         //打开管理
                         tv_content_right.setText("取消");
