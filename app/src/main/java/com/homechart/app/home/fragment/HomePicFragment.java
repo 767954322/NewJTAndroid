@@ -327,11 +327,20 @@ public class HomePicFragment
             case R.id.iv_center_msgicon:
                 onDismiss();
                 Intent intent_messages = new Intent(activity, MessagesListActivity.class);
-                startActivity(intent_messages);
+                startActivityForResult(intent_messages,11);
                 break;
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 11){
+            rl_unreader_msg_single.setVisibility(View.GONE);
+            rl_unreader_msg_double.setVisibility(View.GONE);
+        }
+
+    }
 
     private void buildRecyclerView() {
 

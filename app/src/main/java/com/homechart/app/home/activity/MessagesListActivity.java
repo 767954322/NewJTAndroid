@@ -120,7 +120,7 @@ public class MessagesListActivity extends BaseActivity
                     ((TextView) holder.getView(R.id.tv_activity_time)).setText(mListData.get(position).getAdd_time());
 
                     ViewGroup.LayoutParams layoutParams = holder.getView(R.id.iv_activity_image).getLayoutParams();
-                    layoutParams.height = (int)(width_Pic_List/2.36);
+                    layoutParams.height = (int)(width_Pic_List/2.03);
                     holder.getView(R.id.iv_activity_image).setLayoutParams(layoutParams);
                     ImageUtils.displayFilletImage(mListData.get(position).getImage().getImg0(), (ImageView) holder.getView(R.id.iv_activity_image));
 
