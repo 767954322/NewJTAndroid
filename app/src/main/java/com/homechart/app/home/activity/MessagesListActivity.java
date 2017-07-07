@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.android.volley.VolleyError;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
+import com.homechart.app.commont.PublicUtils;
 import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.bean.message.ItemMessageBean;
 import com.homechart.app.home.bean.message.MessageBean;
@@ -61,6 +63,7 @@ public class MessagesListActivity extends BaseActivity
     private int TYPE_ACTIVITY = 1;
     private int TYPE_TIPS = 2;
     private RelativeLayout rl_no_data;
+    private int width_Pic_List;
 
     @Override
     protected int getLayoutResId() {
@@ -86,7 +89,7 @@ public class MessagesListActivity extends BaseActivity
     @Override
     protected void initData(Bundle savedInstanceState) {
         mTVTital.setText("消息");
-
+        width_Pic_List = PublicUtils.getScreenWidth(MessagesListActivity.this) - UIUtils.getDimens(R.dimen.font_30);
 
         MultiItemTypeSupport<ItemMessageBean> support = new MultiItemTypeSupport<ItemMessageBean>() {
             @Override
@@ -116,6 +119,9 @@ public class MessagesListActivity extends BaseActivity
                     ((TextView) holder.getView(R.id.tv_activity_tital)).setText(mListData.get(position).getContent());
                     ((TextView) holder.getView(R.id.tv_activity_time)).setText(mListData.get(position).getAdd_time());
 
+                    ViewGroup.LayoutParams layoutParams = holder.getView(R.id.iv_activity_image).getLayoutParams();
+                    layoutParams.height = (int)(width_Pic_List/2.36);
+                    holder.getView(R.id.iv_activity_image).setLayoutParams(layoutParams);
                     ImageUtils.displayFilletImage(mListData.get(position).getImage().getImg0(), (ImageView) holder.getView(R.id.iv_activity_image));
 
                 } else if (getItemViewType(position) == TYPE_TIPS) {
