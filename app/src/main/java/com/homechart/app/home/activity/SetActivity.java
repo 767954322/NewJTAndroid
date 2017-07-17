@@ -1,6 +1,7 @@
 package com.homechart.app.home.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Gravity;
@@ -67,6 +68,7 @@ public class SetActivity
     private boolean ifClear = false;
 
     private HomeSharedPopWinPublic homeSharedPopWinPublic;
+    private RelativeLayout rl_set_haoping;
 
     @Override
     protected int getLayoutResId() {
@@ -85,6 +87,7 @@ public class SetActivity
         rl_set_fankui = (RelativeLayout) findViewById(R.id.rl_set_fankui);
         rl_set_tuijian = (RelativeLayout) findViewById(R.id.rl_set_tuijian);
         btn_outlogin = (Button) findViewById(R.id.btn_outlogin);
+        rl_set_haoping = (RelativeLayout) findViewById(R.id.rl_set_haoping);
     }
 
     @Override
@@ -97,6 +100,7 @@ public class SetActivity
         rl_set_fankui.setOnClickListener(this);
         rl_set_tuijian.setOnClickListener(this);
         btn_outlogin.setOnClickListener(this);
+        rl_set_haoping.setOnClickListener(this);
 
     }
 
@@ -212,6 +216,18 @@ public class SetActivity
                 Intent intent1 = new Intent(SetActivity.this, LoginActivity.class);
                 startActivity(intent1);
                 SetActivity.this.finish();
+                break;
+            case R.id.rl_set_haoping:
+                try {
+                    Uri uri = Uri.parse("market://details?id=" + getPackageName());
+                    Intent intent2 = new Intent(Intent.ACTION_VIEW, uri);
+                    intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent2);
+                } catch (Exception e) {
+                    ToastUtils.showCenter(SetActivity.this, "您的手机没有安装Android应用市场");
+                    e.printStackTrace();
+                }
+
                 break;
         }
     }

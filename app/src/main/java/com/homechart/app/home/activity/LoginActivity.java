@@ -312,7 +312,7 @@ public class LoginActivity extends BaseActivity
                         startActivity(intent);
                         LoginActivity.this.finish();
                     } else {
-                        if (error_code == 1006) {
+                        if (error_code == 1006 || error_code == 1012) {
                             Intent intent_change = new Intent(LoginActivity.this, NewUserNameActivity.class);
                             intent_change.putExtra(ClassConstant.LoginByYouMeng.OPENID, openid);
                             intent_change.putExtra(ClassConstant.LoginByYouMeng.TOKEN, token);
