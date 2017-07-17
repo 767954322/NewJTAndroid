@@ -70,13 +70,16 @@ public class MyActivitysListAdapter extends BaseAdapter {
             myHolder = (MyHolder) convertView.getTag();
         }
 
-        if (mMap.containsKey(position)|| mMap.containsValue(activityList.get(position).getActivity_info().getActivity_id()) ) {
+        if (mMap.containsKey(position) || mMap.containsValue(activityList.get(position).getActivity_info().getActivity_id())) {
             myHolder.cb_check_add.setChecked(true);
         } else {
             myHolder.cb_check_add.setChecked(false);
         }
-
-        myHolder.tv_tital.setText(activityList.get(position).getActivity_info().getTitle());
+        String str_Tital = activityList.get(position).getActivity_info().getTitle();
+        if (str_Tital.length() > 8) {
+            str_Tital = str_Tital.substring(0, 8) + "...";
+        }
+        myHolder.tv_tital.setText(str_Tital);
         myHolder.tv_tital.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +110,7 @@ public class MyActivitysListAdapter extends BaseAdapter {
         myHolder.tv_activity_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCheckStatus.activityDetail(position,activityList.get(position).getActivity_info().getActivity_id());
+                mCheckStatus.activityDetail(position, activityList.get(position).getActivity_info().getActivity_id());
             }
         });
         return convertView;
@@ -124,6 +127,7 @@ public class MyActivitysListAdapter extends BaseAdapter {
     public interface CheckStatus {
 
         void checkChange(int position, boolean status, String activityId);
+
         void activityDetail(int position, String activityId);
 
     }
