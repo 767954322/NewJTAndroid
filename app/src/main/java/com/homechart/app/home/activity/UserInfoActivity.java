@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -125,6 +126,9 @@ public class UserInfoActivity
         rl_info_zhunaye.setOnClickListener(this);
         btn_guanzhu_demand.setOnClickListener(this);
         iv_header_desiner_center.setOnClickListener(this);
+        rl_info_guanzhu.setOnClickListener(this);
+        rl_info_shaijia.setOnClickListener(this);
+        rl_info_fensi.setOnClickListener(this);
     }
 
     @Override
@@ -252,6 +256,27 @@ public class UserInfoActivity
                         .setCategory("点击个人主页头像")  //事件类别
                         .setAction("主页头像")      //事件操作
                         .build());
+                break;
+            case R.id.rl_info_guanzhu:
+                if (!TextUtils.isEmpty(user_id)) {
+                    Intent intent_guanzu = new Intent(UserInfoActivity.this, GuanZuListActivity.class);
+                    intent_guanzu.putExtra(ClassConstant.LoginSucces.USER_ID, user_id);
+                    startActivity(intent_guanzu);
+                }
+                break;
+            case R.id.rl_info_shaijia:
+                if (!TextUtils.isEmpty(user_id)) {
+                    Intent intent_shaijia = new Intent(UserInfoActivity.this, ShaiJiaListActivity.class);
+                    intent_shaijia.putExtra(ClassConstant.LoginSucces.USER_ID, user_id);
+                    startActivity(intent_shaijia);
+                }
+                break;
+            case R.id.rl_info_fensi:
+                if (!TextUtils.isEmpty(user_id)) {
+                    Intent intent_fensi = new Intent(UserInfoActivity.this, FenSiListActivity.class);
+                    intent_fensi.putExtra(ClassConstant.LoginSucces.USER_ID, user_id);
+                    startActivity(intent_fensi);
+                }
                 break;
         }
 
