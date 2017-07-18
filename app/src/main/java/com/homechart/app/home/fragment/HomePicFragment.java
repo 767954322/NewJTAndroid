@@ -503,9 +503,9 @@ public class HomePicFragment
 //                    layoutParams.width = width_Pic_List;
 //                    layoutParams.height = (curentListTag ? (int) (width_Pic_List / 2.36) : (int) (width_Pic_Staggered / mListData.get(position).getObject_info().getImage().getRatio()));
 //                    holder.getView(R.id.iv_imageview_one).setLayoutParams(layoutParams);
-                    ImageUtils.displayFilletImage(mListData.get(position).getObject_info().getImage().getImg0(),
-                            (ImageView) holder.getView(R.id.iv_imageview_one));
 
+                    ImageUtils.displayFilletImage(mListData.get(position).getObject_info().getImage().getImg0(),
+                            ((ImageView) holder.getView(R.id.iv_imageview_one)));
                     ((TextView)holder.getView(R.id.tv_name_pic)).setText(mListData.get(position).getObject_info().getTitle().toString());
                     holder.getView(R.id.iv_imageview_one).setOnClickListener(new View.OnClickListener() {
                         @Override
