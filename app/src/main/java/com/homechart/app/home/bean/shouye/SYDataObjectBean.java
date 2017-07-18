@@ -11,12 +11,15 @@ public class SYDataObjectBean implements Serializable{
     private String object_id;
     private String type;
     private String tag;
+    private String title;
     private SYDataObjectImgBean image;
 
-    public SYDataObjectBean(String object_id, String type, String tag, SYDataObjectImgBean image) {
+
+    public SYDataObjectBean(String object_id, String type, String tag, String title, SYDataObjectImgBean image) {
         this.object_id = object_id;
         this.type = type;
         this.tag = tag;
+        this.title = title;
         this.image = image;
     }
 
@@ -44,6 +47,14 @@ public class SYDataObjectBean implements Serializable{
         this.tag = tag;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public SYDataObjectImgBean getImage() {
         return image;
     }
@@ -58,6 +69,7 @@ public class SYDataObjectBean implements Serializable{
                 "object_id='" + object_id + '\'' +
                 ", type='" + type + '\'' +
                 ", tag='" + tag + '\'' +
+                ", title='" + title + '\'' +
                 ", image=" + image +
                 '}';
     }
