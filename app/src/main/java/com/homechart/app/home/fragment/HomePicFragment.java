@@ -10,6 +10,7 @@ import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -521,7 +522,7 @@ public class HomePicFragment
             }
         };
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        mRecyclerView.setItemAnimator(null);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setOnRefreshListener(this);
         mRecyclerView.setOnLoadMoreListener(this);
 
