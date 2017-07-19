@@ -18,10 +18,17 @@ public class ArticleDetailsActivity
         implements View.OnClickListener {
     private ImageButton nav_left_imageButton;
     private TextView tv_tital_comment;
+    private String article_id;
 
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_article_details;
+    }
+
+    @Override
+    protected void initExtraBundle() {
+        super.initExtraBundle();
+        article_id =  getIntent().getStringExtra("article_id");
     }
 
     @Override

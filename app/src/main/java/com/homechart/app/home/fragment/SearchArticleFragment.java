@@ -2,13 +2,11 @@ package com.homechart.app.home.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,14 +17,11 @@ import com.homechart.app.MyApplication;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
-import com.homechart.app.home.activity.ImageDetailLongActivity;
-import com.homechart.app.home.activity.UserInfoActivity;
+import com.homechart.app.home.activity.ArticleDetailsActivity;
 import com.homechart.app.home.base.BaseFragment;
-import com.homechart.app.home.bean.search.SearchDataBean;
-import com.homechart.app.home.bean.search.SearchDataColorBean;
-import com.homechart.app.home.bean.search.SearchItemDataBean;
+import com.homechart.app.home.bean.searchartile.ArticleBean;
+import com.homechart.app.home.bean.searchartile.ArticleListBean;
 import com.homechart.app.home.recyclerholder.LoadMoreFooterView;
-import com.homechart.app.myview.RoundImageView;
 import com.homechart.app.recyclerlibrary.adapter.MultiItemCommonAdapter;
 import com.homechart.app.recyclerlibrary.holder.BaseViewHolder;
 import com.homechart.app.recyclerlibrary.recyclerview.HRecyclerView;
@@ -59,15 +54,14 @@ public class SearchArticleFragment
     private FragmentManager fragmentManager;
     private HRecyclerView mRecyclerView;
     private RelativeLayout rl_no_data;
-    private int width_Pic_Staggered;
     private int page_num = 1;
     private int TYPE_ONE = 1;
     private int TYPE_TWO = 2;
-    private MultiItemCommonAdapter<SearchItemDataBean> mAdapter;
+    private MultiItemCommonAdapter<ArticleBean> mAdapter;
     private LoadMoreFooterView mLoadMoreFooterView;
     private final String REFRESH_STATUS = "refresh";
     private final String LOADMORE_STATUS = "loadmore";
-    private List<SearchItemDataBean> mListData = new ArrayList<>();
+    private List<ArticleBean> mListData = new ArrayList<>();
     private List<Integer> mListDataHeight = new ArrayList<>();
     private String search_info;
     private String search_tag;
@@ -101,7 +95,6 @@ public class SearchArticleFragment
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        width_Pic_Staggered = PublicUtils.getScreenWidth(activity) / 2 - UIUtils.getDimens(R.dimen.font_20);
         buildRecyclerView();
     }
 
@@ -120,110 +113,37 @@ public class SearchArticleFragment
 
     private void buildRecyclerView() {
 
-        MultiItemTypeSupport<SearchItemDataBean> support = new MultiItemTypeSupport<SearchItemDataBean>() {
+        MultiItemTypeSupport<ArticleBean> support = new MultiItemTypeSupport<ArticleBean>() {
             @Override
             public int getLayoutId(int itemType) {
                 if (itemType == TYPE_ONE) {
-                    return R.layout.item_search_one;
+                    return R.layout.item_search_article;
                 } else {
-                    return R.layout.item_search_two;
+                    return R.layout.item_search_article;
                 }
             }
 
             @Override
-            public int getItemViewType(int position, SearchItemDataBean s) {
+            public int getItemViewType(int position, ArticleBean s) {
                 return TYPE_ONE;
             }
         };
 
-        mAdapter = new MultiItemCommonAdapter<SearchItemDataBean>(activity, mListData, support) {
+        mAdapter = new MultiItemCommonAdapter<ArticleBean>(activity, mListData, support) {
             @Override
             public void convert(BaseViewHolder holder, final int position) {
 
-
-                ViewGroup.LayoutParams layoutParams = holder.getView(R.id.iv_imageview_search_one).getLayoutParams();
-//                layoutParams.width = width_Pic_Staggered;
-                layoutParams.height = mListDataHeight.get(position);
-                holder.getView(R.id.iv_imageview_search_one).setLayoutParams(layoutParams);
-                String nikeName = mListData.get(position).getUser_info().getNickname();
-                if (nikeName.length() > 5) {
-                    nikeName = nikeName.substring(0, 5) + "...";
-                }
-                ((TextView) holder.getView(R.id.tv_nikename_search)).setText(nikeName);
-                ImageUtils.displayFilletImage(mListData.get(position).getItem_info().getImage().getImg1(),
-                        (ImageView) holder.getView(R.id.iv_imageview_search_one));
-                ImageUtils.displayFilletImage(mListData.get(position).getUser_info().getAvatar().getBig(),
-                        (RoundImageView) holder.getView(R.id.iv_header_search));
-                holder.getView(R.id.iv_header_search).setOnClickListener(new View.OnClickListener() {
+                ((TextView) holder.getView(R.id.tv_article_name)).setText(mListData.get(position).getArticle_info().getTitle());
+                ((TextView) holder.getView(R.id.tv_youlan_num)).setText(mListData.get(position).getArticle_info().getView_num());
+                ImageUtils.disRectangleImage(mListData.get(position).getArticle_info().getImage().getImg0(), (ImageView) holder.getView(R.id.iv_article_image));
+                holder.getView(R.id.rl_item_click).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(activity, UserInfoActivity.class);
-                        intent.putExtra(ClassConstant.LoginSucces.USER_ID, mListData.get(position).getUser_info().getUser_id());
+                        Intent intent = new Intent(activity, ArticleDetailsActivity.class);
+                        intent.putExtra("article_id",mListData.get(position).getArticle_info().getArticle_id());
                         startActivity(intent);
                     }
                 });
-
-                holder.getView(R.id.iv_imageview_search_one).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        //查看单图详情
-                        Intent intent = new Intent(activity, ImageDetailLongActivity.class);
-                        intent.putExtra("item_id", mListData.get(position).getItem_info().getItem_id());
-                        startActivity(intent);
-                    }
-                });
-                List<SearchDataColorBean> list_color = mListData.get(position).getColor_info();
-                if (null != list_color && list_color.size() == 1) {
-                    holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
-                    holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
-                    holder.getView(R.id.iv_color_center).setVisibility(View.GONE);
-                    if (list_color.get(0).getColor_value().trim().equalsIgnoreCase("ffffff")) {
-                        holder.getView(R.id.iv_color_right).setBackgroundResource(R.drawable.color_line_white);
-                    } else {
-                        holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
-                    }
-                } else if (null != mListData.get(position).getColor_info() && mListData.get(position).getColor_info().size() == 2) {
-
-                    holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
-                    holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
-                    holder.getView(R.id.iv_color_center).setVisibility(View.VISIBLE);
-                    if (list_color.get(1).getColor_value().trim().equalsIgnoreCase("ffffff")) {
-                        holder.getView(R.id.iv_color_right).setBackgroundResource(R.drawable.color_line_white);
-                    } else {
-                        holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(1).getColor_value()));
-                    }
-                    if (list_color.get(0).getColor_value().trim().equalsIgnoreCase("ffffff")) {
-                        holder.getView(R.id.iv_color_center).setBackgroundResource(R.drawable.color_line_white);
-                    } else {
-                        holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
-                    }
-
-                } else if (null != mListData.get(position).getColor_info() && mListData.get(position).getColor_info().size() == 3) {
-                    holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
-                    holder.getView(R.id.iv_color_left).setVisibility(View.VISIBLE);
-                    holder.getView(R.id.iv_color_center).setVisibility(View.VISIBLE);
-                    if (list_color.get(2).getColor_value().trim().equalsIgnoreCase("ffffff")) {
-                        holder.getView(R.id.iv_color_right).setBackgroundResource(R.drawable.color_line_white);
-                    } else {
-                        holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(2).getColor_value()));
-                    }
-                    if (list_color.get(1).getColor_value().trim().equalsIgnoreCase("ffffff")) {
-                        holder.getView(R.id.iv_color_center).setBackgroundResource(R.drawable.color_line_white);
-                    } else {
-                        holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color.get(1).getColor_value()));
-                    }
-                    if (list_color.get(0).getColor_value().trim().equalsIgnoreCase("ffffff")) {
-                        holder.getView(R.id.iv_color_left).setBackgroundResource(R.drawable.color_line_white);
-                    } else {
-                        holder.getView(R.id.iv_color_left).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
-                    }
-
-                } else {
-                    holder.getView(R.id.iv_color_right).setVisibility(View.GONE);
-                    holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
-                    holder.getView(R.id.iv_color_center).setVisibility(View.GONE);
-                }
-
             }
         };
 
@@ -255,7 +175,8 @@ public class SearchArticleFragment
 
     @Override
     public void onLoadMore() {
-//友盟统计
+
+        //友盟统计
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("evenname", "搜索加载更多");
         map.put("even", "搜索向下滑动");
@@ -269,6 +190,7 @@ public class SearchArticleFragment
         mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.LOADING);
         ++page_num;
         getListData(LOADMORE_STATUS);
+
     }
 
     private void getListData(final String state) {
@@ -295,14 +217,12 @@ public class SearchArticleFragment
                     String error_msg = jsonObject.getString(ClassConstant.Parame.ERROR_MSG);
                     String data_msg = jsonObject.getString(ClassConstant.Parame.DATA);
                     if (error_code == 0) {
-                        SearchDataBean searchDataBean = GsonUtil.jsonToBean(data_msg, SearchDataBean.class);
-                        if (null != searchDataBean.getItem_list() && 0 != searchDataBean.getItem_list().size()) {
+                        ArticleListBean articleListBean = GsonUtil.jsonToBean(data_msg, ArticleListBean.class);
+                        if (null != articleListBean.getArticle_list() && 0 != articleListBean.getArticle_list().size()) {
                             changeNone(0);
-                            getHeight(searchDataBean.getItem_list(), state);
-                            updateViewFromData(searchDataBean.getItem_list(), state);
+                            updateViewFromData(articleListBean.getArticle_list(), state);
                         } else {
                             changeNone(1);
-//                            ToastUtils.showCenter(SearchResultActivity.this, "暂时没搜到您要的结果，不如换个关键词试试？");
                             updateViewFromData(null, state);
                         }
                     } else {
@@ -320,11 +240,19 @@ public class SearchArticleFragment
                 }
             }
         };
-        MyHttpManager.getInstance().getSearchList(null, search_info, search_tag, (page_num - 1) * 20 + "", "20", callBack);
+        if (!TextUtils.isEmpty(search_info)) {
+
+            MyHttpManager.getInstance().getArticleSearchList(search_info, (page_num - 1) * 20 + "", "20", callBack);
+
+        } else if (!TextUtils.isEmpty(search_tag)) {
+
+            MyHttpManager.getInstance().getArticleSearchList(search_tag, (page_num - 1) * 20 + "", "20", callBack);
+
+        }
     }
 
 
-    private void updateViewFromData(List<SearchItemDataBean> listData, String state) {
+    private void updateViewFromData(List<ArticleBean> listData, String state) {
 
         switch (state) {
 
@@ -355,23 +283,6 @@ public class SearchArticleFragment
                     mLoadMoreFooterView.setStatus(LoadMoreFooterView.Status.THE_END);
                 }
                 break;
-        }
-    }
-
-    private void getHeight(List<SearchItemDataBean> item_list, String state) {
-        if (state.equals(REFRESH_STATUS)) {
-            mListDataHeight.clear();
-        }
-
-        if (item_list.size() > 0) {
-            for (int i = 0; i < item_list.size(); i++) {
-                if (item_list.get(i).getItem_info().getImage().getRatio() == 0) {
-                    mListDataHeight.add(width_Pic_Staggered);
-                } else {
-                    mListDataHeight.add(Math.round(width_Pic_Staggered / item_list.get(i).getItem_info().getImage().getRatio()));
-
-                }
-            }
         }
     }
 

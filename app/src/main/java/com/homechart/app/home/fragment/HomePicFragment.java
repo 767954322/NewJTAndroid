@@ -511,6 +511,8 @@ public class HomePicFragment
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(activity,ArticleDetailsActivity.class);
+                            intent.putExtra("article_id",mListData.get(position).getObject_info().getObject_id());
+
                             startActivity(intent);
                         }
                     });
