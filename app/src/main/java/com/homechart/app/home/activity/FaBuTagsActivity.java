@@ -78,7 +78,6 @@ public class FaBuTagsActivity
         fl_tags_jubu = (FlowLayoutFaBuTags) findViewById(R.id.fl_tags_jubu);
         fl_tags_shouna = (FlowLayoutFaBuTags) findViewById(R.id.fl_tags_shouna);
         fl_tags_zhuangshi = (FlowLayoutFaBuTags) findViewById(R.id.fl_tags_zhuangshi);
-        fl_tags_zidingyi = (FlowLayoutFaBuTagsDing) findViewById(R.id.fl_tags_zidingyi);
         et_tag_text = (EditText) findViewById(R.id.et_tag_text);
     }
 
@@ -93,6 +92,7 @@ public class FaBuTagsActivity
         tagDataBean = (TagDataBean) getIntent().getSerializableExtra("tagdata");
         listZiDing.clear();
         listZiDingSelect.clear();
+        fl_tags_zidingyi = (FlowLayoutFaBuTagsDing) findViewById(R.id.fl_tags_zidingyi);
         if (list != null && list.size() > 0) {
             listZiDing.addAll(list);
             listZiDingSelect.addAll(list);

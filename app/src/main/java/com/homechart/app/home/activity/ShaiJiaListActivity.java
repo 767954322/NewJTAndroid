@@ -17,6 +17,7 @@ import com.homechart.app.home.base.BaseActivity;
 import com.homechart.app.home.fragment.ShaiJiaArticleFragment;
 import com.homechart.app.home.fragment.ShaiJiaPicFragment;
 import com.homechart.app.myview.CustomViewPager;
+import com.homechart.app.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,17 +148,22 @@ public class ShaiJiaListActivity extends BaseActivity
                 break;
             case R.id.tv_content_right:
 
-                if(ifAllowScroll){
-                    mViewPager.setScanScroll(false);
-                    mTabLayout.setCanScrool(false);
-                    ifAllowScroll = false;
-                }else {
-                    mViewPager.setScanScroll(true);
-                    mTabLayout.setCanScrool(true);
-                    ifAllowScroll = true;
-                }
                 if (mViewPager.getCurrentItem() == 0) {
-                    shaiJiaPicFragment.clickRightGuanLi();
+                    if(ifAllowScroll){
+                        if(shaiJiaPicFragment.ifHasData()){
+                            mViewPager.setScanScroll(false);
+                            mTabLayout.setCanScrool(false);
+                            ifAllowScroll = false;
+                            shaiJiaPicFragment.clickRightGuanLi();
+                        }else {
+                            ToastUtils.showCenter(ShaiJiaListActivity.this, "先去发布一些图片吧");
+                        }
+                    }else {
+                        mViewPager.setScanScroll(true);
+                        mTabLayout.setCanScrool(true);
+                        ifAllowScroll = true;
+                        shaiJiaPicFragment.clickRightGuanLi();
+                    }
                 } else if (mViewPager.getCurrentItem() == 1) {
 
                 }

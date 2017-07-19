@@ -296,6 +296,14 @@ public class ShaiJiaPicFragment
         }
     }
 
+    public boolean ifHasData(){
+        if (mListData != null && mListData.size() > 0) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
