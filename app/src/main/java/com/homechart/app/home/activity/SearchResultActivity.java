@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.flyco.tablayout.CustomViewPagerTab;
 import com.flyco.tablayout.SlidingTabLayout;
 import com.google.android.gms.analytics.HitBuilders;
 import com.homechart.app.MyApplication;
@@ -72,7 +73,7 @@ public class SearchResultActivity
     private ClearEditText cet_clearedit;
     private TextView tv_quxiao;
     private final String[] mTitles = {"图片", "文章"};
-    private ViewPager mViewPager;
+    private CustomViewPagerTab mViewPager;
     private SlidingTabLayout mTabLayout;
     //页卡标题集合
     private List<Fragment> mFragmentsList = new ArrayList<>();//页卡视图集合
@@ -96,7 +97,8 @@ public class SearchResultActivity
     protected void initView() {
         cet_clearedit = (ClearEditText) findViewById(R.id.cet_clearedit);
         tv_quxiao = (TextView) findViewById(R.id.tv_quxiao);
-        mViewPager = (ViewPager) findViewById(R.id.vp_view);
+        mViewPager = (CustomViewPagerTab) findViewById(R.id.vp_view);
+        mViewPager.setScanScroll(true);
         mTabLayout = (SlidingTabLayout) findViewById(R.id.tly_slidingtablayout);
         //设置下划线的高度
         mTabLayout.setIndicatorHeight(4f);
