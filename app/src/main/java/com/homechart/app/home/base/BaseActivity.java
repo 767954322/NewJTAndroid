@@ -18,8 +18,8 @@ public abstract class BaseActivity extends FragmentActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(getLayoutResId());
         ActivityManager.getInstance().addActivity(this);
-        initView();
         initExtraBundle();
+        initView();
         initData(savedInstanceState);
         initListener();
 
