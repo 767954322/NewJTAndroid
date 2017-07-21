@@ -90,18 +90,6 @@ public class LoginActivity extends BaseActivity
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-
-        //友盟统计
-        HashMap<String, String> map5 = new HashMap<String, String>();
-        map5.put("evenname", "登录页面");
-        map5.put("even", "登录页面");
-        MobclickAgent.onEvent(LoginActivity.this, "newaction3", map5);
-        //ga统计
-        MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
-                .setCategory("登录页面")  //事件类别
-                .setAction("登录页面")  //事件操作
-                .build());
-
         //设置权限
         PublicUtils.verifyStoragePermissions(LoginActivity.this);
         boolean login_status = SharedPreferencesUtils.readBoolean(ClassConstant.LoginSucces.LOGIN_STATUS);
@@ -110,6 +98,16 @@ public class LoginActivity extends BaseActivity
             startActivity(intent);
             LoginActivity.this.finish();
         } else {
+            //友盟统计
+            HashMap<String, String> map5 = new HashMap<String, String>();
+            map5.put("evenname", "登录页面");
+            map5.put("even", "登录页面");
+            MobclickAgent.onEvent(LoginActivity.this, "newaction3", map5);
+            //ga统计
+            MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                    .setCategory("登录页面")  //事件类别
+                    .setAction("登录页面")  //事件操作
+                    .build());
             PublicUtils.changeEditTextHint(getString(R.string.login_name_hint), mETLoginName, 14);
             PublicUtils.changeEditTextHint(getString(R.string.login_pass_hint), mETLoginPass, 14);
             umAuthListener = new PublicUtils.UmAuthListener(LoginActivity.this, this);
@@ -416,23 +414,30 @@ public class LoginActivity extends BaseActivity
     @Override
     public void onResume() {
         super.onResume();
-        CustomProgress.cancelDialog();
-        // Get tracker.
-        Tracker t = MyApplication.getInstance().getDefaultTracker();
-        // Set screen name.
-        t.setScreenName("登录页面");
-        // Send a screen view.
-        t.send(new HitBuilders.ScreenViewBuilder().build());
-        MobclickAgent.onPageStart("LoginActivity");
-        MobclickAgent.onResume(LoginActivity.this);
+        if(!SharedPreferencesUtils.readBoolean(ClassConstant.LoginSucces.LOGIN_STATUS)){
+
+            CustomProgress.cancelDialog();
+            // Get tracker.
+            Tracker t = MyApplication.getInstance().getDefaultTracker();
+            // Set screen name.
+            t.setScreenName("登录页面");
+            // Send a screen view.
+            t.send(new HitBuilders.ScreenViewBuilder().build());
+            MobclickAgent.onPageStart("LoginActivity");
+            MobclickAgent.onResume(LoginActivity.this);
+        }
+
     }
 
 
     @Override
     public void onPause() {
         super.onPause();
-        MobclickAgent.onPageEnd("LoginActivity");
-        MobclickAgent.onPause(LoginActivity.this);
+        if(!SharedPreferencesUtils.readBoolean(ClassConstant.LoginSucces.LOGIN_STATUS)){
+            MobclickAgent.onPageEnd("LoginActivity");
+            MobclickAgent.onPause(LoginActivity.this);
+        }
+
     }
 
     private TextView mTVToRegister;
