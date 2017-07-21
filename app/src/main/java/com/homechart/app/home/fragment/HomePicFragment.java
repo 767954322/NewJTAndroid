@@ -1,5 +1,6 @@
 package com.homechart.app.home.fragment;
 
+import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,14 +11,16 @@ import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -29,7 +32,7 @@ import com.homechart.app.MyApplication;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
 import com.homechart.app.commont.PublicUtils;
-import com.homechart.app.home.activity.ArticleDetailsActivity;
+import com.homechart.app.home.activity.FenSiListActivity;
 import com.homechart.app.home.activity.HuoDongDetailsActivity;
 import com.homechart.app.home.activity.ImageDetailLongActivity;
 import com.homechart.app.home.activity.MessagesListActivity;
@@ -97,7 +100,7 @@ public class HomePicFragment
     private int TYPE_TWO = 2;
     private int TYPE_THREE = 3;
     private int TYPE_FOUR = 4;
-    private int TYPE_FIVE = 5;
+    private int scroll_position = 0;
     private int position;
     private boolean curentListTag = true;
     private final String REFRESH_STATUS = "refresh";
@@ -187,6 +190,24 @@ public class HomePicFragment
         rl_zhuangshi.setOnClickListener(this);
         rl_shouna.setOnClickListener(this);
         iv_center_msgicon.setOnClickListener(this);
+//        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            int mScrollThreshold = 100;
+//
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                boolean isSignificantDelta = Math.abs(dy) > mScrollThreshold;
+//                if (isSignificantDelta) {
+//                    if (dy > 0) {
+//                        rl_tos_choose.setVisibility(View.GONE);
+//                    } else {
+//                        rl_tos_choose.setVisibility(View.VISIBLE);
+//                    }
+//                }
+//
+//            }
+//
+//        });
         mRecyclerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -269,6 +290,7 @@ public class HomePicFragment
                     iv_change_frag.setImageResource(R.drawable.changtu);
                     mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
                     curentListTag = false;
+//                    mRecyclerView.scrollToPosition(scroll_position);
                 } else {
                     //友盟统计
                     HashMap<String, String> map1 = new HashMap<String, String>();
@@ -284,6 +306,7 @@ public class HomePicFragment
                     mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
                     iv_change_frag.setImageResource(R.drawable.pubuliu);
                     curentListTag = true;
+//                    mRecyclerView.scrollToPosition(scroll_position);
                 }
                 break;
 
@@ -304,7 +327,7 @@ public class HomePicFragment
             case R.id.iv_center_msgicon:
                 onDismiss();
                 Intent intent_messages = new Intent(activity, MessagesListActivity.class);
-                startActivityForResult(intent_messages, 11);
+                startActivityForResult(intent_messages,11);
                 break;
         }
     }
@@ -312,7 +335,7 @@ public class HomePicFragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 11) {
+        if(requestCode == 11){
             rl_unreader_msg_single.setVisibility(View.GONE);
             rl_unreader_msg_double.setVisibility(View.GONE);
         }
@@ -331,12 +354,9 @@ public class HomePicFragment
                 } else if (itemType == TYPE_THREE) {
                     //活动(线性)
                     return R.layout.item_test_huodong_list;
-                } else if (itemType == TYPE_FOUR) {
+                } else {
                     //活动(瀑布)
                     return R.layout.item_test_huodong_pubu;
-                } else {
-                    //文章(线性)
-                    return R.layout.item_test_article_list;
                 }
 
             }
@@ -349,16 +369,12 @@ public class HomePicFragment
                     } else {
                         return TYPE_FOUR;
                     }
-                } else if (s.getObject_info().getType().equals("single")) {
+                } else {
                     if (curentListTag) {
                         return TYPE_ONE;
                     } else {
                         return TYPE_TWO;
                     }
-                } else if (s.getObject_info().getType().equals("article")) {
-                    return TYPE_FIVE;
-                } else {
-                    return TYPE_FIVE;
                 }
 
             }
@@ -367,162 +383,138 @@ public class HomePicFragment
         mAdapter = new MultiItemCommonAdapter<SYDataBean>(activity, mListData, support) {
             @Override
             public void convert(BaseViewHolder holder, final int position) {
+                scroll_position = position;
+                ViewGroup.LayoutParams layoutParams = holder.getView(R.id.iv_imageview_one).getLayoutParams();
+                layoutParams.width = width_Pic_List;
+                if (mListData.get(position).getObject_info().getType().equals("活动")) {
 
-                if (mListData.get(position).getObject_info().getType().equals("活动")
-                        || mListData.get(position).getObject_info().getType().equals("single")) {
+                    layoutParams.height = (curentListTag ? (int) (width_Pic_List /2.36) : (int) (width_Pic_Staggered /mListData.get(position).getObject_info().getImage().getRatio()));
 
-                    ViewGroup.LayoutParams layoutParams = holder.getView(R.id.iv_imageview_one).getLayoutParams();
-                    layoutParams.width = width_Pic_List;
-                    if (mListData.get(position).getObject_info().getType().equals("活动")) {
-
-                        layoutParams.height = (curentListTag ? (int) (width_Pic_List / 2.36) : (int) (width_Pic_Staggered / mListData.get(position).getObject_info().getImage().getRatio()));
-
-                    } else {
-                        layoutParams.height = (curentListTag ? mLListDataHeight.get(position) : mSListDataHeight.get(position));
+                } else {
+                    layoutParams.height = (curentListTag ? mLListDataHeight.get(position) : mSListDataHeight.get(position));
+                }
+                holder.getView(R.id.iv_imageview_one).setLayoutParams(layoutParams);
+                String nikeName = "";
+                if (mListData.get(position).getObject_info().getType().equals("活动")) {
+                    nikeName = mListData.get(position).getObject_info().getTag();
+                } else {
+                    nikeName = mListData.get(position).getUser_info().getNickname();
+                    if (nikeName != null && curentListTag && nikeName.length() > 8) {
+                        nikeName = nikeName.substring(0, 8) + "...";
                     }
-                    holder.getView(R.id.iv_imageview_one).setLayoutParams(layoutParams);
-                    String nikeName = "";
-                    if (mListData.get(position).getObject_info().getType().equals("活动")) {
-                        nikeName = mListData.get(position).getObject_info().getTag();
-                    } else {
-                        nikeName = mListData.get(position).getUser_info().getNickname();
-                        if (nikeName != null && curentListTag && nikeName.length() > 8) {
-                            nikeName = nikeName.substring(0, 8) + "...";
-                        }
-                        if (nikeName != null && !curentListTag && nikeName.length() > 5) {
-                            nikeName = nikeName.substring(0, 5) + "...";
-                        }
+                    if (nikeName != null && !curentListTag && nikeName.length() > 5) {
+                        nikeName = nikeName.substring(0, 5) + "...";
                     }
+                }
 
-                    ((TextView) holder.getView(R.id.tv_name_pic)).setText(nikeName);
-                    if (curentListTag) {
-                        ImageUtils.displayFilletImage(mListData.get(position).getObject_info().getImage().getImg0(),
-                                (ImageView) holder.getView(R.id.iv_imageview_one));
-                    } else {
-                        ImageUtils.displayFilletImage(mListData.get(position).getObject_info().getImage().getImg1(),
-                                (ImageView) holder.getView(R.id.iv_imageview_one));
-                    }
-                    if (!mListData.get(position).getObject_info().getType().equals("活动")) {
-                        ImageUtils.displayFilletImage(mListData.get(position).getUser_info().getAvatar().getBig(),
-                                (ImageView) holder.getView(R.id.iv_header_pic));
-                    } else {
-                        holder.getView(R.id.iv_imageview_one).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                //友盟统计
-                                HashMap<String, String> map1 = new HashMap<String, String>();
-                                map1.put("evenname", "活动封面图点击");
-                                map1.put("even", "点击封面图查看");
-                                MobclickAgent.onEvent(activity, "action34", map1);
-                                //ga统计
-                                MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
-                                        .setCategory("点击封面图查看")  //事件类别
-                                        .setAction("活动封面图点击")      //事件操作
-                                        .build());
-                                //查看活动详情
-                                Intent intent = new Intent(activity, HuoDongDetailsActivity.class);
-                                intent.putExtra("activity_id", mListData.get(position).getObject_info().getObject_id());
-                                startActivity(intent);
-                            }
-                        });
-                    }
-
-                    if (!mListData.get(position).getObject_info().getType().equals("活动")) {
-                        if (curentListTag) {
-                            if (!mListData.get(position).getUser_info().getProfession().equals("0")) {
-                                holder.getView(R.id.iv_desiner_icon).setVisibility(View.VISIBLE);
-                            } else {
-                                holder.getView(R.id.iv_desiner_icon).setVisibility(View.GONE);
-                            }
-                        }
-                        List<SYDataColorBean> list_color = mListData.get(position).getColor_info();
-                        if (null != list_color && list_color.size() == 1) {
-                            holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
-                            holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
-                            holder.getView(R.id.iv_color_center).setVisibility(View.GONE);
-                            holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
-                            if (curentListTag) {
-                                holder.getView(R.id.tv_color_tital).setVisibility(View.VISIBLE);
-                            }
-                        } else if (null != mListData.get(position).getColor_info() && mListData.get(position).getColor_info().size() == 2) {
-
-                            holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
-                            holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
-                            holder.getView(R.id.iv_color_center).setVisibility(View.VISIBLE);
-                            holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(1).getColor_value()));
-                            holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
-                            if (curentListTag) {
-                                holder.getView(R.id.tv_color_tital).setVisibility(View.VISIBLE);
-                            }
-                        } else if (null != mListData.get(position).getColor_info() && mListData.get(position).getColor_info().size() == 3) {
-                            holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
-                            holder.getView(R.id.iv_color_left).setVisibility(View.VISIBLE);
-                            holder.getView(R.id.iv_color_center).setVisibility(View.VISIBLE);
-                            holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(2).getColor_value()));
-                            holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color.get(1).getColor_value()));
-                            holder.getView(R.id.iv_color_left).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
-                            if (curentListTag) {
-                                holder.getView(R.id.tv_color_tital).setVisibility(View.VISIBLE);
-                            }
-                        } else {
-                            holder.getView(R.id.iv_color_right).setVisibility(View.GONE);
-                            holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
-                            holder.getView(R.id.iv_color_center).setVisibility(View.GONE);
-                            if (curentListTag) {
-                                holder.getView(R.id.tv_color_tital).setVisibility(View.GONE);
-                            }
-                        }
-                    }
-
-                    if (null != mListData.get(position).getUser_info() && null != mListData.get(position).getUser_info().getUser_id()) {
-                        holder.getView(R.id.iv_header_pic).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                Intent intent = new Intent(activity, UserInfoActivity.class);
-                                intent.putExtra(ClassConstant.LoginSucces.USER_ID, mListData.get(position).getUser_info().getUser_id());
-                                startActivity(intent);
-                            }
-                        });
-                        holder.getView(R.id.iv_imageview_one).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                                if (mListData.get(position).getObject_info().getType().equals("single")) {
-                                    //查看单图详情
-                                    Intent intent = new Intent(activity, ImageDetailLongActivity.class);
-                                    intent.putExtra("item_id", mListData.get(position).getObject_info().getObject_id());
-                                    startActivity(intent);
-                                }
-
-                            }
-                        });
-                    }
-
-                }else if(mListData.get(position).getObject_info().getType().equals("article")){
-
-//                    ViewGroup.LayoutParams layoutParams = holder.getView(R.id.iv_imageview_one).getLayoutParams();
-//                    layoutParams.width = width_Pic_List;
-//                    layoutParams.height = (curentListTag ? (int) (width_Pic_List / 2.36) : (int) (width_Pic_Staggered / mListData.get(position).getObject_info().getImage().getRatio()));
-//                    holder.getView(R.id.iv_imageview_one).setLayoutParams(layoutParams);
-
+                ((TextView) holder.getView(R.id.tv_name_pic)).setText(nikeName);
+                if (curentListTag) {
                     ImageUtils.displayFilletImage(mListData.get(position).getObject_info().getImage().getImg0(),
-                            ((ImageView) holder.getView(R.id.iv_imageview_one)));
-                    ((TextView)holder.getView(R.id.tv_name_pic)).setText(mListData.get(position).getObject_info().getTitle().toString());
+                            (ImageView) holder.getView(R.id.iv_imageview_one));
+                } else {
+                    ImageUtils.displayFilletImage(mListData.get(position).getObject_info().getImage().getImg1(),
+                            (ImageView) holder.getView(R.id.iv_imageview_one));
+                }
+                if (!mListData.get(position).getObject_info().getType().equals("活动")) {
+                    ImageUtils.displayFilletImage(mListData.get(position).getUser_info().getAvatar().getBig(),
+                            (ImageView) holder.getView(R.id.iv_header_pic));
+                } else {
                     holder.getView(R.id.iv_imageview_one).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(activity,ArticleDetailsActivity.class);
-                            intent.putExtra("article_id",mListData.get(position).getObject_info().getObject_id());
-
+                            //友盟统计
+                            HashMap<String, String> map1 = new HashMap<String, String>();
+                            map1.put("evenname", "活动封面图点击");
+                            map1.put("even", "点击封面图查看");
+                            MobclickAgent.onEvent(activity, "action34", map1);
+                            //ga统计
+                            MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                                    .setCategory("点击封面图查看")  //事件类别
+                                    .setAction("活动封面图点击")      //事件操作
+                                    .build());
+                            //查看活动详情
+                            Intent intent = new Intent(activity, HuoDongDetailsActivity.class);
+                            intent.putExtra("activity_id", mListData.get(position).getObject_info().getObject_id());
                             startActivity(intent);
                         }
                     });
-
                 }
+
+                if (!mListData.get(position).getObject_info().getType().equals("活动")) {
+                    if (curentListTag) {
+                        if (!mListData.get(position).getUser_info().getProfession().equals("0")) {
+                            holder.getView(R.id.iv_desiner_icon).setVisibility(View.VISIBLE);
+                        } else {
+                            holder.getView(R.id.iv_desiner_icon).setVisibility(View.GONE);
+                        }
+                    }
+                    List<SYDataColorBean> list_color = mListData.get(position).getColor_info();
+                    if (null != list_color && list_color.size() == 1) {
+                        holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
+                        holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
+                        holder.getView(R.id.iv_color_center).setVisibility(View.GONE);
+                        holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
+                        if (curentListTag) {
+                            holder.getView(R.id.tv_color_tital).setVisibility(View.VISIBLE);
+                        }
+                    } else if (null != mListData.get(position).getColor_info() && mListData.get(position).getColor_info().size() == 2) {
+
+                        holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
+                        holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
+                        holder.getView(R.id.iv_color_center).setVisibility(View.VISIBLE);
+                        holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(1).getColor_value()));
+                        holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
+                        if (curentListTag) {
+                            holder.getView(R.id.tv_color_tital).setVisibility(View.VISIBLE);
+                        }
+                    } else if (null != mListData.get(position).getColor_info() && mListData.get(position).getColor_info().size() == 3) {
+                        holder.getView(R.id.iv_color_right).setVisibility(View.VISIBLE);
+                        holder.getView(R.id.iv_color_left).setVisibility(View.VISIBLE);
+                        holder.getView(R.id.iv_color_center).setVisibility(View.VISIBLE);
+                        holder.getView(R.id.iv_color_right).setBackgroundColor(Color.parseColor("#" + list_color.get(2).getColor_value()));
+                        holder.getView(R.id.iv_color_center).setBackgroundColor(Color.parseColor("#" + list_color.get(1).getColor_value()));
+                        holder.getView(R.id.iv_color_left).setBackgroundColor(Color.parseColor("#" + list_color.get(0).getColor_value()));
+                        if (curentListTag) {
+                            holder.getView(R.id.tv_color_tital).setVisibility(View.VISIBLE);
+                        }
+                    } else {
+                        holder.getView(R.id.iv_color_right).setVisibility(View.GONE);
+                        holder.getView(R.id.iv_color_left).setVisibility(View.GONE);
+                        holder.getView(R.id.iv_color_center).setVisibility(View.GONE);
+                        if (curentListTag) {
+                            holder.getView(R.id.tv_color_tital).setVisibility(View.GONE);
+                        }
+                    }
+                }
+
+                if (null != mListData.get(position).getUser_info() && null != mListData.get(position).getUser_info().getUser_id()) {
+                    holder.getView(R.id.iv_header_pic).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(activity, UserInfoActivity.class);
+                            intent.putExtra(ClassConstant.LoginSucces.USER_ID, mListData.get(position).getUser_info().getUser_id());
+                            startActivity(intent);
+                        }
+                    });
+                    holder.getView(R.id.iv_imageview_one).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            if (mListData.get(position).getObject_info().getType().equals("single")) {
+                                //查看单图详情
+                                Intent intent = new Intent(activity, ImageDetailLongActivity.class);
+                                intent.putExtra("item_id", mListData.get(position).getObject_info().getObject_id());
+                                startActivity(intent);
+                            }
+
+                        }
+                    });
+                }
+
             }
         };
         mRecyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        mRecyclerView.setItemAnimator(null);
         mRecyclerView.setOnRefreshListener(this);
         mRecyclerView.setOnLoadMoreListener(this);
 
@@ -749,7 +741,7 @@ public class HomePicFragment
                             if (list_activity != null && list_activity.size() > 0) {
                                 SYActivityInfoBean syActivityInfoBean = list_activity.get(0).getActivity_info();
                                 SYDataBean syDataBean = new SYDataBean(new SYDataObjectBean
-                                        (syActivityInfoBean.getId(), "活动", syActivityInfoBean.getTitle(),"",
+                                        (syActivityInfoBean.getId(), "活动", syActivityInfoBean.getTitle(),
                                                 new SYDataObjectImgBean(syActivityInfoBean.getImage().getImg1_ratio(),
                                                         syActivityInfoBean.getImage().getImg0(), syActivityInfoBean.getImage().getImg1())
                                         ), null, null);
@@ -854,13 +846,13 @@ public class HomePicFragment
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("evenname", "筛选_" + name);
         map.put("even", "点开" + name + "筛选项");
-        if (name.equals("空间")) {
-            MobclickAgent.onEvent(activity, "action6", map);
-        } else if (name.equals("局部")) {
+        if(name.equals("空间")){
+            MobclickAgent.onEvent(activity,"action6" , map);
+        }else if(name.equals("局部")){
             MobclickAgent.onEvent(activity, "action7", map);
-        } else if (name.equals("装饰")) {
+        }else if(name.equals("装饰")){
             MobclickAgent.onEvent(activity, "action8", map);
-        } else if (name.equals("收纳")) {
+        }else if(name.equals("收纳")){
             MobclickAgent.onEvent(activity, "action9", map);
         }
 
