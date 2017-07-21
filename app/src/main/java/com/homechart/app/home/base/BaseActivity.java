@@ -12,6 +12,7 @@ import com.homechart.app.commont.ActivityManager;
 public abstract class BaseActivity extends FragmentActivity {
     private boolean destroyed = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
