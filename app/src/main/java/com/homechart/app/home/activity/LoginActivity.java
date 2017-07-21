@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.homechart.app.MyApplication;
 import com.homechart.app.R;
 import com.homechart.app.commont.ClassConstant;
@@ -89,6 +90,18 @@ public class LoginActivity extends BaseActivity
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+
+        //友盟统计
+        HashMap<String, String> map5 = new HashMap<String, String>();
+        map5.put("evenname", "登录页面");
+        map5.put("even", "登录页面");
+        MobclickAgent.onEvent(LoginActivity.this, "newaction3", map5);
+        //ga统计
+        MyApplication.getInstance().getDefaultTracker().send(new HitBuilders.EventBuilder()
+                .setCategory("登录页面")  //事件类别
+                .setAction("登录页面")  //事件操作
+                .build());
+
         //设置权限
         PublicUtils.verifyStoragePermissions(LoginActivity.this);
         boolean login_status = SharedPreferencesUtils.readBoolean(ClassConstant.LoginSucces.LOGIN_STATUS);
@@ -404,6 +417,13 @@ public class LoginActivity extends BaseActivity
     public void onResume() {
         super.onResume();
         CustomProgress.cancelDialog();
+        // Get tracker.
+        Tracker t = MyApplication.getInstance().getDefaultTracker();
+        // Set screen name.
+        t.setScreenName("登录页面");
+        // Send a screen view.
+        t.send(new HitBuilders.ScreenViewBuilder().build());
+        MobclickAgent.onPageStart("LoginActivity");
         MobclickAgent.onResume(LoginActivity.this);
     }
 
@@ -411,7 +431,7 @@ public class LoginActivity extends BaseActivity
     @Override
     public void onPause() {
         super.onPause();
-
+        MobclickAgent.onPageEnd("LoginActivity");
         MobclickAgent.onPause(LoginActivity.this);
     }
 
